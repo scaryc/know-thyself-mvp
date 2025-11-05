@@ -2616,6 +2616,38 @@ app.get('/api/sessions/:sessionId/vitals', async (req, res) => {
 });
 
 /**
+ * GET /api/sessions/:sessionId/state
+ * Get current session state and vitals (for frontend polling)
+ * Phase 5, Task 5.3 - Vitals Polling Enhancement
+ */
+app.get('/api/sessions/:sessionId/state', async (req, res) => {
+  try {
+    const { sessionId } = req.params;
+
+    const session = sessions.get(sessionId);
+    if (!session) {
+      return res.status(404).json({ error: 'Session not found' });
+    }
+
+    // Update state before sending (ensure latest progression)
+    if (session.scenario && session.currentState) {
+      evaluateStateProgression(session);
+    }
+
+    res.json({
+      currentState: session.currentState,
+      vitals: session.vitals,
+      timeSinceStart: session.scenarioStartTime ? (Date.now() - session.scenarioStartTime) / 1000 : 0,
+      criticalTreatmentsGiven: session.criticalTreatmentsGiven || {},
+      stateHistory: session.stateHistory || []
+    });
+  } catch (error) {
+    console.error('Error fetching session state:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
  * GET /api/sessions/:sessionId/performance
  * Get performance report (for AAR)
  */
