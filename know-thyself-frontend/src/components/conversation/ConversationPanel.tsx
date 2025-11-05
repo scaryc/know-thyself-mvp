@@ -14,14 +14,16 @@ interface ConversationPanelProps {
   onNotesUpdate: (notes: string[]) => void;
   currentAgent: 'cognitive_coach' | 'core' | null;
   onAgentTransition: (newAgent: 'core', scenarioData: any) => void;
+  onAARComplete?: () => void; // ✅ NEW: Phase 5, Task 5.2
 }
 
-function ConversationPanel({ 
-  sessionId, 
-  onVitalsUpdate, 
+function ConversationPanel({
+  sessionId,
+  onVitalsUpdate,
   onNotesUpdate,
   currentAgent,
-  onAgentTransition 
+  onAgentTransition,
+  onAARComplete
 }: ConversationPanelProps) {
   // ✅ FIXED: Start with empty messages - don't pre-fill from sessionStorage
   const [messages, setMessages] = useState<Message[]>([]);
@@ -101,6 +103,12 @@ function ConversationPanel({
       if (response.infoUpdated && response.patientNotes) {
         console.log('✅ Calling onNotesUpdate with:', response.patientNotes);
         onNotesUpdate(response.patientNotes);
+      }
+
+      // ✅ NEW: Check for AAR completion (Phase 5, Task 5.2)
+      if (response.aarComplete && onAARComplete) {
+        console.log('🎉 AAR completed - triggering session complete');
+        onAARComplete();
       }
     } catch (error) {
       console.error('Failed to send message:', error);
