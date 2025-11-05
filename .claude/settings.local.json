@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(for file in *.json)",
+      "Bash(do echo \"=== $file ===\")",
+      "Bash(jq -r '.scenario_id, (.critical_decision_points.available_evaluations | length), (.challenge_points.available_challenges | length), (.treatment_responses | keys | length)' \"$file\")",
+      "Bash(done)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

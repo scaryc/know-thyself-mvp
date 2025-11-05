@@ -1,0 +1,1198 @@
+{
+  "scenario_id": "TBI_MVP_001",
+  "metadata": {
+    "title": "Fall Injury with Head Trauma - Severe TBI",
+    "version": "2.0_Final_Enhanced",
+    "difficulty": "high",
+    "estimated_duration_minutes": 15,
+    "scenario_type": "trauma_neurological",
+    "learning_objectives": [
+      "Recognize high-risk mechanism of injury for TBI",
+      "Perform systematic GCS assessment and trending",
+      "Identify Cushing's triad (late sign of rising ICP)",
+      "Implement appropriate C-spine precautions",
+      "Recognize neurological deterioration patterns",
+      "Prevent secondary brain injury (hypoxia, hypotension)",
+      "Demonstrate critical thinking in neurotrauma management"
+    ],
+    "changelog": {
+      "v2.0_final_enhanced": "Added Layer Two cognitive training (interactive challenge points with full rubrics, critical decision points). Expanded medication formulary to 30+ drugs organized by harm level. Enhanced pharmacokinetics for all medications. Corrected no-treatment progression timing to 3/5/10 min. Added treatment sequence rubrics and AAR teaching structure. Complete parity with STEMI and Status Epilepticus enhanced blueprints."
+    }
+  },
+
+  "dispatch_info": {
+    "call_type": "Fall injury",
+    "age": "72",
+    "sex": "Male",
+    "location": "Residential home, found at bottom of stairs",
+    "caller": "Wife",
+    "additional_info": "Fell down stairs, hit head, confused, bleeding from head"
+  },
+
+  "scene_description": {
+    "location": "Inside home, patient at bottom of staircase (approximately 12-14 stairs)",
+    "safety": "Scene safe, no ongoing hazards, stairs visible showing mechanism",
+    "access": "Ground floor, good access for stretcher",
+    "bystanders": "Wife present, very distressed, heard fall from other room"
+  },
+
+  "patient_profile": {
+    "name": "Ján",
+    "age": 72,
+    "weight_kg": 78,
+    "personality": "Initially confused, minimizing injuries ('I'm fine'), becomes less responsive as time progresses"
+  },
+
+  "initial_vitals": {
+    "HR": 68,
+    "RR": 18,
+    "SpO2": 97,
+    "BP_systolic": 165,
+    "BP_diastolic": 95,
+    "temperature": 36.8,
+    "GCS": 13,
+    "pupils": "3mm bilateral, sluggish reaction right pupil"
+  },
+
+  "state_descriptions": {
+    "initial": {
+      "student_sees": "You arrive to find an elderly man sitting propped against the wall at the bottom of a staircase. There's a visible laceration on his right forehead, bleeding steadily and matting his gray hair. Blood has dripped onto his shirt. He's looking around confusedly, touching his head repeatedly. 'What... what happened?' he asks, seeming disoriented. His wife is kneeling beside him, holding a blood-soaked towel to his head. 'He was carrying laundry down the stairs and I heard a terrible crash,' she says, voice shaking. 'I think he missed a step and fell all the way down - it's 12 steps! He hit his head hard on the floor. That was maybe 10 minutes ago.' When you speak to him, he looks at you but seems confused. 'My head hurts,' he says slowly. 'I want to stand up.' He tries to move but winces. You notice his right pupil looks a bit larger and sluggish when you briefly shine a light.",
+      "appearance": "Elderly male, confused, bleeding forehead laceration, sitting position, attempted self-movement, disoriented to events, right pupil slightly larger and sluggish",
+      "clinical_note": "HIGH-RISK MECHANISM: Fall down full flight of stairs (approximately 12 steps) with direct head impact. Patient has altered mental status (GCS 13) and unequal pupils (right larger, sluggish) - concerning for intracranial bleeding. Vital signs show early hypertension (165/95) and relative bradycardia (HR 68 for injured patient). These could be early signs of rising ICP or just baseline vitals - need to TREND. IMMEDIATE C-SPINE PRECAUTIONS required given mechanism. Must perform and document serial GCS assessments to detect deterioration. This patient is at high risk for epidural or subdural hematoma.",
+      "urgency_level": "critical"
+    },
+    "improving": {
+      "student_sees": "The patient appears more stable now. With your treatments, he seems slightly more alert, though still not baseline. 'I'm Ján,' he says when asked his name. 'I... I live here. What day is it?' He's oriented to person but not to time or exact circumstances. His GCS has improved slightly to 14. The bleeding from his forehead is now controlled with pressure. He's lying supine on a backboard with C-collar, oxygen in place. 'My head really hurts,' he complains. 'Can I have something for the pain?' His pupils, while you watch carefully, remain unequal but he's not getting worse. His vital signs are stable. His wife looks somewhat reassured seeing him more responsive.",
+      "appearance": "More alert than initially, GCS 14, C-spine protected, bleeding controlled, still in pain, vital signs stable",
+      "clinical_note": "Patient showing slight improvement with appropriate supportive care (oxygen, C-spine protection, positioning). GCS improved 13 to 14. Still has concerning features (unequal pupils, amnesia for event, significant mechanism) requiring urgent trauma center evaluation. Key is PREVENTION OF SECONDARY BRAIN INJURY - maintain SpO2 greater than 90 percent, SBP greater than 90, avoid hypercapnia, proper positioning (head elevated 30 degrees if no contraindications). Continue careful neurological monitoring during transport. This 'improvement' is encouraging but doesn't rule out intracranial hemorrhage - patient still needs CT scan.",
+      "urgency_level": "high"
+    },
+    "deteriorating": {
+      "student_sees": "You notice the patient's condition is changing - and not for the better. His eyes, which were open, are now drooping closed. 'Mr. Ján, can you hear me?' you ask, louder this time. He doesn't respond immediately. His wife grabs your arm, frightened. 'He was just talking! What's happening?' When you check his GCS again, it has dropped to 9 - he only opens eyes to pain, makes incomprehensible sounds, and has abnormal flexion. His right pupil is now noticeably larger than the left - maybe 6mm versus 3mm - and barely reacting to light. His breathing has become irregular - deep breaths, then shallow, then pausing. You check his pulse: only 52 beats per minute, down from 68. His blood pressure reads 185/98 on the monitor. This is Cushing's triad - hypertension, bradycardia, irregular respirations - a late and ominous sign of critically high intracranial pressure.",
+      "appearance": "Decreased level of consciousness GCS 9, anisocoria (unequal pupils) worsening, irregular breathing pattern, Cushing's triad developing, patient deteriorating",
+      "clinical_note": "CRITICAL DETERIORATION: Classic signs of rising intracranial pressure with impending herniation. Cushing's Triad present: (1) Hypertension 185/98, (2) Bradycardia HR 52, (3) Irregular respirations. GCS dropped 13 to 9 (decrease of 4 points). Worsening anisocoria (right pupil 6mm, left 3mm). This indicates expanding intracranial hematoma with brainstem compression. IMMEDIATE ACTIONS NEEDED: (1) Protect airway - prepare for possible assisted ventilations or intubation, (2) Maintain oxygenation greater than 90 percent, (3) Maintain SBP greater than 90 (prevent hypotension which worsens outcome), (4) Position head elevated 30 degrees, (5) URGENT transport to trauma center with neurosurgery, (6) Consider hyperventilation ONLY if signs of herniation (this case qualifies). Prognosis guarded - needs emergency CT and likely neurosurgery.",
+      "urgency_level": "life-threatening"
+    },
+    "critical": {
+      "student_sees": "The patient is now completely unresponsive. His GCS is 3 - no eye opening even to pain, no verbal response, no purposeful movement. His right pupil is fully dilated at 8mm and non-reactive - fixed and dilated. His left pupil is 4mm and sluggish. His breathing has become agonal - irregular gasps every 10-15 seconds, totally inadequate for oxygenation. His SpO2 is dropping despite oxygen - now 82 percent. His heart rate is 48 and irregular. His blood pressure is 195/105. This is brain herniation. Without immediate intervention, he will suffer cardiac arrest from brainstem death.",
+      "appearance": "GCS 3, fixed dilated right pupil, agonal respirations, severe bradycardia, hypertensive, herniation syndrome",
+      "clinical_note": "HERNIATION IN PROGRESS: Patient has uncal herniation (dilated non-reactive pupil ipsilateral to injury). This is end-stage increased ICP. Requires IMMEDIATE: (1) Assisted ventilation with BVM - target normal ventilation (NOT hyperventilation except as last resort), (2) Maintain oxygenation, (3) Maintain blood pressure greater than 90 systolic, (4) Head elevated 30 degrees, (5) EMERGENCY transport - call ahead to trauma center for neurosurgery activation. Consider controlled hyperventilation (10-12 breaths per minute, not excessive) as temporary measure only if herniation signs present. Prognosis very poor. This represents failure to recognize and treat earlier deterioration. Would benefit from intubation and ICP monitoring but these are beyond paramedic scope - rapid transport critical.",
+      "urgency_level": "arrest_imminent"
+    }
+  },
+
+  "state_transitions": {
+    "initial_to_improving": {
+      "required_treatments": ["c_spine_protection", "oxygen_if_needed", "bleeding_control", "position_appropriate", "gcs_assessment"],
+      "optional_helpful": ["iv_access", "pain_management_cautious"],
+      "time_minimum_minutes": 5,
+      "student_actions_needed": "C-spine immobilized plus Oxygen plus Serial GCS assessments plus Appropriate positioning",
+      "teaching_note": "TBI management is about PREVENTION of secondary brain injury. Support oxygenation, maintain blood pressure, protect spine, monitor neurologically. No magic medications in prehospital setting."
+    },
+    "initial_to_deteriorating": {
+      "trigger": "poor_management_or_natural_progression",
+      "time_elapsed_minutes": 5,
+      "description": "Expanding intracranial hematoma causes rising ICP, patient deteriorates despite treatment OR worsens faster due to hypoxia or hypotension"
+    },
+    "deteriorating_to_critical": {
+      "trigger": "continued_poor_management",
+      "time_elapsed_minutes": 10,
+      "description": "Uncal herniation progresses to brainstem compression, agonal respirations, imminent arrest"
+    },
+    "improving_to_stable": {
+      "required_treatments": ["maintain_oxygenation", "maintain_blood_pressure", "c_spine_protected", "serial_gcs_trending"],
+      "time_minimum_minutes": 10,
+      "description": "Patient remains stable with GCS 13-14, transported safely to trauma center"
+    }
+  },
+
+  "no_treatment_progression": {
+    "3_minutes": {
+      "vital_changes": {
+        "GCS": 13,
+        "HR": 66,
+        "BP_systolic": 168,
+        "SpO2": 97
+      },
+      "patient_status": "Patient confused, not appropriately managed, C-spine not protected (if applicable), bleeding continuing",
+      "clinical_note": "Critical error if C-spine not protected. Patient at risk for further injury.",
+      "teaching_point": "Every minute without C-spine protection is a minute of spinal cord injury risk. High-risk mechanism demands immediate immobilization."
+    },
+    "5_minutes": {
+      "vital_changes": {
+        "GCS": 12,
+        "HR": 64,
+        "BP_systolic": 172,
+        "SpO2": 96,
+        "pupils": "Right 4mm, Left 3mm"
+      },
+      "patient_status": "GCS slowly declining, early signs of deterioration, wife increasingly worried",
+      "clinical_note": "GCS dropping from 13 to 12. Concerning trend. Intracranial hematoma likely expanding. Need serial assessments.",
+      "state_transition": "deteriorating",
+      "teaching_point": "GCS decline is THE most sensitive indicator of deterioration in TBI. One-point drop should heighten vigilance. Two-point drop demands action."
+    },
+    "10_minutes": {
+      "vital_changes": {
+        "GCS": 9,
+        "HR": 54,
+        "BP_systolic": 183,
+        "RR": "irregular",
+        "SpO2": 93,
+        "pupils": "Right 6mm, Left 3mm"
+      },
+      "patient_status": "Severe neurological deterioration, Cushing's triad developing, herniation imminent",
+      "clinical_note": "Significant deterioration. GCS now 9 (down 4 points). Bradycardia and hypertension developing. Cushing's triad emerging. Critical situation requiring immediate advanced interventions.",
+      "state_transition": "critical",
+      "teaching_point": "Cushing's triad is a LATE sign. By the time it appears fully, the patient is in extremis. The key is recognizing EARLIER signs - GCS decline and pupillary changes - and acting before Cushing's develops."
+    }
+  },
+
+  "assessment_findings": {
+    "abcde_assessment_findings": {
+      "airway": {
+        "initial": "Patent, patient speaking (confused speech), blood in oropharynx from scalp wound, may need suctioning",
+        "improving": "Patent, protected with C-spine precautions, suctioned",
+        "deteriorating": "At risk - decreased LOC (GCS 9), may lose airway protective reflexes, prepare for assisted ventilation",
+        "critical": "Compromised - agonal breathing, GCS 3, requires BVM ventilation and possibly advanced airway (beyond scope)"
+      },
+      "breathing": {
+        "initial": "RR 18 per minute, regular pattern, SpO2 97 percent, adequate tidal volume, clear lung sounds bilaterally",
+        "improving": "RR 16 per minute, regular, SpO2 98 percent on oxygen, adequate ventilation",
+        "deteriorating": "RR irregular (Cheyne-Stokes pattern), periods of deep breathing alternating with shallow, RR varies 10-22 per minute, SpO2 94 percent",
+        "critical": "Agonal respirations, RR 4-6 per minute, totally inadequate, SpO2 82 percent, requires BVM"
+      },
+      "circulation": {
+        "initial": "HR 68 per minute regular (bradycardia relative to injury), BP 165/95 (hypertensive), radial pulses strong, skin warm, CRT 2 seconds, no external massive bleeding (scalp bleeding controlled)",
+        "improving": "HR 72 per minute, BP 158/92, perfusion adequate",
+        "deteriorating": "HR 52 per minute (worsening bradycardia), BP 185/98 (worsening hypertension) - CUSHING'S TRIAD",
+        "critical": "HR 48 per minute irregular, BP 195/105, signs of impending cardiovascular collapse"
+      },
+      "disability": {
+        "initial": "GCS 13 (E3 V4 M6): Opens eyes to voice, confused conversation, obeys commands. Confused about events. Right pupil 4mm sluggish, left pupil 3mm reactive. Amnesia for fall. Moving all extremities but slow to respond.",
+        "improving": "GCS 14 (E4 V4 M6): Eyes open spontaneously, confused conversation, obeys commands. Pupils still unequal but stable.",
+        "deteriorating": "GCS 9 (E2 V2 M5): Opens eyes to pain only, incomprehensible sounds, localizes to pain. Right pupil 6mm sluggish, left 3mm reactive. Significant anisocoria indicates lateralized mass effect.",
+        "critical": "GCS 3 (E1 V1 M1): No eye opening, no verbal response, no motor response. Right pupil 8mm fixed and dilated, left 4mm sluggish. This is uncal herniation."
+      },
+      "exposure": {
+        "initial": "5cm laceration right forehead, possible depression palpable on skull (skull fracture?), Battle's sign absent (too early), raccoon eyes absent (too early), check blood from nose or ears carefully",
+        "improving": "Laceration controlled, no new findings",
+        "deteriorating": "No additional trauma findings, focus on neurological crisis",
+        "critical": "Focus on life-threatening ABCs, not exposure exam"
+      }
+    },
+    
+    "sample_history": {
+      "symptoms": {
+        "chief_complaint": "Fall down stairs with head impact, altered mental status, headache",
+        "onset": "10 minutes ago per wife",
+        "mechanism": "HIGH-RISK: Fall down approximately 12 stairs while carrying laundry, direct head impact on floor",
+        "loss_of_consciousness": "Unknown - wife found him after fall, he doesn't remember",
+        "amnesia": "Cannot recall fall or events immediately after",
+        "headache": "Yes, severe - patient keeps touching head, says 'my head hurts'",
+        "nausea_vomiting": "None yet (but ask - vomiting common in TBI)",
+        "vision_changes": "Cannot assess reliably due to altered mental status",
+        "weakness_numbness": "Moving all extremities, but difficult to assess for subtle deficits given confusion"
+      },
+      "allergies": {
+        "medications": "No known drug allergies per wife",
+        "other": "None known"
+      },
+      "medications": {
+        "current": [
+          "Warfarin 5mg daily for atrial fibrillation - CRITICAL: anticoagulated patient with head injury",
+          "Metoprolol 50mg daily for hypertension",
+          "Atorvastatin 20mg for cholesterol"
+        ],
+        "last_doses": "Took morning medications at 8 AM including warfarin",
+        "compliance": "Good per wife, never misses doses",
+        "critical_note": "WARFARIN = VERY HIGH RISK. Even minor head trauma can cause catastrophic intracranial bleeding in anticoagulated patients. This patient needs URGENT CT and likely warfarin reversal."
+      },
+      "past_medical_history": {
+        "major_conditions": [
+          "Atrial fibrillation - on warfarin",
+          "Hypertension - controlled on metoprolol",
+          "Hyperlipidemia",
+          "Prior stroke 3 years ago (minor, full recovery)"
+        ],
+        "surgeries": "None significant",
+        "hospitalizations": "Prior stroke admission 3 years ago"
+      },
+      "last_oral_intake": {
+        "food": "Breakfast at 8 AM - toast and coffee",
+        "fluids": "Water throughout morning",
+        "nothing_abnormal": "Normal morning, was doing laundry when fell"
+      },
+      "events_leading_to_injury": {
+        "activity": "Carrying laundry basket down stairs",
+        "wife_account": "I heard a terrible crash from downstairs. I ran and found him at the bottom of the stairs. The laundry was scattered everywhere. I think he missed a step near the top - it's 12 steps down to the landing. He was conscious but very confused, asking what happened. There was a lot of blood from his forehead. I put a towel on it and called you immediately.",
+        "estimated_height_of_fall": "12 stairs = approximately 2.4-3 meters (8-10 feet)",
+        "position_found": "Sitting at bottom of stairs, against wall",
+        "immediate_symptoms": "Confusion, bleeding from forehead wound"
+      }
+    },
+    
+    "focused_exam": {
+      "head": "5cm laceration right forehead actively bleeding, palpable step-off or depression concerning for skull fracture, scalp swelling, blood matted in hair. Check carefully for Battle's sign (bruising behind ears - late sign, appears hours later). Check for raccoon eyes (periorbital ecchymosis - late sign). Check for blood or clear fluid from ears (CSF otorrhea) or nose (CSF rhinorrhea).",
+      "neck": "C-spine tenderness cannot be assessed reliably due to altered mental status - ASSUME injury present, maintain full precautions. No obvious deformity. No step-offs palpable.",
+      "neurological": "Cranial nerves difficult to assess fully due to altered mental status. Pupils unequal (anisocoria): right larger and sluggish (4mm), left normal (3mm) - concerning for lateralized mass effect. Motor: initially moving all 4 extremities, but as deteriorates may develop hemiparesis (weakness on one side) or decorticate/decerebrate posturing. No obvious facial asymmetry. Gag reflex present initially.",
+      "back": "Not fully exposed due to C-spine precautions, but palpate spine through clothing - no obvious step-offs or tenderness elicited (though patient's reliability questionable)",
+      "other_injuries": "No obvious chest, abdominal, or pelvic injuries. Possible minor contusions on shoulder or back from tumbling down stairs - not priority given head injury severity."
+    }
+  },
+
+  "cushings_triad_teaching": {
+    "definition": "Cushing's Triad is a late sign of critically increased intracranial pressure, indicating brainstem compression and impending herniation",
+    "components": [
+      "Hypertension (specifically widening pulse pressure)",
+      "Bradycardia (paradoxical - expect tachycardia in shock but ICP causes vagal stimulation)",
+      "Irregular respirations (Cheyne-Stokes pattern or other abnormal patterns)"
+    ],
+    "clinical_significance": "LATE and OMINOUS sign - means ICP is critically high and brain herniation is imminent or occurring. Not all three components need to be present simultaneously. Bradycardia with hypertension in head injury patient should trigger high alert.",
+    "this_scenario_progression": "Patient progresses from BP 165/95 HR 68 to BP 185/98 HR 52 with irregular respirations",
+    "key_teaching": "Don't wait for full Cushing's triad to recognize deteriorating head injury. Trend GCS (most sensitive). Cushing's triad is LATE - patient already in serious trouble when it appears. The key is recognizing EARLIER signs: deteriorating GCS, worsening pupil exam, increasing anisocoria.",
+    "pathophysiology": "Rising ICP compresses brainstem leading to reflex hypertension (body trying to maintain cerebral perfusion pressure) which triggers vagal stimulation causing bradycardia, and brainstem dysfunction causes irregular breathing patterns.",
+    "earlier_warning_signs": [
+      "GCS decline (most sensitive - drop of 2 or more points is significant)",
+      "Worsening anisocoria (unequal pupils)",
+      "New or worsening headache",
+      "Vomiting",
+      "Altered mental status progression"
+    ]
+  },
+
+  "primary_medications": {
+    "oxygen": {
+      "generic_name": "Oxygen",
+      "class": "Medical gas",
+      "indication": "Prevent and treat hypoxia in TBI (maintain SpO2 greater than 90 percent)",
+      "mechanism": "Increases oxygen content in blood, prevents hypoxic secondary brain injury",
+      
+      "dosing": {
+        "tbi_target": "Titrate to SpO2 greater than 90 percent (ideally 94-98 percent)",
+        "delivery_method": "2-6 liters per minute nasal cannula OR 15 liters per minute non-rebreather mask if needed",
+        "bvm_if_inadequate": "If GCS 8 or less or inadequate respiratory effort, assist with BVM"
+      },
+      
+      "pharmacokinetics": {
+        "onset_minutes": 1,
+        "effect": "immediate increase in SpO2 if hypoxic"
+      },
+      
+      "contraindications": {
+        "absolute": [],
+        "relative": "None in emergency TBI care - hypoxia is deadly"
+      },
+      
+      "side_effects": [],
+      
+      "warnings": [
+        "If patient's breathing inadequate (RR less than 10, agonal, GCS 8 or less), oxygen alone insufficient - need BVM assistance",
+        "Monitor SpO2 continuously - hypoxia worsens TBI outcomes dramatically"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": true,
+        "importance": "critical",
+        "time_to_effect_minutes": 1,
+        "vital_changes": {
+          "SpO2": "Maintains greater than 90 percent (patient starts at 97 percent so may not need oxygen initially, but have ready if deteriorates)"
+        },
+        "patient_says": "Patient too confused to comment initially. Later may say 'the mask is uncomfortable' but tolerance improves.",
+        "clinical_effect": "PREVENTION of secondary brain injury. Hypoxia (SpO2 less than 90 percent) dramatically worsens TBI outcomes. Even one episode of hypoxia doubles mortality. Oxygen is essential if SpO2 drops or patient's neurological status deteriorates. As GCS drops, respiratory drive may become inadequate requiring BVM assistance.",
+        "points_if_given_when_needed": 10,
+        "teaching_point": "In TBI, avoid two things: HYPOXIA (SpO2 less than 90 percent) and HYPOTENSION (SBP less than 90). Both cause secondary brain injury and worsen outcomes. Oxygen is your tool to prevent hypoxia. Monitor SpO2 closely. If patient's GCS drops to 8 or less or breathing becomes inadequate, may need BVM assistance. The brain injury you can't fix, but the hypoxia you can prevent."
+      }
+    },
+
+    "normal_saline": {
+      "generic_name": "0.9 percent Sodium Chloride",
+      "brand_names": ["Normal Saline", "0.9 percent NaCl"],
+      "class": "Crystalloid IV fluid",
+      "indication": "Maintain blood pressure, prevent hypotension in TBI, IV access for medications",
+      "mechanism": "Volume expansion, maintains intravascular volume and blood pressure, ensures cerebral perfusion pressure",
+      
+      "dosing": {
+        "tbi_management": "Establish IV access, maintain patent line, avoid hypotension (SBP greater than 90 mmHg)",
+        "if_hypotensive": "250-500ml bolus to maintain SBP greater than 90",
+        "avoid_overload": "Do NOT give aggressive fluids if normotensive - may worsen cerebral edema"
+      },
+      
+      "pharmacokinetics": {
+        "onset_minutes": "immediate for volume expansion",
+        "duration_minutes": "30-60"
+      },
+      
+      "contraindications": {
+        "absolute": [],
+        "relative": "Avoid excessive fluids in isolated TBI without hypotension - may worsen cerebral edema"
+      },
+      
+      "warnings": [
+        "Goal: maintain SBP greater than 90, NOT aggressive resuscitation",
+        "Cerebral perfusion pressure (CPP) equals MAP minus ICP, so need adequate blood pressure",
+        "But excessive fluids may increase cerebral edema and ICP"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": false,
+        "importance": "supportive",
+        "vital_changes": {
+          "BP_systolic": "Maintains adequate (no change needed if already greater than 90)"
+        },
+        "clinical_effect": "Establish IV access for potential medication administration and to maintain blood pressure if drops. AVOID aggressive fluid boluses unless actually hypotensive - excessive fluids may worsen cerebral edema. This patient is hypertensive (165/95) so doesn't need fluids for blood pressure. But maintain IV access in case BP drops during transport or with deterioration.",
+        "points_if_given": 5,
+        "teaching_point": "In TBI: PREVENT hypotension (SBP less than 90) but DON'T over-resuscitate. Give fluids if BP drops below 90, but if patient is normotensive or hypertensive, just maintain IV access. The goal is cerebral perfusion pressure (CPP) which equals mean arterial pressure (MAP) minus intracranial pressure (ICP). We need adequate MAP. But excessive fluids can worsen cerebral edema. Balance is key - prevent hypotension, avoid fluid overload."
+      }
+    },
+
+    "glucose_40_percent": {
+      "generic_name": "Glucose 40 percent",
+      "brand_names": ["Glucose 40 percent", "Dextrose 40 percent"],
+      "class": "Antihypoglycemic agent, carbohydrate",
+      "indication": "Hypoglycemia (blood glucose less than 3.5 mmol per L or less than 63 mg per dL)",
+      "mechanism": "Rapidly increases blood glucose, corrects hypoglycemia, restores cerebral glucose supply",
+      
+      "dosing": {
+        "adult_hypoglycemia": "20-50ml IV push (provides 8-20 grams glucose)",
+        "titrate_to_effect": "Give incrementally, recheck glucose, repeat if needed",
+        "goal": "Blood glucose greater than 4.0 mmol per L"
+      },
+      
+      "pharmacokinetics": {
+        "onset_minutes": "1-2",
+        "peak_effect_minutes": "5-10",
+        "duration_minutes": "30-60"
+      },
+      
+      "contraindications": {
+        "absolute": [],
+        "relative": "Intracranial hemorrhage is NOT contraindication to glucose if hypoglycemic"
+      },
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": false,
+        "importance": "conditional",
+        "vital_changes": {
+          "glucose": "Would correct if low, but in this case glucose is normal"
+        },
+        "clinical_effect": "In this scenario, altered mental status is from HEAD INJURY, not hypoglycemia. However, it is GOOD PRACTICE and MANDATORY to check blood glucose in any patient with altered mental status, even if trauma explains it. Hypoglycemia can coexist with trauma. In this case, glucose is normal (5.2 mmol per L), so no indication to give glucose. If glucose were low, MUST correct it - hypoglycemia exacerbates brain injury.",
+        "teaching_point": "ALWAYS check glucose in patients with altered mental status, even if trauma obviously explains it. Takes 10 seconds with glucometer. Hypoglycemia can coexist with trauma (diabetic fell because of low sugar). Hypoglycemia worsens brain injury outcomes. But don't assume altered mental status in trauma patient is from hypoglycemia - protect C-spine and assess for head injury FIRST. Check glucose, correct if low, but address the trauma too. In this scenario: glucose normal, altered mental status from TBI."
+      }
+    }
+  },
+
+  "secondary_medications_by_impact": {
+    
+    "critical_harm": [
+      {
+        "name": "apaurin",
+        "generic_name": "Diazepam",
+        "class": "Benzodiazepine, sedative",
+        "primary_indication": "Seizures, status epilepticus, severe anxiety, alcohol withdrawal",
+        "why_dangerous": "Respiratory depression, sedation masks neurological deterioration, decreases GCS, makes trending impossible",
+        "if_given": {
+          "vital_changes": {
+            "GCS": 10,
+            "RR": 14,
+            "SpO2": 91
+          },
+          "patient_response": "Patient becomes sedated and drowsy. His already altered mental status worsens further. 'I feel... sleepy...' His respiratory rate decreases. His GCS drops from 13 to 10 - but is this from sedation or from worsening brain injury? You can't tell anymore. Benzodiazepine has MASKED the clinical exam, making it impossible to detect true neurological deterioration.",
+          "clinical_note": "Benzodiazepines are CONTRAINDICATED in TBI except for active seizures. They cause: (1) Respiratory depression worsening hypoxia, (2) Sedation masking neurological status, (3) Decreased GCS making trending impossible. You CANNOT distinguish sedation from herniation if you give sedatives. Patient's anxiety is appropriate - he's seriously injured. Calm reassurance, not chemical restraint. Only exception: active seizures.",
+          "points": -20,
+          "state_change": "deteriorating",
+          "aar_flag": "dangerous_medication_masking_neuro_exam"
+        },
+        "teaching_point": "NEVER sedate a TBI patient unless treating active seizures. The patient's level of consciousness is your ONLY window into what's happening inside the skull. Sedatives fog that window. If patient is agitated, ask why - worsening hypoxia? Rising ICP? Restrain physically if absolutely necessary for safety, but chemical sedation masks deterioration. Diazepam has a role in TBI only for seizures. For anxiety in conscious TBI patient: calm voice, explanation, reassurance - not benzodiazepines."
+      },
+      
+      {
+        "name": "novalgin",
+        "generic_name": "Metamizole",
+        "class": "Analgesic, antipyretic, NSAID",
+        "primary_indication": "Pain relief, fever reduction",
+        "why_dangerous": "Hypotension risk, anaphylaxis risk, antiplatelet effect worsens bleeding, banned in many countries due to agranulocytosis",
+        "if_given": {
+          "vital_changes": {
+            "BP_systolic": 135,
+            "BP_diastolic": 78,
+            "HR": 76
+          },
+          "patient_response": "Patient's blood pressure drops from 165/95 to 135/78 - concerning in TBI where we need to MAINTAIN blood pressure for cerebral perfusion. No pain relief - head trauma pain not responsive to metamizole. Risk of allergic reaction (anaphylaxis, rash). Metamizole has mild antiplatelet effect - patient already on warfarin, now has TWO agents affecting coagulation with intracranial bleeding.",
+          "clinical_note": "Metamizole inappropriate in TBI for multiple reasons: (1) Causes hypotension - we need SBP greater than 90, not dropping BP, (2) Antiplatelet effect worsens intracranial bleeding especially with warfarin on board, (3) Risk of severe allergic reactions including anaphylaxis, (4) Agranulocytosis risk (rare but severe), (5) Banned in US, UK, many countries for safety concerns. If pain control needed in TBI, use cautious small-dose morphine with close neuro monitoring, NOT metamizole.",
+          "points": -18,
+          "state_change": "deteriorating",
+          "aar_flag": "inappropriate_analgesic_causing_hypotension"
+        },
+        "teaching_point": "Metamizole (dipyrone) is banned in United States, United Kingdom, and many countries due to risk of agranulocytosis (destruction of white blood cells). Even where available, it's wrong choice for TBI pain. It causes HYPOTENSION - exactly what we're trying to avoid in TBI (need SBP greater than 90 for cerebral perfusion). It has antiplatelet effects - bad in patient with intracranial bleeding, especially on warfarin. If pain control absolutely necessary in TBI: small doses of morphine (2-3mg IV) with very close neurological monitoring, prepared to stop if GCS changes. But often best approach in TBI: explain to patient why we're limiting pain meds (need to monitor your brain function), provide positional comfort, and get to definitive care quickly."
+      },
+      
+      {
+        "name": "clexane",
+        "generic_name": "Enoxaparin",
+        "class": "Low molecular weight heparin, anticoagulant",
+        "primary_indication": "DVT prophylaxis, DVT treatment, pulmonary embolism, acute coronary syndrome",
+        "why_dangerous": "ANTICOAGULATION IN INTRACRANIAL BLEEDING - catastrophic hemorrhage extension",
+        "if_given": {
+          "vital_changes": {
+            "GCS": 8,
+            "BP_systolic": 175,
+            "pupils": "Right 7mm, Left 3mm"
+          },
+          "patient_response": "This is a catastrophic error. You have given an ANTICOAGULANT to a patient with INTRACRANIAL BLEEDING who is ALREADY on warfarin. The hematoma expands rapidly. Patient's GCS plummets from 13 to 8 within minutes. Right pupil dilates to 7mm. Blood pressure climbs as ICP rises. You have converted a potentially survivable injury into a likely fatal one. This is one of the most dangerous medications you could give in this scenario.",
+          "clinical_note": "ABSOLUTE CONTRAINDICATION. Anticoagulation in intracranial hemorrhage is lethal. Patient already on warfarin (INR likely elevated). Adding enoxaparin causes: (1) Massive expansion of intracranial hematoma, (2) Uncontrolled bleeding, (3) Rapid neurological deterioration, (4) Death. There is NO indication for anticoagulation in acute head trauma. This represents fundamental misunderstanding of TBI management. Patient needs REVERSAL of anticoagulation (warfarin), not more anticoagulants.",
+          "points": -25,
+          "state_change": "critical",
+          "aar_flag": "critical_error_anticoagulation_in_ich"
+        },
+        "teaching_point": "This is a CRITICAL NEVER EVENT. Anticoagulation is ABSOLUTELY CONTRAINDICATED in suspected or confirmed intracranial hemorrhage. Patient is ALREADY on warfarin (coagulopathic). Adding more anticoagulation causes catastrophic hemorrhage extension. Patient needs: (1) Urgent CT scan, (2) Warfarin REVERSAL (vitamin K, prothrombin complex concentrate, fresh frozen plasma), (3) Possible emergency neurosurgery. The last thing patient needs is MORE anticoagulation. Any time you consider anticoagulants, ask: could this patient have bleeding somewhere? In trauma with head injury, the answer is always YES. Hold anticoagulants. Never give them."
+      },
+      
+      {
+        "name": "anopyrin",
+        "generic_name": "Aspirin (Acetylsalicylic acid)",
+        "class": "Antiplatelet agent, NSAID",
+        "primary_indication": "Acute coronary syndrome, stroke, TIA, fever, pain",
+        "why_dangerous": "ANTIPLATELET in intracranial bleeding - worsens hemorrhage, patient already on warfarin",
+        "if_given": {
+          "vital_changes": {
+            "GCS": 11,
+            "pupils": "Right 5mm, Left 3mm"
+          },
+          "patient_response": "Patient's intracranial bleeding worsens. Aspirin irreversibly inhibits platelet function for 7-10 days (lifetime of platelet). Combined with warfarin already on board, patient now has BOTH coagulation (warfarin) and platelet function (aspirin) impaired. Hematoma expands. GCS drops from 13 to 11. Pupil inequality worsens. You have worsened a potentially manageable bleed.",
+          "clinical_note": "Aspirin is CONTRAINDICATED in intracranial hemorrhage. It causes: (1) Irreversible platelet inhibition lasting 7-10 days, (2) Worsening of active bleeding, (3) Impaired hemostasis when patient goes to surgery. Patient already on warfarin - now has dual anticoagulation effect. Only time to give aspirin in head trauma is if patient having concurrent STEMI (then benefits may outweigh risks, but need neurosurgery consultation). This patient: head injury only, no cardiac event. Don't give aspirin.",
+          "points": -20,
+          "state_change": "deteriorating",
+          "aar_flag": "antiplatelet_in_intracranial_hemorrhage"
+        },
+        "teaching_point": "Aspirin irreversibly inhibits platelets for their entire lifespan (7-10 days). In intracranial hemorrhage, this is very dangerous. Patient is ALREADY on warfarin (coagulation system impaired). Adding aspirin (platelet system impaired) creates dual anticoagulation. Bleeding worsens. Aspirin given for ACS because benefits (preventing MI extension) outweigh risks. No such benefit in isolated head trauma. Aspirin is harmful. If patient on aspirin at home and presents with head trauma, document it (surgeon will want to know), but don't give MORE. Exceptions: (1) Patient having concurrent STEMI with head trauma (rare, need specialist input), (2) Minor head trauma with no brain injury and clear indication for aspirin. This case: severe TBI, don't give."
+      },
+      
+      {
+        "name": "tensiomin",
+        "generic_name": "Metoprolol",
+        "class": "Beta blocker",
+        "primary_indication": "Hypertension, tachycardia, atrial fibrillation, ACS (stable phase)",
+        "why_dangerous": "Worsens bradycardia from rising ICP, lowers blood pressure needed for cerebral perfusion, masks tachycardia from hemorrhagic shock",
+        "if_given": {
+          "vital_changes": {
+            "HR": 52,
+            "BP_systolic": 138,
+            "BP_diastolic": 82
+          },
+          "patient_response": "Patient's heart rate drops from 68 to 52 - worsening the bradycardia that's part of Cushing's triad. Blood pressure drops from 165/95 to 138/82 - reducing cerebral perfusion pressure at a time when brain needs maximum perfusion. Patient becomes more lethargic. You have worsened both components of a Cushing's triad and reduced cerebral perfusion.",
+          "clinical_note": "Beta blockers are CONTRAINDICATED in acute TBI presenting with relative bradycardia. Patient has HR 68 with major trauma (normally expect tachycardia) - this relative bradycardia suggests early Cushing's reflex from rising ICP. Giving beta blocker: (1) Worsens bradycardia, (2) Lowers blood pressure (decreases cerebral perfusion), (3) If patient developing hemorrhagic shock from other injuries, beta blocker masks compensatory tachycardia. Hypertension in TBI is often compensatory (maintaining cerebral perfusion pressure) - don't treat it prehospital. Let neurosurgeons manage BP in hospital after CT scan.",
+          "points": -18,
+          "aar_flag": "beta_blocker_worsening_cushings_bradycardia"
+        },
+        "teaching_point": "Never give beta blockers in acute TBI. Here's why: (1) Cushing's reflex causes bradycardia - beta blockers worsen it, (2) Hypertension in TBI is often compensatory (brain trying to perfuse itself) - lowering BP can worsen ischemia, (3) Beta blockers mask tachycardia if patient developing hemorrhagic shock from other injuries. Patient's home beta blocker (metoprolol 50mg daily) is NOT an indication to give more in acute trauma. Vital signs in TBI should be trended, not treated. Exceptions requiring BP treatment: Hypertensive emergency (SBP greater than 220, signs of end-organ damage) - but this is hospital intervention with titratable agents (nicardipine, labetalol drip), not prehospital beta blocker bolus. Prehospital: trend vitals, recognize patterns (Cushing's), transport urgently."
+      }
+    ],
+
+    "worsens": [
+      {
+        "name": "furosemid",
+        "generic_name": "Furosemide",
+        "class": "Loop diuretic",
+        "primary_indication": "Pulmonary edema, heart failure, volume overload",
+        "why_wrong": "Causes hypovolemia and hypotension when patient needs adequate blood pressure for cerebral perfusion",
+        "if_given": {
+          "vital_changes": {
+            "BP_systolic": 142,
+            "BP_diastolic": 84,
+            "HR": 74
+          },
+          "patient_response": "Patient's blood pressure drops from 165/95 to 142/84 as diuresis occurs. While still above 90 systolic, the downward trend is concerning. In 20-30 minutes with ongoing diuresis, BP may drop below safe threshold. Patient becomes slightly lightheaded. Wife asks why you're making him urinate when he hit his head.",
+          "clinical_note": "Furosemide is for PULMONARY EDEMA (crackles, pink frothy sputum) or VOLUME OVERLOAD (JVD, peripheral edema). This patient has CLEAR lung sounds bilaterally, no JVD, no edema - NOT volume overloaded. Giving diuretic causes: (1) Hypovolemia, (2) Decreased blood pressure, (3) Reduced cerebral perfusion pressure at a time when brain needs maximum perfusion. Wrong indication, wrong medication, harmful effect. If patient later develops pulmonary edema from excessive IV fluids, THEN consider furosemide - but current exam shows no indication.",
+          "points": -12,
+          "aar_flag": "diuretic_causing_hypotension_in_tbi"
+        },
+        "teaching_point": "TBI management principle: maintain blood pressure greater than 90 systolic for cerebral perfusion. Furosemide LOWERS blood pressure. Only give diuretics if clear indication (pulmonary edema with crackles). Listen to lungs - this patient CLEAR bilaterally. No crackles. No fluid overload. Giving furosemide risks hypotension. Cerebral perfusion pressure (CPP) equals mean arterial pressure (MAP) minus intracranial pressure (ICP). We can't reduce ICP prehospital (that's neurosurgeon's job with surgery, sedation, mannitol, ventriculostomy). But we CAN maintain MAP by preserving blood pressure. Furosemide works against this goal. Don't give it."
+      },
+      
+      {
+        "name": "dolsin",
+        "generic_name": "Morphine",
+        "class": "Opioid analgesic",
+        "primary_indication": "Severe pain (trauma, MI, burns)",
+        "why_conditional": "Can mask deterioration, causes respiratory depression, but may be needed for severe pain if neuro exam stable",
+        "if_given": {
+          "vital_changes": {
+            "RR": 14,
+            "GCS": 12,
+            "pain_score": 6
+          },
+          "patient_response": "Patient's pain improves from 8 out of 10 to 6 out of 10 - moderate relief. However, he becomes slightly more sedated. His respiratory rate decreases from 18 to 14. His GCS drops from 13 (E3 V4 M6) to 12 (E3 V3 M6) - is this from morphine sedation or from worsening brain injury? Now it's ambiguous. You've complicated your neuro exam. Pain is somewhat better, but at cost of muddying clinical picture.",
+          "clinical_note": "Morphine in TBI is a DIFFICULT DECISION requiring careful judgment. Arguments FOR: (1) Patient in severe pain, (2) Opioids don't increase ICP like some teach (old dogma), (3) Pain and agitation increase ICP. Arguments AGAINST: (1) Sedation masks neurological exam, (2) Respiratory depression worsens hypoxia, (3) Can't distinguish opioid effect from worsening brain injury if GCS drops. If giving morphine in TBI: (1) Small doses (2-3mg IV), (2) Titrate carefully, (3) Serial GCS before and after, (4) Have naloxone ready, (5) Close respiratory monitoring, (6) Document clearly. Often better to explain to conscious patient why limiting analgesia (need to monitor brain function) and provide positional comfort. If unconscious (GCS 8 or less), pain perception reduced and morphine risks outweigh benefits.",
+          "points": -8,
+          "aar_flag": "conditional_morphine_complicating_assessment"
+        },
+        "teaching_point": "Morphine in TBI is controversial. It's not absolutely contraindicated but requires caution. Key principles: (1) If patient conscious (GCS greater than 8) with severe pain despite positioning, small-dose morphine (2-3mg IV) acceptable if: continuous GCS trending, pulse oximetry monitoring, naloxone available, prepared to assist ventilation. (2) If patient deteriorating or GCS 8 or less, morphine risks (respiratory depression, sedation) outweigh benefits. (3) Always document GCS before and after. (4) Morphine does NOT increase ICP (old teaching was wrong), but sedation makes exam impossible. (5) Alternative: explain to conscious patient why limiting analgesia ('I need to watch your brain function closely, pain medicine makes that harder'). Best approach: optimal positioning, calm environment, rapid transport to definitive care, use morphine sparingly if at all."
+      },
+      
+      {
+        "name": "adrenalin",
+        "generic_name": "Epinephrine",
+        "class": "Sympathomimetic, vasopressor",
+        "primary_indication": "Cardiac arrest, anaphylaxis, severe bronchospasm",
+        "why_wrong": "Massive increase in blood pressure increases intracranial pressure and risk of hemorrhage extension",
+        "if_given": {
+          "vital_changes": {
+            "HR": 112,
+            "BP_systolic": 198,
+            "BP_diastolic": 108,
+            "pupils": "Right 5mm, Left 3mm"
+          },
+          "patient_response": "Patient's blood pressure skyrockets from 165/95 to 198/108 as epinephrine causes profound vasoconstriction. Heart rate increases to 112. The massive pressure increase in intracranial vessels causes hemorrhage to expand. Right pupil dilates further to 5mm. GCS deteriorates. You have converted a manageable bleed into a surgical emergency by acutely increasing ICP.",
+          "clinical_note": "Epinephrine for CARDIAC ARREST or ANAPHYLAXIS, NOT conscious TBI patient. In intracranial hemorrhage, abrupt blood pressure surge from epinephrine: (1) Increases intracranial pressure acutely, (2) Extends hemorrhage, (3) Can cause rebleeding from torn vessels. Patient is conscious with adequate blood pressure - no indication for vasopressor. If patient later arrests from herniation, THEN epinephrine appropriate during CPR. But in conscious patient: epinephrine is harmful.",
+          "points": -15,
+          "aar_flag": "vasopressor_increasing_icp"
+        },
+        "teaching_point": "Epinephrine causes massive vasoconstriction and blood pressure spike. In head trauma with intracranial bleeding, this is dangerous - increases ICP, extends bleeding. Epinephrine has two indications: (1) Cardiac arrest (then use it), (2) Anaphylaxis (then use it). This patient: conscious, adequate BP, no anaphylaxis. No indication for epinephrine. Some students think 'blood pressure should be high in TBI to perfuse brain' - this misunderstands pathophysiology. Yes, avoid HYPOTENSION (SBP less than 90). But acutely RAISING BP with vasopressors increases bleeding and ICP. Natural compensatory hypertension (Cushing's reflex) is body's attempt to maintain perfusion - but don't ADD to it with vasopressors. Goal: prevent hypotension, not cause hypertensive crisis."
+      },
+      
+      {
+        "name": "atropin",
+        "generic_name": "Atropine",
+        "class": "Anticholinergic, antisialagogue",
+        "primary_indication": "Symptomatic bradycardia, organophosphate poisoning, reduce secretions",
+        "why_wrong": "Causes tachycardia and hypertension, worsening ICP, masks Cushing's triad bradycardia",
+        "if_given": {
+          "vital_changes": {
+            "HR": 98,
+            "BP_systolic": 178
+          },
+          "patient_response": "Heart rate increases from 68 to 98 with atropine. Blood pressure climbs to 178 systolic. No clinical benefit. Patient's bradycardia was RELATIVE (HR 68 with major trauma suggests early Cushing's response, not symptomatic bradycardia needing treatment). By increasing heart rate, you've masked an important diagnostic sign. By increasing blood pressure, you've potentially increased ICP.",
+          "clinical_note": "Atropine for SYMPTOMATIC bradycardia (HR less than 50 with hypotension, altered mental status, chest pain). This patient: HR 68, BP adequate, mental status changes from HEAD INJURY not bradycardia. The bradycardia is RELATIVE - normally expect tachycardia with trauma and pain, but HR only 68 suggests early Cushing's reflex (rising ICP triggering vagal bradycardia). Atropine: (1) Masks this diagnostic clue, (2) Causes tachycardia increasing myocardial oxygen demand, (3) Raises blood pressure potentially worsening ICP. Not indicated, potentially harmful.",
+          "points": -10,
+          "aar_flag": "atropine_masking_cushings_bradycardia"
+        },
+        "teaching_point": "Atropine is for SYMPTOMATIC bradycardia causing hypotension or organ hypoperfusion. Symptomatic means HR less than 50 with hypotension (SBP less than 90) OR altered mental status FROM bradycardia OR chest pain FROM bradycardia. This patient: HR 68, BP 165/95 (hypertensive), altered mental status FROM head injury NOT bradycardia. No indication for atropine. The relative bradycardia (expected tachycardia with trauma but only HR 68) is a WARNING SIGN of early Cushing's response. By giving atropine, you erase that clue. Treat the diagnosis (TBI), not the number (HR 68). If patient later develops true symptomatic bradycardia with hypotension, then atropine appropriate."
+      }
+    ],
+
+    "neutral": [
+      {
+        "name": "hydrocortizon",
+        "generic_name": "Hydrocortisone",
+        "primary_indication": "Adrenal insufficiency, severe asthma, anaphylaxis",
+        "why_unnecessary": "Steroids NOT indicated in acute TBI - no benefit, possible harm",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No immediate clinical effect. Patient's neurological status unchanged. No benefit. Steroids don't help acute TBI.",
+          "points": -5,
+          "aar_flag": "unnecessary_steroids_in_tbi"
+        },
+        "teaching_point": "The CRASH trial (2004) studied corticosteroids in TBI. Result: steroids INCREASE mortality in TBI. Mechanism uncertain - possibly increased infection, hyperglycemia, gastrointestinal bleeding. Bottom line: don't give steroids in acute head trauma. Exception: patient with KNOWN adrenal insufficiency on chronic steroids who may need stress-dose in trauma - but that's different scenario. For acute TBI: no steroids. Save hydrocortisone for severe asthma, anaphylaxis, adrenal crisis - conditions where it helps."
+      },
+      
+      {
+        "name": "paracetamol",
+        "generic_name": "Paracetamol (Acetaminophen)",
+        "primary_indication": "Mild to moderate pain, fever",
+        "why_unnecessary": "Inadequate for severe head trauma pain, doesn't address primary problem",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Patient's severe head pain (8 out of 10) unchanged by paracetamol. 'My head still really hurts.' No benefit for severe trauma pain. Patient confused why you're giving weak pain medicine for major injury.",
+          "points": -3,
+          "aar_flag": "inadequate_analgesia_for_severity"
+        },
+        "teaching_point": "Paracetamol is for MILD pain (headache, muscle aches) or FEVER. This is SEVERE head trauma pain (8 out of 10, patient holding head, grimacing). Magnitude mismatch. Paracetamol won't touch it. If pain control needed in TBI (and it's controversial), options are: (1) Small-dose opioids (morphine 2-3mg) with very close neuro monitoring, or (2) Explanation to patient and non-pharmacological comfort. Paracetamol falls between - too weak to help, but makes it look like you addressed pain when you didn't. Either use adequate analgesia with appropriate monitoring or explain why limiting analgesia. Don't use inadequate medication."
+      },
+      
+      {
+        "name": "degan",
+        "generic_name": "Metoclopramide",
+        "primary_indication": "Nausea, vomiting, gastroparesis",
+        "why_unnecessary": "Antiemetic not priority in acute TBI, can cause dystonic reactions, vomiting in TBI may indicate rising ICP",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Patient not actively vomiting, so metoclopramide has no immediate effect. If patient later vomits, metoclopramide might reduce nausea slightly, but doesn't address underlying problem (rising ICP). Risk of dystonic reaction (muscle spasms, especially in young patients).",
+          "points": -4,
+          "aar_flag": "unnecessary_antiemetic_misses_icp_warning"
+        },
+        "teaching_point": "Vomiting in TBI is a WARNING SIGN of rising ICP, not a symptom to suppress. If patient vomiting: (1) Position to protect airway (recovery position if no C-spine injury, or left lateral with C-spine precautions if needed), (2) Suction airway, (3) Recognize vomiting as sign of deterioration. Don't just give antiemetic and ignore the warning. Metoclopramide can cause dystonic reactions (torticollis, oculogyric crisis) especially in young patients, elderly, or high doses. These mimic neurological deterioration, confusing the exam. If patient persistently vomiting AND secure airway AND stable neuro exam, small-dose antiemetic acceptable for comfort. But vomiting in deteriorating TBI patient: protect airway, expedite transport, don't suppress the warning sign."
+      },
+      
+      {
+        "name": "syntophyllin",
+        "generic_name": "Aminophylline",
+        "primary_indication": "Bronchospasm, severe asthma, COPD exacerbation",
+        "why_unnecessary": "Patient has no respiratory disease, aminophylline lowers seizure threshold in brain-injured patients",
+        "if_given": {
+          "vital_changes": {
+            "HR": 82
+          },
+          "patient_response": "No clinical benefit - patient doesn't have bronchospasm. Heart rate increases slightly due to aminophylline's cardiac stimulant effect. Risk of lowering seizure threshold in brain-injured patient who already at risk for post-traumatic seizures.",
+          "points": -6,
+          "aar_flag": "bronchodilator_wrong_indication_seizure_risk"
+        },
+        "teaching_point": "Aminophylline is for BRONCHOSPASM (wheezing, asthma, COPD). This patient: clear lung sounds, no wheezing, no respiratory disease. Wrong indication. Additionally, aminophylline (theophylline) LOWERS seizure threshold. TBI patients are at risk for seizures (immediate, early, or late post-traumatic seizures). Giving medications that lower seizure threshold is unwise. If patient has both TBI and severe asthma requiring aminophylline, benefits may outweigh risks - but isolated TBI: no indication, potential harm."
+      },
+      
+      {
+        "name": "ventolin",
+        "generic_name": "Salbutamol (Albuterol)",
+        "primary_indication": "Bronchospasm, asthma, COPD",
+        "why_unnecessary": "Patient has no bronchospasm or respiratory disease",
+        "if_given": {
+          "vital_changes": {
+            "HR": 78
+          },
+          "patient_response": "No benefit - patient's lungs are clear, no wheezing, no bronchospasm. Slight tachycardia from beta-agonist effect but no clinical improvement. Patient confused why you're giving inhaler when problem is head injury.",
+          "points": -3,
+          "aar_flag": "bronchodilator_wrong_indication"
+        },
+        "teaching_point": "Salbutamol is for BRONCHOSPASM (wheezing, tight chest, asthma attack). Listen to lungs: this patient has CLEAR bilateral breath sounds. No wheezes. No bronchospasm. Respiratory rate normal. SpO2 97 percent on room air. No indication for bronchodilator. Focus on primary problem (TBI), not on treating non-existent respiratory disease. If patient has concurrent asthma attack AND head trauma, then treat both. But don't give medications for conditions patient doesn't have."
+      },
+      
+      {
+        "name": "magnezium",
+        "generic_name": "Magnesium sulfate",
+        "primary_indication": "Eclampsia, torsades de pointes, severe asthma, hypomagnesemia",
+        "why_unnecessary": "No indication in acute TBI",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect. Magnesium doesn't help TBI. Patient's neurological status unchanged.",
+          "points": -4,
+          "aar_flag": "unnecessary_medication_no_indication"
+        },
+        "teaching_point": "Magnesium sulfate has specific indications: (1) Eclampsia (seizures in pregnancy from hypertension), (2) Torsades de pointes (polymorphic VT from prolonged QT), (3) Severe asthma not responding to standard treatment, (4) Documented hypomagnesemia causing problems. This patient: 72-year-old male with head trauma. Not pregnant. No torsades. No asthma. Unknown magnesium level (and even if low, not priority in acute trauma). No indication for magnesium. Know your indications - don't give medications hoping they might help. Give medications for specific clinical indications."
+      },
+      
+      {
+        "name": "naloxone",
+        "generic_name": "Naloxone",
+        "primary_indication": "Opioid overdose, opioid-induced respiratory depression",
+        "why_unnecessary": "Patient not on opioids, altered mental status from head trauma not narcotics",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect - patient not opioid toxic. Altered mental status from traumatic brain injury, not opioids. Naloxone doesn't reverse head trauma. Patient remains confused.",
+          "points": -3,
+          "aar_flag": "wrong_antidote_wrong_toxidrome"
+        },
+        "teaching_point": "Naloxone reverses OPIOIDS (morphine, heroin, fentanyl, etc.). This patient: no history of opioid use, fell down stairs with witnessed mechanism, physical findings (laceration, blood) consistent with trauma. Altered mental status from HEAD INJURY, not opioids. If uncertain about cause of altered mental status, check: (1) Glucose (rule out hypoglycemia), (2) Vital signs (fever suggests infection, hypotension suggests shock), (3) History and mechanism. This patient: clear traumatic mechanism, physical injuries, no suggestion of overdose. Naloxone won't help. Focus on TBI management. Exception: if patient on chronic opioids for pain AND respiratory depression present AND uncertain if from opioids or TBI, careful small-dose naloxone trial acceptable - but watch for withdrawal and seizures."
+      },
+      
+      {
+        "name": "flumazenil",
+        "generic_name": "Flumazenil",
+        "primary_indication": "Benzodiazepine overdose reversal",
+        "why_unnecessary": "Patient not on benzodiazepines, DANGEROUS in patients prone to seizures",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect if patient not on benzodiazepines. If patient were on benzodiazepines, flumazenil could precipitate SEIZURES - very dangerous in TBI patient. Flumazenil is dangerous, not helpful.",
+          "points": -5,
+          "aar_flag": "dangerous_reversal_agent_seizure_risk"
+        },
+        "teaching_point": "Flumazenil reverses benzodiazepines. But it's DANGEROUS medication with narrow indications. Problems: (1) Can precipitate withdrawal seizures in chronic benzodiazepine users, (2) Can unmask seizure disorder in patients using benzodiazepines for seizure control, (3) Can cause seizures in mixed overdoses (benzos plus tricyclics). TBI patients are already at SEIZURE RISK. Flumazenil increases that risk. Only indication for flumazenil: isolated pure benzodiazepine overdose in previously healthy patient with iatrogenic oversedation (like procedural sedation gone wrong). NOT for: mixed overdoses, chronic users, patients with seizure disorders, or TBI patients. In this case: no benzodiazepines on board, flumazenil is irrelevant and potentially harmful. Don't give it."
+      },
+      
+      {
+        "name": "ca_gluconicum",
+        "generic_name": "Calcium gluconate",
+        "primary_indication": "Hypocalcemia, hyperkalemia cardioprotection, calcium channel blocker overdose, hydrofluoric acid burns",
+        "why_unnecessary": "No electrolyte disturbance, no indication",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect. Patient's calcium level normal. No hyperkalemia. Not on calcium channel blockers. Calcium gluconate irrelevant.",
+          "points": -3,
+          "aar_flag": "unnecessary_intervention"
+        },
+        "teaching_point": "Calcium gluconate has specific indications: (1) Hypocalcemia causing symptoms (tetany, prolonged QT, seizures), (2) Hyperkalemia with ECG changes (peaked T waves, widened QRS) - calcium protects heart, (3) Calcium channel blocker overdose, (4) Hydrofluoric acid burns - calcium neutralizes fluoride. This patient: head trauma, no suggestion of calcium or potassium problems, not on calcium channel blockers. No indication for calcium. Don't give medications 'just in case' or because you have them. Give medications for specific clinical problems. Calcium gluconate doesn't help TBI."
+      }
+    ]
+  },
+
+  "challenge_points": [
+    {
+      "challenge_id": "CP1",
+      "challenge": "C-spine Protection Decision in High-Risk Mechanism",
+      "scenario_context": "Student must recognize high-risk mechanism of injury (fall greater than 3 feet, age greater than 65, head impact, altered mental status) and apply immediate C-spine precautions. This is a CRITICAL safety decision.",
+      "priority": "critical",
+      "trigger": {
+        "type": "immediate_assessment",
+        "condition": "scene size-up and initial patient contact"
+      },
+      
+      "factors_to_consider": [
+        "Mechanism: fall down 12 stairs (approximately 3 meters or 10 feet) - HIGH RISK",
+        "Age: 72 years old - greater than 65 is high-risk criterion",
+        "Head impact: direct blow to head with laceration - HIGH RISK",
+        "Altered mental status: GCS 13, confused - cannot clinically clear C-spine",
+        "Canadian C-spine Rules: this patient meets high-risk criteria",
+        "NEXUS criteria: altered mental status alone mandates C-spine protection",
+        "Any ONE high-risk factor demands full C-spine precautions",
+        "Cannot clinically clear C-spine in field with altered mental status",
+        "Even if patient moving all extremities, C-spine injury possible",
+        "Manual stabilization immediately, then C-collar and backboard"
+      ],
+      
+      "optimal_sequence": [
+        "Immediately recognize high-risk mechanism during scene size-up (stairs visible, wife describes fall)",
+        "Approach patient with C-spine awareness - don't let him move or stand",
+        "Apply manual C-spine stabilization within first 30 seconds",
+        "Verbalize reasoning: fall greater than 3 feet plus age greater than 65 plus head injury plus altered mental status equals high C-spine risk",
+        "Apply properly sized C-collar",
+        "Log-roll patient onto backboard maintaining neutral alignment",
+        "Secure to backboard with head blocks and straps",
+        "Maintain precautions throughout assessment and transport"
+      ],
+      
+      "scoring": {
+        "optimal": "Immediately recognized high-risk mechanism from scene description and wife's account. Verbalized multiple risk factors: 'This is a 12-stair fall so approximately 10 feet, patient is over 65, has head injury with altered mental status - definitely needs C-spine protection.' Applied manual stabilization within 30 seconds of patient contact. Prevented patient from attempting to stand. Applied C-collar correctly, performed careful log-roll with adequate personnel, secured properly to backboard. Maintained precautions throughout entire scenario. Demonstrated clear understanding of Canadian C-spine Rules and high-risk criteria. Score: 15 out of 15 points.",
+        
+        "acceptable": "Applied C-spine precautions appropriately within 2 minutes of patient contact. May not have verbalized all specific risk factors but recognized need for immobilization based on mechanism and presentation. Proper collar application and immobilization technique. Some minor delays or technical imperfections but overall safe management. Score: 10 out of 15 points.",
+        
+        "suboptimal": "Eventually applied C-spine protection but with significant delay (greater than 3 minutes), OR questioned necessity despite obvious indications, OR applied precautions but with poor technique (collar too loose, inadequate immobilization, allowed patient movement before securing). Correct end result but concerning process. Score: 5 out of 15 points.",
+        
+        "dangerous": "Did NOT apply C-spine precautions despite high-risk mechanism and altered mental status, OR allowed patient to stand or move significantly before immobilization, OR removed precautions inappropriately based on patient's ability to move extremities. Critical safety violation that could cause spinal cord injury in patient with unstable C-spine fracture. Score: 0 points with -10 penalty."
+      },
+      
+      "aar_teaching_point": "C-spine protection in trauma is a critical safety decision. High-risk criteria (Canadian C-spine Rules, NEXUS): (1) Age greater than 65, (2) Dangerous mechanism (fall greater than 3 feet or 5 stairs, high-speed MVC, axial load), (3) Extremity paresthesias, (4) Altered mental status. ANY ONE criterion mandates full precautions. This patient: 72 years old (criterion 1), fell 12 stairs (criterion 2), GCS 13 confused (criterion 4) - THREE high-risk factors. Cannot clinically clear C-spine with altered mental status even if moving extremities normally. Proper technique: manual stabilization first (prevents movement), then collar (limits flexion-extension), then backboard (limits rotation). Common error: delaying C-spine protection to complete assessment - wrong, stabilize FIRST. Every second without protection is a second of potential spinal cord injury if unstable fracture present.",
+      
+      "cognitive_goal": "Automatic recognition that fall greater than 3 feet plus age greater than 65 plus altered mental status equals immediate C-spine protection. Build habit: hear mechanism, see elderly patient, apply hands to head. No deliberation needed."
+    },
+    
+    {
+      "challenge_id": "CP2",
+      "challenge": "Serial GCS Assessment and Trending - Recognizing Deterioration Pattern",
+      "scenario_context": "Student must perform initial GCS assessment correctly, document it, and repeat assessments at 5-minute intervals. Must recognize that TREND is more important than single value and that decline of 2 or more points indicates critical deterioration.",
+      "priority": "critical",
+      "trigger": {
+        "type": "ongoing_monitoring",
+        "condition": "throughout patient care"
+      },
+      
+      "factors_to_consider": [
+        "Initial GCS 13 (E3 V4 M6): opens eyes to voice, confused conversation, obeys commands",
+        "GCS is most sensitive indicator of neurological deterioration in TBI",
+        "Must repeat every 5 minutes minimum (some protocols say every 3 minutes)",
+        "Decline of 2 or more points is significant and concerning",
+        "Decline of 4 or more points indicates severe deterioration",
+        "Trending more important than single measurement",
+        "GCS decline may precede vital sign changes (Cushing's triad is late)",
+        "Document each assessment: GCS 13 at 0 minutes, GCS 12 at 5 minutes, GCS 9 at 10 minutes - shows clear deterioration",
+        "Deteriorating GCS demands escalation: airway readiness, oxygen, expedited transport",
+        "GCS 8 or less: high risk of airway loss, consider BVM or advanced airway (if trained)"
+      ],
+      
+      "optimal_sequence": [
+        "Perform initial GCS immediately and correctly: 'Open your eyes' (E3 to voice), 'What's your name, where are you?' (V4 confused), 'Squeeze my hands' (M6 obeys). GCS 13. Document time.",
+        "Set timer or note clock: repeat GCS in 5 minutes",
+        "At 5 minutes: repeat GCS. If dropped to 12, verbalize concern: 'GCS dropped one point, need close monitoring'",
+        "At 10 minutes: repeat GCS. If dropped to 9, verbalize critical deterioration: 'GCS now 9, dropped 4 points total from 13, this is significant deterioration indicating expanding intracranial hematoma or rising ICP. Need to prepare for airway management and expedite transport'",
+        "Continue serial assessments every 5 minutes",
+        "Compare each to baseline: 'GCS declining, 13 to 12 to 9'",
+        "Recognize pattern, not just numbers: steady decline over time equals expanding mass lesion",
+        "Escalate care based on trend: prepare BVM, ensure oxygen, maximize transport speed"
+      ],
+      
+      "scoring": {
+        "optimal": "Performed initial GCS correctly (E3 V4 M6 equals 13) within first 2 minutes and documented time. Repeated GCS at 5, 10, and 15 minutes. Correctly calculated each GCS score. Explicitly compared to baseline: 'initial GCS 13, now 12 at 5 minutes - dropped one point, monitoring closely.' When GCS reached 9 at 10 minutes, immediately recognized significance: 'GCS dropped 4 points from baseline, this indicates deteriorating neurological status from expanding intracranial bleed or rising ICP. This is critical.' Demonstrated understanding that TREND is key diagnostic indicator. Escalated care appropriately with each decline. Score: 15 out of 15 points.",
+        
+        "acceptable": "Performed GCS assessments at reasonable intervals (may not be exact 5 minutes but assessed at least 3 times during scenario). Correctly calculated scores each time. Recognized decline when it occurred and escalated care, though may not have explicitly verbalized comparison to baseline or discussed trending. Appropriate actions even if not perfectly articulated. Score: 10 out of 15 points.",
+        
+        "suboptimal": "Performed initial GCS but failed to repeat regularly, OR repeated but didn't calculate correctly, OR didn't recognize significance of decline until very late, OR didn't escalate care when GCS dropped. Eventually recognized problem but concerning delay or lack of systematic approach. Score: 5 out of 15 points.",
+        
+        "dangerous": "Did NOT perform GCS assessments (just described patient as 'confused' without scoring), OR performed once but never repeated, OR completely missed deterioration. Failed to recognize critical change in neurological status. Patient could herniate without provider recognizing it. Score: 0 points with -10 penalty."
+      },
+      
+      "aar_teaching_point": "GCS trending is THE most important monitoring tool in TBI. Single GCS value tells you current status. Serial GCS assessments tell you TRAJECTORY - is patient stable, improving, or deteriorating? In TBI, trajectory predicts outcome. Technique: (1) Perform initial GCS correctly - know the components (Eye 1-4, Verbal 1-5, Motor 1-6), (2) Document time and score (GCS 13 at 11:00), (3) Set interval for repeat (every 5 minutes minimum), (4) Repeat systematically, (5) Compare to baseline explicitly ('was 13, now 12, dropped one point'), (6) Recognize significant changes (2-point decline concerning, 4-point decline critical). GCS 13 to 12 to 9 over 10 minutes equals expanding intracranial hematoma - needs urgent neurosurgery. Common student error: doing GCS once, calling patient 'confused,' never reassessing. This misses deterioration. In TBI: TREND THE GCS. It's your window into the brain. GCS 8 or less: prepare for airway loss.",
+      
+      "cognitive_goal": "Build automatic habit: TBI patient equals timer set for 5-minute GCS checks. Each check: calculate score, compare to last, document, decide if escalation needed. Make trending second nature."
+    },
+    
+    {
+      "challenge_id": "CP3",
+      "challenge": "Recognizing Cushing's Triad - Late Sign of Critically Rising ICP",
+      "scenario_context": "Student must recognize the pattern of vital signs (hypertension, bradycardia, irregular respirations) as Cushing's triad and understand its significance as a LATE and OMINOUS sign of herniation. Must escalate care immediately.",
+      "priority": "critical",
+      "trigger": {
+        "type": "vital_sign_pattern",
+        "condition": "if patient deteriorates to this stage"
+      },
+      
+      "factors_to_consider": [
+        "Cushing's triad components: (1) Hypertension with widening pulse pressure, (2) Bradycardia, (3) Irregular respirations",
+        "This is a LATE sign - patient already in serious trouble when triad appears",
+        "Not all three components need to be present simultaneously",
+        "Bradycardia with hypertension in head injury patient equals high concern even without irregular breathing",
+        "In this scenario: BP 165/95 HR 68 initially (concerning pattern) progresses to BP 185/98 HR 52 with irregular RR (full triad)",
+        "Represents brainstem compression from critically high ICP",
+        "Indicates impending or ongoing herniation",
+        "Without intervention, progresses to agonal respirations then arrest",
+        "Earlier indicators more sensitive: GCS decline, pupillary changes",
+        "Cushing's triad means you're late to recognizing the problem - should have acted on earlier signs",
+        "But if Cushing's present: immediate maximum-level escalation required"
+      ],
+      
+      "optimal_sequence": [
+        "Monitor initial vital signs: BP 165/95, HR 68 - recognize relative bradycardia (should be tachycardic with trauma and pain)",
+        "Verbalize concern: 'HR 68 with major trauma and pain is concerning, expect tachycardia. This relative bradycardia may be early Cushing response'",
+        "Trend vital signs every 5 minutes alongside GCS",
+        "At 10 minutes: BP 185/98, HR 52, irregular respirations - recognize pattern immediately",
+        "Verbalize recognition: 'Blood pressure rising from 165 to 185, heart rate dropping from 68 to 52, respirations became irregular - this is Cushing's triad. Indicates critically high intracranial pressure with brainstem compression. Patient is herniating or about to herniate'",
+        "Immediately escalate: prepare BVM for imminent respiratory failure, ensure oxygen, check pupil exam (expect blown pupil), expedite transport to maximum degree, consider calling ahead for neurosurgery activation",
+        "Demonstrate understanding this is LATE sign: 'Should have acted sooner based on GCS decline, but now in crisis mode'"
+      ],
+      
+      "scoring": {
+        "optimal": "Recognized concerning vital sign pattern from beginning (relative bradycardia with hypertension). Trended vitals every 5 minutes. When Cushing's triad fully developed (BP 185/98, HR 52, irregular RR), immediately identified it by name: 'This is Cushing's triad - hypertension, bradycardia, irregular respirations - indicates critical ICP and brainstem compression.' Explained pathophysiology correctly. Escalated to maximum urgency: prepared for respiratory failure, expedited transport, demonstrated understanding this is life-threatening emergency. Also noted: 'This is a late sign, ideally we'd have acted sooner on the GCS decline and pupil changes.' Perfect recognition and response. Score: 15 out of 15 points.",
+        
+        "acceptable": "Noticed vital sign changes (BP increasing, HR decreasing) and recognized something seriously wrong even if didn't specifically name 'Cushing's triad.' Escalated care appropriately when vital signs worsened. May not have perfect textbook knowledge of triad components but responded appropriately to clinical deterioration. Actions correct even if terminology imperfect. Score: 10 out of 15 points.",
+        
+        "suboptimal": "Eventually recognized patient deteriorating based on vital signs but with significant delay, OR misinterpreted vital signs (thought bradycardia needed atropine, thought hypertension needed treatment rather than recognition), OR escalated care but without understanding significance of pattern. Concerning knowledge gaps or delayed recognition. Score: 5 out of 15 points.",
+        
+        "dangerous": "Did NOT recognize vital sign pattern as concerning, OR actively worsened situation by treating components rather than recognizing syndrome (gave atropine for bradycardia, gave antihypertensive for elevated BP), OR failed to escalate care when patient in extremis. Fundamental misunderstanding of TBI pathophysiology. Score: 0 points with -10 penalty."
+      },
+      
+      "aar_teaching_point": "Cushing's triad is named after Harvey Cushing who described it in 1901. It's a reflex response to critically high intracranial pressure. Pathophysiology: (1) ICP rises and compresses brainstem, (2) Brainstem ischemia triggers CNS ischemic response - massive sympathetic surge causing hypertension (body trying to force blood through compressed vessels to perfuse brain), (3) High blood pressure detected by baroreceptors triggers vagal response causing bradycardia (attempting to reduce BP), (4) Brainstem dysfunction causes irregular breathing (Cheyne-Stokes or ataxic patterns). This is a LATE sign. By time full triad present, patient is herniating. Earlier signs more useful: GCS decline (most sensitive), pupillary changes (blown pupil), headache, vomiting. But if you see Cushing's triad: (1) Recognize it immediately, (2) Understand patient in extremis, (3) Prepare for respiratory failure (have BVM ready), (4) Ensure oxygenation, (5) Maintain blood pressure (don't treat the hypertension - it's compensatory), (6) Expedite transport to neurosurgery, (7) Consider calling ahead for OR activation. Don't treat individual components (don't give atropine for HR, don't give antihypertensive for BP). Recognize the syndrome, manage the airway and oxygenation, get to neurosurgeon fast. Prognosis is poor when Cushing's triad present, but rapid surgical decompression can save some patients.",
+      
+      "cognitive_goal": "Pattern recognition: BP rising, HR falling in head injury equals herniation until proven otherwise. Automatic escalation to maximum urgency. No hesitation, no questioning - act."
+    },
+    
+    {
+      "challenge_id": "CP4",
+      "challenge": "Preventing Secondary Brain Injury - Avoiding Hypoxia and Hypotension",
+      "scenario_context": "Student must understand and implement the two key preventable causes of secondary brain injury: hypoxia (SpO2 less than 90 percent) and hypotension (SBP less than 90). Must actively maintain oxygenation and blood pressure throughout care.",
+      "priority": "critical",
+      "trigger": {
+        "type": "ongoing_management",
+        "condition": "throughout entire patient contact"
+      },
+      
+      "factors_to_consider": [
+        "Primary brain injury (initial trauma) cannot be reversed prehospital",
+        "Secondary brain injury (hypoxia, hypotension, hyperthermia, hypoglycemia, seizures) CAN be prevented",
+        "Hypoxia (SpO2 less than 90 percent) doubles mortality in TBI",
+        "Hypotension (SBP less than 90) doubles mortality in TBI",
+        "Both together: catastrophic outcomes",
+        "Goal: SpO2 greater than 90 percent (ideally 94-98 percent)",
+        "Goal: SBP greater than 90 mmHg (ideally greater than 110)",
+        "Monitor continuously with pulse oximetry and frequent BP checks",
+        "If SpO2 dropping: increase oxygen, consider assisted ventilation",
+        "If BP dropping: IV fluids (250-500ml bolus), position (legs elevated), rapid transport",
+        "Avoid hyperventilation (worsens cerebral blood flow) unless herniation signs present",
+        "Avoid excessive fluids (may worsen cerebral edema) unless hypotension present"
+      ],
+      
+      "optimal_sequence": [
+        "Initial assessment: check SpO2 (97 percent) and BP (165/95) - both adequate currently",
+        "Apply pulse oximetry continuously - monitor SpO2 throughout",
+        "Have oxygen ready even if not needed now (patient may deteriorate)",
+        "Recheck BP every 5 minutes minimum",
+        "Verbalize management principle: 'In TBI, our goals are prevent hypoxia below 90 and prevent hypotension below 90. Currently both adequate. Will monitor closely'",
+        "If SpO2 drops below 95 percent: apply oxygen immediately",
+        "If GCS drops to 8 or less or respirations inadequate: assist ventilation with BVM",
+        "If BP drops below 100: start IV fluids and consider causes",
+        "Maintain oxygenation and perfusion throughout transport",
+        "Document vital signs serially showing maintenance of these goals"
+      ],
+      
+      "scoring": {
+        "optimal": "Explicitly stated management goals: 'In TBI, I need to prevent two things: hypoxia and hypotension. Goal SpO2 greater than 90, goal SBP greater than 90.' Applied continuous pulse oximetry. Checked BP every 5 minutes. Had oxygen ready even though initial SpO2 adequate. When asked 'why oxygen ready if SpO2 is 97 percent?' answered: 'Patient may deteriorate. As GCS drops, respiratory drive may fail. I need to be ready to intervene immediately if SpO2 drops.' Demonstrated understanding of primary versus secondary brain injury concept: 'I can't fix the initial trauma, but I can prevent hypoxia and hypotension from making it worse.' Perfect conceptual understanding and proactive management. Score: 15 out of 15 points.",
+        
+        "acceptable": "Monitored SpO2 and BP regularly. Applied oxygen appropriately if SpO2 dropped or patient deteriorated. Maintained adequate perfusion. May not have explicitly verbalized 'prevent secondary brain injury' principle but actions demonstrated understanding. Good clinical management even if not perfectly articulated. Score: 10 out of 15 points.",
+        
+        "suboptimal": "Monitored vital signs but reactively rather than proactively (waited for problem before preparing to intervene), OR didn't check frequently enough and missed changes, OR delayed oxygen when indicated, OR under-resuscitated hypotension. Eventually adequate care but concerning delays or knowledge gaps. Score: 5 out of 15 points.",
+        
+        "dangerous": "Did NOT monitor SpO2 continuously, OR allowed hypoxia or hypotension to develop and persist without intervention, OR gave medications that caused hypotension (furosemide, nitrates), OR hyperventilated unnecessarily (routine hyperventilation harmful in TBI). Caused or allowed secondary brain injury. Score: 0 points with -10 penalty."
+      },
+      
+      "aar_teaching_point": "TBI management fundamentally about preventing secondary brain injury. Primary injury (moment of impact) already happened - you can't reverse it. But secondary injuries (hypoxia, hypotension, hyperthermia, seizures, hypoglycemia) are PREVENTABLE. Your mission: prevent secondary injury, preserve salvageable brain tissue. The two most important preventable factors: (1) Hypoxia (SpO2 less than 90 percent) - doubles mortality, damages penumbra (brain tissue around injury that's injured but salvageable), and (2) Hypotension (SBP less than 90) - reduces cerebral perfusion pressure, causes ischemia, doubles mortality. Evidence: studies show even ONE episode of prehospital hypoxia or hypotension significantly worsens outcomes. Your management: (1) Apply continuous pulse oximetry - never remove it, (2) Titrate oxygen to keep SpO2 greater than 90 percent (ideally 94-98 percent), (3) If respiratory effort inadequate (RR less than 10, GCS 8 or less, inadequate tidal volume): assist with BVM targeting normal ventilation (10-12 breaths per minute, don't hyperventilate), (4) Check BP every 5 minutes minimum, (5) If SBP less than 90: give 250-500ml fluid boluses to restore pressure, (6) But avoid excessive fluids if normotensive (may worsen cerebral edema). Balance: prevent hypotension, avoid fluid overload. Additional preventable factors: control seizures if occur (diazepam), check and correct hypoglycemia, prevent hyperthermia (remove excess blankets). But hypoxia and hypotension are the big two. Maintain those, you've done 80 percent of what matters in prehospital TBI care.",
+      
+      "cognitive_goal": "Automatic two-number focus in every TBI patient: SpO2 and SBP. Glance at monitor, see both numbers, ensure both adequate. This becomes reflex. SpO2 less than 90 or SBP less than 90 triggers immediate intervention, no thought required."
+    }
+  ],
+
+  "simulation_config": {
+    "allow_deterioration_despite_treatment": true,
+    "rationale": "TBI represents ongoing pathology that perfect prehospital care cannot always prevent. Even with optimal management (C-spine protection, oxygenation, BP support, serial GCS), some patients deteriorate due to expanding hematoma, increasing ICP, or progression to herniation. This teaches students that not every bad outcome is provider error.",
+    "natural_progression_probability": 0.3,
+    "teaching_goal": "Distinguish between preventable deterioration (from hypoxia, hypotension, missed C-spine injury, delayed recognition) and inevitable progression (expanding epidural hematoma, massive subdural bleed). Students learn to do everything correctly and still face poor outcomes - preparing them for reality of severe TBI.",
+    "time_compression_factor": 2,
+    "real_time_equivalent_minutes": 30,
+    "allow_complications": true,
+    "possible_complications": [
+      "Progression from initial state to deteriorating despite treatment (expanding hematoma)",
+      "Vomiting with aspiration risk (requires immediate positioning and suctioning)",
+      "Seizure activity (post-traumatic seizure requiring management without oversedating)",
+      "Hypotension from occult bleeding (patient on warfarin - may have internal bleeding beyond head injury)"
+    ]
+  },
+
+  "aar_teaching_points": {
+    "tbi_pathophysiology": {
+      "primary_injury": "Initial mechanical trauma at moment of impact - shearing forces, direct contusion, skull fracture. Cannot be reversed or treated prehospital. Damage is done.",
+      "secondary_injury": "Subsequent processes that worsen primary injury: hypoxia, hypotension, hypercapnia (elevated CO2), hypoglycemia, hyperthermia, seizures, cerebral edema, increased ICP. THESE are preventable and treatable.",
+      "management_goal": "Minimize secondary brain injury. Support oxygenation, maintain perfusion, protect from further trauma (C-spine), monitor for deterioration, rapid transport to neurosurgery.",
+      "key_concept": "You cannot fix what happened in the fall. You can prevent making it worse. Every intervention asks: does this prevent secondary injury or does it risk causing it?"
+    },
+    
+    "gcs_assessment": {
+      "components": "Eye opening (1-4), Verbal response (1-5), Motor response (1-6). Total 3-15.",
+      "eye": "4 spontaneous, 3 to voice, 2 to pain, 1 none",
+      "verbal": "5 oriented, 4 confused, 3 inappropriate words, 2 incomprehensible sounds, 1 none",
+      "motor": "6 obeys commands, 5 localizes pain, 4 withdraws from pain, 3 abnormal flexion, 2 abnormal extension, 1 none",
+      "this_patient_initial": "E3 (opens to voice) + V4 (confused - knows name but not circumstances) + M6 (squeezes hands on command) equals 13",
+      "trending": "Single GCS value is snapshot. Serial GCS is movie - shows trajectory. Decline of 2 or more points significant. Decline of 4 or more points critical.",
+      "frequency": "Minimum every 5 minutes. Some protocols every 3 minutes. More frequent if deteriorating.",
+      "gcs_8_rule": "GCS 8 or less: high risk of airway loss, consider assisted ventilation or advanced airway (if trained and equipped).",
+      "documentation": "Always document time with GCS: 'GCS 13 at 1100, GCS 12 at 1105, GCS 9 at 1110' - shows clear decline pattern."
+    },
+    
+    "cushings_triad_detailed": {
+      "definition": "Reflex response to critically elevated intracranial pressure, named after Harvey Cushing (1901)",
+      "components_detailed": {
+        "hypertension": "Specifically widening pulse pressure (difference between systolic and diastolic). Example: 165/95 (pulse pressure 70) worsens to 185/98 (pulse pressure 87). Rising systolic with stable or rising diastolic.",
+        "bradycardia": "Paradoxical bradycardia despite shock state. Example: HR 68 initially (relative bradycardia for trauma) worsening to HR 52. Normally expect tachycardia with trauma - bradycardia in head injury is ominous.",
+        "irregular_respirations": "Abnormal breathing patterns: Cheyne-Stokes (crescendo-decrescendo), ataxic (completely irregular), Biot's (periods of apnea), or other patterns. Indicates brainstem dysfunction."
+      },
+      "pathophysiology": "ICP rises compressing cerebral vessels and brainstem leads to brainstem ischemia triggers CNS ischemic response (massive sympathetic discharge) causes systemic hypertension (attempt to maintain cerebral perfusion pressure). Baroreceptors detect hypertension leads to vagal response causes bradycardia. Brainstem compression causes respiratory center dysfunction leads to irregular breathing.",
+      "clinical_significance": "LATE and OMINOUS sign. Indicates critically high ICP with brainstem compression. Herniation imminent or occurring. By time full triad present, patient in extremis. Prognosis poor without immediate neurosurgical intervention.",
+      "management": "Do NOT treat individual components (don't give atropine for bradycardia, don't give antihypertensives for BP). Recognize the syndrome. Prepare for respiratory failure - have BVM ready. Maintain oxygenation. Accept the hypertension (it's compensatory). Expedite transport. Consider hyperventilation ONLY as bridge measure if herniation signs present (10-12 breaths per minute, not excessive). Call ahead to activate neurosurgery.",
+      "earlier_signs_more_useful": "Don't wait for Cushing's triad. Earlier indicators more sensitive and actionable: (1) GCS decline (most sensitive), (2) Worsening pupillary inequality (anisocoria), (3) New focal neurological deficits, (4) Headache worsening, (5) Vomiting. Act on these, before Cushing's develops.",
+      "student_error": "Students often think Cushing's triad is early warning sign. It's NOT. It's late finding indicating crisis. The warning signs are GCS decline and pupil changes. Cushing's triad means you're late to recognizing the problem."
+    },
+    
+    "anticoagulation_issues": {
+      "warfarin_tbi": "Patient on warfarin (for atrial fibrillation) has dramatically increased risk of intracranial hemorrhage even with minor head trauma. Warfarin impairs synthesis of clotting factors (II, VII, IX, X). Even small bleeding becomes uncontrolled bleeding.",
+      "severity": "Anticoagulated patients with head injury have higher mortality, larger hematoma volumes, more rapid expansion, worse outcomes. This patient needs urgent CT scan and likely warfarin reversal.",
+      "reversal_agents": "Hospital will give: (1) Vitamin K (takes hours to work), (2) Prothrombin complex concentrate or PCC (immediate effect, preferred), (3) Fresh frozen plasma or FFP (slower than PCC but effective). Prehospital: no reversal agents available. Focus on rapid transport.",
+      "communication": "Critical to tell receiving hospital: 'Patient on warfarin, last dose this morning, INR unknown but likely therapeutic.' This information changes hospital's urgency and resource allocation.",
+      "prehospital_role": "Transport urgently. Communicate anticoagulation status. Prevent hypoxia and hypotension (these worsen bleeding). Do NOT give more anticoagulants or antiplatelets (enoxaparin, aspirin, etc.) - obvious but students sometimes miss this."
+    },
+    
+    "hyperventilation_controversy": {
+      "old_teaching": "1980s-1990s: routine hyperventilation in all TBI patients to reduce ICP via vasoconstriction and reducing cerebral blood volume",
+      "problem_discovered": "Hyperventilation DOES reduce ICP acutely but causes cerebral vasoconstriction which reduces cerebral blood flow. In injured brain needing maximal perfusion, reducing blood flow causes ischemia. Studies showed hyperventilation worsens outcomes.",
+      "current_guidelines": "Avoid routine hyperventilation. Target NORMAL ventilation (10-12 breaths per minute, normal tidal volume). Do NOT hyperventilate prophylactically.",
+      "exception": "Active herniation with blown pupil, agonal respirations, Cushing's triad: use brief hyperventilation (10-12 breaths per minute for short period) as temporary bridge to hospital. This is last-resort measure when patient dying. Brief hyperventilation may buy minutes until surgery. But NOT routine practice.",
+      "common_student_error": "Student learns 'hyperventilate TBI patients' from old teaching or misunderstood protocols. Must unlearn this. Normal ventilation is goal. Only hyperventilate if actively herniating and even then briefly and moderately (not aggressive hyperventilation).",
+      "if_patient_ventilated": "BVM rate: 10-12 breaths per minute. Tidal volume: normal chest rise. ETCO2 monitoring if available: target 35-40 mmHg (normal), not less than 30 (hyperventilation)."
+    },
+    
+    "c_spine_protection_rationale": {
+      "incidence": "5-10 percent of major trauma patients have C-spine injury. Higher in elderly, high-energy mechanisms, head injury",
+      "consequences": "Unstable C-spine fracture + movement equals spinal cord injury equals permanent paralysis or death. Prevention of secondary injury to spinal cord just as important as prevention of secondary brain injury.",
+      "clinical_clearance_criteria": "Can clinically clear C-spine ONLY if: (1) Normal mental status, (2) No intoxication, (3) No distracting injuries, (4) No neck pain or tenderness, (5) No neurological deficits. This patient fails criterion 1 (altered mental status) - cannot clear.",
+      "high_risk_criteria": "Canadian C-spine Rules: HIGH RISK if: age greater than 65, dangerous mechanism (fall greater than 3 feet or 5 stairs, high-speed MVC greater than 100 kph, axial load, bicycle collision), extremity paresthesias. This patient: age 72, fell 12 stairs - TWO high-risk factors.",
+      "technique": "Manual stabilization (hands on head preventing movement) then C-collar (limits flexion-extension but NOT rotation) then backboard with straps and head blocks (limits rotation). All three components needed. Collar alone insufficient.",
+      "duration": "Maintain until cleared by CT scan or X-ray in hospital. Do NOT remove based on patient tolerance or patient request."
+    },
+    
+    "common_errors": {
+      "sedating_tbi_patient": "Never give benzodiazepines, opioids in high doses, or other sedatives unless treating specific indication (seizure, severe agitation requiring chemical restraint). Sedation masks neurological deterioration. You cannot distinguish sedation from herniation if patient's GCS dropping. Maintain ability to assess neurologically.",
+      "treating_compensatory_vitals": "Hypertension in TBI often compensatory (maintaining cerebral perfusion pressure against rising ICP). Bradycardia in TBI often Cushing's response. Do NOT treat these with antihypertensives or atropine. Recognize the patterns, don't treat the numbers.",
+      "single_gcs_assessment": "GCS once is useless. GCS serially is invaluable. Must trend. Set timer, reassess every 5 minutes, compare to baseline, recognize changes.",
+      "giving_anticoagulants": "Patient with head trauma is bleeding in brain. Never give more anticoagulants (enoxaparin) or antiplatelets (aspirin). Obvious in hindsight but students focused on other problems sometimes miss this.",
+      "routine_hyperventilation": "Old dogma. Causes ischemia. Avoid routine hyperventilation. Normal ventilation is goal.",
+      "undertreating_hypotension": "SBP less than 90 in TBI doubles mortality. Aggressively treat hypotension with fluids. But if normotensive, don't over-resuscitate (may worsen cerebral edema). Balance is key.",
+      "delayed_c_spine_protection": "Students want to complete assessment before immobilizing. Wrong. Immobilize FIRST based on mechanism, then assess. Every second of movement is a second of spinal cord injury risk if fracture present."
+    }
+  },
+
+  "cognitive_coach_questions": [
+    {
+      "trigger": "if_student_delays_c_spine_protection",
+      "question": "Before you move the patient, tell me: what is the mechanism of injury here, and based on that mechanism, what structures might be injured?",
+      "teaching_goal": "Prompt student to recognize high-risk mechanism (fall down 12 stairs) implies C-spine injury risk before allowing patient movement"
+    },
+    {
+      "trigger": "after_initial_gcs_assessment",
+      "question": "You've assessed his GCS as 13. Excellent. Now tell me: when will you check it again, and why is that important?",
+      "teaching_goal": "Reinforce need for serial GCS assessments, not one-time measurement. Trending is key."
+    },
+    {
+      "trigger": "if_student_gives_sedative_or_morphine_liberally",
+      "question": "Before you give that medication, explain to me: how will you know if this patient's neurological status is getting worse after you give a sedating medication?",
+      "teaching_goal": "Prompt recognition that sedation masks neurological exam. Challenge student to justify sedation in TBI patient."
+    },
+    {
+      "trigger": "when_vital_signs_show_cushings_pattern",
+      "question": "I'm seeing the patient's blood pressure rising and heart rate falling. In a head injury patient, what does this pattern suggest to you?",
+      "teaching_goal": "Prompt student to recognize Cushing's triad pattern without giving it away, test pattern recognition"
+    },
+    {
+      "trigger": "if_student_considers_treating_hypertension",
+      "question": "The patient's blood pressure is 165 over 95. That's elevated. But before treating it, think about: why might the brain be driving the blood pressure up in a patient with a head injury?",
+      "teaching_goal": "Prompt student to recognize compensatory hypertension (maintaining cerebral perfusion pressure), discourage treating it"
+    },
+    {
+      "trigger": "if_student_gives_or_considers_anticoagulant",
+      "question": "This patient is on warfarin at home for atrial fibrillation. Given that he has a head injury with intracranial bleeding, walk me through your thinking: should we give more anticoagulation, reversal agents, or neither prehospital?",
+      "teaching_goal": "Test understanding of anticoagulation in intracranial hemorrhage. Correct answer: neither prehospital (no reversal agents available), but never MORE anticoagulation"
+    },
+    {
+      "trigger": "if_spo2_drops_or_gcs_drops_to_8",
+      "question": "The patient's SpO2 is dropping (or GCS is now 8). Talk me through: what's happening with his airway and breathing, and what's your next move?",
+      "teaching_goal": "Prompt recognition that deteriorating TBI patient loses airway protective reflexes, needs assisted ventilation. Test airway management decision-making."
+    },
+    {
+      "trigger": "if_student_asks_about_pain_management",
+      "question": "The patient is complaining of severe head pain. If you give pain medication, what are the risks versus benefits in a TBI patient, and how would you monitor for complications?",
+      "teaching_goal": "Test nuanced understanding of pain management in TBI. No perfect answer - requires judgment balancing pain relief against masking neuro exam."
+    }
+  ],
+
+  "critical_actions_checklist": [
+    {
+      "id": "CA1",
+      "action": "Scene safety and mechanism recognition",
+      "category": "scene_safety",
+      "time_target_minutes": 1,
+      "points": 5,
+      "importance": "essential",
+      "criteria": "Recognizes scene safe, identifies high-risk mechanism (12-stair fall with head impact), anticipates injuries"
+    },
+    {
+      "id": "CA2",
+      "action": "Immediate C-spine protection applied",
+      "category": "treatment",
+      "time_target_minutes": 1,
+      "points": 15,
+      "importance": "critical",
+      "criteria": "Manual C-spine stabilization within first minute, prevents patient movement, applies collar and backboard appropriately"
+    },
+    {
+      "id": "CA3",
+      "action": "Initial GCS assessment performed correctly",
+      "category": "assessment",
+      "time_target_minutes": 2,
+      "points": 10,
+      "importance": "critical",
+      "criteria": "Correctly calculates GCS (E3 V4 M6 equals 13), documents time, establishes baseline"
+    },
+    {
+      "id": "CA4",
+      "action": "Recognize and communicate anticoagulation risk",
+      "category": "assessment",
+      "time_target_minutes": 5,
+      "points": 5,
+      "importance": "important",
+      "criteria": "Identifies patient on warfarin, recognizes this increases risk, communicates urgency to receiving hospital"
+    },
+    {
+      "id": "CA5",
+      "action": "Control external bleeding",
+      "category": "treatment",
+      "time_target_minutes": 3,
+      "points": 5,
+      "importance": "important",
+      "criteria": "Applies direct pressure to forehead laceration, controls bleeding appropriately"
+    },
+    {
+      "id": "CA6",
+      "action": "Oxygen administration (if SpO2 less than 90 percent or GCS 8 or less)",
+      "category": "treatment",
+      "time_target_minutes": 3,
+      "points": 10,
+      "importance": "critical",
+      "criteria": "Provides oxygen to maintain SpO2 greater than 90 percent (PREVENTING HYPOXIA equals preventing secondary brain injury)"
+    },
+    {
+      "id": "CA7",
+      "action": "Position patient appropriately (spinal precautions plus head elevation 30 degrees if no contraindications)",
+      "category": "treatment",
+      "time_target_minutes": 5,
+      "points": 10,
+      "importance": "important",
+      "criteria": "Full spinal immobilization, then elevate head of backboard 30 degrees if BP adequate (helps reduce ICP)"
+    },
+    {
+      "id": "CA8",
+      "action": "Serial GCS assessments (minimum every 5 minutes)",
+      "category": "monitoring",
+      "time_target_minutes": "ongoing",
+      "points": 15,
+      "importance": "critical",
+      "criteria": "Repeats GCS at 5 minutes, 10 minutes, 15 minutes - demonstrates TRENDING to detect deterioration"
+    },
+    {
+      "id": "CA9",
+      "action": "Recognize deterioration and escalate care appropriately",
+      "category": "clinical_reasoning",
+      "time_target_minutes": "when_occurs",
+      "points": 15,
+      "importance": "critical",
+      "criteria": "If GCS drops 2 or more points or pupils worsen, recognizes critical deterioration, prepares for assisted ventilation, ensures urgent transport"
+    },
+    {
+      "id": "CA10",
+      "action": "Avoid harmful interventions (sedation, anticoagulants, inappropriate medications)",
+      "category": "clinical_reasoning",
+      "time_target_minutes": "ongoing",
+      "points": 10,
+      "importance": "critical",
+      "criteria": "Does NOT give benzodiazepines, morphine in high doses, anticoagulants, or other harmful medications without clear indication and appropriate monitoring"
+    }
+  ],
+
+  "common_errors": [
+    {
+      "error": "Delays or omits C-spine protection",
+      "consequence": "Risk of converting stable C-spine fracture to unstable fracture with spinal cord injury if patient moves",
+      "points": -15,
+      "aar_flag": "critical_c_spine_omission",
+      "teaching_point": "High-risk mechanism (fall greater than 3 feet, age greater than 65, head injury, altered mental status) MANDATES immediate C-spine protection. No deliberation needed - mechanism plus altered mental status equals automatic C-spine precautions. Immobilize FIRST, assess SECOND."
+    },
+    {
+      "error": "Single GCS assessment without trending",
+      "consequence": "Misses deterioration pattern, fails to recognize expanding hematoma or rising ICP until catastrophic herniation occurs",
+      "points": -10,
+      "aar_flag": "failed_neuro_trending",
+      "teaching_point": "GCS once is a snapshot. GCS serially is a movie showing trajectory. Deteriorating TBI patient shows steady GCS decline: 13 to 12 to 9. Without trending, you miss this. Set timer, reassess every 5 minutes, compare to baseline, recognize changes. GCS trending is THE most important monitoring tool in TBI."
+    },
+    {
+      "error": "Gives benzodiazepines or excessive opioids",
+      "consequence": "Sedation masks neurological exam, makes it impossible to detect herniation, causes respiratory depression worsening hypoxia",
+      "points": -15,
+      "aar_flag": "inappropriate_sedation",
+      "teaching_point": "Never sedate TBI patient unless treating specific indication (active seizure). Patient's level of consciousness is your only window into what's happening in the brain. Sedatives fog that window. If GCS dropping, you can't tell if it's from sedation or herniation. Maintain ability to assess neurologically. For anxiety: calm voice and explanation, not benzodiazepines."
+    },
+    {
+      "error": "Treats compensatory hypertension with antihypertensives",
+      "consequence": "Drops blood pressure below level needed to maintain cerebral perfusion pressure, worsens brain ischemia",
+      "points": -12,
+      "aar_flag": "treating_compensatory_vitals",
+      "teaching_point": "Hypertension in TBI often compensatory - brain trying to maintain perfusion against rising ICP. Lowering BP reduces cerebral perfusion pressure (CPP equals MAP minus ICP), worsens ischemia. Do NOT treat elevated BP prehospital in TBI unless hypertensive emergency (SBP greater than 220 with end-organ damage). Accept compensatory hypertension. Let neurosurgeon manage BP in hospital after CT."
+    },
+    {
+      "error": "Gives atropine for Cushing's bradycardia",
+      "consequence": "Masks diagnostic sign, increases blood pressure further (worsening ICP), misses the forest for the trees",
+      "points": -10,
+      "aar_flag": "treating_cushings_components",
+      "teaching_point": "Bradycardia in TBI patient with hypertension is Cushing's response to rising ICP, not symptomatic bradycardia requiring treatment. Atropine will increase heart rate but won't fix the underlying problem (high ICP). Recognize the syndrome (Cushing's triad), don't treat individual components. Escalate care for herniation, don't give atropine."
+    },
+    {
+      "error": "Allows or causes hypoxia (SpO2 less than 90 percent)",
+      "consequence": "Secondary brain injury, doubles mortality in TBI, damages penumbra zone of salvageable tissue",
+      "points": -20,
+      "aar_flag": "critical_hypoxia",
+      "teaching_point": "Hypoxia (SpO2 less than 90 percent) is one of two most preventable causes of poor TBI outcomes (other is hypotension). Even ONE episode of prehospital hypoxia significantly worsens outcomes. Apply continuous pulse oximetry, titrate oxygen, assist ventilation if inadequate. This is non-negotiable basic standard of care."
+    },
+    {
+      "error": "Allows or causes hypotension (SBP less than 90)",
+      "consequence": "Secondary brain injury, reduces cerebral perfusion pressure, doubles mortality in TBI",
+      "points": -20,
+      "aar_flag": "critical_hypotension",
+      "teaching_point": "Hypotension (SBP less than 90) doubles mortality in TBI. Check BP every 5 minutes. If drops below 90: give fluid boluses (250-500ml), investigate cause (hemorrhagic shock from other injuries?), maintain pressure. Cerebral perfusion pressure equals MAP minus ICP. If MAP drops, brain doesn't perfuse. Prevent hypotension aggressively."
+    },
+    {
+      "error": "Gives anticoagulants or antiplatelets",
+      "consequence": "Catastrophic extension of intracranial hemorrhage, converts survivable injury to fatal one",
+      "points": -25,
+      "aar_flag": "critical_error_anticoagulation",
+      "teaching_point": "NEVER EVENT: giving anticoagulants (enoxaparin, heparin) or antiplatelets (aspirin, clopidogrel) to patient with intracranial hemorrhage is catastrophic error. Patient already bleeding in brain. These medications worsen bleeding dramatically. Patient on warfarin at home needs REVERSAL, not more anticoagulation. Absolute contraindication."
+    },
+    {
+      "error": "Routine aggressive hyperventilation",
+      "consequence": "Cerebral vasoconstriction reduces cerebral blood flow, causes ischemia in already injured brain, worsens outcomes",
+      "points": -10,
+      "aar_flag": "inappropriate_hyperventilation",
+      "teaching_point": "Old dogma from 1980s-1990s. Hyperventilation does reduce ICP acutely but at cost of reduced cerebral blood flow. Current guidelines: target NORMAL ventilation (10-12 breaths per minute). Only hyperventilate briefly if active herniation signs present (blown pupil, agonal respirations) as bridge to hospital. Not routine practice."
+    }
+  ]
+}

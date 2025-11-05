@@ -1,0 +1,1268 @@
+{
+  "scenario_id": "ASTHMA_MVP_001",
+  "metadata": {
+    "title": "Severe Asthma Exacerbation",
+    "version": "2.0_Final",
+    "difficulty": "moderate",
+    "estimated_duration_minutes": 15,
+    "scenario_type": "medical_respiratory",
+    "learning_objectives": [
+      "Recognize life-threatening asthma",
+      "Systematic ABCDE assessment",
+      "Administer bronchodilators correctly",
+      "Recognize deterioration",
+      "Demonstrate clinical reasoning under pressure"
+    ],
+    "changelog": {
+      "v2.0_final": "Added Layer Two cognitive training (challenge points, critical decision points). Expanded medication formulary to 30 drugs. Modified no-treatment progression timings to 3/5/10 min. Removed complexity indicators for MVP."
+    }
+  },
+
+  "dispatch_info": {
+    "call_type": "Difficulty breathing",
+    "age": "28",
+    "sex": "Female",
+    "location": "Residential apartment, 3rd floor",
+    "caller": "Roommate",
+    "additional_info": "Getting worse, very short of breath"
+  },
+
+  "scene_description": {
+    "location": "Small apartment living room",
+    "safety": "Scene safe, no hazards",
+    "access": "3rd floor, stairs",
+    "bystanders": "Roommate present, anxious but cooperative"
+  },
+
+  "patient_profile": {
+    "name": "Sarah",
+    "age": 28,
+    "weight_kg": 65,
+    "personality": "Anxious, cooperative when able to speak"
+  },
+
+  "initial_vitals": {
+    "HR": 128,
+    "RR": 32,
+    "SpO2": 88,
+    "BP_systolic": 138,
+    "BP_diastolic": 86,
+    "temperature": 37.1,
+    "GCS": 14
+  },
+
+  "state_descriptions": {
+    "initial": {
+      "student_sees": "You arrive to find a 28-year-old female sitting in a tripod position, leaning forward with hands on knees. She's in obvious severe respiratory distress - you can hear audible wheezing from across the room. She's pale, sweaty, and using her neck and shoulder muscles to breathe. When she tries to speak, she can only manage one or two words at a time before gasping for air. Her roommate looks very worried.",
+      "appearance": "Patient in tripod position, severe respiratory distress, speaking in words only, using accessory muscles, pale and sweaty",
+      "clinical_note": "Severe respiratory distress with critical hypoxia (SpO2 88%). Requires immediate oxygen and systematic ABCDE assessment to identify cause. Consider bronchodilators if assessment suggests bronchospasm.",
+      "urgency_level": "high"
+    },
+    "improving": {
+      "student_sees": "The patient appears noticeably more comfortable now. She's still sitting up but no longer in the rigid tripod position. Her breathing, while still faster than normal, is less labored. She can now speak in short phrases instead of just single words. Her color is better - less pale, and she's not as sweaty. She gives you a small nod and manages to say 'feeling... a bit better...'",
+      "appearance": "Patient more relaxed, breathing easier, can speak in phrases, less accessory muscle use, better color",
+      "clinical_note": "Positive response to interventions. Respiratory status improving - continue monitoring and treatment. Patient stabilizing but still requires close observation.",
+      "urgency_level": "moderate"
+    },
+    "deteriorating": {
+      "student_sees": "The patient's condition has worsened significantly. She looks exhausted and is barely able to keep her eyes open. Her lips and fingernails have a bluish tint. When you listen to her chest, it's eerily quiet - you can barely hear any air movement, which is concerning given how hard she's trying to breathe. She's no longer responding clearly to your questions, just weakly nodding or shaking her head.",
+      "appearance": "Patient exhausted, barely speaking, altered consciousness, cyanotic, silent chest developing",
+      "clinical_note": "Critical deterioration - worsening respiratory failure despite interventions or due to lack of treatment. Prepare for advanced airway management (BVM, possible intubation). This is pre-arrest state.",
+      "urgency_level": "critical"
+    },
+    "critical": {
+      "student_sees": "CRITICAL: The patient is now unresponsive or barely responsive. Her breathing has become very slow and irregular, or she may have stopped breathing altogether. Her skin has a deep blue-gray color. She does not respond to your voice or touch. This is a life-threatening emergency requiring immediate action.",
+      "appearance": "Patient unresponsive or minimally responsive, agonal breathing or apneic, profound cyanosis",
+      "clinical_note": "Respiratory arrest imminent or occurring. Requires immediate ventilatory support (BVM minimum). Prepare for full resuscitation if progresses to cardiac arrest.",
+      "urgency_level": "life-threatening"
+    }
+  },
+
+  "assessment_findings": {
+    "airway": "Open, no obstruction, audible wheeze",
+    "breathing": "RR 32, shallow, labored, bilateral decreased air entry with wheeze, silent chest in bases (ominous), intercostal retractions, accessory muscle use",
+    "circulation": "HR 128 regular but weak radial, BP 138/86, CRT <2sec, pale and sweaty",
+    "disability": "GCS 14 (E4 V4 M6), AVPU Alert but distressed, pupils equal and reactive",
+    "exposure": "No injuries, no rashes, temperature 37.1°C",
+    
+    "sample_history": {
+      "symptoms": "Tight chest, wheezing, can't breathe, getting worse over 2 days",
+      "allergies": "Pollen, dust mites, smoke",
+      "medications": "Salbutamol inhaler (empty), Fluticasone (ran out 3 days ago)",
+      "past_history": "Asthma since age 8, ICU admission 2 years ago",
+      "last_intake": "Small sips water - too breathless to eat",
+      "events": "Cold symptoms 3 days ago, roommate smoking indoors, ran out of controller inhaler"
+    },
+
+    "chest_examination": "Hyperresonant percussion, decreased air entry bilaterally, expiratory wheeze throughout, silent chest in lower zones - concerning sign",
+    
+    "chief_complaint_detail": "Patient struggles to speak: 'Can't... breathe... getting... worse...' Roommate reports patient has been deteriorating for 2 days, much worse last hour"
+  },
+
+  "critical_treatments": ["salbutamol", "oxygen"],
+
+  "primary_medications": {
+    "salbutamol": {
+      "generic_name": "Salbutamol (Albuterol)",
+      "brand_names": ["Ventolin"],
+      "class": "Beta-2 agonist bronchodilator",
+      "indication": "Acute asthma, bronchospasm, status asthmaticus, COPD",
+      "mechanism": "Relaxation of bronchial smooth muscle via beta-2 receptor stimulation, inhibits histamine release from mast cells",
+      
+      "dosing": {
+        "adult": "5mg (0.5-1ml Ventolin + 3ml saline)",
+        "route": "Nebulized via oxygen (10 L/min)",
+        "frequency": "Can repeat every 20 minutes or continuous nebulization",
+        "pediatric": "2.5mg for children under 5 years"
+      },
+      
+      "pharmacokinetics": {
+        "onset_minutes": 3,
+        "peak_effect_minutes": 5,
+        "duration_hours": "4-6"
+      },
+      
+      "contraindications": {
+        "absolute": [],
+        "relative": ["tachycardia_over_150", "thyrotoxicosis", "preeclampsia", "eclampsia"]
+      },
+      
+      "side_effects": [
+        "tachycardia and arrhythmias",
+        "tremor",
+        "palpitations",
+        "headache",
+        "muscle cramps",
+        "nausea"
+      ],
+      
+      "warnings": [
+        "May increase myocardial oxygen demand in IHD patients",
+        "Monitor heart rate - expect increase of 10-15 bpm",
+        "Use caution with baseline tachycardia"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": true,
+        "time_to_effect_minutes": 3,
+        "vital_changes": {
+          "HR": 115,
+          "RR": 24,
+          "SpO2": 94
+        },
+        "patient_says": "That's helping... I can breathe easier...",
+        "clinical_effect": "Bronchodilation, improved air entry, louder wheeze (good sign - more air moving)",
+        "points_if_given": 25,
+        "timing_critical": "Must give within 5 minutes for full points"
+      }
+    },
+
+    "syntophyllin": {
+      "generic_name": "Aminophylline",
+      "brand_names": ["Syntophyllin"],
+      "class": "Methylxanthine bronchodilator",
+      "indication": "Severe asthma (second-line), COPD, bronchospasm",
+      "mechanism": "Theophylline derivative, inhibits adenosine receptors, bronchodilation, mild anti-inflammatory effect, stimulates respiratory center",
+      
+      "dosing": {
+        "adult_regular_bronchodilator_use": "3-4 mg/kg IV slowly",
+        "adult_no_regular_bronchodilator": "6-7 mg/kg IV slowly",
+        "pediatric": "3-4 mg/kg IV slowly",
+        "administration": "Slow IV push, risk of hypotension if too fast"
+      },
+      
+      "pharmacokinetics": {
+        "onset_minutes": 5,
+        "duration_hours": "6-8"
+      },
+      
+      "contraindications": {
+        "absolute": ["allergy", "tachyarrhythmias", "hepatic_insufficiency", "thyrotoxicosis", "AIM", "epilepsy"],
+        "relative": []
+      },
+      
+      "side_effects": [
+        "tachycardia",
+        "headache",
+        "nausea and vomiting",
+        "hypotension if given too fast",
+        "CNS stimulation (restlessness, anxiety, tremor)"
+      ],
+      
+      "warnings": [
+        "Narrow therapeutic window - toxicity risk",
+        "Must give slowly to avoid cardiovascular collapse",
+        "Second-line treatment - use salbutamol first"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": "second_line",
+        "critical_treatment": false,
+        "importance": "acceptable_alternative",
+        "time_to_effect_minutes": 5,
+        "vital_changes": {
+          "HR": 145,
+          "RR": 26,
+          "SpO2": 92
+        },
+        "patient_says": "Breathing improves somewhat but feels tremor and nausea. Heart racing.",
+        "clinical_effect": "Bronchodilation achieved but with more side effects than salbutamol. Works but not optimal first choice.",
+        "points_if_given_first": -2,
+        "points_if_given_after_salbutamol": 0,
+        "teaching_point": "Aminophylline is effective but second-line. Use salbutamol first - safer profile, faster onset, fewer side effects. Reserve aminophylline for refractory cases."
+      }
+    },
+
+    "hydrocortizon": {
+      "generic_name": "Hydrocortisone sodium succinate",
+      "brand_names": ["Hydrocortison"],
+      "class": "Glucocorticoid steroid",
+      "indication": "Severe asthma, anaphylaxis, adrenal crisis, cerebral edema",
+      "mechanism": "Anti-inflammatory, membrane stabilization, improves tissue perfusion in microcirculation",
+      
+      "dosing": {
+        "adult_asthma": "100-200mg IV",
+        "adult_anaphylaxis": "200-500mg IV",
+        "pediatric": "2-4 mg/kg IV"
+      },
+      
+      "pharmacokinetics": {
+        "onset_minutes": 60,
+        "peak_effect_hours": "4-6",
+        "duration_hours": "12-36"
+      },
+      
+      "contraindications": {
+        "absolute": ["tuberculosis", "herpes_zoster_ophthalmicus", "acute_glaucoma"],
+        "relative": []
+      },
+      
+      "side_effects": [
+        "With prolonged use: immunosuppression, hyperglycemia",
+        "Acute administration well tolerated"
+      ],
+      
+      "warnings": [
+        "Effect delayed 60+ minutes - give early",
+        "Essential for preventing relapse hours later"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": false,
+        "importance": "important",
+        "time_to_effect_minutes": 60,
+        "vital_changes": {},
+        "patient_says": "No immediate change",
+        "clinical_effect": "Reduces inflammation over hours - prevents relapse 4-6 hours later. Essential despite delayed effect.",
+        "points_if_given": 10,
+        "teaching_point": "Steroids don't work immediately but prevent relapse - give early. Think: oxygen and salbutamol address NOW, steroids address 4 HOURS FROM NOW."
+      }
+    },
+
+    "adrenalin": {
+      "generic_name": "Epinephrine",
+      "brand_names": ["Adrenalin", "Jext"],
+      "class": "Sympathomimetic (alpha and beta agonist)",
+      "indication": "Anaphylaxis, cardiac arrest, severe bronchospasm (when salbutamol unavailable), acute laryngitis",
+      "mechanism": "Stimulates alpha and beta receptors - increases blood pressure, heart rate, bronchodilation, reduces edema",
+      
+      "dosing": {
+        "anaphylaxis_adult": "0.3-0.5mg IM (Jext autoinjector)",
+        "anaphylaxis_pediatric": "0.15mg IM (age 6-12), 0.01mg/kg IM",
+        "cardiac_arrest_adult": "1mg IV/IO every 3-5 minutes",
+        "bronchospasm": "0.25mg IM can be used if salbutamol unavailable"
+      },
+      
+      "pharmacokinetics": {
+        "onset_im_minutes": "3-5",
+        "onset_iv_minutes": 1,
+        "duration_minutes": "10-20"
+      },
+      
+      "contraindications": {
+        "absolute": [],
+        "relative": ["hypertension", "hyperthyroidism", "in_context_of_vital_indication"]
+      },
+      
+      "side_effects": [
+        "tachycardia and arrhythmias",
+        "tremor",
+        "anxiety and restlessness",
+        "nausea",
+        "palpitations",
+        "hypertension"
+      ],
+      
+      "warnings": [
+        "Not first-line for asthma - use salbutamol",
+        "Reserve for anaphylaxis or when salbutamol unavailable"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": false,
+        "reason": "Not first-line for asthma without anaphylaxis component",
+        "critical_treatment": false,
+        "time_to_effect_minutes": 3,
+        "vital_changes": {
+          "HR": 153,
+          "BP_systolic": 158,
+          "BP_diastolic": 101,
+          "RR": 30,
+          "SpO2": 90
+        },
+        "patient_says": "Heart pounds uncomfortably. Breathing improves slightly but not dramatically.",
+        "clinical_effect": "Some beta-2 bronchodilation but significant cardiovascular stimulation. Causes unnecessary tachycardia and hypertension. Not optimal for pure asthma.",
+        "points_deducted": -5,
+        "teaching_point": "Adrenaline is for ANAPHYLAXIS (allergic reaction with airway/circulatory compromise). This is ASTHMA (bronchospasm without allergic features). Salbutamol is first-line for asthma - more selective beta-2 effect, less cardiovascular stress."
+      }
+    },
+
+    "oxygen": {
+      "indication": "Hypoxia (SpO2 < 94%)",
+      "target": "SpO2 94-98%",
+      
+      "delivery_options": {
+        "non_rebreather_mask": "15 L/min for severe hypoxia (SpO2 <90%)",
+        "nebulizer_driven": "8-10 L/min (dual purpose with bronchodilator)",
+        "simple_mask": "6-10 L/min",
+        "nasal_cannula": "1-6 L/min (NOT appropriate for SpO2 88%)"
+      },
+      
+      "pharmacokinetics": {
+        "onset_minutes": 1,
+        "immediate_effect": true
+      },
+      
+      "contraindications": {
+        "absolute": [],
+        "relative": ["COPD_with_CO2_retention (use_controlled_oxygen)"]
+      },
+      
+      "warnings": [
+        "In COPD, target 88-92% to avoid CO2 retention",
+        "In asthma, target 94-98% - no risk of CO2 retention"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": true,
+        "time_to_effect_minutes": 1,
+        "vital_changes": {
+          "SpO2": 92
+        },
+        "patient_says": "Patient nods, appears slightly less anxious",
+        "clinical_effect": "Improved oxygenation but bronchospasm remains - need bronchodilator too",
+        "points_if_given": 15,
+        "timing_critical": "Must give within 2 minutes for full points",
+        "teaching_point": "SpO2 88% is critically low - brain needs oxygen NOW. Apply high-flow oxygen immediately while preparing bronchodilator."
+      }
+    }
+  },
+
+  "treatment_responses": {
+    "salbutamol": {
+      "time_to_effect_minutes": 3,
+      "vital_changes": {
+        "HR": 115,
+        "RR": 24,
+        "SpO2": 94
+      },
+      "patient_says": "That's helping... I can breathe easier...",
+      "clinical_effect": "Bronchodilation, improved air entry, louder wheeze"
+    },
+    "oxygen": {
+      "time_to_effect_minutes": 1,
+      "vital_changes": {
+        "SpO2": 92
+      },
+      "patient_says": "Patient nods, appears slightly less anxious",
+      "clinical_effect": "Improved oxygenation but bronchospasm remains"
+    },
+    "syntophyllin": {
+      "time_to_effect_minutes": 5,
+      "vital_changes": {
+        "HR": 145,
+        "RR": 26,
+        "SpO2": 92
+      },
+      "patient_says": "Breathing improves but tremor and nausea develop",
+      "clinical_effect": "Bronchodilation with more side effects than salbutamol"
+    },
+    "hydrocortisone": {
+      "time_to_effect_minutes": 60,
+      "vital_changes": {},
+      "patient_says": "No immediate change",
+      "clinical_effect": "Reduces inflammation over hours - prevents relapse"
+    },
+    "adrenalin": {
+      "time_to_effect_minutes": 3,
+      "vital_changes": {
+        "HR": 153,
+        "BP_systolic": 158,
+        "SpO2": 90
+      },
+      "patient_says": "Heart pounds, slight breathing improvement",
+      "clinical_effect": "Some bronchodilation but significant cardiovascular stimulation"
+    }
+  },
+
+  "no_treatment_progression": {
+    "3min": {
+      "vitals": {
+        "HR": 135,
+        "RR": 35,
+        "SpO2": 84,
+        "GCS": 14
+      },
+      "description": "Patient worsening, more exhausted, increased distress"
+    },
+    "5min": {
+      "vitals": {
+        "HR": 142,
+        "RR": 38,
+        "SpO2": 81,
+        "GCS": 13
+      },
+      "description": "Severe exhaustion, confusion starting, can't speak"
+    },
+    "10min": {
+      "vitals": {
+        "HR": 55,
+        "RR": 6,
+        "SpO2": 70,
+        "GCS": 8
+      },
+      "description": "Respiratory failure - bradypnea from exhaustion, requires BVM"
+    }
+  },
+
+  "secondary_medications_by_impact": {
+    
+    "critical_harm": [
+      {
+        "name": "apaurin",
+        "generic_name": "Diazepam",
+        "class": "Benzodiazepine",
+        "primary_indication": "Seizures, anxiety, status epilepticus",
+        "why_dangerous": "Respiratory depressant in patient with respiratory failure",
+        "if_given": {
+          "vital_changes": {
+            "SpO2": 73,
+            "RR": 22,
+            "GCS": 11,
+            "note": "RR decreased but shallow, ineffective"
+          },
+          "patient_response": "CRITICAL: Within 2 minutes, patient's breathing worsens dramatically. She becomes drowsy, her oxygen level plummets to 73%. She's barely responsive. The benzodiazepine has suppressed her already-failing respiratory drive.",
+          "clinical_note": "Benzodiazepine causes respiratory depression in respiratory failure. This is a dangerous medication error that could cause respiratory arrest.",
+          "points": -25,
+          "state_change": "critical",
+          "aar_flag": "critical_medication_error"
+        },
+        "teaching_point": "Never give respiratory depressants (benzodiazepines, opioids) to patients in respiratory failure. Apaurin suppresses respiratory drive when patient desperately needs to breathe."
+      },
+      {
+        "name": "tramal",
+        "generic_name": "Tramadol",
+        "class": "Opioid analgesic",
+        "primary_indication": "Moderate to severe pain",
+        "why_dangerous": "Opioid respiratory depression in respiratory failure",
+        "if_given": {
+          "vital_changes": {
+            "SpO2": 76,
+            "RR": 24,
+            "GCS": 12
+          },
+          "patient_response": "Patient's breathing slows dangerously, becomes drowsy. Oxygen saturation drops further. This is worsening her respiratory failure.",
+          "clinical_note": "Opioid causes respiratory depression. Patient needs MORE respiratory drive, not less.",
+          "points": -25,
+          "state_change": "deteriorating",
+          "aar_flag": "critical_medication_error"
+        },
+        "teaching_point": "Opioids depress respiratory center. Never give to patients with respiratory distress - you'll make them stop breathing."
+      },
+      {
+        "name": "novalgin",
+        "generic_name": "Metamizole",
+        "class": "Analgesic, antipyretic",
+        "primary_indication": "Pain, fever",
+        "why_dangerous": "Risk of anaphylaxis, worsens respiratory distress",
+        "if_given": {
+          "vital_changes": {
+            "BP_systolic": 100,
+            "HR": 145,
+            "note": "Risk of anaphylactic reaction"
+          },
+          "patient_response": "No improvement in breathing. Risk of allergic reaction in already-compromised patient.",
+          "clinical_note": "Not indicated and carries risk. Metamizole can cause anaphylaxis.",
+          "points": -15,
+          "aar_flag": "dangerous_medication_choice"
+        },
+        "teaching_point": "Patient needs bronchodilators, not analgesics. Metamizole carries anaphylaxis risk - dangerous in respiratory distress."
+      }
+    ],
+
+    "worsens": [
+      {
+        "name": "furosemid",
+        "generic_name": "Furosemide",
+        "class": "Loop diuretic",
+        "primary_indication": "Pulmonary edema, heart failure",
+        "why_wrong": "Wrong pathology - this is asthma (bronchospasm) not pulmonary edema (fluid)",
+        "if_given": {
+          "vital_changes": {
+            "BP_systolic": 128,
+            "BP_diastolic": 78
+          },
+          "patient_response": "Patient's breathing doesn't improve. She becomes more uncomfortable. No benefit from diuretic.",
+          "clinical_note": "Furosemide treats fluid overload, not bronchospasm. Suggests diagnostic confusion between asthma and pulmonary edema.",
+          "points": -10,
+          "aar_flag": "diagnostic_confusion"
+        },
+        "teaching_point": "ASTHMA = bronchospasm (tight airways, wheeze). PULMONARY EDEMA = fluid in lungs (crackles, pink frothy sputum). Different pathology, different treatment. This patient has wheeze, not crackles - it's asthma."
+      },
+      {
+        "name": "tensiomin",
+        "generic_name": "Metoprolol",
+        "class": "Beta blocker",
+        "primary_indication": "Hypertension, tachycardia, ACS",
+        "why_wrong": "Beta blockers cause bronchospasm - contraindicated in asthma",
+        "if_given": {
+          "vital_changes": {
+            "HR": 98,
+            "RR": 36,
+            "SpO2": 84,
+            "note": "Worsening bronchospasm"
+          },
+          "patient_response": "DANGER: Patient's breathing worsens. Beta blocker is blocking the bronchodilation she desperately needs. Her airways tighten further.",
+          "clinical_note": "Beta blockers are contraindicated in asthma - they block beta-2 receptors needed for bronchodilation.",
+          "points": -20,
+          "state_change": "deteriorating",
+          "aar_flag": "contraindicated_medication"
+        },
+        "teaching_point": "Beta blockers are CONTRAINDICATED in asthma. They block the same receptors that salbutamol activates. You'll cause bronchospasm. Never give beta blockers to asthmatics."
+      }
+    ],
+
+    "neutral": [
+      {
+        "name": "glucose",
+        "generic_name": "Glucose 40%",
+        "primary_indication": "Hypoglycemia",
+        "why_unnecessary": "Patient not hypoglycemic - blood glucose normal",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Patient looks confused about why you're giving her sugar when she can't breathe. Her respiratory distress continues unchanged.",
+          "clinical_note": "Glucose doesn't help asthma. Wastes time and shows lack of focused clinical reasoning.",
+          "points": -3,
+          "aar_flag": "unnecessary_intervention"
+        },
+        "teaching_point": "Check blood glucose if suspected hypoglycemia (altered mental status, sweating, weakness). This patient has respiratory problem, not metabolic. Focus on the primary problem."
+      },
+      {
+        "name": "carbosorb",
+        "generic_name": "Activated charcoal",
+        "primary_indication": "Oral poisoning, drug overdose",
+        "why_unnecessary": "Not indicated for asthma",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect on breathing. Patient can't swallow it anyway - too breathless.",
+          "clinical_note": "Activated charcoal for ingestions, not respiratory emergencies.",
+          "points": -3,
+          "aar_flag": "irrelevant_intervention"
+        },
+        "teaching_point": "Activated charcoal binds toxins in GI tract. Used for overdoses and poisonings. This is asthma, not ingestion."
+      },
+      {
+        "name": "paracetamol",
+        "generic_name": "Paracetamol (Acetaminophen)",
+        "primary_indication": "Pain, fever",
+        "why_unnecessary": "Patient not febrile, pain not the issue",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect on breathing difficulty.",
+          "points": -3,
+          "aar_flag": "unnecessary_intervention"
+        },
+        "teaching_point": "Patient's problem is bronchospasm, not pain or fever. Stay focused on airway emergency."
+      },
+      {
+        "name": "analgin",
+        "generic_name": "Metamizole (Analgin)",
+        "primary_indication": "Pain, fever",
+        "why_unnecessary": "Not indicated for respiratory distress",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No improvement in breathing.",
+          "points": -3,
+          "aar_flag": "unnecessary_intervention"
+        },
+        "teaching_point": "Focus on the respiratory emergency, not pain management."
+      },
+      {
+        "name": "degan",
+        "generic_name": "Metoclopramide",
+        "primary_indication": "Nausea, vomiting",
+        "why_unnecessary": "Patient not nauseated",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect on breathing.",
+          "points": -2,
+          "aar_flag": "unnecessary_intervention"
+        },
+        "teaching_point": "Antiemetic for nausea. Patient needs bronchodilator, not antiemetic."
+      },
+      {
+        "name": "torecan",
+        "generic_name": "Thiethylperazine",
+        "primary_indication": "Nausea, vomiting",
+        "why_unnecessary": "Not indicated",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect.",
+          "points": -2,
+          "aar_flag": "unnecessary_intervention"
+        },
+        "teaching_point": "Another antiemetic. Not relevant to asthma."
+      },
+      {
+        "name": "dithiaden",
+        "generic_name": "Promethazine",
+        "primary_indication": "Allergy, sedation",
+        "why_unnecessary": "Antihistamine not primary treatment for asthma",
+        "if_given": {
+          "vital_changes": {
+            "note": "Mild sedation"
+          },
+          "patient_response": "Minimal effect on breathing. Patient becomes slightly drowsy.",
+          "points": -2,
+          "aar_flag": "suboptimal_choice"
+        },
+        "teaching_point": "Antihistamines for allergic reactions. Asthma needs bronchodilators, not antihistamines."
+      },
+      {
+        "name": "nospa",
+        "generic_name": "Drotaverine",
+        "primary_indication": "Smooth muscle spasm (GI, GU)",
+        "why_unnecessary": "Not effective for bronchospasm",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect on respiratory distress.",
+          "points": -3,
+          "aar_flag": "wrong_spasmolytic"
+        },
+        "teaching_point": "NoSpa for GI/GU spasm. Use salbutamol for bronchospasm."
+      },
+      {
+        "name": "nitromin",
+        "generic_name": "Nitroglycerin",
+        "primary_indication": "Angina, acute coronary syndrome",
+        "why_unnecessary": "Patient has asthma, not cardiac chest pain",
+        "if_given": {
+          "vital_changes": {
+            "BP_systolic": 118,
+            "HR": 135
+          },
+          "patient_response": "Blood pressure drops slightly, headache develops. No improvement in breathing.",
+          "points": -5,
+          "aar_flag": "wrong_diagnosis"
+        },
+        "teaching_point": "Nitroglycerin for cardiac chest pain. This is respiratory distress from asthma, not ACS."
+      },
+      {
+        "name": "anopyrin",
+        "generic_name": "Aspirin",
+        "primary_indication": "ACS, stroke, pain",
+        "why_unnecessary": "Not indicated for asthma",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect on breathing.",
+          "points": -2,
+          "aar_flag": "irrelevant_intervention"
+        },
+        "teaching_point": "Aspirin for ACS or stroke. This is asthma."
+      },
+      {
+        "name": "trombex",
+        "generic_name": "Clopidogrel",
+        "primary_indication": "ACS, stroke prevention",
+        "why_unnecessary": "Antiplatelet not indicated",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect.",
+          "points": -2,
+          "aar_flag": "irrelevant_intervention"
+        },
+        "teaching_point": "Antiplatelet for cardiovascular disease. Not relevant to asthma."
+      },
+      {
+        "name": "efient",
+        "generic_name": "Prasugrel",
+        "primary_indication": "ACS, post-PCI",
+        "why_unnecessary": "Not indicated",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect.",
+          "points": -2,
+          "aar_flag": "irrelevant_intervention"
+        },
+        "teaching_point": "Antiplatelet for ACS. Not relevant here."
+      },
+      {
+        "name": "brilique",
+        "generic_name": "Ticagrelor",
+        "primary_indication": "ACS",
+        "why_unnecessary": "Not indicated",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect.",
+          "points": -2,
+          "aar_flag": "irrelevant_intervention"
+        },
+        "teaching_point": "Another antiplatelet. Focus on respiratory emergency."
+      },
+      {
+        "name": "heparin",
+        "generic_name": "Heparin",
+        "primary_indication": "ACS, PE, DVT",
+        "why_unnecessary": "Anticoagulant not indicated",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect on breathing.",
+          "points": -3,
+          "aar_flag": "irrelevant_intervention"
+        },
+        "teaching_point": "Heparin for thrombotic events. This is asthma, not PE or ACS."
+      },
+      {
+        "name": "clexane",
+        "generic_name": "Enoxaparin",
+        "primary_indication": "ACS, DVT, PE",
+        "why_unnecessary": "Not indicated",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect.",
+          "points": -3,
+          "aar_flag": "irrelevant_intervention"
+        },
+        "teaching_point": "Low molecular weight heparin. Not relevant to asthma."
+      },
+      {
+        "name": "naloxone",
+        "generic_name": "Naloxone",
+        "primary_indication": "Opioid overdose",
+        "why_unnecessary": "Patient not on opioids",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect - patient not opioid toxic.",
+          "points": -2,
+          "aar_flag": "wrong_antidote"
+        },
+        "teaching_point": "Naloxone reverses opioids. Patient has asthma, not opioid overdose."
+      },
+      {
+        "name": "flumazenil",
+        "generic_name": "Flumazenil",
+        "primary_indication": "Benzodiazepine overdose",
+        "why_unnecessary": "Patient not on benzodiazepines",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect - patient not benzodiazepine toxic.",
+          "points": -2,
+          "aar_flag": "wrong_antidote"
+        },
+        "teaching_point": "Flumazenil reverses benzodiazepines. Not relevant here."
+      },
+      {
+        "name": "atropin",
+        "generic_name": "Atropine",
+        "primary_indication": "Bradycardia, organophosphate poisoning",
+        "why_unnecessary": "Patient tachycardic, not bradycardic",
+        "if_given": {
+          "vital_changes": {
+            "HR": 158
+          },
+          "patient_response": "Heart rate increases further to 158 - makes tachycardia worse. No improvement in breathing.",
+          "points": -5,
+          "aar_flag": "inappropriate_for_tachycardia"
+        },
+        "teaching_point": "Atropine for bradycardia. Patient is already tachycardic (HR 128) - atropine will worsen it."
+      },
+      {
+        "name": "cordarone",
+        "generic_name": "Amiodarone",
+        "primary_indication": "Ventricular arrhythmias, AF",
+        "why_unnecessary": "Patient in sinus tachycardia, not arrhythmia",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect on breathing. Patient doesn't have arrhythmia.",
+          "points": -3,
+          "aar_flag": "wrong_indication"
+        },
+        "teaching_point": "Amiodarone for arrhythmias. Patient has sinus tachycardia (appropriate response to hypoxia), not arrhythmia."
+      },
+      {
+        "name": "rectodelt",
+        "generic_name": "Prednisone suppository",
+        "primary_indication": "Inflammatory conditions",
+        "why_unnecessary": "Oral/IV steroids more appropriate for acute asthma",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Patient too distressed to cooperate with rectal administration. IV hydrocortisone would be better.",
+          "points": -2,
+          "aar_flag": "suboptimal_route"
+        },
+        "teaching_point": "Steroids are correct idea, but IV hydrocortisone is preferred route in acute severe asthma."
+      }
+    ],
+
+    "appropriate_advanced": [
+      {
+        "name": "magnesium",
+        "generic_name": "Magnesium sulfate",
+        "primary_indication": "Severe refractory asthma, eclampsia, torsades de pointes",
+        "why_good": "Evidence-based for severe asthma not responding to bronchodilators",
+        "requires": "IV access established, 1.2-2g IV infusion over 20 minutes",
+        "if_given": {
+          "vital_changes": {
+            "RR": 20,
+            "SpO2": 97,
+            "note": "Additional improvement after 20-minute infusion"
+          },
+          "patient_response": "After 20 minutes of magnesium infusion, patient shows additional improvement in breathing. Respiratory rate decreases further, oxygen saturation excellent.",
+          "clinical_note": "Magnesium is evidence-based for severe asthma. Shows advanced knowledge. Should be given AFTER salbutamol, not instead of.",
+          "points_if_given_after_salbutamol": 5,
+          "points_if_given_before_salbutamol": -5,
+          "aar_flag": "advanced_treatment_choice"
+        },
+        "teaching_point": "Excellent consideration of magnesium for severe asthma. Evidence shows benefit in refractory cases. Key principles: (1) Give AFTER first-line treatments (oxygen, salbutamol, steroids), (2) Requires IV access and 20-minute infusion, (3) Shows advanced clinical knowledge."
+      }
+    ]
+  },
+
+  "challenge_points": {
+    "available_challenges": [
+      {
+        "id": "CP1",
+        "name": "salbutamol_before_assessment",
+        "priority": "high",
+        "trigger": {
+          "type": "treatment_mentioned",
+          "keywords": ["salbutamol", "ventolin", "bronchodilator", "nebulizer"],
+          "condition": "student has not documented RR, SpO2, speaking ability in their assessment"
+        },
+        "skip_if": {
+          "already_assessed_severity": true,
+          "already_challenged_assessment": true
+        },
+        "challenge_text": "Hold on - before you administer bronchodilators, walk me through your severity assessment. What specific clinical indicators are you using to guide your decision right now?",
+        "teaching_goal": "Systematic severity assessment before treatment guides appropriate intervention intensity. Even in urgent situations, a quick 30-second assessment prevents automatic errors.",
+        "acceptable_responses": [
+          "Student mentions respiratory rate >30",
+          "Student mentions SpO2 <92%",
+          "Student mentions inability to speak in sentences (speaking in words only)",
+          "Student mentions use of accessory muscles",
+          "Student mentions silent chest or severely decreased air entry",
+          "Student demonstrates systematic ABCDE approach"
+        ],
+        "resolution": {
+          "if_good_reasoning": "Excellent - you're systematically assessing severity before acting. That clinical judgment guides your treatment decisions and helps you match intervention intensity to patient need. Let's proceed with your treatment plan.",
+          "if_protocol_only": "I hear you know the protocol says to give bronchodilators in asthma. But talk me through WHY - what specifically about THIS patient's presentation tells you she needs bronchodilators RIGHT NOW versus waiting for more assessment?",
+          "if_struggling": "Think about the severity markers: How fast is she breathing? What's her oxygen level? Can she speak in full sentences, phrases, or only words? Is she using her neck and shoulder muscles? Those observations guide how aggressive we need to be with treatment."
+        },
+        "estimated_duration_seconds": 45,
+        "cognitive_goal": "Prevent automatic protocol response without clinical reasoning. Build habit of explaining decisions."
+      },
+      {
+        "id": "CP2",
+        "name": "vague_oxygen_order",
+        "priority": "medium",
+        "trigger": {
+          "type": "vague_treatment_order",
+          "keywords": ["give oxygen", "apply oxygen", "start oxygen", "oxygen"],
+          "condition": "student did not specify delivery device or flow rate"
+        },
+        "skip_if": {
+          "specific_order_given": true,
+          "already_challenged_oxygen": true
+        },
+        "challenge_text": "I want to give her oxygen - but I need specifics from you as the paramedic. What delivery device are you choosing and at what flow rate? Think about her current SpO2 of 88%.",
+        "teaching_goal": "Specific orders (device, flow rate, target) prevent dangerous ambiguity in critical situations. Vague orders cause errors.",
+        "acceptable_responses": [
+          "Non-rebreather mask at 15 L/min",
+          "High-flow oxygen via nebulizer (8-10 L/min with bronchodilator)",
+          "Any specific device + specific flow rate + target SpO2 mentioned",
+          "Student specifies device appropriate for severity"
+        ],
+        "resolution": {
+          "if_good_reasoning": "Perfect - specific orders matter. 'Give oxygen' is vague and can lead to errors. 'Non-rebreather at 15 liters targeting 94-98%' is precise and safe. That's what we need in emergencies.",
+          "if_protocol_only": "The protocol says oxygen, yes - but as the lead paramedic, YOU decide device and flow rate. Her SpO2 is 88% - critically low. What does that severity tell you about your oxygen delivery choice?",
+          "if_struggling": "Her SpO2 is critically low at 88%. Think about oxygen delivery options: nasal cannula delivers 1-6 L/min (inadequate for this severity). Simple mask delivers 6-10 L/min (better but still insufficient). Non-rebreather mask delivers up to 15 L/min (matches severity). What would you choose?"
+        },
+        "estimated_duration_seconds": 30,
+        "cognitive_goal": "Teach precision in medical orders. Vague orders cause errors in real practice."
+      },
+      {
+        "id": "CP3",
+        "name": "silent_chest_recognition",
+        "priority": "critical",
+        "trigger": {
+          "type": "finding_not_recognized",
+          "condition": "student listened to chest but didn't mention silent chest finding or didn't recognize significance"
+        },
+        "skip_if": {
+          "silent_chest_recognized": true,
+          "already_challenged_silent_chest": true
+        },
+        "challenge_text": "You're listening to her chest - describe what you're hearing in the bases compared to the upper fields. This finding is critically important for your severity assessment and urgency.",
+        "teaching_goal": "Silent chest is ominous sign (minimal air movement = severe bronchospasm = pre-arrest state). Paradoxically worse than loud wheeze.",
+        "acceptable_responses": [
+          "Student recognizes silent chest or severely decreased air entry in bases",
+          "Student identifies this as concerning or ominous sign",
+          "Student escalates urgency based on this finding",
+          "Student mentions minimal air movement despite respiratory effort",
+          "Student prepares for potential respiratory arrest"
+        ],
+        "resolution": {
+          "if_good_reasoning": "Exactly - silent chest is one of the most ominous findings in asthma. It's not improvement, it's minimal air movement from severe bronchospasm. This is a pre-arrest sign. Your recognition should change your urgency level and preparation. Good catch.",
+          "if_protocol_only": "Yes, you hear wheezing in the upper fields. But what about the bases where you can barely hear anything? When you don't hear much air movement despite the patient's severe respiratory effort, what does that tell you about her airway status?",
+          "if_struggling": "Silent chest seems quiet and calm, but it's actually terrifying. It means almost no air is moving through those airways - they're so tight that almost nothing gets through. That's worse than loud wheezing. Loud wheeze means air is moving (good). Silent chest means no air moving (pre-arrest). What should your urgency level be?"
+        },
+        "estimated_duration_seconds": 60,
+        "cognitive_goal": "Teach counterintuitive clinical finding interpretation. Absence of sound can be worse than presence."
+      },
+      {
+        "id": "CP4",
+        "name": "no_contraindication_check",
+        "priority": "medium",
+        "trigger": {
+          "type": "medication_given",
+          "condition": "student administers medication without mentioning HR or checking contraindications"
+        },
+        "skip_if": {
+          "contraindications_checked": true,
+          "already_challenged_contraindications": true
+        },
+        "challenge_text": "Before we give that medication - walk me through any contraindications we should be aware of. What do you need to check first?",
+        "teaching_goal": "Even in emergencies, quick contraindication screening prevents harm. Build habit of systematic safety checks.",
+        "acceptable_responses": [
+          "Student checks heart rate for tachycardia threshold",
+          "Student mentions checking for relative contraindications",
+          "Student demonstrates awareness of medication safety",
+          "Student mentions acceptable HR range for bronchodilators"
+        ],
+        "resolution": {
+          "if_good_reasoning": "Good - you're thinking about safety even in an emergency. Quick check of HR to ensure no severe tachycardia (>150). Her HR is 128 - acceptable for bronchodilator. Safe to proceed.",
+          "if_protocol_only": "Protocol says give it, yes. But as the paramedic, you need to ensure it's safe for THIS patient. What vital sign would concern you before giving a medication that increases heart rate?",
+          "if_struggling": "Salbutamol increases heart rate via beta-2 stimulation. If patient already has severe tachycardia (HR >150), it could be dangerous. Quick check: her HR is 128. Is that acceptable for bronchodilator, or too high?"
+        },
+        "estimated_duration_seconds": 30,
+        "cognitive_goal": "Build habit of safety checks even under pressure."
+      },
+      {
+        "id": "CP5",
+        "name": "forgot_reassessment",
+        "priority": "low",
+        "trigger": {
+          "type": "time_threshold",
+          "condition": "treatment given more than 5 minutes ago, student hasn't rechecked vitals or mentioned reassessment"
+        },
+        "skip_if": {
+          "reassessment_done": true,
+          "already_challenged_reassessment": true
+        },
+        "challenge_text": "You gave the bronchodilator several minutes ago. What are you looking for now to determine if it's working? Walk me through your reassessment plan.",
+        "teaching_goal": "Systematic reassessment after interventions guides further treatment. Treatment without reassessment is incomplete care.",
+        "acceptable_responses": [
+          "Student plans to recheck vitals",
+          "Student mentions timing (3-5 minutes for salbutamol effect)",
+          "Student describes what to reassess (RR, SpO2, speaking ability, accessory muscles)",
+          "Student mentions comparing to baseline for trend analysis",
+          "Student discusses decision-making based on response"
+        ],
+        "resolution": {
+          "if_good_reasoning": "Excellent systematic thinking. You gave treatment at a specific time, you know when to expect effect, and you're planning focused reassessment. That's how we know if our interventions work and what to do next.",
+          "if_protocol_only": "Protocol says give bronchodilator - but what happens after? How do you know if it worked? What would you do if it didn't work? That's what reassessment tells us.",
+          "if_struggling": "Think about it this way: You gave salbutamol which should work in 3-5 minutes. What would you recheck? Breathing rate? Oxygen level? Can she speak better? Is she using neck muscles less? Those comparisons to your baseline tell you if your treatment worked."
+        },
+        "estimated_duration_seconds": 40,
+        "cognitive_goal": "Build habit of systematic reassessment and trend analysis."
+      }
+    ],
+    "usage_rules": {
+      "max_challenges_per_session": 2,
+      "selection_criteria": "AI selects challenges based on actual student errors during scenario, prioritizing by priority level (critical > high > medium > low)",
+      "timing": "Challenge immediately when trigger condition occurs, before allowing student to proceed",
+      "tone": "Supportive and educational, never punitive. Frame as 'let's think through this together'"
+    }
+  },
+
+  "critical_decision_points": {
+    "available_evaluations": [
+      {
+        "id": "CDP1",
+        "decision": "bronchodilator_timing_and_assessment",
+        "description": "When to administer bronchodilator relative to severity assessment and contraindication screening",
+        "evaluate_if": "Student gave or didn't give bronchodilator (salbutamol or syntophyllin)",
+        
+        "optimal_sequence": [
+          "Rapid severity assessment (15-30 seconds): RR 32, SpO2 88%, speaking in words only, accessory muscles",
+          "Brief contraindication check (10 seconds): HR 128 - acceptable, no tachycardia contraindication",
+          "Immediate bronchodilator administration: salbutamol 5mg nebulized via oxygen",
+          "Reassess 3-5 minutes post-treatment: check vital changes, patient response, clinical effect"
+        ],
+        
+        "factors_to_consider": [
+          "Severity of bronchospasm: RR >30, SpO2 <92%, silent chest developing",
+          "Baseline tachycardia risk: HR already 128 - salbutamol will increase further",
+          "Time to treatment effect: need 3-5 minutes to work",
+          "Patient medication history: ran out of controller inhaler 3 days ago",
+          "Urgency of situation: life-threatening presentation requires rapid action"
+        ],
+        
+        "scoring": {
+          "optimal": "Assessed severity systematically (15-30 seconds), checked heart rate and contraindications (10 seconds), gave appropriate bronchodilator dose and route (salbutamol 5mg nebulized), documented timing, reassessed 3-5 minutes after treatment to evaluate response. Demonstrated balance of urgency with safety.",
+          
+          "acceptable": "Gave bronchodilator quickly based on obvious severity indicators (SpO2 88%, severe distress), missed some assessment steps but achieved appropriate treatment within 3-5 minutes, reassessed afterward even if not perfectly systematic.",
+          
+          "suboptimal": "Gave treatment without systematic assessment, assumed need without confirming severity indicators, vague orders ('give oxygen' without device/flow), delayed reassessment, didn't explicitly check contraindications, OR took too long with assessment (>5 minutes to treatment).",
+          
+          "dangerous": "Gave bronchodilator despite HR >150 without recognizing relative contraindication, OR delayed critical treatment >10 minutes while performing excessive assessment, OR gave contraindicated medication (e.g., beta blocker, respiratory depressant), OR didn't give any bronchodilator at all despite life-threatening asthma."
+        },
+        
+        "aar_teaching_point": "Even in urgent situations, a quick 30-second severity assessment guides treatment intensity and prevents automatic errors. The optimal sequence is: (1) Recognize life threat, (2) Quick focused assessment (RR, SpO2, speaking ability), (3) Quick safety check (HR for tachycardia threshold), (4) Treat immediately, (5) Reassess in 3-5 minutes. This takes under 60 seconds total before treatment, not 5-10 minutes of complete assessment. Match your urgency to patient severity. SpO2 88% + can't speak = life-threatening → act within 2-5 minutes."
+      },
+      
+      {
+        "id": "CDP2",
+        "decision": "oxygen_delivery_device_selection",
+        "description": "Choosing appropriate oxygen delivery device and flow rate based on severity of hypoxia",
+        "evaluate_if": "Student gave oxygen or mentioned oxygen",
+        
+        "optimal_sequence": [
+          "Recognize critical hypoxia: SpO2 88% (brain cells dying)",
+          "Select high-flow device: non-rebreather mask 15 L/min OR oxygen-driven nebulizer 8-10 L/min (dual purpose)",
+          "Specify target SpO2: 94-98% for asthma",
+          "Apply immediately: within 2 minutes of arrival",
+          "Recheck SpO2: after 1-2 minutes to confirm improvement"
+        ],
+        
+        "factors_to_consider": [
+          "Severity of hypoxia: SpO2 88% = critical (brain hypoxia begins <90%)",
+          "Device capabilities: nasal cannula 1-6L (inadequate), simple mask 6-10L (insufficient), non-rebreather 15L (appropriate)",
+          "Dual benefit of nebulizer: delivers oxygen + medication simultaneously",
+          "Target saturation: 94-98% appropriate for asthma (no CO2 retention risk)",
+          "Reassessment timing: expect improvement within 1-2 minutes"
+        ],
+        
+        "scoring": {
+          "optimal": "Immediately recognized critical hypoxia, specified non-rebreather mask at 15 L/min OR planned oxygen-driven nebulizer (understanding dual purpose), stated target SpO2 94-98%, applied within 2 minutes, rechecked saturation after application, adjusted as needed.",
+          
+          "acceptable": "Applied high-flow oxygen quickly (even if didn't specify exact device initially), achieved appropriate oxygenation, recognized urgency of SpO2 88%, corrected device if initial choice inadequate.",
+          
+          "suboptimal": "Vague order ('give oxygen' without device/flow specification), chose low-flow device initially inadequate for severity (nasal cannula for SpO2 88%), didn't specify target saturation, delayed application >3 minutes.",
+          
+          "dangerous": "Did not give oxygen despite SpO2 88%, OR gave inappropriate low-flow oxygen and didn't reassess/escalate when saturation didn't improve, OR delayed oxygen >5 minutes."
+        },
+        
+        "aar_teaching_point": "Oxygen delivery device must match severity of hypoxia. SpO2 88% is critically low - brain cells begin dying below 90%. Device capabilities: nasal cannula delivers only 1-6 L/min (grossly inadequate for 88%), simple mask delivers 6-10 L/min (still insufficient), non-rebreather delivers up to 15 L/min (appropriate for this severity). Specific orders prevent ambiguity and save lives: 'Give oxygen' is vague and dangerous; 'Non-rebreather mask at 15 liters targeting 94-98%' is precise and safe. In emergencies, precision matters."
+      },
+      
+      {
+        "id": "CDP3",
+        "decision": "silent_chest_recognition",
+        "description": "Identifying and responding appropriately to silent chest as ominous deterioration sign",
+        "evaluate_if": "Student performed chest auscultation or mentioned breath sounds",
+        
+        "optimal_sequence": [
+          "Systematic chest auscultation: bilateral, comparing apices to bases",
+          "Recognize silent chest in bases: minimal air movement despite severe effort",
+          "Interpret correctly: ominous sign (not improvement), indicates severe bronchospasm",
+          "Escalate urgency: prepare for potential respiratory arrest",
+          "Prepare advanced interventions: BVM ready, consider assisted ventilation if continues",
+          "Maximize bronchodilator therapy: continuous nebulization if available"
+        ],
+        
+        "factors_to_consider": [
+          "Silent chest = severe bronchospasm with minimal air flow (pre-arrest sign)",
+          "Paradox: wheeze is reassuring (air moving), silence is terrifying (no air moving)",
+          "Requires immediate escalation of urgency and preparation",
+          "May need assisted ventilation if continues to deteriorate",
+          "Transport decision affected: lights/sirens, early hospital notification",
+          "This is THE most ominous finding in asthma"
+        ],
+        
+        "scoring": {
+          "optimal": "Identified silent chest during systematic assessment, correctly interpreted as ominous pre-arrest sign (not improvement), immediately escalated urgency, prepared for potential respiratory arrest (BVM ready, positioned for assisted ventilation), maximized bronchodilator therapy, communicated deterioration to team/hospital, demonstrated understanding of life-threatening significance.",
+          
+          "acceptable": "Noticed decreased air entry or 'quiet chest', recognized patient not improving despite treatment, escalated interventions appropriately even if didn't use specific term 'silent chest', showed appropriate concern about finding.",
+          
+          "suboptimal": "Heard decreased air entry but didn't recognize significance, continued routine pace without escalating urgency, missed that silence is worse than wheeze, didn't prepare for deterioration.",
+          
+          "dangerous": "Interpreted silent chest as improvement ('breathing is quieter now, she must be getting better'), delayed critical interventions based on misinterpretation, didn't prepare for potential respiratory arrest, reassured patient/family that 'she's calming down' when actually pre-arrest."
+        },
+        
+        "aar_teaching_point": "Silent chest is one of the most ominous findings in respiratory emergencies. It's counterintuitive: loud wheezing is noisy and distressing, but silence is actually far worse. Here's why: Wheeze = air moving through partially constricted airways (disturbing but at least air is moving). Silent chest = airways so severely constricted that almost NO air moves through them (pre-arrest). When you hear GOOD wheezing after bronchodilator treatment, that's actually IMPROVEMENT - more air moving makes more noise. But if chest becomes silent, that's the most dangerous sign in asthma. Think of it as 'the calm before the storm' - silent chest means respiratory arrest is imminent. Maximum urgency required: prepare BVM, maximize treatments, consider assisted ventilation, rapid transport."
+      }
+    ],
+    
+    "usage_rules": {
+      "max_evaluations_per_session": 3,
+      "selection_criteria": "AAR Agent evaluates the 3 most relevant CDPs based on what student actually did during scenario. If student didn't give oxygen, don't evaluate oxygen CDP. Focus evaluation on decisions student actually faced.",
+      "scoring_method": "For each evaluated CDP, AAR Agent assigns score level (optimal/acceptable/suboptimal/dangerous) based on observed student actions, then provides teaching point matched to that level.",
+      "integration_with_performance": "CDP scores feed into overall AAR assessment but are separate from critical actions checklist. CDPs evaluate quality of reasoning, not just completion of tasks."
+    }
+  },
+
+  "critical_actions_checklist": [
+    {
+      "id": "CA1",
+      "action": "Scene safety assessment",
+      "category": "scene_safety",
+      "time_target_minutes": 1,
+      "points": 5,
+      "importance": "essential"
+    },
+    {
+      "id": "CA2",
+      "action": "Recognize life-threatening asthma",
+      "category": "assessment",
+      "time_target_minutes": 2,
+      "points": 15,
+      "importance": "critical",
+      "criteria": "Identifies SpO2 <92%, can't complete sentences, severe distress"
+    },
+    {
+      "id": "CA3",
+      "action": "Apply high-flow oxygen",
+      "category": "treatment",
+      "time_target_minutes": 2,
+      "points": 15,
+      "importance": "critical"
+    },
+    {
+      "id": "CA4",
+      "action": "Administer salbutamol nebulizer",
+      "category": "treatment",
+      "time_target_minutes": 5,
+      "points": 25,
+      "importance": "critical",
+      "criteria": "Correct dose (5mg), oxygen-driven nebulizer"
+    },
+    {
+      "id": "CA5",
+      "action": "Administer corticosteroids",
+      "category": "treatment",
+      "time_target_minutes": 10,
+      "points": 10,
+      "importance": "important"
+    },
+    {
+      "id": "CA6",
+      "action": "Complete ABCDE assessment",
+      "category": "assessment",
+      "time_target_minutes": 5,
+      "points": 10,
+      "importance": "essential",
+      "criteria": "All five components checked"
+    },
+    {
+      "id": "CA7",
+      "action": "Obtain SAMPLE history",
+      "category": "assessment",
+      "time_target_minutes": 8,
+      "points": 5,
+      "importance": "important"
+    },
+    {
+      "id": "CA8",
+      "action": "Monitor and reassess",
+      "category": "monitoring",
+      "time_target_minutes": 10,
+      "points": 5,
+      "importance": "important",
+      "criteria": "Check vitals after treatment, reassess breathing"
+    }
+  ],
+
+  "common_errors": [
+    {
+      "error_id": "E1",
+      "error": "Delayed bronchodilator administration",
+      "teaching_point": "Salbutamol must be given within 5 minutes for life-threatening asthma - it's first-line treatment for bronchospasm"
+    },
+    {
+      "error_id": "E2",
+      "error": "No oxygen despite critical hypoxia",
+      "teaching_point": "SpO2 88% is critically low - brain cells die below 90%. Oxygen is immediately life-saving and must be applied within 2 minutes"
+    },
+    {
+      "error_id": "E3",
+      "error": "Forgot corticosteroids",
+      "teaching_point": "Steroids are essential even with 60-minute delayed effect - they prevent relapse 4-6 hours later. Give early in all severe asthma cases"
+    },
+    {
+      "error_id": "E4",
+      "error": "Incomplete or absent systematic assessment",
+      "teaching_point": "Systematic ABCDE assessment prevents missing critical findings like silent chest. Even in emergencies, 30 seconds of focused assessment guides treatment"
+    },
+    {
+      "error_id": "E5",
+      "error": "Didn't recognize silent chest significance",
+      "teaching_point": "Silent chest = severe bronchospasm with minimal air movement = pre-arrest sign. It's worse than loud wheeze. Requires maximum urgency and preparation for respiratory arrest"
+    },
+    {
+      "error_id": "E6",
+      "error": "Vague treatment orders without specifics",
+      "teaching_point": "Vague orders like 'give oxygen' cause errors. Specific orders like 'non-rebreather at 15 L/min targeting 94-98%' ensure safe, appropriate treatment"
+    },
+    {
+      "error_id": "E7",
+      "error": "No reassessment after treatment",
+      "teaching_point": "Treatment without reassessment is incomplete care. Check vitals 3-5 minutes after bronchodilator to confirm effect and guide further treatment"
+    }
+  ],
+
+  "aar_teaching_points": {
+    "key_concepts": [
+      "Life-threatening asthma features: SpO2 <92%, exhaustion, silent chest, can't speak in sentences",
+      "Treatment sequence priority: Oxygen + Salbutamol FIRST (within 5 min), then Steroids (prevent relapse)",
+      "Silent chest = ominous pre-arrest sign (minimal air movement), NOT improvement",
+      "Steroids don't work immediately (60 min onset) but prevent relapse - give early anyway",
+      "Systematic reassessment after treatment guides clinical decisions - compare to baseline for trends"
+    ],
+    "clinical_pearls": [
+      "Speaking in words only (not phrases/sentences) = severe respiratory distress",
+      "Tripod position = severe distress - patient positions self to maximize accessory muscle use",
+      "Louder wheeze after salbutamol = GOOD sign (more air moving makes more noise)",
+      "RR >30 + SpO2 <92% + can't speak = life-threatening asthma triad",
+      "Deterioration can be rapid without treatment - patient can go from initial to critical in 10 minutes",
+      "SpO2 88% means brain hypoxia - oxygen is as urgent as CPR in cardiac arrest",
+      "Salbutamol side effect (HR increases 10-15 bpm) is acceptable trade-off for bronchodilation",
+      "Non-specific orders ('give oxygen') cause errors - be precise with device and flow rate"
+    ],
+    "common_misconceptions": [
+      "WRONG: 'Silent chest means she's calming down' - CORRECT: Silent chest is pre-arrest sign",
+      "WRONG: 'Wait for full assessment before treating' - CORRECT: Quick focused assessment (30 sec) then immediate treatment",
+      "WRONG: 'Steroids don't work fast so don't give them' - CORRECT: Give early to prevent relapse later",
+      "WRONG: 'Salbutamol causes tachycardia so avoid it' - CORRECT: Bronchodilation benefit outweighs HR increase in life-threatening asthma",
+      "WRONG: 'She needs to calm down' (psychological approach) - CORRECT: She has severe bronchospasm (physiological problem requiring bronchodilator)"
+    ]
+  },
+
+  "simulation_config": {
+    "real_time_progression": true,
+    "auto_deterioration_if_no_treatment": true,
+    "improvement_requires_critical_treatments": true,
+    "allow_repeat_nebulizers": true,
+    "max_duration_minutes": 20,
+    "layer_two_enabled": true,
+    "challenge_points_active": true,
+    "max_challenges_per_session": 2,
+    "critical_decision_points_active": true,
+    "max_cdp_evaluations": 3,
+    "difficulty_level": "moderate",
+    "student_level": "second_year_paramedic_student"
+  }
+}

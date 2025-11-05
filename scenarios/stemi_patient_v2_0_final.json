@@ -1,0 +1,1415 @@
+{
+  "scenario_id": "STEMI_MVP_001",
+  "metadata": {
+    "title": "Acute Chest Pain - Anterior STEMI",
+    "version": "2.0_Final_Enhanced",
+    "difficulty": "high",
+    "estimated_duration_minutes": 15,
+    "scenario_type": "cardiac_acs",
+    "learning_objectives": [
+      "Recognize acute coronary syndrome presentation",
+      "Perform and interpret 12-lead ECG rapidly",
+      "Administer critical antiplatelet therapy correctly",
+      "Activate Slovak STEMI network appropriately",
+      "Recognize contraindications to nitrates",
+      "Manage VF/VT cardiac arrest complication",
+      "Apply evidence-based oxygen therapy guidelines"
+    ],
+    "changelog": {
+      "v2.0_final_enhanced": "Added Layer Two cognitive training (interactive challenge points, critical decision points with full rubrics). Expanded medication formulary to 30+ drugs organized by harm level. Added treatment_responses, aar_teaching_points, and simulation_config sections. Enhanced pharmacokinetics for all medications. Complete parity with Asthma blueprint structure."
+    }
+  },
+
+  "dispatch_info": {
+    "call_type": "Chest pain",
+    "age": "58",
+    "sex": "Male",
+    "location": "Residential home, ground floor",
+    "caller": "Wife",
+    "additional_info": "Severe chest pain for 25 minutes, sweating heavily, pain won't go away"
+  },
+
+  "scene_description": {
+    "location": "Living room, patient sitting in armchair",
+    "safety": "Scene safe, no hazards",
+    "access": "Ground floor, easy access",
+    "bystanders": "Wife present, very anxious, knows patient's medical history"
+  },
+
+  "patient_profile": {
+    "name": "Miroslav",
+    "age": 58,
+    "weight_kg": 92,
+    "personality": "Anxious, trying to downplay symptoms, afraid he's having heart attack"
+  },
+
+  "initial_vitals": {
+    "HR": 98,
+    "RR": 22,
+    "SpO2": 96,
+    "BP_systolic": 145,
+    "BP_diastolic": 88,
+    "temperature": 37.0,
+    "GCS": 15,
+    "pain_score": 9
+  },
+
+  "state_descriptions": {
+    "initial": {
+      "student_sees": "You arrive to find a 58-year-old male sitting forward in an armchair, clutching his chest with his right hand. He's visibly pale, with sweat beading on his forehead and upper lip. His shirt is soaked with perspiration. He grimaces with pain as you enter. 'It feels like an elephant sitting on my chest,' he says, his voice strained. 'The pain goes down my left arm... to my jaw. I've never felt anything like this.' His wife hovers nearby, wringing her hands. 'It started about 25 minutes ago while he was watching TV. He said it was just indigestion, but it's not getting better.'",
+      "appearance": "Pale, diaphoretic, anxious, sitting forward, clutching chest, grimacing with pain, left arm pain evident",
+      "clinical_note": "Classic STEMI presentation: crushing substernal chest pain >20 minutes, radiation to left arm and jaw, diaphoresis, no relief with rest. High suspicion for anterior MI given severe presentation. Requires IMMEDIATE 12-lead ECG within 4 minutes, aspirin immediately, and STEMI network activation. This is time-critical - every minute delays definitive treatment. SpO2 96% means DO NOT give oxygen per ERC 2021 guidelines.",
+      "urgency_level": "critical"
+    },
+    "improving": {
+      "student_sees": "The patient looks noticeably more comfortable now. His breathing has eased, and while he's still pale, he's no longer grimacing constantly. 'The pain is... it's still there, but it's better,' he says, his voice less strained. 'Maybe 5 out of 10 now instead of 9. I can breathe a bit easier.' The sweating has reduced, though his shirt is still damp. His wife looks slightly less panicked. He's able to speak in full sentences without pausing for breath.",
+      "appearance": "Still pale but less diaphoretic, pain visibly reduced, speaking full sentences, less anxious, breathing easier",
+      "clinical_note": "Patient responding to antianginal therapy (aspirin ± nitrates). Pain reduction is favorable but does NOT mean MI is prevented - cellular damage continues. ECG will show ST elevations. Continue with urgent transport to PKI center. Time from symptom onset to PCI is critical - target <120 minutes from diagnosis. This improvement is symptomatic only; myocardial salvage requires emergency PCI.",
+      "urgency_level": "high"
+    },
+    "deteriorating": {
+      "student_sees": "The patient suddenly looks worse. His pain, which had improved, is intensifying again. 'It's... it's getting worse,' he gasps, his face contorted. 'Pressure... can't... breathe...' His skin has turned ashen gray with a bluish tinge around his lips. He's breathing rapidly and shallowly, struggling for each breath. Suddenly, he clutches his chest violently and his eyes roll back. His wife screams. You see him starting to lose consciousness, his body going limp in the chair.",
+      "appearance": "Severe distress, ashen/cyanotic, rapid shallow breathing, chest clutching, losing consciousness, pre-arrest state",
+      "clinical_note": "CRITICAL: Patient developing cardiogenic shock or malignant arrhythmia (VF/VT imminent). This is anterior STEMI with extensive myocardial damage causing either pump failure or electrical instability. Immediate preparation for cardiac arrest - attach defibrillator NOW, prepare for CPR. If not already done, this patient needs EMERGENCY transport with pre-hospital notification. High risk of sudden cardiac death. Anterior MI affecting large territory of myocardium.",
+      "urgency_level": "life-threatening"
+    },
+    "critical": {
+      "student_sees": "The patient is unresponsive. He's slumped in the chair, not breathing normally - just occasional gasping breaths. His wife is crying hysterically. When you check for a pulse, you can't find one at the carotid. The monitor shows ventricular fibrillation - a chaotic, quivering rhythm. This is sudden cardiac arrest from his heart attack. You need to start CPR immediately and prepare to shock him.",
+      "appearance": "Unresponsive, pulseless, agonal or absent respirations, VF on monitor, cardiac arrest",
+      "clinical_note": "CARDIAC ARREST secondary to anterior STEMI. VF/pulseless VT is the presenting rhythm in ~80% of sudden cardiac death from MI. Requires immediate CPR and defibrillation per ERC 2021 guidelines. After ROSC, patient needs emergency PCI for coronary reperfusion - this is the definitive treatment. Prognosis guarded but salvageable if ROSC achieved quickly and PCI performed. Continue aspirin even in arrest (can give via NG tube if intubated). This arrest is from ischemic VF, highly shockable.",
+      "urgency_level": "arrest"
+    }
+  },
+
+  "state_transitions": {
+    "initial_to_improving": {
+      "required_treatments": ["aspirin", "12_lead_ecg"],
+      "optional_helpful": ["nitroglycerin_if_bp_allows", "iv_access"],
+      "time_minimum_minutes": 5,
+      "student_actions_needed": "Aspirin given + ECG performed + STEMI recognized",
+      "teaching_note": "Early aspirin and ECG acquisition are critical. Nitrates help symptoms but don't prevent MI - definitive treatment is PCI. DO NOT give oxygen if SpO2 ≥90%."
+    },
+    "initial_to_deteriorating": {
+      "trigger": "no_aspirin_or_delayed_ecg",
+      "time_elapsed_minutes": 8,
+      "description": "Without antiplatelet therapy and rapid diagnosis, MI extends causing cardiogenic shock or malignant arrhythmia"
+    },
+    "deteriorating_to_critical": {
+      "trigger": "continued_poor_management",
+      "time_elapsed_minutes": 12,
+      "description": "Extensive MI leads to VF arrest - shockable cardiac arrest"
+    },
+    "improving_to_stable": {
+      "required_treatments": ["aspirin", "12_lead_ecg", "stemi_network_activated", "transport_initiated"],
+      "time_minimum_minutes": 10,
+      "description": "Patient stabilized with appropriate treatment, en route to PKI center"
+    }
+  },
+
+  "assessment_findings": {
+    "abcde": {
+      "airway": {
+        "initial": "Patent, speaking clearly",
+        "improving": "Patent, speaking in full sentences",
+        "deteriorating": "At risk, patient becoming less responsive",
+        "critical": "Unresponsive, requires basic airway maneuvers, prepare for intubation"
+      },
+      "breathing": {
+        "initial": "Slightly increased RR 22/min, clear lung sounds bilaterally, no crackles or wheezes, SpO2 96% on room air",
+        "improving": "RR 20/min, clear bilaterally, SpO2 97%",
+        "deteriorating": "RR 28/min, labored, possible pulmonary edema developing if LV failure, crackles in bases, SpO2 92%",
+        "critical": "Agonal respirations or apneic, requires ventilatory support"
+      },
+      "circulation": {
+        "initial": "HR 98/min regular, BP 145/88, strong radial pulses bilaterally, CRT <2sec, skin pale and diaphoretic",
+        "improving": "HR 92/min, BP 138/84, pulses strong, less diaphoretic",
+        "deteriorating": "HR 118/min or bradycardic if heart block developing, BP 110/70 or dropping, pulses weak, skin cold and clammy, signs of shock",
+        "critical": "Pulseless, VF/VT on monitor, cardiac arrest"
+      },
+      "disability": {
+        "initial": "GCS 15 (E4 V5 M6), alert and anxious, pupils equal and reactive",
+        "improving": "GCS 15, less anxious",
+        "deteriorating": "GCS 13-14, confused, pupils equal",
+        "critical": "GCS 3, unresponsive"
+      },
+      "exposure": {
+        "initial": "No trauma, no rashes, diaphoretic, check for medication patches (remove any nitrate patches before giving nitrates)",
+        "improving": "Less diaphoresis",
+        "deteriorating": "Profoundly diaphoretic, cyanotic",
+        "critical": "Cyanotic, mottled"
+      }
+    },
+    "sample_history": {
+      "symptoms": {
+        "chief_complaint": "Crushing substernal chest pain, 'elephant on chest'",
+        "onset": "25 minutes ago while watching TV",
+        "character": "Crushing, pressure, severe 9/10",
+        "radiation": "Left arm, jaw",
+        "associated": "Nausea, diaphoresis, fear of dying",
+        "timing": "Constant, no relief with rest",
+        "provoking": "Nothing",
+        "relieving": "Nothing helped",
+        "wife_reports": "He's never had pain like this before. He kept saying it was indigestion but I knew something was wrong."
+      },
+      "allergies": {
+        "medications": "No known drug allergies",
+        "other": "None"
+      },
+      "medications": {
+        "current": [
+          "Amlodipine 10mg daily (for hypertension)",
+          "Atorvastatin 40mg evening (for cholesterol)",
+          "Aspirin 100mg daily - CRITICAL: 'I take it but I stopped 2 weeks ago because I ran out'"
+        ],
+        "recent_use": "Took his blood pressure medicine this morning",
+        "viagra_cialis_check": "MUST ASK: 'Have you taken Viagra, Cialis, or similar medications in last 48 hours?' - Patient denies"
+      },
+      "past_medical_history": {
+        "major_conditions": [
+          "Hypertension - diagnosed 10 years ago",
+          "Hyperlipidemia",
+          "Type 2 Diabetes - managed with diet",
+          "Ex-smoker - quit 5 years ago (30 pack-year history)"
+        ],
+        "cardiac_history": "No previous MI, no previous chest pain episodes",
+        "last_physical": "6 months ago, doctor said 'watch your cholesterol'"
+      },
+      "last_oral_intake": {
+        "food": "Lunch 3 hours ago (chicken soup)",
+        "fluid": "Water, normally drinks",
+        "last_meal_time": "13:00"
+      },
+      "events": {
+        "precipitating": "No exertion, sitting watching TV when pain started",
+        "progression": "Started suddenly, got worse over first 5 minutes, stayed severe 9/10 since then",
+        "family_context": "Wife very worried, father died of heart attack at age 62"
+      }
+    },
+
+    "focused_exam": {
+      "cardiovascular": "Heart sounds normal S1 S2, no murmurs audible initially (may develop if MR from papillary muscle dysfunction), JVP normal initially (may rise if RV involvement), no peripheral edema, both radial pulses present and equal",
+      "respiratory": "Clear lung sounds bilaterally initially, no crackles (may develop if LV failure occurs later)",
+      "neurological": "Alert and oriented x3, cranial nerves grossly intact, moving all extremities",
+      "other": "Abdomen soft, non-tender, no guarding or rebound. No signs of aortic dissection (equal pulses, no BP differential arms)"
+    },
+    
+    "chief_complaint_detail": "Patient describes: 'It feels like an elephant is sitting on my chest. The pressure is terrible. It goes down my left arm, into my jaw. I feel sick to my stomach. I'm sweating like crazy even though I'm cold. I... I think this might be a heart attack. My father died from one.'"
+  },
+
+  "ecg_findings": {
+    "note": "ECG integration for visual display - for MVP, describe findings to student",
+    "rhythm": "Sinus rhythm",
+    "rate": 98,
+    "findings": [
+      "ST elevation 3-4mm in leads V1, V2, V3, V4 (anterior wall)",
+      "ST elevation 2mm in leads I and aVL (high lateral involvement)",
+      "Reciprocal ST depression in leads II, III, aVF (inferior leads)",
+      "Tall peaked T waves in anterior leads (hyperacute T waves)",
+      "No Q waves yet (acute MI, Q waves develop later)"
+    ],
+    "interpretation": "ACUTE ANTERIOR STEMI - LAD (left anterior descending) artery occlusion",
+    "teaching_point": "Anterior STEMI with high lateral extension - large area of myocardium at risk. LAD supplies anterior wall, septum, and apex - this is a BIG MI. The reciprocal changes (ST depression in inferior leads) confirm this is NOT pericarditis or other STEMI mimics. Hyperacute T waves suggest very early MI (<1 hour). This patient needs emergency PCI NOW. Every minute of delay increases mortality and reduces likelihood of full recovery."
+  },
+
+  "critical_treatments": ["aspirin", "12_lead_ecg", "stemi_network_activation"],
+
+  "primary_medications": {
+    "anopyrin_aspirin": {
+      "generic_name": "Acetylsalicylic acid (Aspirin)",
+      "brand_names": ["Anopyrin", "Aspirin", "Acylpyrin"],
+      "class": "Antiplatelet agent, NSAID",
+      "indication": "Acute coronary syndrome, STEMI, NSTEMI, unstable angina, TIA/stroke, fever, pain",
+      "mechanism": "Irreversibly inhibits platelet cyclooxygenase (COX-1), preventing thromboxane A2 synthesis, thereby inhibiting platelet aggregation. Effect lasts lifetime of platelet (~7-10 days). In ACS, prevents thrombus propagation at site of ruptured plaque.",
+      
+      "dosing": {
+        "acs_loading_adult": "200mg PO (chewed for faster absorption)",
+        "acs_loading_rationale": "Loading dose achieves therapeutic antiplatelet effect in 14 minutes when chewed vs 30 minutes if swallowed",
+        "maintenance": "100mg daily (patient may already be on this)",
+        "pediatric": "Not typically used in pediatric ACS",
+        "administration": "MUST BE CHEWED for rapid absorption in ACS"
+      },
+      
+      "pharmacokinetics": {
+        "onset_chewed_minutes": 14,
+        "onset_swallowed_minutes": 30,
+        "peak_effect_hours": 1,
+        "duration_days": "7-10",
+        "half_life_minutes": 20,
+        "note": "Antiplatelet effect lasts lifetime of platelet despite short half-life"
+      },
+      
+      "contraindications": {
+        "absolute": ["active_gi_bleeding", "known_allergy", "hemophilia"],
+        "relative": ["asthma_aspirin_sensitive", "peptic_ulcer_disease", "severe_liver_disease"]
+      },
+      
+      "side_effects": [
+        "GI upset, nausea",
+        "Increased bleeding risk",
+        "Rare: bronchospasm in aspirin-sensitive asthmatics",
+        "Rare: anaphylaxis if allergic"
+      ],
+      
+      "warnings": [
+        "MUST give loading dose 200mg in ACS even if patient takes daily aspirin",
+        "MUST be chewed, not swallowed, for faster effect",
+        "Ask about aspirin allergy before giving",
+        "In this scenario: patient takes aspirin 100mg at home but stopped 2 weeks ago - still give 200mg loading dose"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": true,
+        "importance": "critical",
+        "time_to_effect_minutes": 14,
+        "vital_changes": {
+          "pain_score": 8,
+          "note": "No immediate vital sign changes, but antiplatelet effect starts within 14 minutes"
+        },
+        "patient_says": "Patient chews tablet, grimaces at bitter taste. 'That tastes awful... but if it helps...' No immediate pain relief.",
+        "clinical_effect": "Aspirin reduces mortality in STEMI by 23%. Prevents thrombus propagation at site of ruptured coronary plaque. Effect is immediate on platelets but patient won't feel subjective improvement - this is cellular-level protection. Essential first-line treatment. Give BEFORE completing full assessment - this is that critical.",
+        "points_if_given": 25,
+        "points_if_given_within_3min": 30,
+        "timing_critical": "Must give within 3 minutes of arrival for full points. Every minute of delay increases mortality.",
+        "teaching_point": "Aspirin is THE most important prehospital medication for STEMI - 23% mortality reduction. Give it IMMEDIATELY after recognizing probable ACS, don't wait for ECG confirmation. Loading dose is 200mg chewed (even if patient takes daily aspirin at home). Chewing is critical - achieves therapeutic levels in 14 min vs 30 min if swallowed. This one simple intervention saves more lives than anything else we do prehospital except defibrillation."
+      }
+    },
+
+    "nitromin_nitroglycerin": {
+      "generic_name": "Nitroglycerin (Glyceryl trinitrate)",
+      "brand_names": ["Nitromin", "Nitroglycerin", "GTN"],
+      "class": "Nitrate vasodilator",
+      "indication": "Angina pectoris, acute coronary syndrome (symptom relief), hypertensive emergency, acute pulmonary edema",
+      "mechanism": "Nitric oxide donor → vascular smooth muscle relaxation → venodilation (↓preload) > arterial dilation (↓afterload). In ACS: reduces myocardial oxygen demand, may improve collateral coronary flow. Does NOT prevent MI or reduce mortality - purely symptomatic.",
+      
+      "dosing": {
+        "sublingual_adult": "0.4mg (400 mcg) SL spray or tablet",
+        "repeat": "Can repeat every 5 minutes x3 doses maximum",
+        "iv_infusion": "5-10 mcg/min, titrate (hospital setting)",
+        "administration": "Patient should be sitting or lying (risk of syncope from hypotension)"
+      },
+      
+      "pharmacokinetics": {
+        "onset_sl_minutes": "1-3",
+        "peak_effect_minutes": 5,
+        "duration_minutes": "20-30",
+        "half_life_minutes": "1-4"
+      },
+      
+      "contraindications": {
+        "absolute": [
+          "systolic_bp_less_than_90",
+          "recent_pde5_inhibitor_use (Viagra within 24h, Cialis within 48h)",
+          "right_ventricular_infarction",
+          "severe_aortic_stenosis",
+          "hypertrophic_obstructive_cardiomyopathy"
+        ],
+        "relative": ["inferior_mi_with_rv_involvement (check with right-sided ECG leads)"]
+      },
+      
+      "side_effects": [
+        "Headache (very common, 50-80% of patients)",
+        "Dizziness, lightheadedness",
+        "Hypotension (potentially severe)",
+        "Reflex tachycardia",
+        "Syncope if severe hypotension"
+      ],
+      
+      "warnings": [
+        "ALWAYS check BP before giving - hold if SBP <90",
+        "ALWAYS ask about Viagra/Cialis - combination causes severe hypotension and death",
+        "In ANTERIOR MI (this patient): nitrates are SAFE if BP allows",
+        "In INFERIOR MI with RV involvement: nitrates are CONTRAINDICATED",
+        "Patient should sit/lie down before administration",
+        "Have patient remove any nitrate patches before giving additional nitrates"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": false,
+        "importance": "important",
+        "time_to_effect_minutes": 2,
+        "vital_changes": {
+          "pain_score": 6,
+          "BP_systolic": 128,
+          "BP_diastolic": 78,
+          "HR": 105
+        },
+        "patient_says": "'Oh... that helps a little. The pressure is less. But my head... I have a headache now.' Patient looks more comfortable but not pain-free.",
+        "clinical_effect": "Symptomatic relief via preload reduction. Pain decreases from 9→6/10. Headache is expected side effect. BP drops 15-20mmHg (acceptable). Does NOT prevent MI or reduce mortality - just symptom management. The definitive treatment is PCI. Nitrates are supportive care.",
+        "points_if_given": 5,
+        "points_if_given_without_bp_check": -10,
+        "teaching_point": "Nitrates are for SYMPTOM relief in ACS, not mortality reduction. They reduce preload → reduce myocardial oxygen demand → less chest pain. CRITICAL SAFETY: (1) Check BP first (hold if <90 systolic), (2) Ask about Viagra/Cialis (contraindicated within 24-48h), (3) Anterior MI (this patient) = nitrates SAFE. Inferior MI + RV involvement = nitrates DANGEROUS (causes severe hypotension). The headache is expected - nitroglycerin vasodilates cerebral vessels too. Patient can take paracetamol for headache later."
+      }
+    },
+
+    "tramal_morphine": {
+      "generic_name": "Morphine sulfate",
+      "brand_names": ["Morfin", "Morphine"],
+      "class": "Opioid analgesic",
+      "indication": "Severe pain, acute coronary syndrome (refractory chest pain), acute pulmonary edema (reduces preload and anxiety)",
+      "mechanism": "Mu-opioid receptor agonist → analgesia, anxiolysis, venodilation (reduces preload), respiratory depression at high doses",
+      
+      "dosing": {
+        "acs_adult": "2-4mg IV slowly, repeat every 5-10 minutes PRN for refractory pain",
+        "maximum_initial": "10mg total",
+        "administration": "Give slowly IV over 2-3 minutes to avoid respiratory depression"
+      },
+      
+      "pharmacokinetics": {
+        "onset_iv_minutes": "3-5",
+        "peak_effect_minutes": 20,
+        "duration_hours": "3-4",
+        "half_life_hours": "2-4"
+      },
+      
+      "contraindications": {
+        "absolute": ["respiratory_depression", "severe_copd_with_hypercapnia"],
+        "relative": ["hypotension", "altered_mental_status", "elderly"]
+      },
+      
+      "side_effects": [
+        "Respiratory depression (dose-dependent)",
+        "Nausea and vomiting (30-40%)",
+        "Hypotension",
+        "Bradycardia",
+        "Sedation",
+        "Constipation (with repeated dosing)"
+      ],
+      
+      "warnings": [
+        "2025 ACC/AHA guidelines: morphine NOT routine in ACS",
+        "Morphine delays absorption of oral antiplatelet drugs (ticagrelor, prasugrel)",
+        "Use for REFRACTORY pain only, after nitrates tried",
+        "Monitor respiratory rate - have naloxone available",
+        "Give slowly IV to minimize side effects"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": "conditional",
+        "critical_treatment": false,
+        "importance": "acceptable_for_severe_refractory_pain",
+        "time_to_effect_minutes": 4,
+        "vital_changes": {
+          "pain_score": 4,
+          "RR": 18,
+          "BP_systolic": 130,
+          "HR": 92
+        },
+        "patient_says": "'The pain is much better now... I feel relaxed... a bit drowsy.' Patient noticeably more comfortable but slightly sedated.",
+        "clinical_effect": "Significant analgesia and anxiolysis. Pain relief is welcome but morphine delays absorption of oral antiplatelet drugs patient will receive in hospital. Not first-line anymore per 2025 guidelines. Reasonable to use for severe refractory pain after nitrates tried. Monitor for respiratory depression.",
+        "points_if_given_first_line": -3,
+        "points_if_given_for_refractory_pain": 3,
+        "teaching_point": "Morphine role in ACS has changed. OLD practice: routine morphine for all ACS. NEW practice (2025 ACC/AHA): morphine for REFRACTORY pain only. Why? Morphine delays absorption of oral P2Y12 inhibitors (ticagrelor, prasugrel) that patient will get in hospital - delays antiplatelet effect. Also: nausea/vomiting risk. Sequence: Try nitrates FIRST. If pain still severe after nitrates, THEN morphine is reasonable. Give 2-4mg slowly IV, can repeat. Monitor respiratory rate. Have naloxone available. But aspirin + rapid PCI are what save lives, not morphine."
+      }
+    },
+
+    "normal_saline": {
+      "generic_name": "0.9% Sodium Chloride (Normal Saline)",
+      "class": "Crystalloid IV fluid",
+      "indication": "IV access maintenance, medication administration, hypotension, dehydration",
+      "mechanism": "Intravascular volume expansion via isotonic crystalloid",
+      
+      "dosing": {
+        "iv_lock": "Flush 5-10ml to maintain access",
+        "hypotension_acs": "250-500ml bolus if BP drops significantly",
+        "avoid_overload": "Do NOT give large volume fluid boluses routinely in ACS"
+      },
+      
+      "contraindications": {
+        "absolute": [],
+        "relative": ["pulmonary_edema", "heart_failure", "volume_overload"]
+      },
+      
+      "warnings": [
+        "In ACS, avoid aggressive fluid boluses unless patient develops hypotension",
+        "Excessive fluids can worsen pulmonary edema if LV dysfunction develops",
+        "Establish IV access early but be conservative with fluid volume"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": false,
+        "importance": "supportive",
+        "clinical_effect": "Maintains IV access for medication administration and in case patient develops hypotension or arrest. Avoid large volume fluid boluses - patient is currently normotensive (145/88) and not hypovolemic. Excessive fluids can worsen pulmonary edema if LV dysfunction develops from extensive MI. Establish access, flush to maintain patency, but don't give routine 500ml boluses in normotensive ACS patient.",
+        "teaching_point": "IV access in ACS serves two purposes: (1) medication route if needed, (2) volume resuscitation if hypotension develops. But be conservative with fluids. Unlike trauma where we fluid resuscitate aggressively, in ACS excessive fluids can WORSEN outcomes by causing pulmonary edema if LV function impaired. Establish access, flush to keep patent, but hold fluids unless BP drops <90 systolic or patient shows signs of hypovolemia."
+      }
+    },
+
+    "oxygen": {
+      "generic_name": "Oxygen",
+      "class": "Medical gas",
+      "indication": "Hypoxia (SpO2 <90%)",
+      "mechanism": "Increases arterial oxygen content",
+      
+      "delivery_options": {
+        "nasal_cannula": "1-6 L/min",
+        "simple_mask": "6-10 L/min",
+        "non_rebreather": "15 L/min"
+      },
+      
+      "target_spo2_acs": "94-98% (DO NOT exceed 98%)",
+      
+      "contraindications": {
+        "absolute": [],
+        "relative": ["normoxia_spo2_above_90"]
+      },
+      
+      "warnings": [
+        "ERC 2021 and ACC/AHA 2025: Do NOT give routine oxygen to normoxic ACS patients",
+        "Give oxygen ONLY if SpO2 <90%",
+        "Hyperoxia (SpO2 >98%) may worsen ACS outcomes via vasoconstriction and free radicals"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": false,
+        "reason": "Patient SpO2 96% = normoxic, oxygen NOT indicated per current guidelines",
+        "critical_treatment": false,
+        "importance": "contraindicated_if_normoxic",
+        "vital_changes": {
+          "SpO2": 99,
+          "note": "Hyperoxia may cause coronary vasoconstriction"
+        },
+        "patient_says": "Patient accepts oxygen but doesn't notice any difference.",
+        "clinical_effect": "NO BENEFIT and potential harm. ERC 2021 and ACC/AHA 2025 guidelines explicitly state: Do NOT give routine oxygen in normoxic ACS patients. Evidence shows hyperoxia causes coronary vasoconstriction and free radical damage, possibly worsening MI size and outcomes. This is a PARADIGM SHIFT from old practice. Only give O2 if SpO2 <90%.",
+        "points_if_given_when_normoxic": -10,
+        "points_if_withheld_appropriately": 5,
+        "teaching_point": "MAJOR PARADIGM SHIFT: Oxygen is NO LONGER routine in ACS. OLD practice (pre-2015): everyone with chest pain gets oxygen. NEW practice (ERC 2021, ACC/AHA 2025): oxygen ONLY if SpO2 <90%. Why? Studies showed routine oxygen in normoxic MI patients may worsen outcomes - hyperoxia causes coronary vasoconstriction and free radical damage. This patient SpO2 96% = do NOT give oxygen. If SpO2 drops <90%, THEN give oxygen to target 94-98%. This is evidence-based medicine overriding tradition. Test whether student knows current guidelines vs outdated practice."
+      }
+    }
+  },
+
+  "treatment_responses": {
+    "anopyrin_aspirin": {
+      "time_to_effect_minutes": 14,
+      "vital_changes": {
+        "pain_score": 8,
+        "note": "No immediate vital changes, antiplatelet effect at cellular level"
+      },
+      "patient_says": "Chews tablet, grimaces. 'Tastes awful... but if it helps...'",
+      "clinical_effect": "Antiplatelet effect begins within 14 minutes, prevents thrombus propagation"
+    },
+    "nitromin_nitroglycerin": {
+      "time_to_effect_minutes": 2,
+      "vital_changes": {
+        "pain_score": 6,
+        "BP_systolic": 128,
+        "HR": 105
+      },
+      "patient_says": "'That helps a little. Less pressure. But my head hurts now.'",
+      "clinical_effect": "Symptomatic relief via preload reduction, headache expected"
+    },
+    "tramal_morphine": {
+      "time_to_effect_minutes": 4,
+      "vital_changes": {
+        "pain_score": 4,
+        "RR": 18,
+        "BP_systolic": 130
+      },
+      "patient_says": "'Much better now... I feel relaxed... bit drowsy.'",
+      "clinical_effect": "Significant analgesia and anxiolysis, mild sedation"
+    },
+    "oxygen": {
+      "time_to_effect_minutes": 1,
+      "vital_changes": {
+        "SpO2": 99
+      },
+      "patient_says": "No noticeable change for patient",
+      "clinical_effect": "Hyperoxia achieved but no benefit and potential harm per current evidence"
+    }
+  },
+
+  "no_treatment_progression": {
+    "3_minutes": {
+      "vital_changes": {
+        "pain_score": 10,
+        "HR": 105,
+        "BP_systolic": 150
+      },
+      "patient_status": "Pain intensifying, patient very distressed, 'Please do something!'",
+      "clinical_note": "MI extending without treatment. Platelet aggregation continues at ruptured plaque site. Still salvageable but losing time. Every minute without aspirin increases thrombus burden."
+    },
+    "6_minutes": {
+      "vital_changes": {
+        "pain_score": 10,
+        "HR": 110,
+        "RR": 26,
+        "BP_systolic": 138,
+        "SpO2": 94
+      },
+      "patient_status": "Severe distress, diaphoresis worsening, 'I can't breathe properly'",
+      "clinical_note": "Possible early LV dysfunction developing. Anterior MI affecting large territory. Critical to give aspirin and get ECG NOW. Without intervention, patient progressing toward cardiogenic shock or malignant arrhythmia."
+    },
+    "10_minutes": {
+      "vital_changes": {
+        "pain_score": 10,
+        "HR": 118,
+        "RR": 28,
+        "BP_systolic": 132,
+        "SpO2": 92
+      },
+      "patient_status": "Patient gasping, 'I think I'm dying... please help me...'",
+      "clinical_note": "Extensive MI, developing cardiogenic shock. Still treatable but prognosis worsening. High risk of VF imminent. Myocardial damage progressing - need emergency PCI.",
+      "state_transition": "deteriorating"
+    },
+    "15_minutes": {
+      "vital_changes": {
+        "HR": 135,
+        "BP_systolic": 95,
+        "SpO2": 88,
+        "GCS": 13
+      },
+      "patient_status": "Deteriorating consciousness, severe shock, pre-arrest",
+      "clinical_note": "Cardiogenic shock and/or malignant arrhythmia imminent. Without emergency intervention, patient will arrest. Massive territory MI with pump failure or electrical instability.",
+      "state_transition": "critical"
+    }
+  },
+
+  "secondary_medications_by_impact": {
+    
+    "critical_harm": [
+      {
+        "name": "tensiomin",
+        "generic_name": "Metoprolol",
+        "class": "Beta blocker",
+        "primary_indication": "Hypertension, tachycardia, AF, ACS (in stable patients)",
+        "why_dangerous": "Beta blockers can cause bradycardia and hypotension in acute MI, especially with bradycardia or signs of heart failure. NOT first-line prehospital.",
+        "if_given": {
+          "vital_changes": {
+            "HR": 52,
+            "BP_systolic": 95,
+            "BP_diastolic": 60,
+            "note": "Severe bradycardia and hypotension"
+          },
+          "patient_response": "CRITICAL: Patient's heart rate drops dangerously to 52/min. Blood pressure falls to 95/60. He looks pale and dizzy. 'I feel... faint...' Beta blocker causing dangerous hemodynamic compromise in acute MI.",
+          "clinical_note": "Beta blockers are contraindicated in acute MI with bradycardia, hypotension, or heart failure. Can cause cardiogenic shock. NOT for prehospital use. Strictly hospital decision after hemodynamic stability confirmed.",
+          "points": -20,
+          "state_change": "deteriorating",
+          "aar_flag": "dangerous_medication_error"
+        },
+        "teaching_point": "Beta blockers have a role in ACS but NOT prehospital and NOT in acute phase if any signs of bradycardia, hypotension, or heart failure. In 1980s, beta blockers were given routinely early in MI - we learned this causes harm. Now: beta blockers started in hospital AFTER patient stabilized, AFTER excluding bradycardia/hypotension/heart failure. Prehospital: give aspirin, not beta blockers. Let cardiologist decide about beta blockers after PCI."
+      },
+      {
+        "name": "apaurin",
+        "generic_name": "Diazepam",
+        "class": "Benzodiazepine",
+        "primary_indication": "Seizures, anxiety, status epilepticus",
+        "why_dangerous": "Respiratory depression, hypotension, masks clinical deterioration",
+        "if_given": {
+          "vital_changes": {
+            "RR": 16,
+            "BP_systolic": 118,
+            "GCS": 13,
+            "note": "Sedation and respiratory depression"
+          },
+          "patient_response": "Patient becomes drowsy and sedated. 'I feel... sleepy...' His respiratory rate decreases. His anxiety is masked but underlying MI continues. Benzodiazepine obscures clinical status and can cause respiratory depression.",
+          "clinical_note": "Benzodiazepines NOT indicated in ACS. They mask anxiety that actually indicates serious condition. Can cause respiratory depression and hypotension. Use verbal reassurance and definitive treatment (aspirin, PCI), not sedatives.",
+          "points": -15,
+          "aar_flag": "unnecessary_harmful_medication"
+        },
+        "teaching_point": "Patient's anxiety is APPROPRIATE - he's having a heart attack. His body is telling him something is seriously wrong. The answer is TREAT THE HEART ATTACK (aspirin, PCI), not sedate the anxiety. Benzodiazepines mask symptoms, cause respiratory depression, and delay recognition of deterioration. Use calm reassurance: 'We know what's wrong and we're taking you to get the treatment you need.' That's therapeutic, not diazepam."
+      },
+      {
+        "name": "cordarone",
+        "generic_name": "Amiodarone",
+        "class": "Antiarrhythmic",
+        "primary_indication": "Ventricular arrhythmias, AF with RVR",
+        "why_dangerous": "Not indicated for sinus tachycardia, can cause bradycardia and hypotension",
+        "if_given": {
+          "vital_changes": {
+            "HR": 68,
+            "BP_systolic": 105
+          },
+          "patient_response": "No improvement in chest pain. Heart rate decreases but patient doesn't have arrhythmia - has appropriate sinus tachycardia from pain and sympathetic response.",
+          "clinical_note": "Amiodarone for arrhythmias (VT, VF, AF with RVR), not sinus tachycardia. Patient's tachycardia is appropriate physiologic response to MI. Amiodarone can cause bradycardia and hypotension. Wrong indication.",
+          "points": -15,
+          "aar_flag": "wrong_indication"
+        },
+        "teaching_point": "Patient has sinus tachycardia (regular rhythm, rate 98-110), not arrhythmia. Tachycardia is APPROPRIATE - it's his body's response to chest pain and myocardial ischemia. Amiodarone is for dangerous arrhythmias (VT, VF, AF with rapid rate), not sinus tachycardia. Treating appropriate sinus tachycardia is wrong - it may mask deterioration. Treat the MI (aspirin, PCI), not the compensatory tachycardia."
+      },
+      {
+        "name": "novalgin",
+        "generic_name": "Metamizole",
+        "class": "Analgesic, antipyretic",
+        "primary_indication": "Pain, fever",
+        "why_dangerous": "Risk of anaphylaxis, hypotension, not appropriate analgesic for MI",
+        "if_given": {
+          "vital_changes": {
+            "BP_systolic": 110,
+            "HR": 115,
+            "note": "Mild hypotension, risk of allergic reaction"
+          },
+          "patient_response": "Patient's chest pain unchanged. Blood pressure drops slightly. Metamizole carries risk of anaphylaxis and agranulocytosis. Not appropriate analgesic for ACS.",
+          "clinical_note": "Metamizole not indicated for ACS pain. Use nitrates and morphine per guidelines. Metamizole banned in many countries due to agranulocytosis risk. Use evidence-based ACS analgesics.",
+          "points": -10,
+          "aar_flag": "inappropriate_medication"
+        },
+        "teaching_point": "ACS pain management: nitrates (first-line for symptom relief), morphine (if refractory pain). Not NSAIDs, not metamizole, not paracetamol. Metamizole (dipyrone) banned in US, UK, and many countries due to agranulocytosis risk. Even where available, wrong choice for MI. Use guideline-directed therapy."
+      }
+    ],
+
+    "worsens": [
+      {
+        "name": "adrenalin",
+        "generic_name": "Epinephrine",
+        "class": "Sympathomimetic",
+        "primary_indication": "Cardiac arrest, anaphylaxis, severe bronchospasm",
+        "why_wrong": "Increases myocardial oxygen demand, can worsen ischemia, provoke arrhythmias",
+        "if_given": {
+          "vital_changes": {
+            "HR": 145,
+            "BP_systolic": 185,
+            "pain_score": 10
+          },
+          "patient_response": "Patient's pain WORSENS. 'It's getting worse! My heart is pounding!' Heart rate and blood pressure spike. Epinephrine increases myocardial oxygen demand when patient already has supply-demand mismatch from MI. Can provoke VF.",
+          "clinical_note": "Epinephrine contraindicated in conscious patient with ACS. Dramatically increases myocardial oxygen demand, worsens ischemia, provokes arrhythmias. Only use in cardiac arrest (VF/pulseless VT), not in conscious MI patient.",
+          "points": -20,
+          "state_change": "deteriorating",
+          "aar_flag": "contraindicated_medication"
+        },
+        "teaching_point": "Epinephrine is for CARDIAC ARREST or ANAPHYLAXIS, NOT for conscious ACS patient. In MI, myocardium is ischemic - limited oxygen supply. Epinephrine massively increases myocardial oxygen DEMAND (↑HR, ↑BP, ↑contractility) while supply is restricted by occluded coronary. This worsens ischemia and can trigger VF. Save epinephrine for arrest. In conscious MI patient: aspirin, not adrenaline."
+      },
+      {
+        "name": "atropin",
+        "generic_name": "Atropine",
+        "class": "Anticholinergic",
+        "primary_indication": "Bradycardia, organophosphate poisoning",
+        "why_wrong": "Causes tachycardia in patient who doesn't need it, increases myocardial oxygen demand",
+        "if_given": {
+          "vital_changes": {
+            "HR": 138,
+            "pain_score": 9
+          },
+          "patient_response": "Heart rate increases to 138. No benefit. Patient already has sinus rhythm with rate 98 - doesn't need atropine. Increased HR worsens myocardial oxygen demand.",
+          "clinical_note": "Atropine for symptomatic bradycardia or high-degree AV block. Patient has normal sinus rhythm at 98/min - atropine not indicated. Causes unnecessary tachycardia which increases myocardial oxygen demand in MI.",
+          "points": -10,
+          "aar_flag": "wrong_indication"
+        },
+        "teaching_point": "Atropine for BRADYCARDIA (HR <50 with symptoms) or HIGH-DEGREE AV BLOCK. This patient has sinus rhythm at 98/min - normal rate for someone having MI. No indication for atropine. Giving it causes unnecessary tachycardia which INCREASES myocardial oxygen demand when patient's myocardium is already ischemic. Know your indications - not every cardiac drug is for every cardiac problem."
+      },
+      {
+        "name": "furosemid",
+        "generic_name": "Furosemide",
+        "class": "Loop diuretic",
+        "primary_indication": "Pulmonary edema, heart failure, volume overload",
+        "why_wrong": "Can cause hypovolemia and hypotension in patient without volume overload",
+        "if_given": {
+          "vital_changes": {
+            "BP_systolic": 115,
+            "BP_diastolic": 70
+          },
+          "patient_response": "Blood pressure drops. Patient becomes lightheaded. No benefit - patient doesn't have fluid overload. Furosemide causes unnecessary diuresis and hypotension.",
+          "clinical_note": "Furosemide for PULMONARY EDEMA or VOLUME OVERLOAD. This patient has clear lungs, no crackles, no JVD, no peripheral edema - NOT volume overloaded. Giving diuretic can cause hypotension in normovole patient with MI. Wrong indication.",
+          "points": -8,
+          "aar_flag": "diagnostic_confusion"
+        },
+        "teaching_point": "Furosemide is for PULMONARY EDEMA (crackles in lungs, pink frothy sputum) or HEART FAILURE (JVD, peripheral edema). Listen to lungs - this patient has CLEAR lung sounds bilaterally. No crackles. Not fluid overloaded. Giving diuretic risks hypotension. If patient develops pulmonary edema later (from LV dysfunction), THEN furosemide is appropriate. Current exam: no indication."
+      },
+      {
+        "name": "ca_gluconicum",
+        "generic_name": "Calcium gluconate",
+        "class": "Electrolyte supplement",
+        "primary_indication": "Hypocalcemia, hyperkalemia, calcium channel blocker overdose",
+        "why_wrong": "Not indicated in ACS, theoretical risk in digitalis toxicity",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect on chest pain or clinical status. Calcium not indicated.",
+          "clinical_note": "Calcium gluconate for hypocalcemia, hyperkalemia (cardioprotection), or CCB overdose. Not indicated in routine ACS. Old theory about calcium in MI (since ischemia involves calcium) was disproven - doesn't help and may harm.",
+          "points": -5,
+          "aar_flag": "unnecessary_intervention"
+        },
+        "teaching_point": "Calcium gluconate has specific indications: (1) Hypocalcemia (tetany, prolonged QT), (2) Hyperkalemia (peaked T waves, widened QRS - calcium protects heart), (3) Calcium channel blocker overdose. Not indicated in routine ACS. Don't give medications 'just in case' - treat actual problems with evidence-based interventions."
+      }
+    ],
+
+    "neutral": [
+      {
+        "name": "paracetamol",
+        "generic_name": "Paracetamol (Acetaminophen)",
+        "primary_indication": "Mild-moderate pain, fever",
+        "why_unnecessary": "Inadequate for MI pain intensity, not indicated",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect on chest pain. Paracetamol inadequate for MI pain. Patient still in severe distress.",
+          "points": -3,
+          "aar_flag": "inadequate_analgesia"
+        },
+        "teaching_point": "Paracetamol is for MILD pain (headache, fever). This is SEVERE crushing chest pain from myocardial ischemia. Magnitude mismatch. ACS pain management: nitrates (first), morphine (if refractory). Not paracetamol."
+      },
+      {
+        "name": "glucose",
+        "generic_name": "Glucose 40%",
+        "primary_indication": "Hypoglycemia",
+        "why_unnecessary": "Patient not hypoglycemic",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect on chest pain. Patient confused why you're giving sugar.",
+          "points": -3,
+          "aar_flag": "unnecessary_intervention"
+        },
+        "teaching_point": "Always check blood glucose in altered mental status. But this patient is alert, oriented, appropriate mental status. His problem is MI, not hypoglycemia. Focus on primary problem."
+      },
+      {
+        "name": "dormicum",
+        "generic_name": "Midazolam",
+        "primary_indication": "Sedation for procedures, seizures",
+        "why_unnecessary": "Not indicated for conscious ACS patient",
+        "if_given": {
+          "vital_changes": {
+            "RR": 16,
+            "GCS": 13
+          },
+          "patient_response": "Patient becomes drowsy. Anxiety masked but MI continues. Respiratory depression risk.",
+          "points": -10,
+          "aar_flag": "inappropriate_sedation"
+        },
+        "teaching_point": "Same as apaurin - benzodiazepines mask appropriate anxiety, cause respiratory depression. Treat MI, don't sedate patient."
+      },
+      {
+        "name": "degan",
+        "generic_name": "Metoclopramide",
+        "primary_indication": "Nausea, vomiting",
+        "why_unnecessary": "Patient not nauseated (unless from morphine)",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect on chest pain. Patient not nauseated.",
+          "points": -2,
+          "aar_flag": "unnecessary_intervention"
+        },
+        "teaching_point": "If patient develops nausea from morphine, then antiemetic appropriate. But don't give prophylactically. Treat actual symptoms."
+      },
+      {
+        "name": "naloxone",
+        "generic_name": "Naloxone",
+        "primary_indication": "Opioid overdose reversal",
+        "why_unnecessary": "Patient not on opioids",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect - patient not opioid toxic.",
+          "points": -2,
+          "aar_flag": "wrong_antidote"
+        },
+        "teaching_point": "Naloxone reverses opioids. Keep available in case of morphine overdose causing respiratory depression. But don't give prophylactically."
+      },
+      {
+        "name": "buscopan",
+        "generic_name": "Hyoscine butylbromide",
+        "primary_indication": "Abdominal cramping, renal colic",
+        "why_unnecessary": "For smooth muscle spasm, not cardiac pain",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect on chest pain. Wrong type of pain.",
+          "points": -3,
+          "aar_flag": "wrong_spasmolytic"
+        },
+        "teaching_point": "Buscopan for GI/GU smooth muscle spasm. This is cardiac ischemic pain from myocardial cells dying. Different pathophysiology, different treatment."
+      },
+      {
+        "name": "dithiaden",
+        "generic_name": "Promethazine",
+        "class": "Antihistamine",
+        "primary_indication": "Allergy, nausea",
+        "why_unnecessary": "Not indicated for ACS",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Minimal effect, mild sedation.",
+          "points": -2,
+          "aar_flag": "unnecessary_intervention"
+        },
+        "teaching_point": "Antihistamine for allergic reactions. Not relevant to MI."
+      },
+      {
+        "name": "trombex",
+        "generic_name": "Clopidogrel",
+        "class": "P2Y12 inhibitor antiplatelet",
+        "primary_indication": "ACS (dual antiplatelet therapy with aspirin)",
+        "why_neutral": "Appropriate medication but typically given in hospital with loading dose",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Appropriate antiplatelet but effect takes hours. Hospital will give loading dose.",
+          "points": 2,
+          "aar_flag": "acceptable_but_not_required_prehospital"
+        },
+        "teaching_point": "Clopidogrel is part of dual antiplatelet therapy in ACS (aspirin + P2Y12 inhibitor). However, prehospital: give ASPIRIN definitely. Hospital will give loading dose of P2Y12 inhibitor (clopidogrel, ticagrelor, or prasugrel) based on patient's specific situation and whether going to cath. Focus prehospital: aspirin. Let hospital add second antiplatelet."
+      },
+      {
+        "name": "heparin",
+        "generic_name": "Unfractionated heparin",
+        "class": "Anticoagulant",
+        "primary_indication": "ACS, PE, DVT",
+        "why_neutral": "Appropriate medication but typically given in hospital",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Appropriate adjunctive therapy. Anticoagulation helps but hospital will manage this with loading dose.",
+          "points": 2,
+          "aar_flag": "acceptable_but_not_required_prehospital"
+        },
+        "teaching_point": "Heparin is standard in ACS as part of antithrombotic therapy. However, prehospital priorities: (1) Aspirin, (2) 12-lead ECG, (3) STEMI network activation, (4) Rapid transport. Hospital will give heparin or other anticoagulant (enoxaparin, bivalirudin) based on bleeding risk and treatment strategy. Don't delay transport to give heparin prehospital. Time to PCI is more important."
+      },
+      {
+        "name": "ranisan",
+        "generic_name": "Ranitidine",
+        "class": "H2 blocker",
+        "primary_indication": "GERD, peptic ulcer",
+        "why_unnecessary": "Not indicated for cardiac pain",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No effect on chest pain. This is MI, not GERD.",
+          "points": -3,
+          "aar_flag": "diagnostic_error"
+        },
+        "teaching_point": "CRITICAL: Don't assume chest pain is GERD without systematic assessment. This patient has CLASSIC MI presentation: crushing pain, radiation to arm/jaw, diaphoresis, duration >20 min, no relief with rest. Do 12-lead ECG FIRST before dismissing as GERD. Many MI patients die because someone said 'it's just indigestion.'"
+      }
+    ],
+
+    "appropriate_advanced": [
+      {
+        "name": "ticagrelor",
+        "generic_name": "Ticagrelor",
+        "brand_names": ["Brilique"],
+        "class": "P2Y12 inhibitor antiplatelet",
+        "primary_indication": "ACS (dual antiplatelet therapy with aspirin)",
+        "why_good": "Evidence-based second antiplatelet in ACS, superior to clopidogrel in trials",
+        "requires": "Loading dose 180mg PO (typically given in hospital after PCI decision made)",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Excellent advanced management. Ticagrelor loading dose appropriate in STEMI. Hospital will be pleased you started this. Antiplatelet effect develops over 2-4 hours.",
+          "clinical_note": "Ticagrelor shows superiority to clopidogrel in PLATO trial for ACS. However, typically hospital decision based on PCI strategy and bleeding risk. Advanced prehospital treatment if given, but aspirin is the essential one. Bonus points for this advanced care.",
+          "points_if_given": 5,
+          "aar_flag": "advanced_treatment_choice"
+        },
+        "teaching_point": "Ticagrelor (Brilique) is preferred P2Y12 inhibitor in ACS per ESC guidelines - superior to clopidogrel in PLATO trial (reduced CV death/MI/stroke). Loading dose 180mg. However: (1) Expensive, (2) Requires ongoing twice-daily dosing (compliance), (3) More bleeding than clopidogrel, (4) Hospital typically decides based on PCI strategy. Prehospital: aspirin is ESSENTIAL. Ticagrelor is bonus if you have it and protocol allows, but aspirin + rapid PCI are what save lives."
+      }
+    ]
+  },
+
+  "challenge_points": {
+    "available_challenges": [
+      {
+        "id": "CP1",
+        "name": "oxygen_in_normoxic_patient",
+        "priority": "critical",
+        "trigger": {
+          "type": "treatment_mentioned",
+          "keywords": ["oxygen", "O2", "15 liters", "non-rebreather"],
+          "condition": "patient SpO2 is 96% (normoxic) and student hasn't checked SpO2 or mentions giving oxygen automatically"
+        },
+        "skip_if": {
+          "student_checked_spo2_and_withheld": true,
+          "already_challenged_oxygen": true
+        },
+        "challenge_text": "I see you're reaching for oxygen. Before we apply it, what's the patient's current SpO2 reading, and what do the 2021 ERC guidelines say about routine oxygen use in acute coronary syndrome?",
+        "teaching_goal": "Evidence-based oxygen therapy - give ONLY if SpO2 <90%, not routinely. Tests knowledge of paradigm shift from traditional practice.",
+        "acceptable_responses": [
+          "Student checks SpO2 and finds 96%",
+          "Student states current guidelines recommend oxygen only if SpO2 <90%",
+          "Student recognizes paradigm shift from old practice",
+          "Student cites ERC 2021 or ACC/AHA 2025 guidelines",
+          "Student understands hyperoxia may cause harm"
+        ],
+        "resolution": {
+          "if_good_reasoning": "Excellent - you're applying evidence-based practice. The old 'everyone with chest pain gets oxygen' protocol has been replaced by selective use based on SpO2. His saturation is 96% - he doesn't need oxygen and giving it could actually cause coronary vasoconstriction. That's current best practice.",
+          "if_protocol_only": "I hear you want to help the patient, and oxygen seems like it should help. But studies showed that routine oxygen in normoxic MI patients may actually WORSEN outcomes through coronary vasoconstriction and free radicals. Check his SpO2 - it's 96%. Per ERC 2021, oxygen only if <90%. What's your decision now?",
+          "if_struggling": "Think about what oxygen does - it increases arterial oxygen content. But his SpO2 is 96% - his blood is already well-oxygenated. The problem isn't oxygen delivery, it's that his coronary artery is blocked. More oxygen in the blood won't fix the blockage, and studies show hyperoxia may cause coronary vasoconstriction. Save oxygen for when SpO2 drops <90%."
+        },
+        "estimated_duration_seconds": 60,
+        "cognitive_goal": "Prevent automatic protocol response without thinking. Challenge outdated practice with current evidence."
+      },
+      {
+        "id": "CP2",
+        "name": "aspirin_dose_and_administration",
+        "priority": "high",
+        "trigger": {
+          "type": "treatment_order",
+          "keywords": ["aspirin", "anopyrin", "100mg"],
+          "condition": "student orders aspirin but doesn't specify dose, route, or administration method"
+        },
+        "skip_if": {
+          "specific_order_given": true,
+          "already_challenged_aspirin": true
+        },
+        "challenge_text": "Good - aspirin is critical here. But I need specifics: what dose, what route, and most importantly, how should the patient take it?",
+        "teaching_goal": "Specific dosing matters - 200mg loading dose, must be CHEWED for rapid effect. Tests attention to detail in critical medication.",
+        "acceptable_responses": [
+          "200mg PO chewed",
+          "Loading dose (not maintenance 100mg)",
+          "Must be chewed for faster absorption",
+          "Chewing achieves effect in 14 min vs 30 min swallowed",
+          "Even though patient takes aspirin at home, needs loading dose in ACS"
+        ],
+        "resolution": {
+          "if_good_reasoning": "Perfect - 200mg chewed. You understand the pharmacokinetics: chewing achieves antiplatelet levels in 14 minutes versus 30 if swallowed. In ACS, every minute counts. Even though he takes 100mg at home, he needs a loading dose. The bitter taste is worth the mortality reduction.",
+          "if_protocol_only": "Protocol says aspirin, yes. But the DETAILS matter: wrong dose (100mg maintenance vs 200mg loading) or wrong administration (swallowed vs chewed) can delay effect by 15+ minutes. In MI, that's significant time. What specific dose and how should he take it?",
+          "if_struggling": "Think about goals: we need antiplatelet effect FAST. Regular daily aspirin is 100mg - takes 30 min to work when swallowed. In ACS: 200mg CHEWED achieves effect in 14 min. Yes, it tastes awful. But this is life-saving. Tell patient: 'Please chew this completely, I know it tastes bitter but it works faster.' Dose: 200mg. Route: PO chewed."
+        },
+        "estimated_duration_seconds": 45,
+        "cognitive_goal": "Precision in medication orders. Understanding pharmacokinetics informs clinical decisions."
+      },
+      {
+        "id": "CP3",
+        "name": "ecg_before_network_activation",
+        "priority": "critical",
+        "trigger": {
+          "type": "action_sequence_error",
+          "condition": "student wants to activate STEMI network or call hospital but hasn't performed 12-lead ECG yet"
+        },
+        "skip_if": {
+          "ecg_already_done": true,
+          "already_challenged_ecg": true
+        },
+        "challenge_text": "Hold on - before we activate the STEMI network, what critical diagnostic test do we need to perform and document first? Why can't we activate without it?",
+        "teaching_goal": "Cannot activate STEMI network without ECG confirmation. Tests understanding of system activation requirements.",
+        "acceptable_responses": [
+          "Need 12-lead ECG first",
+          "Must confirm STEMI on ECG before activating network",
+          "Can't activate cath lab without ECG documentation",
+          "Slovak protocol requires ECG within 4 minutes",
+          "ECG needed to differentiate STEMI from NSTEMI"
+        ],
+        "resolution": {
+          "if_good_reasoning": "Exactly right. We can't activate the STEMI network based on symptoms alone - we need ECG confirmation of STEMI. The cath lab team needs to know: (1) Is it STEMI? (2) Which territory? (3) Are there complications? The 12-lead answers these questions. Per Slovak protocol, get ECG within 4 minutes, then activate. Let's do the ECG now.",
+          "if_protocol_only": "I appreciate your urgency - he clearly needs emergency care. But the system requires ECG confirmation. Why? Because STEMI activation mobilizes expensive resources (cath lab team called in), and we need diagnostic confirmation. Also, ECG tells us WHICH artery is occluded - helps cath team prepare. Do the ECG first, interpret it, THEN activate.",
+          "if_struggling": "Think about it from the hospital's perspective: if you call and say 'STEMI activation,' they ask 'Where are the ST elevations? Which leads? Anterior or inferior?' You can't answer without ECG. Plus, symptoms can be misleading - GERD, pneumonia, anxiety can mimic MI. ECG is the objective test that confirms STEMI and guides treatment. Get it within 4 minutes per protocol."
+        },
+        "estimated_duration_seconds": 50,
+        "cognitive_goal": "Understand diagnostic confirmation requirements for system activation. Balance urgency with systematic approach."
+      },
+      {
+        "id": "CP4",
+        "name": "nitrate_safety_checks",
+        "priority": "high",
+        "trigger": {
+          "type": "treatment_mentioned",
+          "keywords": ["nitroglycerin", "nitromin", "nitrates", "GTN"],
+          "condition": "student mentions giving nitrates but hasn't verbalized safety checks"
+        },
+        "skip_if": {
+          "safety_checks_verbalized": true,
+          "already_challenged_nitrates": true
+        },
+        "challenge_text": "Before giving nitroglycerin, walk me through the three critical safety checks you need to perform. What could go catastrophically wrong if you miss these checks?",
+        "teaching_goal": "Nitrate safety: check BP, ask about Viagra/Cialis, identify MI location. Missing these can cause death.",
+        "acceptable_responses": [
+          "Check blood pressure (hold if <90 systolic)",
+          "Ask about PDE5 inhibitors (Viagra, Cialis, Levitra)",
+          "Viagra contraindicated within 24h, Cialis within 48h",
+          "Identify MI location on ECG (inferior + RV = contraindicated)",
+          "Check for nitrate patches (remove before giving more)",
+          "Combination with Viagra/Cialis causes severe hypotension and death"
+        ],
+        "resolution": {
+          "if_good_reasoning": "Perfect safety checks. (1) BP 145/88 - safe for nitrates. (2) Patient denies Viagra/Cialis in last 48h. (3) ECG shows anterior STEMI (V1-V4) - nitrates are SAFE in anterior MI. All three checks passed - you can give nitroglycerin safely. That systematic approach prevents deadly errors.",
+          "if_protocol_only": "Nitrates are in the protocol for ACS, true. But they can KILL the patient if given wrong. Three scenarios where nitrates cause death: (1) BP <90 - profound hypotension. (2) Patient took Viagra/Cialis - combination causes refractory hypotension. (3) Inferior MI with RV involvement - nitrates drop preload and patient crashes. Check these three things EVERY TIME.",
+          "if_struggling": "Think about deaths from medical errors: Patient having MI, paramedic gives nitrate, patient took Viagra for sex last night, patient's BP drops to 60 systolic, patient dies. This happens. Or: inferior MI + RV involvement, nitrate given, preload drops, cardiac output crashes, patient codes. Both preventable by asking three questions: (1) What's BP? (2) Any Viagra/Cialis in last 48h? (3) What does ECG show - anterior or inferior? This patient: BP 145 ✓, No Viagra ✓, Anterior STEMI ✓ = safe."
+        },
+        "estimated_duration_seconds": 60,
+        "cognitive_goal": "Systematic safety checks prevent lethal errors. Create mental checklist for high-risk medications."
+      },
+      {
+        "id": "CP5",
+        "name": "time_critical_stemi_network",
+        "priority": "critical",
+        "trigger": {
+          "type": "time_threshold",
+          "condition": "STEMI confirmed on ECG but student hasn't activated network within 2 minutes of interpretation"
+        },
+        "skip_if": {
+          "network_already_activated": true,
+          "already_challenged_activation": true
+        },
+        "challenge_text": "You've confirmed STEMI on the ECG. What's your next immediate action, and why does it need to happen RIGHT NOW before anything else?",
+        "teaching_goal": "STEMI network activation is time-critical - do it immediately after ECG interpretation, don't delay for full assessment or transport preparation.",
+        "acceptable_responses": [
+          "Activate STEMI network immediately",
+          "Call KOS (dispatch) and PKI centrum",
+          "Transmit ECG to hospital",
+          "Pre-hospital cath lab activation saves 20-40 minutes",
+          "Every minute delay increases mortality",
+          "Don't wait for transport - activate NOW"
+        ],
+        "resolution": {
+          "if_good_reasoning": "Exactly - STEMI network activation is THE priority once you've confirmed STEMI on ECG. Call dispatch, call PKI centrum, transmit ECG, state 'STEMI activation for 58-year-old male with anterior STEMI.' This triggers the cath lab team to come in early (they're not sitting there waiting). Pre-hospital activation reduces door-to-balloon time by 20-40 minutes and saves lives. Do it NOW, not in 5 minutes when you're done with exam.",
+          "if_protocol_only": "I see you want to complete your assessment first - that's usually good systematic practice. But STEMI is the exception. The national protocol says: STEMI = EMERGENCY. Every 30-minute delay from diagnosis to PCI increases 1-year mortality by 7.5%. The cath lab team needs prep time. While you're doing complete exam and packaging patient, 10 minutes pass - that's myocardium dying. Sequence: Confirm STEMI → ACTIVATE IMMEDIATELY → then finish exam during transport.",
+          "if_struggling": "Think about the big picture: patient's LAD artery is occluded RIGHT NOW. Myocardial cells are dying RIGHT NOW. PCI can open that artery, but cath lab team needs to be called in, room prepared, equipment ready - that takes time. If you activate NOW, they're ready when patient arrives. If you activate when you get to hospital, add 20-40 minutes. That's the difference between full recovery and permanent disability. Time is muscle. Activate now."
+        },
+        "estimated_duration_seconds": 55,
+        "cognitive_goal": "Understand system-level care. Front-load critical actions. Time-critical thinking."
+      }
+    ],
+    "usage_rules": {
+      "max_challenges_per_session": 2,
+      "selection_criteria": "AI selects challenges based on actual student errors during scenario, prioritizing by priority level (critical > high > medium > low)",
+      "timing": "Challenge immediately when trigger condition occurs, before allowing student to proceed",
+      "tone": "Supportive and educational, never punitive. Frame as 'let's think through this together' or 'help me understand your reasoning'"
+    }
+  },
+
+  "critical_decision_points": {
+    "available_evaluations": [
+      {
+        "id": "CDP1",
+        "decision": "ecg_timing_and_stemi_network_activation",
+        "description": "When to perform 12-lead ECG and activate STEMI network relative to other interventions",
+        "evaluate_if": "Student performed or didn't perform 12-lead ECG within first 5 minutes",
+        
+        "optimal_sequence": [
+          "Rapid initial assessment (30 seconds): crushing chest pain >20 min, radiation, diaphoresis = high-probability ACS",
+          "Immediate aspirin administration (2-3 minutes): 200mg PO chewed",
+          "12-lead ECG acquisition (within 4 minutes per Slovak protocol)",
+          "ECG interpretation (within 6 minutes): identify ST elevations V1-V4 = anterior STEMI",
+          "STEMI network activation (within 7 minutes): call KOS + PKI centrum, transmit ECG",
+          "Supportive care during preparation: check SpO2 (do NOT give O2 if ≥90%), IV access, consider nitrates if BP allows"
+        ],
+        
+        "factors_to_consider": [
+          "Slovak national protocol: 12-lead ECG within 4 minutes mandatory",
+          "Time = muscle: every 30 min delay increases 1-year mortality 7.5%",
+          "Pre-hospital cath lab activation reduces door-to-balloon time by 20-40 minutes",
+          "Cannot activate STEMI network without ECG confirmation",
+          "Aspirin can be given before ECG (doesn't require diagnosis confirmation)",
+          "Target symptom onset to PCI <120 minutes",
+          "This patient: pain started 25 min ago, so ~55 min remains to achieve <120 min target"
+        ],
+        
+        "scoring": {
+          "optimal": "Recognized high-probability ACS within 1 minute, gave aspirin 200mg chewed within 3 minutes, performed 12-lead ECG within 4 minutes, correctly interpreted anterior STEMI (V1-V4 ST elevation), immediately activated STEMI network (called KOS and PKI centrum) within 7 minutes, transmitted ECG electronically if able, communicated estimated arrival time, appropriately withheld oxygen (SpO2 96%). Demonstrated understanding that early ECG and network activation are time-critical actions that directly impact survival.",
+          
+          "acceptable": "Performed ECG within 5-8 minutes, recognized STEMI, activated network within 10 minutes. Minor delays but all critical steps completed. Understood importance even if timing not perfect. Aspirin given early. May have given oxygen unnecessarily but recognized primary importance of ECG and activation.",
+          
+          "suboptimal": "Delayed ECG >10 minutes while performing complete assessment, OR performed ECG but delayed network activation, OR failed to communicate STEMI urgency to receiving hospital, OR gave oxygen to normoxic patient without checking SpO2. Completed steps but in wrong sequence or with significant delays that impact patient outcome.",
+          
+          "dangerous": "Did not perform 12-lead ECG at all, OR performed ECG but failed to recognize STEMI pattern, OR recognized STEMI but did not activate network (just said 'let's transport'), OR gave beta blocker causing bradycardia/hypotension, OR gave benzodiazepines masking clinical status. Critical system failures that result in major treatment delays and increased mortality risk."
+        },
+        
+        "aar_teaching_point": "STEMI is a SYSTEM emergency, not just a patient emergency. The entire healthcare system must activate to get patient from scene to cath lab rapidly. Your role: (1) Recognize ACS quickly (high-probability presentation), (2) Give aspirin immediately (doesn't require ECG - give on suspicion), (3) Perform 12-lead ECG within 4 minutes (Slovak standard, international guideline ≤10 min), (4) Activate STEMI network immediately upon diagnosis - don't wait until hospital arrival. Pre-hospital cath lab activation saves 20-40 minutes door-to-balloon time and reduces mortality. Every minute counts: 30-minute delay = 7.5% increase in 1-year mortality. The sequence is: Quick recognition (60 sec) → Aspirin (within 3 min) → ECG (within 4 min) → Interpret → Activate (within 7 min) → Transport. NOT: Complete assessment → ECG → Transport → Hospital activates cath lab (this adds 20-40 min delay). Front-load the system activation."
+      },
+      
+      {
+        "id": "CDP2",
+        "decision": "oxygen_administration_decision_normoxic_acs",
+        "description": "Decision whether to give oxygen to normoxic ACS patient based on current evidence",
+        "evaluate_if": "Student gave or considered giving oxygen, OR appropriately withheld oxygen",
+        
+        "optimal_sequence": [
+          "Check SpO2: patient has 96% on room air",
+          "Recall current guidelines: ERC 2021 and ACC/AHA 2025 - oxygen ONLY if SpO2 <90%",
+          "Recognize patient is normoxic: SpO2 96% = no indication for oxygen",
+          "Withhold oxygen: can explain to patient if they ask ('your oxygen level is good, giving extra oxygen might actually be harmful')",
+          "Monitor SpO2 continuously: give oxygen if drops <90%",
+          "If patient deteriorates (cardiogenic shock, pulmonary edema), reassess oxygen need"
+        ],
+        
+        "factors_to_consider": [
+          "Current evidence: routine oxygen in normoxic MI patients may worsen outcomes",
+          "Mechanism of harm: hyperoxia causes coronary vasoconstriction and free radical damage",
+          "SpO2 96% = normoxic, no physiological need for supplemental oxygen",
+          "Old practice ('everyone with chest pain gets oxygen') is OUTDATED (pre-2015)",
+          "ERC 2021 and ACC/AHA 2025 explicitly state: oxygen only if SpO2 <90%",
+          "This tests whether student knows current evidence vs outdated protocols",
+          "Appropriate to give oxygen if SpO2 drops <90% or patient develops pulmonary edema/cardiogenic shock"
+        ],
+        
+        "scoring": {
+          "optimal": "Checked SpO2 (96%), recognized patient is normoxic, correctly withheld oxygen based on current ERC 2021/ACC 2025 guidelines, demonstrated knowledge that routine oxygen in normoxic MI patients may cause harm through vasoconstriction and free radical damage, stated would give oxygen if SpO2 <90%, monitored SpO2 continuously. Articulated paradigm shift from old practice to evidence-based practice.",
+          
+          "acceptable": "Initially considered oxygen (old habit) but upon checking SpO2 or being prompted, correctly recognized patient is normoxic and withheld oxygen. Showed ability to update practice based on current evidence even if initial instinct was outdated. Checked SpO2 before committing to oxygen.",
+          
+          "suboptimal": "Gave oxygen to normoxic patient based on outdated 'chest pain = oxygen' protocol, didn't check SpO2 before applying oxygen, didn't know or cite current guidelines, but didn't cause obvious harm (SpO2 went to 99%, patient tolerates it). Applied old practice without thinking about rationale or checking current evidence.",
+          
+          "dangerous": "Applied oxygen and achieved hyperoxia (SpO2 >98%) without recognizing potential for harm, OR argued that 'more oxygen is always better' when questioned, OR gave oxygen instead of addressing critical priorities (aspirin, ECG), OR used oxygen as distraction from proper systematic assessment. Demonstrated outdated knowledge and resistance to evidence-based practice updates."
+        },
+        
+        "aar_teaching_point": "MAJOR PARADIGM SHIFT in ACS management: Oxygen is NO LONGER routine. OLD practice (taught until ~2015): 'Everyone with chest pain gets oxygen.' NEW practice (ERC 2021, ACC/AHA 2025): 'Oxygen ONLY if SpO2 <90%.' Why the change? Multiple studies (DETO2X-AMI, AVOID trial) showed routine oxygen in normoxic MI patients doesn't help and may WORSEN outcomes. Mechanism: hyperoxia (too much oxygen) causes: (1) coronary vasoconstriction (makes ischemia worse), (2) free radical formation (cellular damage), (3) reduced coronary blood flow. This patient has SpO2 96% = normoxic = well-oxygenated. His problem isn't oxygen delivery; it's that his LAD is occluded. Giving extra oxygen won't fix the blockage and may cause vasoconstriction. Correct approach: Check SpO2 first. If ≥90%, do NOT give oxygen. If <90%, give oxygen to target 94-98% (not >98%). Monitor continuously - if drops <90%, then oxygen indicated. This is evidence-based medicine overriding tradition. Student must know current guidelines, not what was taught 10 years ago."
+      },
+      
+      {
+        "id": "CDP3",
+        "decision": "aspirin_loading_dose_administration",
+        "description": "Recognizing need for loading dose aspirin (200mg chewed) rather than maintenance dose, even if patient takes daily aspirin",
+        "evaluate_if": "Student gave or attempted to give aspirin",
+        
+        "optimal_sequence": [
+          "Identify high-probability ACS (crushing pain, radiation, diaphoresis, >20 min)",
+          "Ask about aspirin use: 'Do you take aspirin at home?' Patient: 'Yes, 100mg daily, but I ran out 2 weeks ago'",
+          "Recognize need for LOADING dose in ACS: 200mg, not maintenance 100mg",
+          "Administer: 'Please chew this tablet completely, it tastes bitter but works faster'",
+          "Give within 3 minutes of arrival",
+          "Document: '200mg aspirin chewed at [time]'",
+          "Explain to patient: 'This is a higher dose than you usually take because of the heart attack - it works faster when chewed'"
+        ],
+        
+        "factors_to_consider": [
+          "Loading dose 200mg achieves therapeutic effect in 14 minutes (chewed)",
+          "Maintenance dose 100mg takes 30+ minutes if swallowed",
+          "Even if patient takes daily aspirin, ACS requires LOADING dose for rapid effect",
+          "Patient stopped aspirin 2 weeks ago - antiplatelet effect completely gone",
+          "Chewing vs swallowing: 14 min vs 30 min to therapeutic levels",
+          "Aspirin reduces mortality in STEMI by 23% - most important prehospital drug",
+          "Give on high suspicion, don't wait for ECG confirmation"
+        ],
+        
+        "scoring": {
+          "optimal": "Asked about patient's aspirin use, recognized that daily aspirin at home (which patient hasn't taken for 2 weeks anyway) doesn't replace need for loading dose in ACS, administered 200mg PO chewed within 3 minutes, specified 'chewed' to patient for rapid absorption, documented dose and time, demonstrated understanding of pharmacokinetics (loading dose needed for rapid antiplatelet effect even if patient on maintenance therapy). Gave aspirin immediately on high suspicion of ACS, didn't wait for ECG.",
+          
+          "acceptable": "Gave aspirin 200mg within first 5 minutes, instructed patient to chew it, achieved appropriate administration even if didn't explicitly articulate difference between loading and maintenance dosing. Result was correct (200mg chewed early) even if reasoning not fully verbalized.",
+          
+          "suboptimal": "Gave aspirin 100mg (maintenance dose) instead of 200mg loading, OR gave 200mg but told patient to swallow instead of chew (losing 15 min in absorption time), OR significantly delayed aspirin administration (>10 min) while completing full assessment, OR didn't give aspirin at all initially but added it later when prompted. Achieved aspirin administration eventually but with delays or dosing errors that reduce efficacy.",
+          
+          "dangerous": "Did not give aspirin at all, OR gave aspirin but patient has known aspirin allergy (student didn't ask), OR gave aspirin after giving contraindicated medication like beta blocker first, OR said 'patient already takes aspirin at home so doesn't need more' (failing to understand loading vs maintenance), OR delayed aspirin >15 minutes for 'complete assessment.' Critical failure to provide the single most important prehospital intervention."
+        },
+        
+        "aar_teaching_point": "Aspirin is THE most important prehospital medication in STEMI - 23% reduction in mortality. Pharmacokinetics matter: In ACS, need LOADING dose 200mg (not maintenance 100mg) for rapid antiplatelet effect. Chewed aspirin achieves therapeutic levels in 14 minutes vs 30 minutes if swallowed - that 16-minute difference is significant in MI. Even if patient takes daily aspirin at home: (1) They may not have taken it today, (2) Maintenance dose is insufficient for acute thrombotic event, (3) Loading dose ensures rapid, complete platelet inhibition. In this case, patient stopped aspirin 2 weeks ago (ran out), so no residual antiplatelet effect. Sequence: Recognize probable ACS (60 sec) → Give aspirin 200mg chewed (within 3 min) → Continue with ECG and other interventions. Don't delay aspirin for 'complete assessment' - this is THE priority medication. Tell patient: 'Please chew this completely, I know it tastes awful but it works much faster.' The bitter taste is worth the life saved. Document: '200mg aspirin chewed at [time].' Timing matters: <3 min = optimal, 3-5 min = acceptable, >10 min = delayed (worse outcomes). Aspirin before anything except scene safety and high-probability ACS recognition."
+      }
+    ],
+    
+    "usage_rules": {
+      "max_evaluations_per_session": 3,
+      "selection_criteria": "AAR Agent evaluates the 3 most relevant CDPs based on what student actually did during scenario. If student didn't give oxygen, evaluate CDP2 to see if they correctly withheld. If student didn't perform ECG, evaluate CDP1 for critical omission. If student gave aspirin, evaluate CDP3 for dose/technique.",
+      "scoring_method": "For each CDP, assign performance level (optimal/acceptable/suboptimal/dangerous) based on observed actions, provide matched teaching point.",
+      "integration_with_performance": "CDP evaluations assess quality of clinical reasoning and decision-making process, separate from but complementary to critical actions checklist. CDPs identify WHY student succeeded or failed, not just WHAT they did."
+    }
+  },
+
+  "critical_actions_checklist": [
+    {
+      "id": "CA1",
+      "action": "Scene safety and BSI",
+      "category": "scene_safety",
+      "time_target_minutes": 1,
+      "points": 5,
+      "importance": "essential"
+    },
+    {
+      "id": "CA2",
+      "action": "Recognize high-probability ACS presentation",
+      "category": "assessment",
+      "time_target_minutes": 2,
+      "points": 10,
+      "importance": "critical",
+      "criteria": "Identifies crushing chest pain >20 min, radiation to arm/jaw, diaphoresis, high-risk features"
+    },
+    {
+      "id": "CA3",
+      "action": "Administer Aspirin 200mg PO CHEWED immediately",
+      "category": "treatment",
+      "time_target_minutes": 3,
+      "points": 25,
+      "importance": "critical",
+      "criteria": "Chewed aspirin given within 3-4 minutes of arrival, correct dose (200mg loading, not 100mg maintenance)"
+    },
+    {
+      "id": "CA4",
+      "action": "Perform 12-lead ECG",
+      "category": "assessment",
+      "time_target_minutes": 4,
+      "points": 20,
+      "importance": "critical",
+      "criteria": "12-lead ECG acquired within 4 minutes per Slovak protocol"
+    },
+    {
+      "id": "CA5",
+      "action": "Interpret ECG and recognize STEMI",
+      "category": "assessment",
+      "time_target_minutes": 6,
+      "points": 15,
+      "importance": "critical",
+      "criteria": "Correctly identifies ST elevations in V1-V4, recognizes anterior STEMI, verbalizes diagnosis"
+    },
+    {
+      "id": "CA6",
+      "action": "Activate STEMI network (contact KOS and PKI centrum)",
+      "category": "coordination",
+      "time_target_minutes": 7,
+      "points": 10,
+      "importance": "critical",
+      "criteria": "Calls dispatch and PKI center, transmits ECG if able, states 'STEMI activation' with patient details"
+    },
+    {
+      "id": "CA7",
+      "action": "Appropriate oxygen therapy decision (withhold if SpO2 ≥90% OR give if <90%)",
+      "category": "treatment",
+      "time_target_minutes": 3,
+      "points": 5,
+      "importance": "important",
+      "criteria": "Checks SpO2 first, follows ERC 2021 guidelines - does NOT give routine oxygen to normoxic patient"
+    },
+    {
+      "id": "CA8",
+      "action": "Administer Nitroglycerin 0.4mg SL (if BP allows and safety checks done)",
+      "category": "treatment",
+      "time_target_minutes": 5,
+      "points": 5,
+      "importance": "important",
+      "criteria": "Checks BP >90 systolic, asks about Viagra/Cialis use, verifies anterior MI (safe for nitrates), gives for symptom relief"
+    },
+    {
+      "id": "CA9",
+      "action": "Establish IV access",
+      "category": "treatment",
+      "time_target_minutes": 6,
+      "points": 5,
+      "importance": "important",
+      "criteria": "IV established and flushed, ready for medications if needed"
+    },
+    {
+      "id": "CA10",
+      "action": "Initiate rapid transport to PKI centrum",
+      "category": "coordination",
+      "time_target_minutes": 8,
+      "points": 0,
+      "importance": "essential",
+      "criteria": "Patient loaded and en route, team aware of time-critical transport, hospital pre-notified"
+    }
+  ],
+
+  "common_errors": [
+    {
+      "error_id": "E1",
+      "error": "Gave oxygen to normoxic patient (SpO2 96%)",
+      "teaching_point": "DO NOT give routine oxygen to normoxic ACS patients per ERC 2021 and ACC/AHA 2025 guidelines. Oxygen ONLY if SpO2 <90%. Hyperoxia may worsen outcomes through vasoconstriction and free radicals. This is major paradigm shift from old practice. Check SpO2 first, apply evidence-based guidelines."
+    },
+    {
+      "error_id": "E2",
+      "error": "Delayed aspirin administration >5 minutes",
+      "teaching_point": "Aspirin should be given within 2-3 minutes of arrival in suspected ACS. It's the most important prehospital drug for STEMI - reduces mortality by 23%. Give BEFORE completing full assessment. Give on high suspicion, don't wait for ECG confirmation. Time=muscle. Every minute of delay allows more thrombus formation."
+    },
+    {
+      "error_id": "E3",
+      "error": "Delayed or didn't perform 12-lead ECG within 4 minutes",
+      "teaching_point": "12-lead ECG must be acquired within 4 minutes per Slovak protocol (international guidelines ≤10 min). Cannot diagnose STEMI without ECG. Cannot activate STEMI network without STEMI diagnosis. Every minute of delay worsens outcomes. Sequence: Aspirin (3 min) → ECG (4 min) → Interpret → Activate. Don't delay ECG for complete head-to-toe exam."
+    },
+    {
+      "error_id": "E4",
+      "error": "Failed to activate STEMI network or delayed activation",
+      "teaching_point": "STEMI network activation is MANDATORY in Slovak protocol and saves lives. Must call immediately after confirming STEMI on ECG - don't delay for complete assessment or transport preparation. Pre-hospital cath lab activation reduces door-to-balloon time by 20-40 minutes and reduces mortality. Call KOS, call PKI centrum, transmit ECG, state 'STEMI activation for [age]M with anterior STEMI.' Do it NOW within 7 minutes of arrival, not when you get to hospital."
+    },
+    {
+      "error_id": "E5",
+      "error": "Gave nitrates without checking BP or asking about Viagra/Cialis",
+      "teaching_point": "ALWAYS check BP before nitrates (hold if systolic <90). ALWAYS ask about PDE5 inhibitors (sildenafil/Viagra, tadalafil/Cialis, vardenafil/Levitra) - combination with nitrates causes severe hypotension and death. Viagra contraindicated within 24 hours, Cialis within 48 hours, Levitra within 24 hours. Though anterior STEMI is generally safe for nitrates, BP and drug history are still critical. This is a medication safety fundamental - missing it can kill patient."
+    },
+    {
+      "error_id": "E6",
+      "error": "Performed excessive assessment before critical treatments",
+      "teaching_point": "STEMI is time-critical emergency. Sequence should be: (1) Recognize high-probability ACS in first 60 seconds (crushing pain, radiation, diaphoresis, >20 min), (2) Give aspirin immediately (within 3 min), (3) Perform 12-lead ECG within 4 min, (4) Interpret STEMI, (5) Activate network within 7 min, (6) THEN complete detailed assessment during transport. Don't delay aspirin and ECG for full systematic head-to-toe exam - front-load the time-critical interventions."
+    },
+    {
+      "error_id": "E7",
+      "error": "Didn't instruct patient to CHEW aspirin",
+      "teaching_point": "In ACS, patient must CHEW aspirin for faster absorption (onset 14 min vs 30 min if swallowed whole). This pharmacokinetic detail seems minor but makes clinical difference - 16 minutes faster antiplatelet effect. Tell patient: 'Please chew this tablet completely, I know it tastes terrible but it works much faster this way.' Document: '200mg aspirin CHEWED at [time].'"
+    },
+    {
+      "error_id": "E8",
+      "error": "Misinterpreted ECG or didn't recognize STEMI pattern",
+      "teaching_point": "Anterior STEMI shows ST elevation ≥2mm in two or more contiguous precordial leads (V1-V4). This patient: 3-4mm ST elevation in V1-V4. Reciprocal ST depression in inferior leads (II, III, aVF) confirms true STEMI (helps differentiate from pericarditis or early repolarization). Hyperacute T waves (tall peaked T waves) in anterior leads indicate very acute MI. Must master ECG interpretation - it's THE key diagnostic tool. ST elevation V1-V4 = LAD occlusion = anterior MI = large territory at risk = high mortality if not treated = EMERGENCY PCI."
+    },
+    {
+      "error_id": "E9",
+      "error": "Gave wrong aspirin dose (100mg maintenance instead of 200mg loading)",
+      "teaching_point": "ACS requires LOADING dose 200mg for rapid, complete platelet inhibition. Maintenance dose 100mg (what patient takes daily at home) is insufficient for acute thrombotic event. Even if patient takes daily aspirin, give 200mg loading dose in ACS. Physiologic rationale: loading dose achieves therapeutic antiplatelet levels faster and more completely than maintenance dosing."
+    },
+    {
+      "error_id": "E10",
+      "error": "Gave beta blocker (metoprolol) or other harmful medication",
+      "teaching_point": "Beta blockers can cause bradycardia and hypotension in acute MI. NOT for prehospital use in ACS. Beta blockers may be appropriate later in hospital AFTER patient stabilized, AFTER hemodynamics confirmed stable, AFTER excluding bradycardia/hypotension/heart failure. Prehospital: aspirin, nitrates (if safe), morphine (if needed). Let cardiologist decide about beta blockers after PCI. Other harmful meds: benzodiazepines (mask symptoms), adrenaline (increase O2 demand), atropine if not bradycardic."
+    }
+  ],
+
+  "cognitive_coach_questions": [
+    {
+      "trigger": "student_gives_oxygen_when_spo2_96",
+      "question": "I notice you're giving oxygen. Can you tell me the patient's current SpO2 and what the current ERC 2021 guidelines say about routine oxygen use in acute coronary syndrome?"
+    },
+    {
+      "trigger": "student_delays_aspirin",
+      "question": "What is the single most important medication you can give this patient right now, and how quickly should it be administered? What's the evidence for mortality benefit?"
+    },
+    {
+      "trigger": "student_delays_ecg",
+      "question": "What diagnostic test is absolutely critical within the first 4 minutes for this patient per Slovak protocol, and why is the timing so important for the system of care?"
+    },
+    {
+      "trigger": "student_doesnt_activate_stemi_network",
+      "question": "You've identified STEMI on the ECG. What is the next critical step according to Slovak national protocol, and why does it need to happen before transport? What are the time savings from pre-hospital activation?"
+    },
+    {
+      "trigger": "student_about_to_give_nitrates",
+      "question": "Before giving nitroglycerin, what three critical safety checks must you perform or ask about? What could happen if you miss any of these checks?"
+    },
+    {
+      "trigger": "student_gave_aspirin_100mg",
+      "question": "I see you gave aspirin. What dose did you give, and can you explain the difference between a loading dose and a maintenance dose in acute coronary syndrome?"
+    },
+    {
+      "trigger": "student_told_patient_to_swallow_aspirin",
+      "question": "How should the patient take the aspirin - swallow it or chew it? What's the difference in time to antiplatelet effect, and why does that matter in STEMI?"
+    }
+  ],
+
+  "aar_teaching_points": {
+    "key_concepts": [
+      "Aspirin 200mg CHEWED is most important prehospital drug - 23% mortality reduction",
+      "12-lead ECG within 4 minutes mandatory per Slovak protocol - cannot activate STEMI network without it",
+      "Pre-hospital STEMI network activation saves 20-40 minutes door-to-balloon time - call immediately after ECG",
+      "DO NOT give routine oxygen if SpO2 ≥90% - ERC 2021/ACC 2025 paradigm shift",
+      "Nitrate safety checks: BP >90, no Viagra/Cialis in 24-48h, identify MI location (inferior+RV = contraindicated)",
+      "Time is muscle: every 30-minute delay diagnosis-to-PCI increases 1-year mortality 7.5%",
+      "Anterior STEMI (V1-V4) = LAD occlusion = large territory = high-risk",
+      "Front-load critical actions: Aspirin (3 min) → ECG (4 min) → Activate (7 min) → then complete assessment during transport"
+    ],
+    "clinical_pearls": [
+      "Crushing chest pain + radiation to arm/jaw + diaphoresis = classic MI triad",
+      "Reciprocal ST depression (inferior leads) confirms true STEMI vs pericarditis",
+      "Hyperacute T waves = very early MI (<1 hour from onset)",
+      "Chewed aspirin: 14 min to effect. Swallowed: 30 min. That 16-minute difference matters.",
+      "Loading dose aspirin 200mg even if patient takes daily 100mg - different goals",
+      "Patient anxiety in MI is APPROPRIATE - don't sedate it, treat the MI",
+      "Sinus tachycardia (HR 98-110) in MI is physiologic response - not an arrhythmia to treat",
+      "Beta blockers in acute MI can cause shock - strictly hospital decision after stabilization",
+      "Nitroglycerin headache is expected - cerebral vasodilation",
+      "Morphine delays absorption of oral antiplatelet drugs - use for refractory pain only",
+      "SpO2 96-100% is normoxic - do NOT give oxygen (may worsen via vasoconstriction)",
+      "STEMI activation mobilizes cath lab team - they're not sitting there waiting, need prep time"
+    ],
+    "common_misconceptions": [
+      "WRONG: 'Everyone with chest pain gets oxygen' - CORRECT: Oxygen only if SpO2 <90% per current evidence",
+      "WRONG: 'Patient takes aspirin at home so doesn't need more' - CORRECT: Always give 200mg loading dose in ACS",
+      "WRONG: 'Let me complete full assessment before treating' - CORRECT: Front-load critical actions (aspirin, ECG, activate) then assess during transport",
+      "WRONG: 'Swallowing aspirin is fine' - CORRECT: Must CHEW for faster effect (14 vs 30 min)",
+      "WRONG: 'I'll activate STEMI when we get to hospital' - CORRECT: Activate immediately after ECG confirmation (saves 20-40 min)",
+      "WRONG: 'Beta blockers good for MI' - CORRECT: Can cause shock in acute phase, hospital decision only",
+      "WRONG: 'Give nitrates to everyone with chest pain' - CORRECT: Check BP, ask about Viagra/Cialis, identify MI location first",
+      "WRONG: 'Morphine is first-line for MI pain' - CORRECT: Nitrates first, morphine only if refractory (morphine delays antiplatelet absorption)",
+      "WRONG: 'Patient's tachycardia needs treatment' - CORRECT: Sinus tach is appropriate response to MI, treat the MI not the compensatory tachycardia",
+      "WRONG: 'More oxygen is always better' - CORRECT: Hyperoxia causes coronary vasoconstriction and may worsen outcomes"
+    ],
+    "evidence_based_updates": [
+      "ERC 2021: Oxygen only if SpO2 <90% in ACS (DETO2X-AMI, AVOID trials)",
+      "ACC/AHA 2025: Routine oxygen NOT recommended in normoxic ACS patients",
+      "PLATO trial: Ticagrelor superior to clopidogrel in ACS (if available)",
+      "ISIS-2 trial: Aspirin reduces mortality 23% in MI (most important prehospital drug)",
+      "Time-to-treatment studies: Pre-hospital cath lab activation reduces door-to-balloon by 20-40 min",
+      "Morphine effects: Delays absorption of ticagrelor/prasugrel - use for refractory pain only",
+      "Beta blockers: Early IV beta blockers in acute MI increase shock risk - delayed oral therapy only after stabilization"
+    ]
+  },
+
+  "simulation_config": {
+    "real_time_progression": true,
+    "auto_deterioration_if_no_treatment": true,
+    "improvement_requires_critical_treatments": true,
+    "allow_vf_arrest_complication": true,
+    "max_duration_minutes": 20,
+    "layer_two_enabled": true,
+    "challenge_points_active": true,
+    "max_challenges_per_session": 2,
+    "critical_decision_points_active": true,
+    "max_cdp_evaluations": 3,
+    "difficulty_level": "high",
+    "student_level": "second_year_paramedic_student",
+    "ecg_interpretation_required": true,
+    "stemi_network_activation_required": true,
+    "time_critical_emphasis": true,
+    "evidence_based_oxygen_testing": true
+  }
+}

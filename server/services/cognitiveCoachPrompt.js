@@ -1,0 +1,162 @@
+// Cognitive Coach Prompt Builder (ES Module Version)
+// Builds complete system prompt for Cognitive Coach Agent with dynamic context
+
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import cognitiveCoachService from './cognitiveCoachService.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load base prompt template once at startup
+let basePromptTemplate = null;
+
+function loadBasePrompt() {
+  if (!basePromptTemplate) {
+    const promptPath = path.join(__dirname, '../prompts/cognitiveCoachAgent.txt');
+    basePromptTemplate = fs.readFileSync(promptPath, 'utf8');
+    console.log('✅ Loaded Cognitive Coach base prompt');
+  }
+  return basePromptTemplate;
+}
+
+/**
+ * Build complete system prompt for Cognitive Coach Agent
+ * @param {Object} session - Current session object
+ * @returns {string} Complete system prompt with dynamic context
+ */
+export function buildCognitiveCoachPrompt(session) {
+  const basePrompt = loadBasePrompt();
+  const { cognitiveCoach } = session;
+  const { selectedQuestions, currentQuestionIndex } = cognitiveCoach;
+  
+  // Get selected question details
+  const questions = selectedQuestions.map(qID => 
+    cognitiveCoachService.getQuestionByID(qID)
+  );
+  
+  // Get all questions for reference
+  const allQuestions = cognitiveCoachService.getAllQuestions();
+  
+  // Calculate progress
+  const questionsRemaining = selectedQuestions.length - currentQuestionIndex;
+  const currentQuestionNumber = currentQuestionIndex + 1;
+  
+  // Determine current phase
+  let currentPhase;
+  if (currentQuestionIndex === 0 && session.messages.length <= 1) {
+    currentPhase = 'PHASE_1_INTRODUCTION';
+  } else if (currentQuestionIndex < selectedQuestions.length) {
+    currentPhase = 'PHASE_2_QUESTIONS';
+  } else {
+    currentPhase = 'PHASE_3_MENTAL_ORGANIZATION';
+  }
+  
+  // Get current question if in Phase 2
+  const currentQuestion = currentQuestionIndex < selectedQuestions.length 
+    ? questions[currentQuestionIndex] 
+    : null;
+  
+  // Build dynamic context
+  const dynamicContext = `
+
+═══════════════════════════════════════════════════════════════
+CURRENT SESSION CONTEXT (Dynamic Information)
+═══════════════════════════════════════════════════════════════
+
+SESSION INPUTS:
+
+[QUESTION_COUNT]: ${selectedQuestions.length}
+[SELECTED_QUESTIONS]: ${JSON.stringify(selectedQuestions)}
+[QUESTION_POOL]: Available below in QUESTION POOL REFERENCE section
+
+───────────────────────────────────────────────────────────────
+CURRENT SESSION PROGRESS:
+───────────────────────────────────────────────────────────────
+
+• Total questions for this session: ${selectedQuestions.length}
+• Current question number: ${currentQuestionNumber}
+• Questions remaining: ${questionsRemaining}
+• Current phase: ${currentPhase}
+
+───────────────────────────────────────────────────────────────
+SELECTED QUESTIONS FOR THIS SESSION:
+───────────────────────────────────────────────────────────────
+
+${questions.map((q, i) => `
+${i + 1}. [${q.questionID}] ${q.category}
+   ${i === currentQuestionIndex ? '👉 CURRENT QUESTION' : i < currentQuestionIndex ? '✅ COMPLETED' : '⏳ UPCOMING'}
+`).join('')}
+
+${currentQuestion ? `
+───────────────────────────────────────────────────────────────
+CURRENT QUESTION TO ASK (Question ${currentQuestionNumber}):
+───────────────────────────────────────────────────────────────
+
+**Question ID:** ${currentQuestion.questionID}
+**Category:** ${currentQuestion.category}
+
+**Setup (present verbatim):**
+"${currentQuestion.setup}"
+
+**Expected Good Reasoning:**
+${currentQuestion.expectedGoodReasoning.map((r, i) => `${i + 1}. ${r}`).join('\n')}
+
+**Common Flawed Reasoning:**
+${currentQuestion.commonFlawedReasoning.map((r, i) => `${i + 1}. ${r}`).join('\n')}
+
+**Coach Follow-Up Template:**
+"${currentQuestion.coachFollowUp}"
+
+**Instructions for this question:**
+1. Present the setup exactly as written above
+2. Listen to student response
+3. Evaluate against the criteria above
+4. Respond using the follow-up template (adapt to their specific answer)
+5. Move to next question or Phase 3 if this was the last question
+` : ''}
+
+───────────────────────────────────────────────────────────────
+QUESTION POOL REFERENCE (All 20 Questions):
+───────────────────────────────────────────────────────────────
+
+${JSON.stringify(allQuestions, null, 2)}
+
+═══════════════════════════════════════════════════════════════
+END OF DYNAMIC CONTEXT
+═══════════════════════════════════════════════════════════════
+
+**IMPORTANT EXECUTION INSTRUCTIONS:**
+
+${currentPhase === 'PHASE_1_INTRODUCTION' ? `
+You are starting with PHASE 1: INTRODUCTION
+→ Deliver the introduction script verbatim as defined in your system prompt
+→ After student confirms readiness, move to Phase 2 Question 1
+` : ''}
+
+${currentPhase === 'PHASE_2_QUESTIONS' ? `
+You are in PHASE 2: CHALLENGE QUESTIONS
+→ Present the current question (Question ${currentQuestionNumber}) shown above
+→ Follow the 5-step evaluation loop as defined in your system prompt
+→ After responding to this question, the backend will increment to Question ${currentQuestionNumber + 1}
+${questionsRemaining === 1 ? '→ This is the LAST question - after this, move to Phase 3' : ''}
+` : ''}
+
+${currentPhase === 'PHASE_3_MENTAL_ORGANIZATION' ? `
+You are at PHASE 3: MENTAL ORGANIZATION TECHNIQUE
+→ All questions have been completed
+→ Deliver the "Simplify and Focus" technique script as defined in your system prompt
+→ Wait for student confirmation
+→ Execute transition markers: [COGNITIVE_COACH_COMPLETE] [TRANSITION_TO_CORE_AGENT]
+` : ''}
+
+`;
+
+  return basePrompt + dynamicContext;
+}
+
+// Default export
+export default {
+  buildCognitiveCoachPrompt
+};
