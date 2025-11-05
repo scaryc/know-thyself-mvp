@@ -5,6 +5,7 @@ interface Message {
   role: 'user' | 'assistant' | 'system';
   content: string;
   timestamp: number;
+  isChallenge?: boolean;
 }
 
 interface ConversationPanelProps {
@@ -71,7 +72,8 @@ function ConversationPanel({
       const aiResponse: Message = {
         role: 'assistant',
         content: response.message,
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        isChallenge: response.isChallenge || false
       };
       setMessages(prev => [...prev, aiResponse]);
      
@@ -133,8 +135,16 @@ function ConversationPanel({
                 ? 'bg-accent text-white'
                 : msg.role === 'system'
                 ? 'bg-green-900 text-green-100 border border-green-700'
+                : msg.isChallenge
+                ? 'bg-yellow-900 text-yellow-100 border-2 border-yellow-600'
                 : 'bg-bg-secondary text-gray-300'
             }`}>
+              {msg.isChallenge && (
+                <div className="flex items-center space-x-2 mb-2 text-yellow-300">
+                  <span>💭</span>
+                  <span className="text-xs font-semibold">CHALLENGE QUESTION</span>
+                </div>
+              )}
               {msg.content}
             </div>
           </div>
