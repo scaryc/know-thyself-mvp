@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react';
+import { api } from '../../services/api';
+
 interface Vitals {
   HR: number;
   RR: number;
@@ -10,9 +13,35 @@ interface Vitals {
 
 interface VitalsMonitorProps {
   vitals: Vitals | null;
+  sessionId?: string; // ✅ NEW: Phase 5, Task 5.3
+  isAARMode?: boolean; // ✅ NEW: Phase 5, Task 5.3
+  onVitalsUpdate?: (vitals: Vitals) => void; // ✅ NEW: Phase 5, Task 5.3
 }
 
-function VitalsMonitor({ vitals }: VitalsMonitorProps) {
+function VitalsMonitor({ vitals, sessionId, isAARMode = false, onVitalsUpdate }: VitalsMonitorProps) {
+  const [currentVitals, setCurrentVitals] = useState<Vitals | null>(vitals);
+
+  // ✅ NEW: Real-time vitals polling (Phase 5, Task 5.3)
+  useEffect(() => {
+    if (!sessionId || isAARMode) return; // Don't poll during AAR
+
+    const interval = setInterval(async () => {
+      const stateData = await api.getSessionState(sessionId);
+      if (stateData && stateData.vitals) {
+        setCurrentVitals(stateData.vitals);
+        if (onVitalsUpdate) {
+          onVitalsUpdate(stateData.vitals);
+        }
+      }
+    }, 5000); // Poll every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [sessionId, isAARMode, onVitalsUpdate]);
+
+  // Update local state when props change
+  useEffect(() => {
+    setCurrentVitals(vitals);
+  }, [vitals]);
   const getAlertColor = (value: number, normal: [number, number]): string => {
     if (value < normal[0] * 0.8 || value > normal[1] * 1.2) return 'text-critical';
     if (value < normal[0] || value > normal[1]) return 'text-warning';
@@ -36,13 +65,13 @@ function VitalsMonitor({ vitals }: VitalsMonitorProps) {
       {/* Primary Vitals - HR, RR, BP */}
       <div className="grid grid-cols-3 gap-3 mb-3">
         {/* Heart Rate with ECG */}
-        <div className={`bg-bg-tertiary rounded-lg p-3 border-l-4 border-critical ${getAlertBg(vitals?.HR ?? 0, [60, 100])}`}>
+        <div className={`bg-bg-tertiary rounded-lg p-3 border-l-4 border-critical ${getAlertBg(currentVitals?.HR ?? 0, [60, 100])}`}>
           <div className="flex justify-between items-start mb-1">
             <div className="text-xs text-gray-400 font-semibold">HR</div>
             <div className="text-[10px] bg-critical text-white px-2 py-0.5 rounded">TACHY</div>
           </div>
-          <div className={`text-3xl font-bold font-mono ${getAlertColor(vitals?.HR ?? 0, [60, 100])} mb-2`}>
-            {vitals?.HR ?? '---'}
+          <div className={`text-3xl font-bold font-mono ${getAlertColor(currentVitals?.HR ?? 0, [60, 100])} mb-2`}>
+            {currentVitals?.HR ?? '---'}
             <span className="text-sm ml-1 text-gray-400">bpm</span>
           </div>
           {/* ECG Wave */}
@@ -74,13 +103,13 @@ function VitalsMonitor({ vitals }: VitalsMonitorProps) {
         </div>
 
         {/* Respiratory Rate with Wave */}
-        <div className={`bg-bg-tertiary rounded-lg p-3 border-l-4 border-warning ${getAlertBg(vitals?.RR ?? 0, [12, 20])}`}>
+        <div className={`bg-bg-tertiary rounded-lg p-3 border-l-4 border-warning ${getAlertBg(currentVitals?.RR ?? 0, [12, 20])}`}>
           <div className="flex justify-between items-start mb-1">
             <div className="text-xs text-gray-400 font-semibold">RR</div>
             <div className="text-[10px] bg-warning text-black px-2 py-0.5 rounded font-semibold">TACHY</div>
           </div>
-          <div className={`text-3xl font-bold font-mono ${getAlertColor(vitals?.RR ?? 0, [12, 20])} mb-2`}>
-            {vitals?.RR ?? '---'}
+          <div className={`text-3xl font-bold font-mono ${getAlertColor(currentVitals?.RR ?? 0, [12, 20])} mb-2`}>
+            {currentVitals?.RR ?? '---'}
             <span className="text-sm ml-1 text-gray-400">/min</span>
           </div>
           {/* Respiratory Wave */}
@@ -118,7 +147,7 @@ function VitalsMonitor({ vitals }: VitalsMonitorProps) {
             <div className="text-[10px] bg-warning text-black px-2 py-0.5 rounded font-semibold">HIGH</div>
           </div>
           <div className="text-3xl font-bold font-mono text-warning mb-2">
-            {vitals?.BP ?? '---'}
+            {currentVitals?.BP ?? '---'}
             <span className="text-sm ml-1 text-gray-400">mmHg</span>
           </div>
           <div className="h-8 flex items-center justify-center text-xs text-gray-500">
@@ -130,13 +159,13 @@ function VitalsMonitor({ vitals }: VitalsMonitorProps) {
       {/* Secondary Vitals Grid - SpO2, Temp, GCS, Glucose */}
       <div className="grid grid-cols-4 gap-2">
         {/* SpO2 with Pulse Wave */}
-        <div className={`bg-bg-tertiary rounded p-3 text-center border-l-2 border-critical ${getAlertBg(vitals?.SpO2 ?? 0, [95, 100])}`}>
+        <div className={`bg-bg-tertiary rounded p-3 text-center border-l-2 border-critical ${getAlertBg(currentVitals?.SpO2 ?? 0, [95, 100])}`}>
           <div className="flex justify-between items-center mb-1">
             <div className="text-[10px] text-gray-500 uppercase">SpO₂</div>
             <div className="text-[8px] bg-critical/70 text-white px-1.5 py-0.5 rounded">LOW</div>
           </div>
-          <div className={`text-2xl font-bold font-mono ${getAlertColor(vitals?.SpO2 ?? 0, [95, 100])} mb-1`}>
-            {vitals?.SpO2 ?? '---'}
+          <div className={`text-2xl font-bold font-mono ${getAlertColor(currentVitals?.SpO2 ?? 0, [95, 100])} mb-1`}>
+            {currentVitals?.SpO2 ?? '---'}
             <span className="text-xs ml-1 text-gray-400">%</span>
           </div>
           {/* Mini Pulse Wave */}
@@ -171,7 +200,7 @@ function VitalsMonitor({ vitals }: VitalsMonitorProps) {
           <div className="text-[10px] text-gray-500 uppercase mb-1 flex items-center justify-center gap-1">
             <span>🌡️</span> Temp
           </div>
-          <div className="text-2xl font-mono font-bold text-normal">{vitals?.Temp ?? '---'}</div>
+          <div className="text-2xl font-mono font-bold text-normal">{currentVitals?.Temp ?? '---'}</div>
           <div className="text-[9px] text-gray-500">°C</div>
         </div>
 
@@ -179,7 +208,7 @@ function VitalsMonitor({ vitals }: VitalsMonitorProps) {
           <div className="text-[10px] text-gray-500 uppercase mb-1 flex items-center justify-center gap-1">
             <span>🧠</span> GCS
           </div>
-          <div className="text-2xl font-mono font-bold text-warning">{vitals?.GCS ?? '---'}</div>
+          <div className="text-2xl font-mono font-bold text-warning">{currentVitals?.GCS ?? '---'}</div>
           <div className="text-[9px] text-gray-500">E4 V4 M6</div>
         </div>
 
@@ -187,7 +216,7 @@ function VitalsMonitor({ vitals }: VitalsMonitorProps) {
           <div className="text-[10px] text-gray-500 uppercase mb-1 flex items-center justify-center gap-1">
             <span>🩸</span> Glucose
           </div>
-          <div className="text-2xl font-mono font-bold text-normal">{vitals?.Glycemia ?? '---'}</div>
+          <div className="text-2xl font-mono font-bold text-normal">{currentVitals?.Glycemia ?? '---'}</div>
           <div className="text-[9px] text-gray-500">mmol/L</div>
         </div>
       </div>

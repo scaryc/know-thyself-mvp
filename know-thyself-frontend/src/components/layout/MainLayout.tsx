@@ -13,6 +13,7 @@ interface MainLayoutProps {
   currentAgent: 'cognitive_coach' | 'core' | null; // ✅ NEW
   onAgentTransition: (newAgent: 'core', scenarioData: any) => void; // ✅ NEW
   onAARComplete?: () => void; // ✅ NEW: Phase 5, Task 5.2
+  isAARMode?: boolean; // ✅ NEW: Phase 5, Task 5.3
 }
 
 function MainLayout({
@@ -23,7 +24,8 @@ function MainLayout({
   onNotesUpdate,
   currentAgent, // ✅ NEW
   onAgentTransition, // ✅ NEW
-  onAARComplete // ✅ NEW: Phase 5, Task 5.2
+  onAARComplete, // ✅ NEW: Phase 5, Task 5.2
+  isAARMode = false // ✅ NEW: Phase 5, Task 5.3
 }: MainLayoutProps) {
   
   // ✅ NEW: During Cognitive Coach, show only the chat panel (full width)
@@ -64,7 +66,12 @@ function MainLayout({
 
         {/* Middle Panel - Vitals Monitor */}
         <div className="col-span-3 bg-bg-secondary rounded-lg p-4 overflow-y-auto">
-          <VitalsMonitor vitals={currentVitals} />
+          <VitalsMonitor
+            vitals={currentVitals}
+            sessionId={sessionId}
+            isAARMode={isAARMode}
+            onVitalsUpdate={onVitalsUpdate}
+          />
         </div>
 
         {/* Right Panel - Clinical Data */}

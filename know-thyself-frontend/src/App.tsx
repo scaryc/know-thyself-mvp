@@ -195,6 +195,7 @@ function App() {
           currentAgent={currentAgent} // ✅ NEW: Pass currentAgent to MainLayout
           onAgentTransition={handleAgentTransition} // ✅ NEW: Pass transition handler
           onAARComplete={() => setSessionComplete(true)} // ✅ NEW: Phase 5, Task 5.2
+          isAARMode={isAARMode} // ✅ NEW: Phase 5, Task 5.3
         />
       )}
     </div>
