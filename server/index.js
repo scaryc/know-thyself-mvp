@@ -2307,8 +2307,8 @@ CURRENT VITALS: HR ${session.vitals.HR || '?'}, RR ${session.vitals.RR || '?'}, 
     // Get challenge context if available
     const challengeContext = session.challengeContext || '';
 
-    // Get challenge feedback context if available
-    const challengeFeedbackContext = session.challengeFeedbackContext || '';
+    // Challenge feedback context already declared above (line 2043)
+    // No need to redeclare - just use the existing variable
 
     // Build system prompt with CHALLENGE CONTEXT as HIGHEST PRIORITY
     // When a challenge is active, AI must ask the question BEFORE continuing scenario
