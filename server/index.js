@@ -134,6 +134,104 @@ function initializeGroupCounts() {
 initializeGroupCounts();
 
 // ============================================================================
+// LAYER 3: FEATURE 3 - AUTO-SAVE ON COMPLETION
+// ============================================================================
+
+/**
+ * Format duration in seconds to human-readable string
+ */
+function formatDuration(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins} minutes ${secs} seconds`;
+}
+
+/**
+ * Generate scenario summaries from session data
+ */
+function generateScenarioSummaries(session) {
+  const summaries = [];
+  const completedScenarios = session.completedScenarios || [];
+
+  completedScenarios.forEach((scenarioData, index) => {
+    const duration = scenarioData.duration || 'unknown';
+    const finalState = scenarioData.finalState || 'unknown';
+    const finalVitals = scenarioData.finalVitals || {};
+
+    summaries.push({
+      scenarioId: scenarioData.scenarioId || `scenario_${index + 1}`,
+      scenarioTitle: scenarioData.title || scenarioData.scenarioId || `Scenario ${index + 1}`,
+      duration: duration,
+      finalState: finalState,
+      finalVitals: finalVitals
+    });
+  });
+
+  return summaries;
+}
+
+/**
+ * Save student data to disk when session completes
+ * Layer 3: Feature 3 - Auto-Save on Completion
+ */
+async function saveStudentData(session) {
+  try {
+    // Calculate elapsed time
+    const elapsedSeconds = (Date.now() - session.startTime) / 1000;
+
+    const studentData = {
+      studentId: session.studentId,
+      studentName: session.studentName,
+      studentEmail: session.studentEmail,
+      group: session.group,
+      sessionId: session.sessionId,
+
+      timestamps: {
+        registered: session.registeredAt || null,
+        sessionStarted: new Date(session.startTime).toISOString(),
+        sessionCompleted: session.completedAt,
+        totalElapsed: formatDuration(elapsedSeconds)
+      },
+
+      performance: calculatePerformanceScore(session),
+      scenarios: generateScenarioSummaries(session),
+      criticalActions: session.criticalActionsLog || [],
+      challengePoints: session.challengePointsUsed || [],
+      aarTranscript: aarService.getConversationHistory(session.sessionId),
+
+      metadata: {
+        version: 'Layer3_MVP',
+        challengePointsEnabled: session.challengePointsEnabled,
+        scenariosCompleted: (session.completedScenarios || []).length,
+        totalMessages: (session.messages || []).length,
+        sessionComplete: true
+      }
+    };
+
+    // Save to primary location
+    const primaryPath = path.join(__dirname, '../data/students', `${session.studentId}.json`);
+    await fs.promises.mkdir(path.dirname(primaryPath), { recursive: true });
+    await fs.promises.writeFile(primaryPath, JSON.stringify(studentData, null, 2));
+
+    // Save to backup location (organized by date)
+    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    const backupDir = path.join(__dirname, '../data/backups', today);
+    await fs.promises.mkdir(backupDir, { recursive: true });
+
+    const backupPath = path.join(backupDir, `${session.studentId}.json`);
+    await fs.promises.writeFile(backupPath, JSON.stringify(studentData, null, 2));
+
+    console.log(`💾 Saved: ${primaryPath}`);
+    console.log(`💾 Backup: ${backupPath}`);
+
+    return { success: true, primaryPath, backupPath };
+  } catch (error) {
+    console.error('❌ Error saving student data:', error);
+    throw error;
+  }
+}
+
+// ============================================================================
 // API ENDPOINTS
 // ============================================================================
 
@@ -3139,7 +3237,26 @@ app.post('/api/sessions/:sessionId/aar/message', async (req, res) => {
     if (isComplete) {
       aarMessage = aarMessage.replace('[AAR_COMPLETE]', '').trim();
       aarService.updatePhase(sessionId, 'complete');
-      console.log('✅ AAR session completed');
+
+      // Layer 3: Feature 3 - Mark session as complete and auto-save
+      const session = sessions.get(sessionId);
+      if (session) {
+        session.sessionComplete = true;
+        session.completedAt = new Date().toISOString();
+
+        // AUTO-SAVE to disk (if student is registered)
+        if (session.studentId) {
+          try {
+            await saveStudentData(session);
+            console.log('✅ AAR session completed and data saved:', session.studentId);
+          } catch (error) {
+            console.error('❌ Error saving student data:', error);
+            // Don't fail the request if save fails - student data is still in memory
+          }
+        } else {
+          console.log('✅ AAR session completed (no student ID - data not saved)');
+        }
+      }
     }
 
     // Add response to history
