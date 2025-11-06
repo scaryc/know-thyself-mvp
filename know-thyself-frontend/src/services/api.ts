@@ -1,11 +1,18 @@
 class ApiService {
   private baseURL = 'http://localhost:3001/api';
 
-  async startSession(scenarioId: string) {
+  async startSession(scenarioId: string, studentId?: string) {
+    const body: any = { scenarioId };
+
+    // Layer 3: Include studentId if provided (for A/B group auto-configuration)
+    if (studentId) {
+      body.studentId = studentId;
+    }
+
     const response = await fetch(`${this.baseURL}/sessions/start`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ scenarioId })
+      body: JSON.stringify(body)
     });
     return response.json();
   }

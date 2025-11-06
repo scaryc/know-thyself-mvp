@@ -54,21 +54,218 @@ Be authentic and follow the scenario context provided.`;
 }
 
 // ============================================================================
+// STUDENT REGISTRATION (Layer 3 - MVP Testing)
+// ============================================================================
+
+// Track A/B group counts for automatic balancing
+let groupCounts = { A: 0, B: 0 };
+
+/**
+ * Generate unique student ID from name
+ * Format: {name_part}_{timestamp}{random}
+ * Example: "alice_smith_lx3k9p2m7"
+ */
+function generateStudentId(name) {
+  // Create URL-safe name part
+  const namePart = name
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '_')      // Spaces to underscores
+    .replace(/[^a-z0-9_]/g, '') // Remove special chars
+    .substring(0, 30);          // Max 30 chars
+
+  // Add unique suffix
+  const timestamp = Date.now().toString(36); // Base-36 timestamp
+  const random = Math.random().toString(36).substring(2, 7); // 5 random chars
+
+  return `${namePart}_${timestamp}${random}`;
+}
+
+/**
+ * Assign A/B group with automatic 50/50 balancing
+ * Strategy: If groups equal, random. Otherwise, assign to smaller group.
+ */
+function assignGroup() {
+  // If equal, randomly assign
+  if (groupCounts.A === groupCounts.B) {
+    const group = Math.random() < 0.5 ? 'A' : 'B';
+    groupCounts[group]++;
+    return group;
+  }
+
+  // If unbalanced, assign to smaller group to maintain balance
+  const group = groupCounts.A < groupCounts.B ? 'A' : 'B';
+  groupCounts[group]++;
+  return group;
+}
+
+/**
+ * Initialize group counts from existing student files on server start
+ */
+function initializeGroupCounts() {
+  try {
+    const studentsDir = path.join(__dirname, '../data/students');
+    if (!fs.existsSync(studentsDir)) {
+      fs.mkdirSync(studentsDir, { recursive: true });
+      return;
+    }
+
+    const files = fs.readdirSync(studentsDir);
+    groupCounts = { A: 0, B: 0 };
+
+    files.forEach(file => {
+      if (file.endsWith('.json')) {
+        const filePath = path.join(studentsDir, file);
+        const studentData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        if (studentData.group === 'A' || studentData.group === 'B') {
+          groupCounts[studentData.group]++;
+        }
+      }
+    });
+
+    console.log('📊 Initialized group counts:', groupCounts);
+  } catch (error) {
+    console.error('Error initializing group counts:', error);
+    groupCounts = { A: 0, B: 0 };
+  }
+}
+
+// Initialize on server start
+initializeGroupCounts();
+
+// ============================================================================
 // API ENDPOINTS
 // ============================================================================
 
 /**
+ * POST /api/student/register
+ * Register a new student for MVP testing
+ * Generates unique student ID and assigns A/B group with automatic balancing
+ */
+app.post('/api/student/register', async (req, res) => {
+  try {
+    const { name, email, consent } = req.body;
+
+    // Validation
+    if (!name || name.trim().length < 2) {
+      return res.status(400).json({
+        success: false,
+        error: 'Please enter your full name (at least 2 characters)'
+      });
+    }
+
+    if (name.length > 100) {
+      return res.status(400).json({
+        success: false,
+        error: 'Name must be less than 100 characters'
+      });
+    }
+
+    // Validate name contains only letters and spaces
+    if (!/^[a-zA-Z\s]+$/.test(name)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Name must contain only letters and spaces'
+      });
+    }
+
+    // Validate email if provided
+    if (email && email.trim().length > 0) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return res.status(400).json({
+          success: false,
+          error: 'Please enter a valid email address'
+        });
+      }
+    }
+
+    // Validate consent
+    if (!consent) {
+      return res.status(400).json({
+        success: false,
+        error: 'You must consent to data collection to participate'
+      });
+    }
+
+    // Generate student ID and assign group
+    const studentId = generateStudentId(name);
+    const group = assignGroup();
+
+    // Create student data
+    const studentData = {
+      studentId,
+      studentName: name.trim(),
+      studentEmail: email?.trim() || null,
+      group,
+      registeredAt: new Date().toISOString(),
+      sessionId: null,
+      status: 'registered'
+    };
+
+    // Save to disk immediately
+    const studentsDir = path.join(__dirname, '../data/students');
+    if (!fs.existsSync(studentsDir)) {
+      fs.mkdirSync(studentsDir, { recursive: true });
+    }
+
+    const studentFilePath = path.join(studentsDir, `${studentId}.json`);
+    fs.writeFileSync(studentFilePath, JSON.stringify(studentData, null, 2));
+
+    console.log(`✅ Student registered: ${studentId} (Group ${group})`);
+    console.log(`📊 Current group counts: A=${groupCounts.A}, B=${groupCounts.B}`);
+
+    res.json({
+      success: true,
+      studentId,
+      group,
+      message: `Welcome, ${name.trim()}! You've been assigned to Group ${group}.`
+    });
+
+  } catch (error) {
+    console.error('❌ Registration error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Server error during registration. Please try again.'
+    });
+  }
+});
+
+/**
  * POST /api/sessions/start
  * Start a new training session
+ * Modified for Layer 3: Accepts studentId and auto-configures based on A/B group
  */
 app.post('/api/sessions/start', async (req, res) => {
   try {
-    const { scenarioId = 'asthma_mvp_001' } = req.body;
+    const { scenarioId = 'asthma_mvp_001', studentId } = req.body;
 
-    // Allow A/B testing configuration
-    const challengePointsEnabled = req.body.challengePointsEnabled !== undefined
-      ? req.body.challengePointsEnabled
-      : true; // Default: enabled
+    // Layer 3: Load student data if provided
+    let studentData = null;
+    let challengePointsEnabled = true; // Default
+
+    if (studentId) {
+      try {
+        const studentFilePath = path.join(__dirname, '../data/students', `${studentId}.json`);
+        if (fs.existsSync(studentFilePath)) {
+          studentData = JSON.parse(fs.readFileSync(studentFilePath, 'utf8'));
+          // Auto-configure based on A/B group
+          // Group A = Challenge Points ENABLED
+          // Group B = Challenge Points DISABLED
+          challengePointsEnabled = studentData.group === 'A';
+          console.log(`👤 Student: ${studentData.studentName} (Group ${studentData.group})`);
+        } else {
+          console.warn(`⚠️ Student file not found: ${studentId}`);
+        }
+      } catch (error) {
+        console.error('Error loading student data:', error);
+      }
+    } else {
+      // Fallback: Allow manual A/B testing configuration (backward compatibility)
+      challengePointsEnabled = req.body.challengePointsEnabled !== undefined
+        ? req.body.challengePointsEnabled
+        : true;
+    }
 
     console.log('🎓 Starting new session with Cognitive Coach');
     console.log('Challenge Points:', challengePointsEnabled ? 'ENABLED' : 'DISABLED');
@@ -81,10 +278,16 @@ app.post('/api/sessions/start', async (req, res) => {
     const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
     // Store MINIMAL session (scenario loads later at transition)
-    sessions.set(sessionId, {
+    const session = {
       sessionId,
       currentAgent: 'cognitive_coach',
       scenarioId: scenarioId, // Store for later use
+
+      // Layer 3: Student identity (MVP testing)
+      studentId: studentData?.studentId || null,
+      studentName: studentData?.studentName || null,
+      studentEmail: studentData?.studentEmail || null,
+      group: studentData?.group || null,
 
       // Cognitive Coach state
       cognitiveCoach: {
@@ -117,7 +320,21 @@ app.post('/api/sessions/start', async (req, res) => {
       messages: [],
       startTime: Date.now()
       // NO engine, NO measuredVitals, NO patientNotes yet
-    });
+    };
+
+    sessions.set(sessionId, session);
+
+    // Layer 3: Update student file with session ID
+    if (studentData) {
+      try {
+        studentData.sessionId = sessionId;
+        studentData.status = 'active';
+        const studentFilePath = path.join(__dirname, '../data/students', `${studentId}.json`);
+        fs.writeFileSync(studentFilePath, JSON.stringify(studentData, null, 2));
+      } catch (error) {
+        console.error('Error updating student file:', error);
+      }
+    }
     
     console.log('✅ Session created (Cognitive Coach mode):', sessionId);
     

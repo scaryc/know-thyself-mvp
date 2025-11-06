@@ -1,10 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MainLayout from './components/layout/MainLayout';
 import Header from './components/layout/Header';
 import SessionComplete from './components/SessionComplete';
+import Registration from './components/Registration';
 import { api } from './services/api';
 
 function App() {
+  // Layer 3: Student registration state
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [studentId, setStudentId] = useState<string | null>(null);
+  const [studentName, setStudentName] = useState<string | null>(null);
+  const [group, setGroup] = useState<string | null>(null);
+
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [isActive, setIsActive] = useState(false);
   const [scenarioStartTime, setScenarioStartTime] = useState<number>(Date.now());
@@ -25,6 +32,30 @@ function App() {
   // ✅ NEW: Track session completion
   const [sessionComplete, setSessionComplete] = useState(false);
 
+  // Layer 3: Check for existing registration on mount
+  useEffect(() => {
+    const savedStudentId = localStorage.getItem('kt_studentId');
+    const savedStudentName = localStorage.getItem('kt_studentName');
+    const savedGroup = localStorage.getItem('kt_group');
+
+    if (savedStudentId && savedStudentName && savedGroup) {
+      console.log(`👤 Existing student found: ${savedStudentName} (Group ${savedGroup})`);
+      setStudentId(savedStudentId);
+      setStudentName(savedStudentName);
+      setGroup(savedGroup);
+      setIsRegistered(true);
+    }
+  }, []);
+
+  // Layer 3: Handle registration completion
+  const handleRegistrationComplete = (newStudentId: string, newGroup: string, newStudentName: string) => {
+    console.log(`✅ Registration complete: ${newStudentName} (${newStudentId}, Group ${newGroup})`);
+    setStudentId(newStudentId);
+    setStudentName(newStudentName);
+    setGroup(newGroup);
+    setIsRegistered(true);
+  };
+
   const handleStartSession = async () => {
     // Define all available scenarios and randomly select 3
     const allScenarios = ['ASTHMA_MVP_001', 'STEMI_MVP_001', 'SEIZURE_MVP_001', 'TBI_MVP_001'];
@@ -37,8 +68,8 @@ function App() {
 
     console.log('Selected scenarios for this session:', selectedScenarios);
 
-    // Start first scenario
-    const response = await api.startSession(selectedScenarios[0]);
+    // Layer 3: Start first scenario with student ID
+    const response = await api.startSession(selectedScenarios[0], studentId || undefined);
     console.log('Backend response:', response);
     
     setSessionId(response.sessionId);
@@ -164,6 +195,11 @@ function App() {
     sessionStorage.clear();
   };
 
+  // Layer 3: Show registration screen if not registered
+  if (!isRegistered) {
+    return <Registration onRegistrationComplete={handleRegistrationComplete} />;
+  }
+
   return (
     <div className="min-h-screen bg-bg-primary text-white">
       <Header
@@ -181,7 +217,10 @@ function App() {
         <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
           <div className="text-center">
             <h2 className="text-3xl font-bold mb-4">Emergency Medical Training</h2>
-            <p className="text-gray-400 mb-8">Practice your paramedic skills in a safe environment</p>
+            <p className="text-gray-400 mb-8 max-w-lg mx-auto">
+              Welcome, {studentName}! You're in Group {group}.<br />
+              Practice your paramedic skills in a safe environment.
+            </p>
             <button
               onClick={handleStartSession}
               className="px-8 py-4 bg-accent hover:bg-blue-600 rounded-lg text-lg font-semibold transition-colors"
