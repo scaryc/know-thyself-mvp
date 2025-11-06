@@ -1,9 +1,9 @@
-# Layer 3: MVP Testing Sprint - Development Plan
+# Layer 3: MVP Testing Sprint - Development Plan (Revised)
 
-**Version**: 1.0
+**Version**: 2.0
 **Date**: November 6, 2024
 **Purpose**: Enable controlled MVP testing session with 10-20 students
-**Timeline**: 4-5 days development
+**Timeline**: 2-3 days development
 
 ---
 
@@ -27,23 +27,35 @@
 
 Enable a controlled testing session where:
 - ✅ Students can self-register with just name/email
-- ✅ A/B groups are automatically balanced (50/50)
-- ✅ Students can pause and resume sessions
+- ✅ A/B groups are **automatically balanced** (50/50)
+- ✅ **Students MUST resume where they left off** if browser crashes/refreshes
 - ✅ All data is automatically saved (no manual export needed)
-- ✅ Instructor can monitor progress in real-time
-- ✅ Data export is one-click to CSV
+- ✅ Data export is simple (CSV export function)
 - ✅ System is robust (no data loss, can handle crashes)
+
+### What Was Removed Based on Requirements
+
+- ❌ **Pause Button** - Not needed (per your decision)
+- ❌ **Admin Dashboard** - Not needed (per your decision)
+
+### Core Features (4 Total)
+
+1. **Student Registration System** - Simple name/email → auto ID/group
+2. **Session Resume** - Browser refresh recovery (CRITICAL requirement)
+3. **Auto-Save on Completion** - Data persistence to disk
+4. **CSV Export** - One-click data export for analysis
 
 ### Testing Scenario
 
 **Day of Testing**:
-1. Instructor starts server and opens admin dashboard
+1. Instructor starts server
 2. Students arrive, open link: `http://localhost:3001`
 3. Students register (name + email) → auto-assigned to Group A or B
 4. Students complete training (60-90 min) independently
-5. Sessions auto-save on completion
-6. Instructor exports all data to CSV
-7. Statistical analysis of Group A vs Group B
+5. If browser crashes → **automatically resumes where they left off**
+6. Sessions auto-save on completion to disk
+7. Instructor runs export script to get CSV
+8. Statistical analysis of Group A vs Group B
 
 **Participants**: 10-20 students simultaneously
 
@@ -61,14 +73,14 @@ Enable a controlled testing session where:
 - ✅ Student enters full name (required)
 - ✅ Student enters email (optional)
 - ✅ System generates unique student ID automatically
-- ✅ System assigns Group A or B with 50/50 balancing
+- ✅ System assigns Group A or B with **automatic 50/50 balancing**
 - ✅ Student starts training immediately
 - ✅ Registration data persisted to disk
 - ✅ Duplicate names handled (unique IDs)
 
 #### UI Specification
 
-**Registration Screen** (`/register`):
+**Registration Screen** (`/`):
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -96,8 +108,8 @@ Enable a controlled testing session where:
 │            │  Start Training    │                       │
 │            └────────────────────┘                       │
 │                                                         │
-│  Note: Training takes 60-90 minutes. You can pause     │
-│  anytime and resume later.                             │
+│  Note: Training takes 60-90 minutes. If your browser   │
+│  crashes, you can resume where you left off.           │
 │                                                         │
 └─────────────────────────────────────────────────────────┘
 ```
@@ -148,7 +160,7 @@ function generateStudentId(name) {
 // "Alice Smith" (duplicate) → "alice_smith_lx3k9r8p5" (different suffix)
 ```
 
-**A/B Group Balancing**:
+**A/B Group Automatic Balancing**:
 ```javascript
 // Track group counts in memory
 let groupCounts = { A: 0, B: 0 };
@@ -161,13 +173,14 @@ function assignGroup() {
     return group;
   }
 
-  // If unbalanced, assign to smaller group
+  // If unbalanced, assign to smaller group to maintain balance
   const group = groupCounts.A < groupCounts.B ? 'A' : 'B';
   groupCounts[group]++;
   return group;
 }
 
 // Result: Even with random arrivals, maintains ~50/50 split
+// Example: If A=5, B=7 → Next student gets A (to balance)
 ```
 
 **Data Persistence**:
@@ -191,140 +204,24 @@ fs.writeFileSync(
 
 ---
 
-### Feature 2: Pause Button
+### Feature 2: Session Resume (Browser Refresh Recovery)
 
 #### Requirements
 
-**User Story**: As a student, I want to pause my training session if I need a break, and resume exactly where I left off.
+**User Story**: As a student, if my browser crashes or I accidentally refresh, **I MUST continue my session without losing progress**.
 
 **Acceptance Criteria**:
-- ✅ Pause button visible in header at all times
-- ✅ Clicking pause freezes session (no auto-deterioration)
-- ✅ Pause modal shows with resume button
-- ✅ Can pause multiple times
-- ✅ Paused time tracked separately from active time
-- ✅ Resume continues exactly where paused
-
-#### UI Specification
-
-**Header with Pause Button**:
-
-```
-┌────────────────────────────────────────────────────────────┐
-│  Know Thyself    Scenario 2/3    Time: 45:23    [⏸ Pause] │
-└────────────────────────────────────────────────────────────┘
-```
-
-**Pause Modal**:
-
-```
-Overlay with modal:
-
-┌─────────────────────────────────────┐
-│                                     │
-│           ⏸️  Session Paused        │
-│                                     │
-│      Your progress has been saved   │
-│                                     │
-│       Take a break if needed!       │
-│                                     │
-│                                     │
-│      Time paused: 00:45             │
-│                                     │
-│                                     │
-│      ┌────────────────────┐         │
-│      │  Resume Training   │         │
-│      └────────────────────┘         │
-│                                     │
-└─────────────────────────────────────┘
-
-(Click outside disabled - must click Resume)
-```
-
-**States**:
-
-| State | Header Button | Auto-Deterioration | Vitals Polling | User Can |
-|-------|---------------|-------------------|----------------|----------|
-| Active | [⏸ Pause] | Running | Active | Send messages, see updates |
-| Paused | Hidden | **Stopped** | **Stopped** | Only click Resume |
-
-#### Backend Logic
-
-**Session Pause State**:
-```javascript
-session = {
-  // ... existing fields
-  isPaused: false,
-  pauseHistory: [
-    { pausedAt: '2024-11-06T14:45:00Z', resumedAt: '2024-11-06T14:47:30Z', duration: 150 },
-    { pausedAt: '2024-11-06T15:10:00Z', resumedAt: null, duration: null } // Currently paused
-  ],
-  totalPausedTime: 150, // seconds
-  lastPauseTime: null
-};
-```
-
-**Pause Endpoint Behavior**:
-```javascript
-// POST /api/sessions/:id/pause
-session.isPaused = true;
-session.lastPauseTime = Date.now();
-session.pauseHistory.push({
-  pausedAt: new Date().toISOString(),
-  resumedAt: null,
-  duration: null
-});
-```
-
-**Resume Endpoint Behavior**:
-```javascript
-// POST /api/sessions/:id/resume
-const pauseDuration = Date.now() - session.lastPauseTime;
-session.totalPausedTime += pauseDuration / 1000; // Convert to seconds
-
-// Update pause history
-const currentPause = session.pauseHistory[session.pauseHistory.length - 1];
-currentPause.resumedAt = new Date().toISOString();
-currentPause.duration = Math.round(pauseDuration / 1000);
-
-session.isPaused = false;
-session.lastPauseTime = null;
-```
-
-**Auto-Deterioration Check**:
-```javascript
-// In auto-deterioration monitor (server/index.js)
-setInterval(() => {
-  for (const [sessionId, session] of sessions.entries()) {
-    // SKIP paused sessions
-    if (session.isPaused) continue; // ← NEW CHECK
-
-    if (session.currentAgent === 'core' && session.scenario) {
-      // Normal deterioration logic...
-    }
-  }
-}, 30000);
-```
-
----
-
-### Feature 3: Session Resume (Browser Refresh Recovery)
-
-#### Requirements
-
-**User Story**: As a student, if my browser crashes or I accidentally refresh, I want to continue my session without losing progress.
-
-**Acceptance Criteria**:
-- ✅ Session ID stored in browser localStorage
+- ✅ Session ID stored in browser localStorage (survives refresh)
 - ✅ On page load, check for existing session
-- ✅ If session exists and is active, auto-resume
+- ✅ If session exists and is active, **automatically resume**
 - ✅ If session exists and is complete, show completion screen
 - ✅ If session doesn't exist, show registration screen
-- ✅ Works across browser refresh, tab close, even browser restart
+- ✅ Works across browser refresh, tab close, browser restart
+- ✅ Restore exact state: current agent, scenario, conversation
 
 #### Technical Implementation
 
-**Data Storage** (Client-side):
+**Data Storage** (Client-side - Browser Disk):
 
 ```javascript
 // When session starts (after registration)
@@ -333,7 +230,7 @@ localStorage.setItem('kt_sessionId', 'session_1762451094771_tochhcyil');
 localStorage.setItem('kt_studentName', 'Alice Smith');
 localStorage.setItem('kt_group', 'A');
 
-// Structure:
+// Structure in browser localStorage:
 {
   "kt_studentId": "alice_smith_lx3k9p2m7",
   "kt_sessionId": "session_1762451094771_tochhcyil",
@@ -341,6 +238,13 @@ localStorage.setItem('kt_group', 'A');
   "kt_group": "A"
 }
 ```
+
+**Why this works:**
+- `localStorage` is saved to browser's hard drive
+- Survives page refresh ✅
+- Survives browser close/reopen ✅
+- Survives browser crash ✅
+- Only cleared by user manually clearing browser data
 
 **App Load Logic** (Frontend):
 
@@ -362,32 +266,38 @@ useEffect(() => {
 
       if (response.exists && !response.complete) {
         // Session is active - RESUME IT
-        console.log('Resuming existing session:', savedSessionId);
+        console.log('✅ Resuming existing session:', savedSessionId);
 
         // Restore session state
         setSessionId(savedSessionId);
         setIsActive(true);
         setCurrentAgent(response.currentAgent);
         setCurrentScenarioIndex(response.currentScenarioIndex);
-        // ... restore other state
+        setIsAARMode(response.isAARMode);
 
         // Fetch current data
-        const vitals = await api.getVitals(savedSessionId);
-        setCurrentVitals(vitals);
+        if (response.currentAgent === 'core') {
+          const vitals = await api.getVitals(savedSessionId);
+          setCurrentVitals(vitals);
+        }
+
+        console.log(`📍 Resumed at: ${response.currentAgent}, Scenario ${response.currentScenarioIndex + 1}`);
 
       } else if (response.complete) {
         // Session was completed - show completion screen
+        console.log('✅ Session already completed');
         setSessionComplete(true);
 
       } else {
         // Session not found (server restarted?) - clear and show registration
+        console.log('⚠️ Session not found on server, clearing localStorage');
         clearLocalStorage();
         setShowRegistration(true);
       }
 
     } catch (error) {
       // Server error or session not found
-      console.error('Session check failed:', error);
+      console.error('❌ Session check failed:', error);
       clearLocalStorage();
       setShowRegistration(true);
     }
@@ -395,6 +305,13 @@ useEffect(() => {
 
   checkExistingSession();
 }, []); // Run once on mount
+
+function clearLocalStorage() {
+  localStorage.removeItem('kt_sessionId');
+  localStorage.removeItem('kt_studentId');
+  localStorage.removeItem('kt_studentName');
+  localStorage.removeItem('kt_group');
+}
 ```
 
 **Backend Endpoint**:
@@ -402,31 +319,47 @@ useEffect(() => {
 ```javascript
 // GET /api/sessions/:sessionId/check
 app.get('/api/sessions/:sessionId/check', (req, res) => {
-  const { sessionId } = req.params;
-  const session = sessions.get(sessionId);
+  try {
+    const { sessionId } = req.params;
+    const session = sessions.get(sessionId);
 
-  if (!session) {
-    return res.json({ exists: false });
+    if (!session) {
+      return res.json({ exists: false });
+    }
+
+    // Check if session is complete
+    const isComplete = session.sessionComplete === true;
+
+    res.json({
+      exists: true,
+      complete: isComplete,
+      currentAgent: session.currentAgent,
+      currentScenarioIndex: session.currentScenarioIndex || 0,
+      isAARMode: session.isAARMode || false,
+      studentId: session.studentId,
+      studentName: session.studentName
+    });
+
+  } catch (error) {
+    console.error('Error checking session:', error);
+    res.status(500).json({ error: error.message });
   }
-
-  // Check if session is complete
-  const isComplete = session.sessionComplete === true;
-
-  res.json({
-    exists: true,
-    complete: isComplete,
-    currentAgent: session.currentAgent,
-    currentScenarioIndex: session.currentScenarioIndex || 0,
-    isPaused: session.isPaused || false,
-    studentId: session.studentId,
-    studentName: session.studentName
-  });
 });
 ```
 
+**Resume Behavior Examples:**
+
+| Scenario | What Happens |
+|----------|--------------|
+| Browser refreshes during Cognitive Coach | ✅ Resumes in Cognitive Coach, shows conversation history |
+| Browser crashes during Scenario 2 | ✅ Resumes in Scenario 2, shows current vitals |
+| Tab closes during AAR | ✅ Resumes in AAR, shows conversation history |
+| Student closes browser completely | ✅ When reopened, resumes exactly where they were |
+| Server restarts (session lost) | ⚠️ Shows error message, student must restart |
+
 ---
 
-### Feature 4: Auto-Save on Completion
+### Feature 3: Auto-Save on Completion
 
 #### Requirements
 
@@ -437,7 +370,7 @@ app.get('/api/sessions/:sessionId/check', (req, res) => {
 - ✅ Data saved to: `data/students/STUDENT_ID.json`
 - ✅ Also saved to: `data/backups/YYYY-MM-DD/STUDENT_ID.json`
 - ✅ File includes all performance data
-- ✅ Session remains in memory for admin dashboard
+- ✅ Session remains in memory for later export
 - ✅ Completion status marked in session
 
 #### File Structure
@@ -475,15 +408,8 @@ data/
     "registered": "2024-11-06T14:30:00Z",
     "sessionStarted": "2024-11-06T14:32:15Z",
     "sessionCompleted": "2024-11-06T16:05:42Z",
-    "totalElapsed": "93 minutes 27 seconds",
-    "activeDuration": "88 minutes 12 seconds",
-    "pausedDuration": "5 minutes 15 seconds"
+    "totalElapsed": "93 minutes 27 seconds"
   },
-
-  "pauseHistory": [
-    { "pausedAt": "2024-11-06T14:45:00Z", "resumedAt": "2024-11-06T14:47:30Z", "duration": 150 },
-    { "pausedAt": "2024-11-06T15:10:00Z", "resumedAt": "2024-11-06T15:12:45Z", "duration": 165 }
-  ],
 
   "performance": {
     "overallScore": 85,
@@ -509,13 +435,13 @@ data/
         "SpO2": 94,
         "BP": "135/85"
       }
-    },
+    }
     // ... scenarios 2 and 3
   ],
 
   "criticalActions": [
     { "time": "0:45", "action": "Applied high-flow oxygen at 15 L/min", "rating": "optimal" },
-    { "time": "2:30", "action": "Administered salbutamol 100mcg via MDI", "rating": "optimal" },
+    { "time": "2:30", "action": "Administered salbutamol 100mcg via MDI", "rating": "optimal" }
     // ... all actions
   ],
 
@@ -526,7 +452,7 @@ data/
       "studentResponse": "Patient has SpO2 of 88% and is in respiratory distress...",
       "evaluation": {
         "rating": "good",
-        "rationale": "Student identified hypoxia and respiratory distress correctly..."
+        "rationale": "Student identified hypoxia correctly..."
       }
     }
     // ... if Group A
@@ -534,7 +460,7 @@ data/
 
   "aarTranscript": [
     { "role": "assistant", "content": "Congratulations on completing...", "timestamp": "2024-11-06T16:00:00Z" },
-    { "role": "user", "content": "I felt good about the asthma case...", "timestamp": "2024-11-06T16:01:15Z" },
+    { "role": "user", "content": "I felt good about the asthma case...", "timestamp": "2024-11-06T16:01:15Z" }
     // ... full AAR conversation
   ],
 
@@ -583,12 +509,9 @@ async function saveStudentData(session) {
       registered: session.registeredAt,
       sessionStarted: session.sessionStartTime,
       sessionCompleted: session.completedAt,
-      totalElapsed: formatDuration(session.totalElapsedTime),
-      activeDuration: formatDuration(session.totalElapsedTime - session.totalPausedTime),
-      pausedDuration: formatDuration(session.totalPausedTime)
+      totalElapsed: formatDuration(session.totalElapsedTime)
     },
 
-    pauseHistory: session.pauseHistory || [],
     performance: calculatePerformanceScore(session),
     scenarios: generateScenarioSummaries(session),
     criticalActions: session.criticalActionsLog || [],
@@ -606,6 +529,7 @@ async function saveStudentData(session) {
 
   // Save to primary location
   const primaryPath = path.join(__dirname, '../data/students', `${session.studentId}.json`);
+  await fs.promises.mkdir(path.dirname(primaryPath), { recursive: true });
   await fs.promises.writeFile(primaryPath, JSON.stringify(studentData, null, 2));
 
   // Save to backup location (organized by date)
@@ -623,205 +547,14 @@ async function saveStudentData(session) {
 
 ---
 
-### Feature 5: Admin Dashboard
-
-#### Requirements
-
-**User Story**: As an instructor, I want a simple dashboard to monitor all active student sessions and export data when testing is complete.
-
-**Acceptance Criteria**:
-- ✅ Dashboard accessible at `/admin` (no auth for MVP)
-- ✅ Shows all active sessions with real-time status
-- ✅ Shows completed sessions
-- ✅ Displays key metrics (score, time, group)
-- ✅ Auto-refreshes every 10 seconds
-- ✅ One-click CSV export of all data
-- ✅ Shows group balance (A vs B counts)
-
-#### UI Specification
-
-**Dashboard Layout** (`/admin`):
-
-```html
-┌───────────────────────────────────────────────────────────────────────┐
-│  🏥 KNOW THYSELF - INSTRUCTOR DASHBOARD                               │
-│                                                     [Refresh] [Export] │
-├───────────────────────────────────────────────────────────────────────┤
-│                                                                        │
-│  Testing Session: November 6, 2024  14:30 - ongoing                   │
-│                                                                        │
-│  📊 Overview                                                           │
-│  ┌──────────────┬──────────────┬──────────────┬──────────────┐        │
-│  │ Total        │ Active       │ Completed    │ Paused       │        │
-│  │ 18           │ 12           │ 5            │ 1            │        │
-│  └──────────────┴──────────────┴──────────────┴──────────────┘        │
-│                                                                        │
-│  ┌──────────────┬──────────────┐                                      │
-│  │ Group A      │ Group B      │                                      │
-│  │ 9            │ 9            │  (Balanced ✅)                        │
-│  └──────────────┴──────────────┘                                      │
-│                                                                        │
-├───────────────────────────────────────────────────────────────────────┤
-│  🟢 ACTIVE SESSIONS                                                    │
-├───────────────────────────────────────────────────────────────────────┤
-│  Student Name     │ Group │ Current Phase      │ Time    │ Score     │
-│  ────────────────────────────────────────────────────────────────────│
-│  Alice Smith      │  A    │ Core Agent - S2    │ 45:23   │  78%     │
-│  Bob Jones        │  B    │ Core Agent - S3    │ 52:10   │  81%     │
-│  Carol White      │  A    │ AAR Agent          │ 71:05   │  85%     │
-│  David Lee        │  B    │ ⏸️ Paused (S2)      │ 38:47   │  72%     │
-│  Eve Brown        │  A    │ Cognitive Coach    │ 12:33   │  --      │
-│  ...                                                                  │
-│                                                                        │
-├───────────────────────────────────────────────────────────────────────┤
-│  ✅ COMPLETED SESSIONS                                                 │
-├───────────────────────────────────────────────────────────────────────┤
-│  Student Name     │ Group │ Completed At │ Total Time │ Final Score │
-│  ────────────────────────────────────────────────────────────────────│
-│  Frank Miller     │  B    │ 15:58        │ 86 min     │  79%        │
-│  Grace Park       │  A    │ 16:05        │ 87 min     │  91%        │
-│  Henry Zhang      │  B    │ 16:12        │ 73 min     │  84%        │
-│  ...                                                                  │
-│                                                                        │
-├───────────────────────────────────────────────────────────────────────┤
-│  Last updated: 16:15:42  (auto-refresh in 8s)                        │
-│                                                                        │
-│  [Export All Data to CSV]                                             │
-└───────────────────────────────────────────────────────────────────────┘
-```
-
-**Color Coding**:
-- 🟢 Green: Active sessions
-- 🟡 Yellow: Paused sessions
-- ✅ Gray: Completed sessions
-
-#### Implementation Details
-
-**Frontend** (`know-thyself-frontend/src/pages/AdminDashboard.tsx`):
-
-```typescript
-interface SessionStatus {
-  studentId: string;
-  studentName: string;
-  group: 'A' | 'B';
-  currentPhase: string;
-  elapsedTime: string;
-  currentScore: number;
-  isPaused: boolean;
-  isComplete: boolean;
-  completedAt?: string;
-}
-
-function AdminDashboard() {
-  const [sessions, setSessions] = useState<SessionStatus[]>([]);
-  const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
-
-  useEffect(() => {
-    // Initial fetch
-    fetchSessions();
-
-    // Auto-refresh every 10 seconds
-    const interval = setInterval(() => {
-      fetchSessions();
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  async function fetchSessions() {
-    const response = await fetch('/api/admin/sessions');
-    const data = await response.json();
-    setSessions(data.sessions);
-    setLastUpdate(new Date());
-  }
-
-  async function exportCSV() {
-    const response = await fetch('/api/admin/export');
-    const blob = await response.blob();
-
-    // Download file
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `know_thyself_data_${new Date().toISOString().split('T')[0]}.csv`;
-    a.click();
-  }
-
-  // Render dashboard...
-}
-```
-
-**Backend Endpoint** (GET `/api/admin/sessions`):
-
-```javascript
-app.get('/api/admin/sessions', (req, res) => {
-  const allSessions = Array.from(sessions.values());
-
-  const sessionStatuses = allSessions.map(session => {
-    const elapsedSeconds = session.sessionStartTime
-      ? Math.floor((Date.now() - session.sessionStartTime) / 1000) - (session.totalPausedTime || 0)
-      : 0;
-
-    const minutes = Math.floor(elapsedSeconds / 60);
-    const seconds = elapsedSeconds % 60;
-
-    return {
-      studentId: session.studentId,
-      studentName: session.studentName,
-      studentEmail: session.studentEmail,
-      group: session.group,
-      currentPhase: getCurrentPhase(session),
-      elapsedTime: `${minutes}:${String(seconds).padStart(2, '0')}`,
-      currentScore: calculatePerformanceScore(session).percentage || 0,
-      isPaused: session.isPaused || false,
-      isComplete: session.sessionComplete || false,
-      completedAt: session.completedAt
-    };
-  });
-
-  // Separate active and completed
-  const active = sessionStatuses.filter(s => !s.isComplete);
-  const completed = sessionStatuses.filter(s => s.isComplete);
-
-  // Count groups
-  const groupA = sessionStatuses.filter(s => s.group === 'A').length;
-  const groupB = sessionStatuses.filter(s => s.group === 'B').length;
-
-  res.json({
-    total: sessionStatuses.length,
-    active: active.length,
-    completed: completed.length,
-    paused: active.filter(s => s.isPaused).length,
-    groupA: groupA,
-    groupB: groupB,
-    sessions: sessionStatuses,
-    activeSessions: active,
-    completedSessions: completed
-  });
-});
-
-function getCurrentPhase(session) {
-  if (session.sessionComplete) return 'Complete';
-  if (session.isPaused) return `⏸️ Paused (S${session.currentScenarioIndex + 1})`;
-  if (session.currentAgent === 'cognitive_coach') return 'Cognitive Coach';
-  if (session.currentAgent === 'core' && session.scenario) {
-    return `Core Agent - S${session.currentScenarioIndex + 1}`;
-  }
-  if (session.isAARMode) return 'AAR Agent';
-  return 'Unknown';
-}
-```
-
----
-
-### Feature 6: CSV Export
+### Feature 4: CSV Export
 
 #### Requirements
 
 **User Story**: As an instructor, I want to export all session data to CSV for statistical analysis in Excel or SPSS.
 
 **Acceptance Criteria**:
-- ✅ One-click export from admin dashboard
+- ✅ Export script run from command line
 - ✅ CSV includes all key metrics
 - ✅ One row per student
 - ✅ Separate columns for Group A metrics (reasoning quality)
@@ -833,92 +566,171 @@ function getCurrentPhase(session) {
 **Columns** (in order):
 
 ```csv
-StudentID,StudentName,Email,Group,RegisteredAt,SessionStarted,SessionCompleted,TotalTimeMinutes,ActiveTimeMinutes,PausedTimeMinutes,PauseCount,FinalScore,Grade,CDPOptimal,CDPAcceptable,CDPSuboptimal,CDPDangerous,CDPNotPerformed,Scenario1State,Scenario1Time,Scenario2State,Scenario2Time,Scenario3State,Scenario3Time,ChallengesTriggered,AverageReasoningScore,OxygenTimingSeconds,SalbutamolTimingSeconds,SteroidsTimingSeconds,MedicationErrors,SafetyViolations,TotalActions,SessionComplete
+StudentID,StudentName,Email,Group,RegisteredAt,SessionStarted,SessionCompleted,TotalTimeMinutes,FinalScore,Grade,CDPOptimal,CDPAcceptable,CDPSuboptimal,CDPDangerous,CDPNotPerformed,Scenario1State,Scenario1Time,Scenario2State,Scenario2Time,Scenario3State,Scenario3Time,ChallengesTriggered,AverageReasoningScore,OxygenTimingSeconds,SalbutamolTimingSeconds,SteroidsTimingSeconds,MedicationErrors,SafetyViolations,TotalActions,SessionComplete
 ```
 
 **Example Rows**:
 
 ```csv
-alice_smith_lx3k9p2m7,Alice Smith,alice@example.com,A,2024-11-06T14:30:00Z,2024-11-06T14:32:15Z,2024-11-06T16:05:42Z,93,88,5,2,85,B+,5,2,1,0,0,improving,28,stable,31,improving,29,3,75,120,240,300,0,0,45,true
-bob_jones_lx3k9q4n1,Bob Jones,bob@example.com,B,2024-11-06T14:31:00Z,2024-11-06T14:33:10Z,2024-11-06T15:58:25Z,86,86,0,0,79,C+,4,3,1,0,0,stable,30,improving,28,stable,28,0,N/A,135,310,420,1,0,42,true
+alice_smith_lx3k9p2m7,Alice Smith,alice@example.com,A,2024-11-06T14:30:00Z,2024-11-06T14:32:15Z,2024-11-06T16:05:42Z,93,85,B+,5,2,1,0,0,improving,28,stable,31,improving,29,3,75,120,240,300,0,0,45,true
+bob_jones_lx3k9q4n1,Bob Jones,bob@example.com,B,2024-11-06T14:31:00Z,2024-11-06T14:33:10Z,2024-11-06T15:58:25Z,86,79,C+,4,3,1,0,0,stable,30,improving,28,stable,28,0,N/A,135,310,420,1,0,42,true
 ```
 
-#### Backend Implementation
+#### Implementation - Export Script
 
-**Export Endpoint** (GET `/api/admin/export`):
+**File**: `server/export-data.js`
 
 ```javascript
-app.get('/api/admin/export', async (req, res) => {
-  const allSessions = Array.from(sessions.values());
+/**
+ * Export script to generate CSV from student data files
+ * Usage: node export-data.js
+ */
 
-  // Generate CSV header
-  const header = [
-    'StudentID', 'StudentName', 'Email', 'Group',
-    'RegisteredAt', 'SessionStarted', 'SessionCompleted',
-    'TotalTimeMinutes', 'ActiveTimeMinutes', 'PausedTimeMinutes', 'PauseCount',
-    'FinalScore', 'Grade',
-    'CDPOptimal', 'CDPAcceptable', 'CDPSuboptimal', 'CDPDangerous', 'CDPNotPerformed',
-    'Scenario1State', 'Scenario1Time',
-    'Scenario2State', 'Scenario2Time',
-    'Scenario3State', 'Scenario3Time',
-    'ChallengesTriggered', 'AverageReasoningScore',
-    'OxygenTimingSeconds', 'SalbutamolTimingSeconds', 'SteroidsTimingSeconds',
-    'MedicationErrors', 'SafetyViolations',
-    'TotalActions', 'SessionComplete'
-  ].join(',');
+import fs from 'fs/promises';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-  // Generate CSV rows
-  const rows = allSessions.map(session => {
-    const performance = calculatePerformanceScore(session);
-    const totalTime = session.completedAt
-      ? Math.round((new Date(session.completedAt) - new Date(session.sessionStartTime)) / 60000)
-      : 0;
-    const pausedTime = Math.round((session.totalPausedTime || 0) / 60);
-    const activeTime = totalTime - pausedTime;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-    const treatmentTiming = analyzeTreatmentTiming(session);
+async function exportToCSV() {
+  console.log('🔍 Reading student data files...');
 
-    return [
-      session.studentId,
-      `"${session.studentName}"`, // Quote names with commas
-      session.studentEmail || '',
-      session.group,
-      session.registeredAt || '',
-      session.sessionStartTime || '',
-      session.completedAt || '',
-      totalTime,
-      activeTime,
-      pausedTime,
-      (session.pauseHistory || []).length,
-      performance.percentage || 0,
-      performance.grade || '',
-      session.optimalCount || 0,
-      session.acceptableCount || 0,
-      session.suboptimalCount || 0,
-      session.dangerousCount || 0,
-      session.notPerformedCount || 0,
-      // Scenario data would be extracted from session history
-      // ... (simplified for example)
-      session.challengePointsEnabled ? (session.challengePointsUsed || []).length : 0,
-      session.challengePointsEnabled ? calculateAverageReasoning(session) : 'N/A',
-      getTreatmentTiming(treatmentTiming, 'oxygen'),
-      getTreatmentTiming(treatmentTiming, 'salbutamol'),
-      getTreatmentTiming(treatmentTiming, 'steroids'),
-      (session.medicationErrors || []).length,
-      session.safetyViolations || 0,
-      (session.criticalActionsLog || []).length,
-      session.sessionComplete ? 'true' : 'false'
+  const studentsDir = path.join(__dirname, '../data/students');
+
+  try {
+    const files = await fs.readdir(studentsDir);
+    const jsonFiles = files.filter(f => f.endsWith('.json'));
+
+    console.log(`Found ${jsonFiles.length} student files`);
+
+    // Read all student data
+    const students = [];
+    for (const file of jsonFiles) {
+      const filePath = path.join(studentsDir, file);
+      const content = await fs.readFile(filePath, 'utf-8');
+      const data = JSON.parse(content);
+      students.push(data);
+    }
+
+    // Generate CSV header
+    const header = [
+      'StudentID', 'StudentName', 'Email', 'Group',
+      'RegisteredAt', 'SessionStarted', 'SessionCompleted',
+      'TotalTimeMinutes',
+      'FinalScore', 'Grade',
+      'CDPOptimal', 'CDPAcceptable', 'CDPSuboptimal', 'CDPDangerous', 'CDPNotPerformed',
+      'Scenario1State', 'Scenario1Time',
+      'Scenario2State', 'Scenario2Time',
+      'Scenario3State', 'Scenario3Time',
+      'ChallengesTriggered', 'AverageReasoningScore',
+      'OxygenTimingSeconds', 'SalbutamolTimingSeconds', 'SteroidsTimingSeconds',
+      'MedicationErrors', 'SafetyViolations',
+      'TotalActions', 'SessionComplete'
     ].join(',');
-  });
 
-  const csv = [header, ...rows].join('\n');
+    // Generate CSV rows
+    const rows = students.map(student => {
+      const scenarios = student.scenarios || [];
+      const performance = student.performance || {};
+      const cdp = performance.cdpEvaluations || {};
 
-  // Set headers for file download
-  const filename = `know_thyself_data_${new Date().toISOString().split('T')[0]}.csv`;
-  res.setHeader('Content-Type', 'text/csv');
-  res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-  res.send(csv);
-});
+      return [
+        student.studentId,
+        `"${student.studentName}"`, // Quote names with commas
+        student.studentEmail || '',
+        student.group,
+        student.timestamps?.registered || '',
+        student.timestamps?.sessionStarted || '',
+        student.timestamps?.sessionCompleted || '',
+        extractMinutes(student.timestamps?.totalElapsed),
+        performance.overallScore || 0,
+        performance.grade || '',
+        cdp.optimal || 0,
+        cdp.acceptable || 0,
+        cdp.suboptimal || 0,
+        cdp.dangerous || 0,
+        cdp.notPerformed || 0,
+        scenarios[0]?.finalState || '',
+        scenarios[0]?.duration || '',
+        scenarios[1]?.finalState || '',
+        scenarios[1]?.duration || '',
+        scenarios[2]?.finalState || '',
+        scenarios[2]?.duration || '',
+        student.challengePoints?.length || 0,
+        student.group === 'A' ? calculateAverageReasoning(student.challengePoints) : 'N/A',
+        extractTreatmentTiming(student, 'oxygen'),
+        extractTreatmentTiming(student, 'salbutamol'),
+        extractTreatmentTiming(student, 'steroids'),
+        student.criticalActions?.filter(a => a.category === 'medication_error').length || 0,
+        student.metadata?.safetyViolations || 0,
+        student.criticalActions?.length || 0,
+        student.metadata?.sessionComplete ? 'true' : 'false'
+      ].join(',');
+    });
+
+    const csv = [header, ...rows].join('\n');
+
+    // Save CSV file
+    const timestamp = new Date().toISOString().split('T')[0];
+    const outputPath = path.join(__dirname, `../data/know_thyself_export_${timestamp}.csv`);
+    await fs.writeFile(outputPath, csv);
+
+    console.log(`✅ CSV exported successfully!`);
+    console.log(`📄 File: ${outputPath}`);
+    console.log(`📊 Total students: ${students.length}`);
+    console.log(`📊 Group A: ${students.filter(s => s.group === 'A').length}`);
+    console.log(`📊 Group B: ${students.filter(s => s.group === 'B').length}`);
+
+  } catch (error) {
+    console.error('❌ Export failed:', error);
+  }
+}
+
+function extractMinutes(duration) {
+  if (!duration) return 0;
+  const match = duration.match(/(\d+)\s*minutes?/);
+  return match ? parseInt(match[1]) : 0;
+}
+
+function extractTreatmentTiming(student, treatment) {
+  const action = student.criticalActions?.find(a =>
+    a.action.toLowerCase().includes(treatment)
+  );
+  return action ? Math.round(action.elapsedTime) : '';
+}
+
+function calculateAverageReasoning(challenges) {
+  if (!challenges || challenges.length === 0) return 'N/A';
+
+  const ratings = { excellent: 100, good: 75, basic: 50, poor: 25 };
+  const scores = challenges
+    .filter(c => c.evaluation)
+    .map(c => ratings[c.evaluation.rating] || 0);
+
+  if (scores.length === 0) return 'N/A';
+
+  const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
+  return Math.round(avg);
+}
+
+// Run export
+exportToCSV();
+```
+
+**Usage:**
+
+```bash
+# After testing session, run export
+cd server
+node export-data.js
+
+# Output:
+# ✅ CSV exported successfully!
+# 📄 File: ../data/know_thyself_export_2024-11-06.csv
+# 📊 Total students: 20
+# 📊 Group A: 10
+# 📊 Group B: 10
 ```
 
 ---
@@ -937,7 +749,7 @@ interface StudentData {
   studentId: string;           // Unique identifier
   studentName: string;         // Full name
   studentEmail?: string;       // Optional email
-  group: 'A' | 'B';           // A/B test group
+  group: 'A' | 'B';           // A/B test group (automatic balancing)
   registeredAt: string;        // ISO timestamp
   sessionId: string | null;    // Current/last session
   status: 'registered' | 'active' | 'completed';
@@ -964,16 +776,6 @@ interface Session {
   sessionStartTime: number;
   completedAt?: string;
 
-  // Pause tracking
-  isPaused: boolean;
-  lastPauseTime: number | null;
-  totalPausedTime: number; // seconds
-  pauseHistory: Array<{
-    pausedAt: string;
-    resumedAt: string | null;
-    duration: number | null;
-  }>;
-
   // Session state
   currentAgent: 'cognitive_coach' | 'core' | null;
   currentScenarioIndex: number;
@@ -981,7 +783,7 @@ interface Session {
   sessionComplete: boolean;
 
   // Existing Layer 2 fields
-  challengePointsEnabled: boolean;
+  challengePointsEnabled: boolean;  // Auto-set based on group
   challengePointsUsed: Array<any>;
   cdpEvaluations: Array<any>;
   criticalActionsLog: Array<any>;
@@ -1003,7 +805,7 @@ interface Session {
 ```json
 {
   "name": "Alice Smith",
-  "email": "alice@example.com", // optional
+  "email": "alice@example.com",
   "consent": true
 }
 ```
@@ -1015,21 +817,6 @@ interface Session {
   "studentId": "alice_smith_lx3k9p2m7",
   "group": "A",
   "message": "Welcome, Alice! You've been assigned to Group A."
-}
-```
-
-**Error Responses**:
-```json
-// 400 - Validation error
-{
-  "success": false,
-  "error": "Name is required"
-}
-
-// 400 - No consent
-{
-  "success": false,
-  "error": "You must consent to data collection"
 }
 ```
 
@@ -1047,61 +834,14 @@ interface Session {
 }
 ```
 
-**Backend Logic**:
-```javascript
-// Look up student data
-const studentData = loadStudentData(studentId);
-
-// Create session with student info
-const session = {
-  sessionId: generateSessionId(),
-  studentId: studentData.studentId,
-  studentName: studentData.name,
-  studentEmail: studentData.email,
-  group: studentData.group,
-  challengePointsEnabled: studentData.group === 'A', // Auto-set based on group
-  // ... rest of session initialization
-};
-```
+**Backend automatically**:
+- Looks up student data
+- Sets `challengePointsEnabled` based on group (A=true, B=false)
+- Creates session with student info
 
 ---
 
-#### 3. Pause Session
-
-**POST** `/api/sessions/:sessionId/pause`
-
-**Request Body**: None
-
-**Response**:
-```json
-{
-  "success": true,
-  "isPaused": true,
-  "message": "Session paused successfully"
-}
-```
-
----
-
-#### 4. Resume Session
-
-**POST** `/api/sessions/:sessionId/resume`
-
-**Request Body**: None
-
-**Response**:
-```json
-{
-  "success": true,
-  "isPaused": false,
-  "pauseDuration": 150, // seconds
-  "message": "Session resumed successfully"
-}
-```
-
----
-
-#### 5. Check Session Status
+#### 3. Check Session Status
 
 **GET** `/api/sessions/:sessionId/check`
 
@@ -1112,57 +852,10 @@ const session = {
   "complete": false,
   "currentAgent": "core",
   "currentScenarioIndex": 1,
-  "isPaused": false,
+  "isAARMode": false,
   "studentId": "alice_smith_lx3k9p2m7",
   "studentName": "Alice Smith"
 }
-```
-
----
-
-#### 6. Admin - List All Sessions
-
-**GET** `/api/admin/sessions`
-
-**Response**:
-```json
-{
-  "total": 18,
-  "active": 12,
-  "completed": 5,
-  "paused": 1,
-  "groupA": 9,
-  "groupB": 9,
-  "sessions": [
-    {
-      "studentId": "alice_smith_lx3k9p2m7",
-      "studentName": "Alice Smith",
-      "group": "A",
-      "currentPhase": "Core Agent - S2",
-      "elapsedTime": "45:23",
-      "currentScore": 78,
-      "isPaused": false,
-      "isComplete": false
-    }
-    // ... more sessions
-  ],
-  "activeSessions": [...],
-  "completedSessions": [...]
-}
-```
-
----
-
-#### 7. Admin - Export CSV
-
-**GET** `/api/admin/export`
-
-**Response**: CSV file download
-
-**Headers**:
-```
-Content-Type: text/csv
-Content-Disposition: attachment; filename="know_thyself_data_2024-11-06.csv"
 ```
 
 ---
@@ -1178,798 +871,6 @@ Content-Disposition: attachment; filename="know_thyself_data_2024-11-06.csv"
 **Purpose**: Registration form for students
 
 **Props**: None
-
-**State**:
-```typescript
-const [name, setName] = useState('');
-const [email, setEmail] = useState('');
-const [consent, setConsent] = useState(false);
-const [error, setError] = useState('');
-const [isLoading, setIsLoading] = useState(false);
-```
-
-**Functions**:
-```typescript
-async function handleSubmit() {
-  // Validate
-  if (!name.trim()) {
-    setError('Please enter your full name');
-    return;
-  }
-
-  if (email && !isValidEmail(email)) {
-    setError('Please enter a valid email address');
-    return;
-  }
-
-  if (!consent) {
-    setError('You must consent to data collection');
-    return;
-  }
-
-  // Register
-  setIsLoading(true);
-  try {
-    const response = await api.registerStudent(name, email);
-
-    // Save to localStorage
-    localStorage.setItem('kt_studentId', response.studentId);
-    localStorage.setItem('kt_studentName', name);
-    localStorage.setItem('kt_group', response.group);
-
-    // Proceed to start session
-    onRegistrationComplete(response);
-
-  } catch (error) {
-    setError('Registration failed. Please try again.');
-  } finally {
-    setIsLoading(false);
-  }
-}
-```
-
----
-
-#### 2. `PauseButton.tsx`
-
-**Path**: `know-thyself-frontend/src/components/PauseButton.tsx`
-
-**Purpose**: Pause/resume button in header
-
-**Props**:
-```typescript
-interface PauseButtonProps {
-  sessionId: string;
-  isPaused: boolean;
-  onPause: () => void;
-  onResume: () => void;
-}
-```
-
-**Rendering**:
-```typescript
-function PauseButton({ sessionId, isPaused, onPause, onResume }: PauseButtonProps) {
-  const [showModal, setShowModal] = useState(false);
-  const [pausedDuration, setPausedDuration] = useState(0);
-
-  useEffect(() => {
-    if (isPaused) {
-      setShowModal(true);
-
-      // Update paused timer
-      const interval = setInterval(() => {
-        setPausedDuration(d => d + 1);
-      }, 1000);
-
-      return () => clearInterval(interval);
-    }
-  }, [isPaused]);
-
-  async function handlePause() {
-    await api.pauseSession(sessionId);
-    onPause();
-  }
-
-  async function handleResume() {
-    await api.resumeSession(sessionId);
-    setShowModal(false);
-    setPausedDuration(0);
-    onResume();
-  }
-
-  return (
-    <>
-      {!isPaused && (
-        <button onClick={handlePause} className="pause-button">
-          ⏸ Pause
-        </button>
-      )}
-
-      {showModal && (
-        <PauseModal
-          pausedDuration={pausedDuration}
-          onResume={handleResume}
-        />
-      )}
-    </>
-  );
-}
-```
-
----
-
-#### 3. `AdminDashboard.tsx`
-
-**Path**: `know-thyself-frontend/src/pages/AdminDashboard.tsx`
-
-**Purpose**: Instructor monitoring dashboard
-
-**Features**:
-- Real-time session list
-- Auto-refresh every 10 seconds
-- Export button
-- Group balance display
-
-*(Full implementation shown in Feature 5 section above)*
-
----
-
-### Modified Components
-
-#### 1. `App.tsx` - Add Session Resume Logic
-
-**Changes**:
-```typescript
-// Add state for registration
-const [showRegistration, setShowRegistration] = useState(false);
-
-// On mount, check for existing session
-useEffect(() => {
-  async function checkExistingSession() {
-    const savedSessionId = localStorage.getItem('kt_sessionId');
-
-    if (!savedSessionId) {
-      setShowRegistration(true);
-      return;
-    }
-
-    // Check if session exists
-    const response = await api.checkSession(savedSessionId);
-
-    if (response.exists && !response.complete) {
-      // Resume session
-      await resumeSession(response);
-    } else if (response.complete) {
-      setSessionComplete(true);
-    } else {
-      clearLocalStorage();
-      setShowRegistration(true);
-    }
-  }
-
-  checkExistingSession();
-}, []);
-
-// Render registration if needed
-if (showRegistration) {
-  return <StudentRegistration onComplete={handleRegistrationComplete} />;
-}
-```
-
----
-
-#### 2. `Header.tsx` - Add Pause Button
-
-**Changes**:
-```typescript
-<Header>
-  <Logo />
-  <ScenarioProgress current={currentScenarioIndex} total={3} />
-  <Timer startTime={scenarioStartTime} />
-
-  {/* NEW: Pause button */}
-  {sessionId && isActive && (
-    <PauseButton
-      sessionId={sessionId}
-      isPaused={isPaused}
-      onPause={() => setIsPaused(true)}
-      onResume={() => setIsPaused(false)}
-    />
-  )}
-</Header>
-```
-
----
-
-## Data Flow
-
-### Flow 1: Student Registration & Session Start
-
-```
-1. Student opens browser
-   ↓
-2. Opens: http://localhost:3001
-   ↓
-3. App checks localStorage for sessionId
-   ├─ Found → Try to resume (Flow 3)
-   └─ Not found → Show registration screen
-   ↓
-4. Student fills form:
-   - Name: "Alice Smith"
-   - Email: "alice@example.com"
-   - Consent: ✓
-   ↓
-5. Click "Start Training"
-   ↓
-6. Frontend: POST /api/student/register
-   ↓
-7. Backend:
-   - Generate studentId: "alice_smith_lx3k9p2m7"
-   - Assign group (balanced): "A"
-   - Save to: data/students/alice_smith_lx3k9p2m7.json
-   - Return: { studentId, group }
-   ↓
-8. Frontend receives response
-   - Save to localStorage:
-     * kt_studentId: "alice_smith_lx3k9p2m7"
-     * kt_studentName: "Alice Smith"
-     * kt_group: "A"
-   ↓
-9. Frontend: POST /api/sessions/start
-   - Body: { studentId: "alice_smith_lx3k9p2m7", scenarioId: "asthma_mvp_001" }
-   ↓
-10. Backend:
-    - Load student data
-    - Create session with:
-      * sessionId: "session_123..."
-      * challengePointsEnabled: true (because Group A)
-      * studentId, studentName, group
-    - Return session data
-    ↓
-11. Frontend receives session
-    - Save sessionId to localStorage
-    - Start Cognitive Coach
-    ↓
-12. Training begins!
-```
-
----
-
-### Flow 2: Pause & Resume
-
-```
-PAUSE:
-1. Student clicks [⏸ Pause] button
-   ↓
-2. Frontend: POST /api/sessions/:id/pause
-   ↓
-3. Backend:
-   - Set session.isPaused = true
-   - Record pause timestamp
-   - Add to pauseHistory
-   ↓
-4. Frontend receives confirmation
-   - Show pause modal
-   - Stop vitals polling
-   - Disable message input
-   ↓
-5. Student sees pause screen
-
-RESUME:
-1. Student clicks [Resume Training]
-   ↓
-2. Frontend: POST /api/sessions/:id/resume
-   ↓
-3. Backend:
-   - Calculate pause duration
-   - Add to totalPausedTime
-   - Set session.isPaused = false
-   - Update pauseHistory
-   ↓
-4. Frontend receives confirmation
-   - Hide pause modal
-   - Resume vitals polling
-   - Enable message input
-   ↓
-5. Training continues exactly where paused
-```
-
----
-
-### Flow 3: Browser Refresh / Session Resume
-
-```
-1. Browser refreshes (or crashes and reopens)
-   ↓
-2. App.tsx useEffect runs on mount
-   ↓
-3. Check localStorage for 'kt_sessionId'
-   ├─ Not found → Show registration
-   └─ Found: "session_123..."
-   ↓
-4. Frontend: GET /api/sessions/session_123.../check
-   ↓
-5. Backend checks if session exists
-   ├─ Not found → return { exists: false }
-   └─ Found → return:
-      {
-        exists: true,
-        complete: false,
-        currentAgent: "core",
-        currentScenarioIndex: 1,
-        isPaused: false
-      }
-   ↓
-6. Frontend receives response
-   ├─ exists: false → Clear localStorage, show registration
-   ├─ complete: true → Show completion screen
-   └─ exists: true, complete: false → RESUME SESSION:
-      - Set sessionId from localStorage
-      - Set isActive = true
-      - Restore currentAgent, currentScenarioIndex
-      - Fetch current vitals
-      - Fetch conversation history (if possible)
-      ↓
-7. Session continues exactly where it was!
-   - Student sees same scenario
-   - Same conversation state
-   - Same progress
-```
-
----
-
-### Flow 4: Session Completion & Auto-Save
-
-```
-1. Student completes AAR conversation
-   ↓
-2. AAR Agent sends message with [AAR_COMPLETE] marker
-   ↓
-3. Frontend: POST /api/sessions/:id/aar/message
-   - Body: { message: "..." }
-   ↓
-4. Backend detects [AAR_COMPLETE]
-   - Strip marker from message
-   - Set session.sessionComplete = true
-   - Set session.completedAt = timestamp
-   ↓
-5. Backend calls saveStudentData(session)
-   - Build complete data object
-   - Save to: data/students/STUDENT_ID.json
-   - Save to: data/backups/2024-11-06/STUDENT_ID.json
-   - Log: "✅ Data saved"
-   ↓
-6. Backend returns: { aarComplete: true }
-   ↓
-7. Frontend receives response
-   - Show completion screen
-   - Clear "active session" state
-   - Keep sessionId in localStorage (for viewing results)
-   ↓
-8. Data safely on disk ✅
-   - Student can close browser
-   - Data survives server restart
-```
-
----
-
-### Flow 5: Instructor Data Export
-
-```
-1. Instructor opens admin dashboard
-   - URL: http://localhost:3001/admin
-   ↓
-2. Dashboard loads
-   - Fetch: GET /api/admin/sessions
-   - Display all sessions (active + completed)
-   - Auto-refresh every 10 seconds
-   ↓
-3. All students complete training
-   - Dashboard shows: "Active: 0, Completed: 20"
-   ↓
-4. Instructor clicks [Export All Data to CSV]
-   ↓
-5. Frontend: GET /api/admin/export
-   ↓
-6. Backend:
-   - Iterate all sessions (from memory + disk)
-   - Generate CSV rows
-   - Format with proper headers
-   - Return as downloadable file
-   ↓
-7. Browser downloads: know_thyself_data_2024-11-06.csv
-   ↓
-8. Instructor saves to USB drive
-   ↓
-9. Opens in Excel for analysis:
-   - Group A: n=10, mean score = 83%
-   - Group B: n=10, mean score = 79%
-   - Run t-test for significance
-```
-
----
-
-## Implementation Guide
-
-### Phase 1: Backend Foundation (Day 1)
-
-#### Task 1.1: Student Registration Endpoint
-
-**File**: `server/index.js`
-
-**Code Location**: After existing session endpoints (~line 2950)
-
-```javascript
-// ============================================================================
-// LAYER 3: STUDENT REGISTRATION (Task 1.1)
-// ============================================================================
-
-// Track group assignments
-let groupCounts = { A: 0, B: 0 };
-
-/**
- * POST /api/student/register
- * Register new student and assign to A/B group
- */
-app.post('/api/student/register', async (req, res) => {
-  try {
-    const { name, email, consent } = req.body;
-
-    // Validation
-    if (!name || name.trim().length < 2) {
-      return res.status(400).json({
-        success: false,
-        error: 'Please enter your full name (at least 2 characters)'
-      });
-    }
-
-    if (email && !isValidEmail(email)) {
-      return res.status(400).json({
-        success: false,
-        error: 'Please enter a valid email address'
-      });
-    }
-
-    if (!consent) {
-      return res.status(400).json({
-        success: false,
-        error: 'You must consent to data collection to participate'
-      });
-    }
-
-    // Generate student ID
-    const studentId = generateStudentId(name);
-
-    // Assign group (balanced)
-    const group = assignGroup();
-
-    // Create student record
-    const studentData = {
-      studentId: studentId,
-      studentName: name.trim(),
-      studentEmail: email?.trim() || null,
-      group: group,
-      registeredAt: new Date().toISOString(),
-      sessionId: null,
-      status: 'registered'
-    };
-
-    // Save to disk
-    const studentDir = path.join(__dirname, '../data/students');
-    await fs.promises.mkdir(studentDir, { recursive: true });
-
-    const studentFile = path.join(studentDir, `${studentId}.json`);
-    await fs.promises.writeFile(studentFile, JSON.stringify(studentData, null, 2));
-
-    console.log(`✅ Student registered: ${name} (${studentId}) - Group ${group}`);
-    console.log(`   Group balance: A=${groupCounts.A}, B=${groupCounts.B}`);
-
-    res.json({
-      success: true,
-      studentId: studentId,
-      group: group,
-      message: `Welcome, ${name}! You've been assigned to Group ${group}.`
-    });
-
-  } catch (error) {
-    console.error('Error registering student:', error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-/**
- * Helper: Generate unique student ID from name
- */
-function generateStudentId(name) {
-  const namePart = name
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '_')
-    .replace(/[^a-z0-9_]/g, '')
-    .substring(0, 30);
-
-  const timestamp = Date.now().toString(36);
-  const random = Math.random().toString(36).substring(2, 7);
-
-  return `${namePart}_${timestamp}${random}`;
-}
-
-/**
- * Helper: Assign A/B group with balancing
- */
-function assignGroup() {
-  if (groupCounts.A === groupCounts.B) {
-    const group = Math.random() < 0.5 ? 'A' : 'B';
-    groupCounts[group]++;
-    return group;
-  }
-
-  const group = groupCounts.A < groupCounts.B ? 'A' : 'B';
-  groupCounts[group]++;
-  return group;
-}
-
-/**
- * Helper: Validate email format
- */
-function isValidEmail(email) {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return regex.test(email);
-}
-```
-
----
-
-#### Task 1.2: Modify Session Start to Accept Student ID
-
-**File**: `server/index.js`
-
-**Location**: Modify existing `/api/sessions/start` endpoint (~line 60)
-
-**Changes**:
-```javascript
-app.post('/api/sessions/start', async (req, res) => {
-  try {
-    const { scenarioId = 'asthma_mvp_001', studentId } = req.body; // ← ADD studentId
-
-    // NEW: Load student data if provided
-    let studentData = null;
-    if (studentId) {
-      const studentFile = path.join(__dirname, '../data/students', `${studentId}.json`);
-      try {
-        const fileContent = await fs.promises.readFile(studentFile, 'utf-8');
-        studentData = JSON.parse(fileContent);
-      } catch (error) {
-        console.warn('Student file not found:', studentId);
-      }
-    }
-
-    // Determine challenge points based on group
-    const challengePointsEnabled = studentData
-      ? studentData.group === 'A'  // ← Auto-set based on A/B group
-      : req.body.challengePointsEnabled !== undefined
-        ? req.body.challengePointsEnabled
-        : true;
-
-    console.log('🎓 Starting new session with Cognitive Coach');
-    console.log('Challenge Points:', challengePointsEnabled ? 'ENABLED' : 'DISABLED');
-    if (studentData) {
-      console.log(`Student: ${studentData.studentName} (Group ${studentData.group})`);
-    }
-
-    // ... existing session creation code
-
-    // NEW: Add student info to session
-    session = {
-      sessionId,
-      scenarioId,
-
-      // NEW: Student identity
-      studentId: studentData?.studentId || null,
-      studentName: studentData?.studentName || null,
-      studentEmail: studentData?.studentEmail || null,
-      group: studentData?.group || null,
-      registeredAt: studentData?.registeredAt || null,
-
-      // ... all existing session fields
-
-      challengePointsEnabled: challengePointsEnabled, // ← Use determined value
-      // ... rest of session initialization
-    };
-
-    sessions.set(sessionId, session);
-
-    // NEW: Update student record with sessionId
-    if (studentData) {
-      studentData.sessionId = sessionId;
-      studentData.status = 'active';
-      const studentFile = path.join(__dirname, '../data/students', `${studentId}.json`);
-      await fs.promises.writeFile(studentFile, JSON.stringify(studentData, null, 2));
-    }
-
-    // ... rest of existing code
-  }
-});
-```
-
----
-
-#### Task 1.3: Pause/Resume Endpoints
-
-**File**: `server/index.js`
-
-**Code Location**: After AAR endpoints (~line 2920)
-
-```javascript
-// ============================================================================
-// LAYER 3: PAUSE/RESUME FUNCTIONALITY (Task 1.3)
-// ============================================================================
-
-/**
- * POST /api/sessions/:sessionId/pause
- * Pause an active session
- */
-app.post('/api/sessions/:sessionId/pause', (req, res) => {
-  try {
-    const { sessionId } = req.params;
-    const session = sessions.get(sessionId);
-
-    if (!session) {
-      return res.status(404).json({ error: 'Session not found' });
-    }
-
-    if (session.isPaused) {
-      return res.json({
-        success: true,
-        isPaused: true,
-        message: 'Session is already paused'
-      });
-    }
-
-    // Pause session
-    session.isPaused = true;
-    session.lastPauseTime = Date.now();
-
-    if (!session.pauseHistory) {
-      session.pauseHistory = [];
-    }
-
-    session.pauseHistory.push({
-      pausedAt: new Date().toISOString(),
-      resumedAt: null,
-      duration: null
-    });
-
-    console.log(`⏸️  Session paused: ${sessionId} (${session.studentName})`);
-
-    res.json({
-      success: true,
-      isPaused: true,
-      message: 'Session paused successfully'
-    });
-
-  } catch (error) {
-    console.error('Error pausing session:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-/**
- * POST /api/sessions/:sessionId/resume
- * Resume a paused session
- */
-app.post('/api/sessions/:sessionId/resume', (req, res) => {
-  try {
-    const { sessionId } = req.params;
-    const session = sessions.get(sessionId);
-
-    if (!session) {
-      return res.status(404).json({ error: 'Session not found' });
-    }
-
-    if (!session.isPaused) {
-      return res.json({
-        success: true,
-        isPaused: false,
-        message: 'Session is not paused'
-      });
-    }
-
-    // Calculate pause duration
-    const pauseDuration = Date.now() - session.lastPauseTime;
-    const pauseDurationSeconds = Math.round(pauseDuration / 1000);
-
-    // Update total paused time
-    if (!session.totalPausedTime) {
-      session.totalPausedTime = 0;
-    }
-    session.totalPausedTime += pauseDurationSeconds;
-
-    // Update pause history
-    const currentPause = session.pauseHistory[session.pauseHistory.length - 1];
-    currentPause.resumedAt = new Date().toISOString();
-    currentPause.duration = pauseDurationSeconds;
-
-    // Resume session
-    session.isPaused = false;
-    session.lastPauseTime = null;
-
-    console.log(`▶️  Session resumed: ${sessionId} (${session.studentName}) - Paused for ${pauseDurationSeconds}s`);
-
-    res.json({
-      success: true,
-      isPaused: false,
-      pauseDuration: pauseDurationSeconds,
-      message: 'Session resumed successfully'
-    });
-
-  } catch (error) {
-    console.error('Error resuming session:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-/**
- * GET /api/sessions/:sessionId/check
- * Check if session exists and get status
- */
-app.get('/api/sessions/:sessionId/check', (req, res) => {
-  try {
-    const { sessionId } = req.params;
-    const session = sessions.get(sessionId);
-
-    if (!session) {
-      return res.json({ exists: false });
-    }
-
-    res.json({
-      exists: true,
-      complete: session.sessionComplete || false,
-      currentAgent: session.currentAgent,
-      currentScenarioIndex: session.currentScenarioIndex || 0,
-      isPaused: session.isPaused || false,
-      isAARMode: session.isAARMode || false,
-      studentId: session.studentId,
-      studentName: session.studentName
-    });
-
-  } catch (error) {
-    console.error('Error checking session:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
-```
-
----
-
-#### Task 1.4: Modify Auto-Deterioration to Skip Paused Sessions
-
-**File**: `server/index.js`
-
-**Location**: Auto-deterioration monitor (~line 2917)
-
-**Changes**:
-```javascript
-setInterval(() => {
-  for (const [sessionId, session] of sessions.entries()) {
-    // SKIP paused sessions
-    if (session.isPaused) continue; // ← ADD THIS CHECK
-
-    // Only check active Core Agent scenarios
-    if (session.currentAgent === 'core' && session.scenario && session.currentState !== 'aar') {
-      // ... existing deterioration logic
-    }
-  }
-}, 30000);
-```
-
----
-
-### Phase 2: Frontend - Registration & Pause (Day 2)
-
-#### Task 2.1: Create StudentRegistration Component
-
-**File**: `know-thyself-frontend/src/components/StudentRegistration.tsx`
 
 **Full Implementation**:
 
@@ -2130,7 +1031,7 @@ function StudentRegistration({ onComplete }: StudentRegistrationProps) {
         </form>
 
         <p className="text-text-secondary text-xs mt-6 text-center">
-          Note: Training takes 60-90 minutes. You can pause anytime and resume later.
+          Note: Training takes 60-90 minutes. If your browser crashes, you can resume where you left off.
         </p>
       </div>
     </div>
@@ -2142,137 +1043,14 @@ export default StudentRegistration;
 
 ---
 
-#### Task 2.2: Create PauseButton Component
+### Modified Components
 
-**File**: `know-thyself-frontend/src/components/PauseButton.tsx`
+#### 1. `App.tsx` - Add Session Resume Logic
 
-```typescript
-import { useState, useEffect } from 'react';
-
-interface PauseButtonProps {
-  sessionId: string;
-  isPaused: boolean;
-  onPause: () => void;
-  onResume: () => void;
-}
-
-function PauseButton({ sessionId, isPaused, onPause, onResume }: PauseButtonProps) {
-  const [showModal, setShowModal] = useState(false);
-  const [pausedSeconds, setPausedSeconds] = useState(0);
-
-  useEffect(() => {
-    if (isPaused) {
-      setShowModal(true);
-      setPausedSeconds(0);
-
-      const interval = setInterval(() => {
-        setPausedSeconds(s => s + 1);
-      }, 1000);
-
-      return () => clearInterval(interval);
-    } else {
-      setShowModal(false);
-      setPausedSeconds(0);
-    }
-  }, [isPaused]);
-
-  async function handlePause() {
-    try {
-      const response = await fetch(`http://localhost:3001/api/sessions/${sessionId}/pause`, {
-        method: 'POST'
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        onPause();
-      }
-    } catch (error) {
-      console.error('Pause error:', error);
-    }
-  }
-
-  async function handleResume() {
-    try {
-      const response = await fetch(`http://localhost:3001/api/sessions/${sessionId}/resume`, {
-        method: 'POST'
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        onResume();
-      }
-    } catch (error) {
-      console.error('Resume error:', error);
-    }
-  }
-
-  const minutes = Math.floor(pausedSeconds / 60);
-  const seconds = pausedSeconds % 60;
-  const timeString = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-
-  return (
-    <>
-      {!isPaused && (
-        <button
-          onClick={handlePause}
-          className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-md flex items-center gap-2 transition-colors"
-        >
-          <span>⏸</span>
-          <span>Pause</span>
-        </button>
-      )}
-
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-          <div className="bg-bg-secondary border border-border-primary rounded-lg shadow-2xl p-8 max-w-md w-full">
-            <div className="text-center">
-              <div className="text-6xl mb-4">⏸️</div>
-              <h2 className="text-2xl font-bold text-text-primary mb-4">
-                Session Paused
-              </h2>
-              <p className="text-text-secondary mb-6">
-                Your progress has been saved
-              </p>
-              <p className="text-text-secondary mb-8">
-                Take a break if needed!
-              </p>
-
-              <div className="bg-bg-primary border border-border-primary rounded-md p-4 mb-8">
-                <p className="text-text-secondary text-sm mb-2">Time paused</p>
-                <p className="text-3xl font-mono text-text-primary">{timeString}</p>
-              </div>
-
-              <button
-                onClick={handleResume}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-md transition-colors"
-              >
-                Resume Training
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
-}
-
-export default PauseButton;
-```
-
----
-
-#### Task 2.3: Modify App.tsx for Registration & Session Resume
-
-**File**: `know-thyself-frontend/src/App.tsx`
-
-**Key Changes**:
-
+**Changes**:
 ```typescript
 import { useState, useEffect } from 'react';
 import StudentRegistration from './components/StudentRegistration';
-import PauseButton from './components/PauseButton';
 // ... other imports
 
 function App() {
@@ -2280,7 +1058,6 @@ function App() {
 
   // NEW: Registration state
   const [showRegistration, setShowRegistration] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
 
   // NEW: Check for existing session on mount
   useEffect(() => {
@@ -2302,13 +1079,12 @@ function App() {
 
         if (data.exists && !data.complete) {
           // Session is active - RESUME IT
-          console.log('Resuming existing session');
+          console.log('✅ Resuming existing session');
 
           setSessionId(savedSessionId);
           setIsActive(true);
           setCurrentAgent(data.currentAgent);
           setCurrentScenarioIndex(data.currentScenarioIndex || 0);
-          setIsPaused(data.isPaused || false);
           setIsAARMode(data.isAARMode || false);
 
           // Fetch current vitals if in core agent mode
@@ -2370,40 +1146,560 @@ function App() {
     return <StudentRegistration onComplete={handleRegistrationComplete} />;
   }
 
-  // ... rest of render logic
-
-  return (
-    <div>
-      <Header>
-        {/* ... existing header content */}
-
-        {/* NEW: Pause button */}
-        {sessionId && isActive && !isAARMode && (
-          <PauseButton
-            sessionId={sessionId}
-            isPaused={isPaused}
-            onPause={() => setIsPaused(true)}
-            onResume={() => setIsPaused(false)}
-          />
-        )}
-      </Header>
-
-      {/* ... rest of app */}
-    </div>
-  );
+  // ... rest of existing render logic
 }
 ```
 
 ---
 
-### Phase 3: Admin Dashboard & Export (Day 3-4)
+## Data Flow
 
-*(Due to length constraints, this would be implemented following the specifications in Feature 5 and Feature 6 sections above)*
+### Flow 1: Student Registration & Session Start
 
-**Key Files to Create**:
-1. `know-thyself-frontend/src/pages/AdminDashboard.tsx`
-2. Backend endpoint: `GET /api/admin/sessions`
-3. Backend endpoint: `GET /api/admin/export`
+```
+1. Student opens browser
+   ↓
+2. Opens: http://localhost:3001
+   ↓
+3. App checks localStorage for sessionId
+   ├─ Found → Try to resume (Flow 2)
+   └─ Not found → Show registration screen
+   ↓
+4. Student fills form:
+   - Name: "Alice Smith"
+   - Email: "alice@example.com"
+   - Consent: ✓
+   ↓
+5. Click "Start Training"
+   ↓
+6. Frontend: POST /api/student/register
+   ↓
+7. Backend:
+   - Generate studentId: "alice_smith_lx3k9p2m7"
+   - Assign group (automatic balancing): "A"
+   - Save to: data/students/alice_smith_lx3k9p2m7.json
+   - Return: { studentId, group }
+   ↓
+8. Frontend receives response
+   - Save to localStorage:
+     * kt_studentId: "alice_smith_lx3k9p2m7"
+     * kt_studentName: "Alice Smith"
+     * kt_group: "A"
+   ↓
+9. Frontend: POST /api/sessions/start
+   - Body: { studentId: "alice_smith_lx3k9p2m7" }
+   ↓
+10. Backend:
+    - Load student data
+    - Create session with:
+      * sessionId: "session_123..."
+      * challengePointsEnabled: true (because Group A)
+      * studentId, studentName, group
+    - Return session data
+    ↓
+11. Frontend receives session
+    - Save sessionId to localStorage
+    - Start Cognitive Coach
+    ↓
+12. Training begins!
+```
+
+---
+
+### Flow 2: Browser Refresh / Session Resume (CRITICAL)
+
+```
+1. Browser refreshes (or crashes and reopens)
+   ↓
+2. App.tsx useEffect runs on mount
+   ↓
+3. Check localStorage for 'kt_sessionId'
+   ├─ Not found → Show registration
+   └─ Found: "session_123..."
+   ↓
+4. Frontend: GET /api/sessions/session_123.../check
+   ↓
+5. Backend checks if session exists
+   ├─ Not found → return { exists: false }
+   └─ Found → return:
+      {
+        exists: true,
+        complete: false,
+        currentAgent: "core",
+        currentScenarioIndex: 1,
+        isAARMode: false
+      }
+   ↓
+6. Frontend receives response
+   ├─ exists: false → Clear localStorage, show registration
+   ├─ complete: true → Show completion screen
+   └─ exists: true, complete: false → RESUME SESSION:
+      - Set sessionId from localStorage
+      - Set isActive = true
+      - Restore currentAgent, currentScenarioIndex
+      - Fetch current vitals
+      ↓
+7. Session continues exactly where it was!
+   - Student sees same scenario
+   - Same conversation state
+   - Same progress
+
+✅ NO DATA LOST, NO RESTART NEEDED!
+```
+
+---
+
+### Flow 3: Session Completion & Auto-Save
+
+```
+1. Student completes AAR conversation
+   ↓
+2. AAR Agent sends message with [AAR_COMPLETE] marker
+   ↓
+3. Frontend: POST /api/sessions/:id/aar/message
+   ↓
+4. Backend detects [AAR_COMPLETE]
+   - Strip marker from message
+   - Set session.sessionComplete = true
+   - Set session.completedAt = timestamp
+   ↓
+5. Backend calls saveStudentData(session)
+   - Build complete data object
+   - Save to: data/students/STUDENT_ID.json
+   - Save to: data/backups/2024-11-06/STUDENT_ID.json
+   - Log: "✅ Data saved"
+   ↓
+6. Backend returns: { aarComplete: true }
+   ↓
+7. Frontend receives response
+   - Show completion screen
+   - Keep sessionId in localStorage
+   ↓
+8. Data safely on disk ✅
+   - Student can close browser
+   - Data survives server restart
+```
+
+---
+
+### Flow 4: Data Export
+
+```
+1. All students complete training
+   ↓
+2. Instructor runs export script:
+   $ cd server
+   $ node export-data.js
+   ↓
+3. Script:
+   - Reads all files from data/students/
+   - Extracts key metrics
+   - Generates CSV rows
+   - Saves to: data/know_thyself_export_2024-11-06.csv
+   ↓
+4. Output:
+   ✅ CSV exported successfully!
+   📄 File: ../data/know_thyself_export_2024-11-06.csv
+   📊 Total students: 20
+   📊 Group A: 10
+   📊 Group B: 10
+   ↓
+5. Instructor:
+   - Copies CSV to USB drive
+   - Opens in Excel/SPSS
+   - Runs statistical analysis (t-test)
+```
+
+---
+
+## Implementation Guide
+
+### Phase 1: Backend Foundation (Day 1)
+
+#### Task 1.1: Student Registration Endpoint
+
+**File**: `server/index.js`
+
+**Code Location**: After existing session endpoints (~line 2950)
+
+```javascript
+// ============================================================================
+// LAYER 3: STUDENT REGISTRATION (Task 1.1)
+// ============================================================================
+
+// Track group assignments (automatic balancing)
+let groupCounts = { A: 0, B: 0 };
+
+/**
+ * POST /api/student/register
+ * Register new student and assign to A/B group with automatic balancing
+ */
+app.post('/api/student/register', async (req, res) => {
+  try {
+    const { name, email, consent } = req.body;
+
+    // Validation
+    if (!name || name.trim().length < 2) {
+      return res.status(400).json({
+        success: false,
+        error: 'Please enter your full name (at least 2 characters)'
+      });
+    }
+
+    if (email && !isValidEmail(email)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Please enter a valid email address'
+      });
+    }
+
+    if (!consent) {
+      return res.status(400).json({
+        success: false,
+        error: 'You must consent to data collection to participate'
+      });
+    }
+
+    // Generate student ID
+    const studentId = generateStudentId(name);
+
+    // Assign group (automatic balancing)
+    const group = assignGroup();
+
+    // Create student record
+    const studentData = {
+      studentId: studentId,
+      studentName: name.trim(),
+      studentEmail: email?.trim() || null,
+      group: group,
+      registeredAt: new Date().toISOString(),
+      sessionId: null,
+      status: 'registered'
+    };
+
+    // Save to disk
+    const studentDir = path.join(__dirname, '../data/students');
+    await fs.promises.mkdir(studentDir, { recursive: true });
+
+    const studentFile = path.join(studentDir, `${studentId}.json`);
+    await fs.promises.writeFile(studentFile, JSON.stringify(studentData, null, 2));
+
+    console.log(`✅ Student registered: ${name} (${studentId}) - Group ${group}`);
+    console.log(`   Group balance: A=${groupCounts.A}, B=${groupCounts.B}`);
+
+    res.json({
+      success: true,
+      studentId: studentId,
+      group: group,
+      message: `Welcome, ${name}! You've been assigned to Group ${group}.`
+    });
+
+  } catch (error) {
+    console.error('Error registering student:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Helper: Generate unique student ID from name
+ */
+function generateStudentId(name) {
+  const namePart = name
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '_')
+    .replace(/[^a-z0-9_]/g, '')
+    .substring(0, 30);
+
+  const timestamp = Date.now().toString(36);
+  const random = Math.random().toString(36).substring(2, 7);
+
+  return `${namePart}_${timestamp}${random}`;
+}
+
+/**
+ * Helper: Assign A/B group with automatic balancing
+ */
+function assignGroup() {
+  if (groupCounts.A === groupCounts.B) {
+    const group = Math.random() < 0.5 ? 'A' : 'B';
+    groupCounts[group]++;
+    return group;
+  }
+
+  const group = groupCounts.A < groupCounts.B ? 'A' : 'B';
+  groupCounts[group]++;
+  return group;
+}
+
+/**
+ * Helper: Validate email format
+ */
+function isValidEmail(email) {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
+```
+
+---
+
+#### Task 1.2: Modify Session Start to Accept Student ID
+
+**File**: `server/index.js`
+
+**Location**: Modify existing `/api/sessions/start` endpoint (~line 60)
+
+**Changes**:
+```javascript
+app.post('/api/sessions/start', async (req, res) => {
+  try {
+    const { scenarioId = 'asthma_mvp_001', studentId } = req.body; // ← ADD studentId
+
+    // NEW: Load student data if provided
+    let studentData = null;
+    if (studentId) {
+      const studentFile = path.join(__dirname, '../data/students', `${studentId}.json`);
+      try {
+        const fileContent = await fs.promises.readFile(studentFile, 'utf-8');
+        studentData = JSON.parse(fileContent);
+      } catch (error) {
+        console.warn('Student file not found:', studentId);
+      }
+    }
+
+    // Determine challenge points based on group (automatic)
+    const challengePointsEnabled = studentData
+      ? studentData.group === 'A'  // ← Auto-set based on A/B group
+      : req.body.challengePointsEnabled !== undefined
+        ? req.body.challengePointsEnabled
+        : true;
+
+    console.log('🎓 Starting new session with Cognitive Coach');
+    console.log('Challenge Points:', challengePointsEnabled ? 'ENABLED' : 'DISABLED');
+    if (studentData) {
+      console.log(`Student: ${studentData.studentName} (Group ${studentData.group})`);
+    }
+
+    // ... existing session creation code
+
+    // NEW: Add student info to session
+    session = {
+      sessionId,
+      scenarioId,
+
+      // NEW: Student identity
+      studentId: studentData?.studentId || null,
+      studentName: studentData?.studentName || null,
+      studentEmail: studentData?.studentEmail || null,
+      group: studentData?.group || null,
+      registeredAt: studentData?.registeredAt || null,
+
+      // ... all existing session fields
+
+      challengePointsEnabled: challengePointsEnabled, // ← Use determined value
+      // ... rest of session initialization
+    };
+
+    sessions.set(sessionId, session);
+
+    // NEW: Update student record with sessionId
+    if (studentData) {
+      studentData.sessionId = sessionId;
+      studentData.status = 'active';
+      const studentFile = path.join(__dirname, '../data/students', `${studentId}.json`);
+      await fs.promises.writeFile(studentFile, JSON.stringify(studentData, null, 2));
+    }
+
+    // ... rest of existing code
+  }
+});
+```
+
+---
+
+#### Task 1.3: Session Check Endpoint
+
+**File**: `server/index.js`
+
+**Code Location**: After AAR endpoints (~line 2920)
+
+```javascript
+// ============================================================================
+// LAYER 3: SESSION RESUME (Task 1.3)
+// ============================================================================
+
+/**
+ * GET /api/sessions/:sessionId/check
+ * Check if session exists and get status (for browser refresh recovery)
+ */
+app.get('/api/sessions/:sessionId/check', (req, res) => {
+  try {
+    const { sessionId } = req.params;
+    const session = sessions.get(sessionId);
+
+    if (!session) {
+      return res.json({ exists: false });
+    }
+
+    res.json({
+      exists: true,
+      complete: session.sessionComplete || false,
+      currentAgent: session.currentAgent,
+      currentScenarioIndex: session.currentScenarioIndex || 0,
+      isAARMode: session.isAARMode || false,
+      studentId: session.studentId,
+      studentName: session.studentName
+    });
+
+  } catch (error) {
+    console.error('Error checking session:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+```
+
+---
+
+#### Task 1.4: Auto-Save Function
+
+**File**: `server/index.js`
+
+**Code Location**: Add helper function (~line 1450)
+
+```javascript
+/**
+ * Save student data to disk when session completes
+ */
+async function saveStudentData(session) {
+  const studentData = {
+    studentId: session.studentId,
+    studentName: session.studentName,
+    studentEmail: session.studentEmail,
+    group: session.group,
+    sessionId: session.sessionId,
+
+    timestamps: {
+      registered: session.registeredAt,
+      sessionStarted: new Date(session.sessionStartTime).toISOString(),
+      sessionCompleted: session.completedAt,
+      totalElapsed: formatDuration((Date.now() - session.sessionStartTime) / 1000)
+    },
+
+    performance: calculatePerformanceScore(session),
+    scenarios: generateScenarioSummaries(session),
+    criticalActions: session.criticalActionsLog || [],
+    challengePoints: session.challengePointsUsed || [],
+    aarTranscript: aarService.getConversationHistory(session.sessionId),
+
+    metadata: {
+      version: 'Layer2_MVP',
+      challengePointsEnabled: session.challengePointsEnabled,
+      scenariosCompleted: (session.currentScenarioIndex || 0) + 1,
+      sessionComplete: true
+    }
+  };
+
+  // Save to primary location
+  const primaryPath = path.join(__dirname, '../data/students', `${session.studentId}.json`);
+  await fs.promises.mkdir(path.dirname(primaryPath), { recursive: true });
+  await fs.promises.writeFile(primaryPath, JSON.stringify(studentData, null, 2));
+
+  // Save to backup location
+  const today = new Date().toISOString().split('T')[0];
+  const backupDir = path.join(__dirname, '../data/backups', today);
+  await fs.promises.mkdir(backupDir, { recursive: true });
+
+  const backupPath = path.join(backupDir, `${session.studentId}.json`);
+  await fs.promises.writeFile(backupPath, JSON.stringify(studentData, null, 2));
+
+  console.log(`💾 Saved: ${primaryPath}`);
+  console.log(`💾 Backup: ${backupPath}`);
+}
+
+function formatDuration(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins} minutes ${secs} seconds`;
+}
+```
+
+**Modify AAR message endpoint to trigger save**:
+
+```javascript
+// In POST /api/sessions/:sessionId/aar/message
+const isComplete = aarMessage.includes('[AAR_COMPLETE]');
+
+if (isComplete) {
+  session.sessionComplete = true;
+  session.completedAt = new Date().toISOString();
+
+  // AUTO-SAVE to disk
+  await saveStudentData(session);
+
+  console.log('✅ Session complete and data saved:', session.studentId);
+}
+```
+
+---
+
+### Phase 2: Frontend (Day 2)
+
+#### Task 2.1: Create StudentRegistration Component
+
+**File**: `know-thyself-frontend/src/components/StudentRegistration.tsx`
+
+*(Full implementation provided in Components section above)*
+
+---
+
+#### Task 2.2: Modify App.tsx for Session Resume
+
+**File**: `know-thyself-frontend/src/App.tsx`
+
+*(Full implementation provided in Components section above)*
+
+---
+
+#### Task 2.3: Update API Service
+
+**File**: `know-thyself-frontend/src/services/api.ts`
+
+**Add methods**:
+
+```typescript
+async registerStudent(name: string, email: string | null) {
+  const response = await fetch(`${this.baseURL}/student/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, email, consent: true })
+  });
+  return response.json();
+}
+
+async checkSession(sessionId: string) {
+  const response = await fetch(`${this.baseURL}/sessions/${sessionId}/check`);
+  return response.json();
+}
+
+async startSession(scenarioId: string, studentId?: string) {
+  const response = await fetch(`${this.baseURL}/sessions/start`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ scenarioId, studentId })
+  });
+  return response.json();
+}
+```
+
+---
+
+### Phase 3: Export Script (Day 3)
+
+#### Task 3.1: Create Export Script
+
+**File**: `server/export-data.js`
+
+*(Full implementation provided in CSV Export section above)*
 
 ---
 
@@ -2412,9 +1708,10 @@ function App() {
 ### Pre-Testing (1 week before)
 
 - [ ] **Development Complete**
-  - [ ] All 6 features implemented
-  - [ ] Code reviewed
-  - [ ] No critical bugs
+  - [ ] Student registration endpoint working
+  - [ ] Session resume logic working
+  - [ ] Auto-save on completion working
+  - [ ] Export script tested
 
 - [ ] **Environment Setup**
   - [ ] Server runs on localhost:3001
@@ -2424,9 +1721,8 @@ function App() {
 
 - [ ] **Test with Fake Students**
   - [ ] Create 3 fake student registrations
-  - [ ] Verify Group A/B assignment (should be balanced)
-  - [ ] Test pause/resume functionality
-  - [ ] Test browser refresh (session resumes)
+  - [ ] Verify Group A/B automatic balancing
+  - [ ] Test browser refresh (session resumes) ✅ CRITICAL
   - [ ] Complete full session to AAR
   - [ ] Verify data saved to disk
   - [ ] Test CSV export
@@ -2443,7 +1739,6 @@ function App() {
 #### Setup (30 minutes before)
 
 - [ ] Start server: `cd server && npm start`
-- [ ] Open admin dashboard: `http://localhost:3001/admin`
 - [ ] Verify data/ directory is empty (fresh start)
 - [ ] Prepare USB drive for backup
 - [ ] Write link on whiteboard: `http://localhost:3001`
@@ -2453,20 +1748,20 @@ function App() {
 - [ ] Students seated at computers
 - [ ] Brief explanation given (5 min)
 - [ ] Students open link
-- [ ] Monitor registration on admin dashboard
+- [ ] Verify students can register
 
 #### During Testing (60-90 minutes)
 
-- [ ] Monitor admin dashboard every 10 minutes
-- [ ] Check for any students stuck or paused for long time
+- [ ] Monitor data/students/ folder periodically
+- [ ] Check for any students stuck
 - [ ] Note any issues in logbook
 - [ ] Do NOT intervene unless technical issue
 
 #### After Testing
 
 - [ ] Wait for all students to complete
-- [ ] Admin dashboard shows: Active = 0, Completed = 20
-- [ ] Click "Export All Data to CSV"
+- [ ] Check data/students/ folder (should have 20 files)
+- [ ] Run export: `cd server && node export-data.js`
 - [ ] **IMMEDIATELY copy CSV to USB drive**
 - [ ] **Copy entire data/students/ folder to USB drive**
 - [ ] Verify both backups complete
@@ -2477,8 +1772,8 @@ function App() {
 - [ ] **Data Verification**
   - [ ] Open CSV in Excel
   - [ ] Verify 20 rows (one per student)
-  - [ ] Check Group A count = ~10
-  - [ ] Check Group B count = ~10
+  - [ ] Check Group A count ≈ 10
+  - [ ] Check Group B count ≈ 10
   - [ ] No missing data fields
 
 - [ ] **Analysis**
@@ -2487,11 +1782,6 @@ function App() {
   - [ ] Run t-test for significance
   - [ ] Analyze CDP quality distribution
   - [ ] Compare treatment timing
-
-- [ ] **Cleanup**
-  - [ ] Archive data/students/ folder (date-stamped)
-  - [ ] Clear sessions from memory (restart server)
-  - [ ] Keep backups safe
 
 ---
 
@@ -2507,9 +1797,6 @@ node --version  # Should be v18.x or higher
 
 # npm installed
 npm --version  # Should be 9.x or higher
-
-# Git (for version control)
-git --version
 ```
 
 #### Setup Steps
@@ -2542,86 +1829,59 @@ cd ../server
 npm start
 
 # Server running on http://localhost:3001
-# Admin dashboard: http://localhost:3001/admin
 # Student link: http://localhost:3001
 ```
 
-#### Firewall Configuration (if needed)
-
-If students can't access from other computers:
+#### Network Access (if students on different computers)
 
 ```bash
-# Allow port 3001 through firewall
-sudo ufw allow 3001/tcp
-
 # Get your local IP address
 ip addr show | grep "inet "
 # Example: 192.168.1.100
 
 # Students use: http://192.168.1.100:3001
+
+# If needed, allow port through firewall
+sudo ufw allow 3001/tcp
 ```
-
----
-
-### Troubleshooting
-
-#### Issue: Students can't connect
-
-**Symptoms**: Browser shows "can't reach this page"
-
-**Solutions**:
-1. Check server is running: `curl http://localhost:3001`
-2. Check firewall: `sudo ufw status`
-3. Get correct IP: `hostname -I`
-4. Try: `http://[YOUR-IP]:3001` instead of localhost
-
----
-
-#### Issue: Data not saving
-
-**Symptoms**: Admin dashboard empty, no files in data/students/
-
-**Solutions**:
-1. Check directory permissions: `ls -la data/`
-2. Check server logs for errors
-3. Manually test: `curl http://localhost:3001/api/admin/sessions`
-
----
-
-#### Issue: Group assignment unbalanced
-
-**Symptoms**: Group A has 15, Group B has 5
-
-**Cause**: Server was restarted mid-session (lost groupCounts)
-
-**Solutions**:
-1. For testing: Accept imbalance, note in report
-2. For production: Persist groupCounts to disk
 
 ---
 
 ## Summary
 
-This development plan provides:
+### Features Implemented (4 Total)
 
-✅ **Complete technical specifications** for 6 features
-✅ **API endpoint definitions** with request/response examples
-✅ **Database schemas** for student and session data
-✅ **Frontend components** with full code implementations
-✅ **Data flow diagrams** for all key scenarios
-✅ **Step-by-step implementation guide** organized by phase
-✅ **Comprehensive testing checklist** for validation
-✅ **Deployment instructions** for testing day
+1. ✅ **Student Registration** - Name/email → auto ID/group (automatic balancing)
+2. ✅ **Session Resume** - Browser refresh recovery (CRITICAL requirement met)
+3. ✅ **Auto-Save** - Data persistence to disk with backup
+4. ✅ **CSV Export** - Command-line export script
 
-**Timeline**: 4-5 days of focused development
+### Features Removed (Per Your Requirements)
 
-**Outcome**: Robust MVP testing system that supports:
-- 10-20 concurrent students
-- Self-service registration
-- A/B testing with balanced groups
-- Pause/resume capability
-- Automatic data collection
-- One-click CSV export
-- No data loss (multi-layer backup)
+- ❌ Pause Button - Not needed
+- ❌ Admin Dashboard - Not needed
 
-**Ready to implement?** Start with Phase 1 (Backend Foundation) and proceed sequentially through phases.
+### Timeline
+
+**Estimated Development**: 2-3 days
+
+**Breakdown**:
+- Day 1: Backend (registration, session check, auto-save)
+- Day 2: Frontend (registration component, session resume)
+- Day 3: Export script + testing
+
+### Key Benefits
+
+✅ **Automatic A/B Balancing** - No manual group assignment needed
+✅ **Session Resume** - Students MUST resume where they left off (requirement met)
+✅ **Robust Data Collection** - Multi-layer backup prevents data loss
+✅ **Simple Export** - One command generates CSV for analysis
+✅ **Flexible** - Handles no-shows and extras automatically
+
+---
+
+## File Location
+
+**Development Plan**: `/home/user/know-thyself-mvp/docs/Layer_3_MVP_Testing_Sprint.md`
+
+Ready to implement when you give the go-ahead! 🎯
