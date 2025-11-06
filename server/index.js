@@ -1266,6 +1266,11 @@ function calculatePerformanceScore(session) {
  * @returns {Array} - Sorted timeline of critical actions
  */
 function generateCriticalActionsTimeline(session) {
+  // Handle case where criticalActionsLog is not initialized
+  if (!session.criticalActionsLog || !Array.isArray(session.criticalActionsLog)) {
+    return [];
+  }
+
   const timeline = session.criticalActionsLog.map(log => {
     const minutes = Math.floor(log.elapsedTime / 60);
     const seconds = Math.floor(log.elapsedTime % 60);
@@ -1333,7 +1338,12 @@ function isPositiveAction(log) {
  */
 function analyzeTreatmentTiming(session) {
   const scenario = session.scenario;
+  if (!scenario) return [];
+
   const criticalTreatments = scenario.critical_treatments || [];
+  if (!session.criticalActionsLog || !Array.isArray(session.criticalActionsLog)) {
+    return [];
+  }
 
   const timingAnalysis = [];
 
@@ -1394,31 +1404,35 @@ function generateScenarioSummary(session) {
   const challengeSummary = summarizeChallenges(session);
 
   // Calculate scenario duration
-  const durationMinutes = Math.round((Date.now() - session.scenarioStartTime) / 60000);
+  const durationMinutes = session.scenarioStartTime ?
+    Math.round((Date.now() - session.scenarioStartTime) / 60000) : 0;
 
-  // Count key metrics
-  const treatmentsGiven = session.criticalActionsLog.filter(
+  // Count key metrics (with null checks)
+  const criticalActionsLog = session.criticalActionsLog || [];
+  const treatmentsGiven = criticalActionsLog.filter(
     log => log.action === 'treatment_given'
   ).length;
 
-  const dangerousActions = session.criticalActionsLog.filter(
+  const dangerousActions = criticalActionsLog.filter(
     log => log.action === 'dangerous_medication_given'
   ).length;
 
   // Final patient state
   const finalState = session.currentState;
-  const finalVitals = { ...session.vitals };
+  const finalVitals = session.vitals ? { ...session.vitals } : {};
 
-  // State progression path
-  const stateProgression = session.stateHistory.map(h => ({
+  // State progression path (with null check)
+  const stateHistory = session.stateHistory || [];
+  const stateProgression = stateHistory.map(h => ({
     state: h.state,
     timestamp: Math.floor(h.elapsedTime / 60) + ':' + String(Math.floor(h.elapsedTime % 60)).padStart(2, '0'),
     reason: h.reason || 'State transition'
   }));
 
+  const scenario = session.scenario || {};
   return {
-    scenarioId: session.scenario.scenario_id,
-    scenarioTitle: session.scenario.metadata?.title || session.scenario.scenario_metadata?.title || 'Unknown Scenario',
+    scenarioId: scenario.scenario_id || 'unknown',
+    scenarioTitle: scenario.metadata?.title || scenario.scenario_metadata?.title || 'Unknown Scenario',
     duration: durationMinutes,
     performanceScore: performanceScore,
     challengeSummary: challengeSummary,
@@ -2308,8 +2322,7 @@ CURRENT VITALS: HR ${session.vitals.HR || '?'}, RR ${session.vitals.RR || '?'}, 
     // Get challenge context if available
     const challengeContext = session.challengeContext || '';
 
-    // Get challenge feedback context if available
-    const challengeFeedbackContext = session.challengeFeedbackContext || '';
+    // challengeFeedbackContext already declared earlier in function (line 2044)
 
     // Build system prompt with CHALLENGE CONTEXT as HIGHEST PRIORITY
     // When a challenge is active, AI must ask the question BEFORE continuing scenario
