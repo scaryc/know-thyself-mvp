@@ -16,6 +16,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 import cognitiveCoachPromptBuilder from './services/cognitiveCoachPrompt.js';
 import cognitiveCoachService from './services/cognitiveCoachService.js';
+import aarService from './services/aarService.js';
 
 // Initialize
 const app = express();
@@ -2723,6 +2724,188 @@ app.delete('/api/sessions/:sessionId', async (req, res) => {
 });
 
 // ============================================================================
+// AAR AGENT ENDPOINTS (Task 4.3)
+// ============================================================================
+
+/**
+ * POST /api/sessions/:sessionId/aar/start
+ * Initialize After Action Review
+ */
+app.post('/api/sessions/:sessionId/aar/start', async (req, res) => {
+  try {
+    const { sessionId } = req.params;
+
+    const session = sessions.get(sessionId);
+    if (!session) {
+      return res.status(404).json({ error: 'Session not found' });
+    }
+
+    console.log('📊 Starting AAR for session:', sessionId);
+
+    // Calculate CDP performance score
+    const performanceScore = calculatePerformanceScore(session);
+
+    // Generate critical actions timeline
+    const timeline = generateCriticalActionsTimeline(session);
+
+    // Analyze treatment timing
+    const treatmentTiming = analyzeTreatmentTiming(session);
+
+    // Generate comprehensive scenario summary
+    const scenarioSummary = generateScenarioSummary(session);
+
+    // Prepare comprehensive performance data
+    const performanceData = {
+      sessionId: session.sessionId,
+      scenarioId: session.scenario?.scenario_id || session.scenarioId,
+      totalTime: session.scenarioStartTime ? (Date.now() - session.scenarioStartTime) / 1000 : 0,
+      finalState: session.currentState,
+
+      // CDP Performance
+      performanceScore: performanceScore,
+      cdpEvaluations: session.cdpEvaluations || [],
+
+      // Medication Safety
+      medicationErrors: session.medicationErrors || [],
+      medicationWarnings: session.medicationWarnings || [],
+
+      // Critical treatments tracking
+      criticalTreatments: session.criticalTreatmentsGiven || {},
+      actionsLog: session.criticalActionsLog || [],
+      stateHistory: session.stateHistory || [],
+
+      // Timeline and analysis
+      timeline: timeline,
+      treatmentTiming: treatmentTiming,
+      scenarioSummary: scenarioSummary
+    };
+
+    // Initialize AAR session
+    const aarSession = aarService.initializeAAR(sessionId, performanceData);
+
+    // Load AAR prompt
+    const aarPromptPath = path.join(__dirname, './prompts/aarAgent.txt');
+    const aarPrompt = fs.readFileSync(aarPromptPath, 'utf-8');
+
+    // Build performance context
+    const context = aarService.buildAARContext(sessionId);
+
+    // Get opening message from Claude
+    const response = await anthropic.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 2048,
+      system: aarPrompt + '\n\n' + context,
+      messages: [
+        { role: 'user', content: 'Start the AAR session. Begin with a warm greeting and ask the student for their initial reflection.' }
+      ]
+    });
+
+    const aarMessage = response.content[0].text;
+
+    // Add to conversation history
+    aarService.addMessage(sessionId, 'assistant', aarMessage);
+
+    console.log('✅ AAR session started successfully');
+
+    res.json({
+      message: aarMessage,
+      phase: aarSession.phase,
+      aarActive: true
+    });
+  } catch (error) {
+    console.error('❌ Error starting AAR:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * POST /api/sessions/:sessionId/aar/message
+ * Continue AAR conversation
+ */
+app.post('/api/sessions/:sessionId/aar/message', async (req, res) => {
+  try {
+    const { sessionId } = req.params;
+    const { message: userMessage } = req.body;
+
+    const aarSession = aarService.getAAR(sessionId);
+    if (!aarSession) {
+      return res.status(404).json({ error: 'AAR session not found' });
+    }
+
+    console.log('💬 AAR message received:', userMessage.substring(0, 50) + '...');
+
+    // Add user message to history
+    aarService.addMessage(sessionId, 'user', userMessage);
+
+    // Load AAR prompt
+    const aarPromptPath = path.join(__dirname, './prompts/aarAgent.txt');
+    const aarPrompt = fs.readFileSync(aarPromptPath, 'utf-8');
+
+    // Build performance context
+    const context = aarService.buildAARContext(sessionId);
+
+    // Get conversation history
+    const conversationHistory = aarService.getConversationHistory(sessionId);
+
+    // Get Claude response
+    const response = await anthropic.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 2048,
+      system: aarPrompt + '\n\n' + context,
+      messages: conversationHistory
+    });
+
+    let aarMessage = response.content[0].text;
+
+    // Check for completion marker
+    const isComplete = aarMessage.includes('[AAR_COMPLETE]');
+    if (isComplete) {
+      aarMessage = aarMessage.replace('[AAR_COMPLETE]', '').trim();
+      aarService.updatePhase(sessionId, 'complete');
+      console.log('✅ AAR session completed');
+    }
+
+    // Add response to history
+    aarService.addMessage(sessionId, 'assistant', aarMessage);
+
+    res.json({
+      message: aarMessage,
+      phase: aarSession.phase,
+      aarComplete: isComplete
+    });
+  } catch (error) {
+    console.error('❌ Error in AAR conversation:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * GET /api/sessions/:sessionId/aar/status
+ * Get AAR session status
+ */
+app.get('/api/sessions/:sessionId/aar/status', (req, res) => {
+  try {
+    const { sessionId } = req.params;
+    const aarSession = aarService.getAAR(sessionId);
+
+    if (!aarSession) {
+      return res.json({ exists: false });
+    }
+
+    res.json({
+      exists: true,
+      phase: aarSession.phase,
+      isComplete: aarService.isComplete(sessionId),
+      messageCount: aarSession.conversationHistory.length,
+      duration: Math.floor((Date.now() - aarSession.startTime) / 1000)
+    });
+  } catch (error) {
+    console.error('Error getting AAR status:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// ============================================================================
 // BACKGROUND MONITORING - Auto-Deterioration (Task 1.4)
 // ============================================================================
 
@@ -2782,5 +2965,8 @@ app.listen(PORT, () => {
   console.log(`   POST   /api/sessions/:id/action`);
   console.log(`   GET    /api/sessions/:id/vitals`);
   console.log(`   GET    /api/sessions/:id/performance`);
+  console.log(`   POST   /api/sessions/:id/aar/start`);
+  console.log(`   POST   /api/sessions/:id/aar/message`);
+  console.log(`   GET    /api/sessions/:id/aar/status`);
   console.log(`   DELETE /api/sessions/:id`);
 });

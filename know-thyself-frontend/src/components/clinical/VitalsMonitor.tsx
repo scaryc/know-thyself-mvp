@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react';
+import { api } from '../../services/api';
+
 interface Vitals {
   HR: number;
   RR: number;
@@ -10,9 +13,35 @@ interface Vitals {
 
 interface VitalsMonitorProps {
   vitals: Vitals | null;
+  sessionId?: string;
+  isAARMode?: boolean;
 }
 
-function VitalsMonitor({ vitals }: VitalsMonitorProps) {
+function VitalsMonitor({ vitals: initialVitals, sessionId, isAARMode = false }: VitalsMonitorProps) {
+  const [vitals, setVitals] = useState<Vitals | null>(initialVitals);
+
+  // Update vitals when prop changes
+  useEffect(() => {
+    setVitals(initialVitals);
+  }, [initialVitals]);
+
+  // Poll vitals every 5 seconds (only during Core Agent mode, not during AAR)
+  useEffect(() => {
+    if (!sessionId || isAARMode) return;
+
+    const interval = setInterval(async () => {
+      try {
+        const updatedVitals = await api.getVitals(sessionId);
+        if (updatedVitals) {
+          setVitals(updatedVitals);
+        }
+      } catch (error) {
+        console.error('Vitals polling error:', error);
+      }
+    }, 5000); // Poll every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [sessionId, isAARMode]);
   const getAlertColor = (value: number, normal: [number, number]): string => {
     if (value < normal[0] * 0.8 || value > normal[1] * 1.2) return 'text-critical';
     if (value < normal[0] || value > normal[1]) return 'text-warning';

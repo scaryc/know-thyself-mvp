@@ -12,16 +12,20 @@ interface MainLayoutProps {
   onNotesUpdate: (notes: string[]) => void;
   currentAgent: 'cognitive_coach' | 'core' | null; // ✅ NEW
   onAgentTransition: (newAgent: 'core', scenarioData: any) => void; // ✅ NEW
+  isAARMode?: boolean; // ✅ NEW
+  onAARComplete?: () => void; // ✅ NEW
 }
 
-function MainLayout({ 
-  sessionId, 
-  currentVitals, 
+function MainLayout({
+  sessionId,
+  currentVitals,
   onVitalsUpdate,
   patientNotes,
   onNotesUpdate,
   currentAgent, // ✅ NEW
-  onAgentTransition // ✅ NEW
+  onAgentTransition, // ✅ NEW
+  isAARMode = false, // ✅ NEW
+  onAARComplete // ✅ NEW
 }: MainLayoutProps) {
   
   // ✅ NEW: During Cognitive Coach, show only the chat panel (full width)
@@ -30,12 +34,14 @@ function MainLayout({
       <main className="h-[calc(100vh-4rem)]">
         <div className="h-full flex items-center justify-center bg-bg-primary">
           <div className="w-full max-w-4xl h-full">
-            <ConversationPanel 
+            <ConversationPanel
               sessionId={sessionId}
               onVitalsUpdate={onVitalsUpdate}
               onNotesUpdate={onNotesUpdate}
               currentAgent={currentAgent}
               onAgentTransition={onAgentTransition}
+              isAARMode={isAARMode}
+              onAARComplete={onAARComplete}
             />
           </div>
         </div>
@@ -49,18 +55,24 @@ function MainLayout({
       <div className="h-full grid grid-cols-12 gap-4 p-4">
         {/* Left Panel - Conversation */}
         <div className="col-span-6 bg-bg-secondary rounded-lg overflow-hidden">
-          <ConversationPanel 
+          <ConversationPanel
             sessionId={sessionId}
             onVitalsUpdate={onVitalsUpdate}
             onNotesUpdate={onNotesUpdate}
             currentAgent={currentAgent}
             onAgentTransition={onAgentTransition}
+            isAARMode={isAARMode}
+            onAARComplete={onAARComplete}
           />
         </div>
 
         {/* Middle Panel - Vitals Monitor */}
         <div className="col-span-3 bg-bg-secondary rounded-lg p-4 overflow-y-auto">
-          <VitalsMonitor vitals={currentVitals} />
+          <VitalsMonitor
+            vitals={currentVitals}
+            sessionId={sessionId}
+            isAARMode={isAARMode}
+          />
         </div>
 
         {/* Right Panel - Clinical Data */}

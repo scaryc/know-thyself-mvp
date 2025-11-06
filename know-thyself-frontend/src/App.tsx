@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import MainLayout from './components/layout/MainLayout';
 import Header from './components/layout/Header';
+import SessionComplete from './components/SessionComplete';
 import { api } from './services/api';
 
 function App() {
@@ -20,6 +21,9 @@ function App() {
 
   // ✅ NEW: Track AAR mode (Task 0.2)
   const [isAARMode, setIsAARMode] = useState(false);
+
+  // ✅ NEW: Track session completion
+  const [sessionComplete, setSessionComplete] = useState(false);
 
   const handleStartSession = async () => {
     // Define all available scenarios and randomly select 3
@@ -118,7 +122,7 @@ function App() {
   const handleAgentTransition = (newAgent: 'core', scenarioData: any) => {
     console.log('🔄 Transitioning to Core Agent');
     setCurrentAgent(newAgent);
-    
+
     // Now set all the scenario data that was delayed
     if (scenarioData.dispatchInfo) {
       setDispatchInfo(scenarioData.dispatchInfo);
@@ -129,11 +133,35 @@ function App() {
     if (scenarioData.initialSceneDescription) {
       sessionStorage.setItem('initialScene', scenarioData.initialSceneDescription);
     }
-    
+
     // Start the timer NOW
     setScenarioStartTime(Date.now());
     setCurrentVitals(scenarioData.initialVitals || null);
     setPatientNotes([]);
+  };
+
+  // ✅ NEW: Handle AAR completion
+  const handleAARComplete = () => {
+    console.log('✅ AAR Complete - showing completion screen');
+    setSessionComplete(true);
+  };
+
+  // ✅ NEW: Reset session for new training
+  const handleResetSession = () => {
+    setSessionId(null);
+    setIsActive(false);
+    setScenarioStartTime(Date.now());
+    setCurrentVitals(null);
+    setDispatchInfo(null);
+    setPatientInfo(null);
+    setPatientNotes([]);
+    setScenarioQueue([]);
+    setCurrentScenarioIndex(0);
+    setCompletedScenarios([]);
+    setCurrentAgent(null);
+    setIsAARMode(false);
+    setSessionComplete(false);
+    sessionStorage.clear();
   };
 
   return (
@@ -154,23 +182,27 @@ function App() {
           <div className="text-center">
             <h2 className="text-3xl font-bold mb-4">Emergency Medical Training</h2>
             <p className="text-gray-400 mb-8">Practice your paramedic skills in a safe environment</p>
-            <button 
-              onClick={handleStartSession} 
+            <button
+              onClick={handleStartSession}
               className="px-8 py-4 bg-accent hover:bg-blue-600 rounded-lg text-lg font-semibold transition-colors"
             >
               Start Training Session
             </button>
           </div>
         </div>
+      ) : sessionComplete ? (
+        <SessionComplete onStartNewSession={handleResetSession} />
       ) : (
-        <MainLayout 
-          sessionId={sessionId} 
+        <MainLayout
+          sessionId={sessionId}
           currentVitals={currentVitals}
           onVitalsUpdate={setCurrentVitals}
           patientNotes={patientNotes}
           onNotesUpdate={setPatientNotes}
           currentAgent={currentAgent} // ✅ NEW: Pass currentAgent to MainLayout
           onAgentTransition={handleAgentTransition} // ✅ NEW: Pass transition handler
+          isAARMode={isAARMode} // ✅ NEW: Pass isAARMode to MainLayout
+          onAARComplete={handleAARComplete} // ✅ NEW: Pass AAR completion handler
         />
       )}
     </div>

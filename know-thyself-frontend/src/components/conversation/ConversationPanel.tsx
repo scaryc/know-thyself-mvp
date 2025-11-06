@@ -5,6 +5,7 @@ interface Message {
   role: 'user' | 'assistant' | 'system';
   content: string;
   timestamp: number;
+  isChallenge?: boolean;
 }
 
 interface ConversationPanelProps {
@@ -13,19 +14,24 @@ interface ConversationPanelProps {
   onNotesUpdate: (notes: string[]) => void;
   currentAgent: 'cognitive_coach' | 'core' | null;
   onAgentTransition: (newAgent: 'core', scenarioData: any) => void;
+  isAARMode?: boolean;
+  onAARComplete?: () => void;
 }
 
-function ConversationPanel({ 
-  sessionId, 
-  onVitalsUpdate, 
+function ConversationPanel({
+  sessionId,
+  onVitalsUpdate,
   onNotesUpdate,
   currentAgent,
-  onAgentTransition 
+  onAgentTransition,
+  isAARMode = false,
+  onAARComplete
 }: ConversationPanelProps) {
   // ✅ FIXED: Start with empty messages - don't pre-fill from sessionStorage
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [activeChallenge, setActiveChallenge] = useState(false);
   
   // ✅ NEW: Add initial scene when transitioning to Core Agent
   useEffect(() => {
@@ -53,7 +59,7 @@ function ConversationPanel({
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
-   
+
     const userMessage: Message = {
       role: 'user',
       content: input,
@@ -62,43 +68,75 @@ function ConversationPanel({
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
-   
-    try {
-      const response = await api.sendMessage(sessionId, input);
-     
-      console.log('📥 Frontend received:', response);
-     
-      const aiResponse: Message = {
-        role: 'assistant',
-        content: response.message,
-        timestamp: Date.now()
-      };
-      setMessages(prev => [...prev, aiResponse]);
-     
-      // ✅ NEW: Handle agent transition
-      if (response.transitioned && response.currentAgent === 'core') {
-        console.log('🎬 Transition detected - switching to Core Agent');
-        
-        // Notify parent to update agent state and scenario data
-        onAgentTransition('core', {
-          dispatchInfo: response.dispatchInfo,
-          patientInfo: response.patientInfo,
-          initialSceneDescription: response.initialSceneDescription,
-          initialVitals: response.initialVitals,
-          scenario: response.scenario
-        });
-      }
-     
-      // Update vitals through parent callback (only in Core Agent mode)
-      if (response.vitalsUpdated && response.vitals) {
-        console.log('✅ Vitals updated in response:', response.vitals);
-        onVitalsUpdate(response.vitals);
-      }
 
-      // Update notes through parent callback (only in Core Agent mode)
-      if (response.infoUpdated && response.patientNotes) {
-        console.log('✅ Calling onNotesUpdate with:', response.patientNotes);
-        onNotesUpdate(response.patientNotes);
+    try {
+      let response;
+
+      // Check if in AAR mode
+      if (isAARMode) {
+        response = await api.sendAARMessage(sessionId, input);
+
+        const aiResponse: Message = {
+          role: 'assistant',
+          content: response.message,
+          timestamp: Date.now()
+        };
+        setMessages(prev => [...prev, aiResponse]);
+
+        // Check if AAR completed
+        if (response.aarComplete) {
+          console.log('✅ AAR session complete');
+          if (onAARComplete) {
+            onAARComplete();
+          }
+        }
+      } else {
+        // Normal Core Agent or Cognitive Coach message
+        response = await api.sendMessage(sessionId, input);
+
+        console.log('📥 Frontend received:', response);
+
+        // Check if this is a challenge point
+        const isChallenge = response.isChallenge || false;
+        if (isChallenge) {
+          setActiveChallenge(true);
+        } else if (response.challengeResolved) {
+          setActiveChallenge(false);
+        }
+
+        const aiResponse: Message = {
+          role: 'assistant',
+          content: response.message,
+          timestamp: Date.now(),
+          isChallenge: isChallenge
+        };
+        setMessages(prev => [...prev, aiResponse]);
+
+        // ✅ NEW: Handle agent transition
+        if (response.transitioned && response.currentAgent === 'core') {
+          console.log('🎬 Transition detected - switching to Core Agent');
+
+          // Notify parent to update agent state and scenario data
+          onAgentTransition('core', {
+            dispatchInfo: response.dispatchInfo,
+            patientInfo: response.patientInfo,
+            initialSceneDescription: response.initialSceneDescription,
+            initialVitals: response.initialVitals,
+            scenario: response.scenario
+          });
+        }
+
+        // Update vitals through parent callback (only in Core Agent mode)
+        if (response.vitalsUpdated && response.vitals) {
+          console.log('✅ Vitals updated in response:', response.vitals);
+          onVitalsUpdate(response.vitals);
+        }
+
+        // Update notes through parent callback (only in Core Agent mode)
+        if (response.infoUpdated && response.patientNotes) {
+          console.log('✅ Calling onNotesUpdate with:', response.patientNotes);
+          onNotesUpdate(response.patientNotes);
+        }
       }
     } catch (error) {
       console.error('Failed to send message:', error);
@@ -133,8 +171,16 @@ function ConversationPanel({
                 ? 'bg-accent text-white'
                 : msg.role === 'system'
                 ? 'bg-green-900 text-green-100 border border-green-700'
+                : msg.isChallenge
+                ? 'bg-yellow-900 text-yellow-100 border-2 border-yellow-600'
                 : 'bg-bg-secondary text-gray-300'
             }`}>
+              {msg.isChallenge && (
+                <div className="flex items-center space-x-2 mb-2 text-yellow-300">
+                  <span>💭</span>
+                  <span className="text-xs font-semibold">CHALLENGE QUESTION</span>
+                </div>
+              )}
               {msg.content}
             </div>
           </div>
