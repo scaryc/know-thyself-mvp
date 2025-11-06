@@ -1,12 +1,17 @@
 class ApiService {
   private baseURL = 'http://localhost:3001/api';
 
-  async startSession(scenarioId: string, studentId?: string) {
+  async startSession(scenarioId: string, studentId?: string, scenarioQueue?: string[]) {
     const body: any = { scenarioId };
 
     // Layer 3: Include studentId if provided (for A/B group auto-configuration)
     if (studentId) {
       body.studentId = studentId;
+    }
+
+    // Layer 3: Include scenarioQueue if provided (for session resume - Feature 2)
+    if (scenarioQueue) {
+      body.scenarioQueue = scenarioQueue;
     }
 
     const response = await fetch(`${this.baseURL}/sessions/start`, {
@@ -57,6 +62,12 @@ class ApiService {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message })
     });
+    return response.json();
+  }
+
+  // Layer 3: Session resume (Feature 2)
+  async checkSession(sessionId: string) {
+    const response = await fetch(`${this.baseURL}/sessions/${sessionId}/check`);
     return response.json();
   }
 }

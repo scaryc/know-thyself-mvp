@@ -232,13 +232,51 @@ app.post('/api/student/register', async (req, res) => {
 });
 
 /**
+ * GET /api/sessions/:sessionId/check
+ * Check if session exists and get its current state
+ * Layer 3: Used for session resume on browser refresh
+ */
+app.get('/api/sessions/:sessionId/check', (req, res) => {
+  try {
+    const { sessionId } = req.params;
+    const session = sessions.get(sessionId);
+
+    if (!session) {
+      return res.json({ exists: false });
+    }
+
+    // Check if session is complete
+    const isComplete = session.sessionComplete === true;
+
+    res.json({
+      exists: true,
+      complete: isComplete,
+      currentAgent: session.currentAgent,
+      currentScenarioIndex: session.currentScenarioIndex || 0,
+      scenarioQueue: session.scenarioQueue || [],
+      completedScenarios: session.completedScenarios || [],
+      isAARMode: session.isAARMode || false,
+      studentId: session.studentId,
+      studentName: session.studentName,
+      group: session.group,
+      dispatchInfo: session.dispatchInfo || null,
+      patientInfo: session.patientInfo || null
+    });
+
+  } catch (error) {
+    console.error('Error checking session:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
  * POST /api/sessions/start
  * Start a new training session
  * Modified for Layer 3: Accepts studentId and auto-configures based on A/B group
  */
 app.post('/api/sessions/start', async (req, res) => {
   try {
-    const { scenarioId = 'asthma_mvp_001', studentId } = req.body;
+    const { scenarioId = 'asthma_mvp_001', studentId, scenarioQueue } = req.body;
 
     // Layer 3: Load student data if provided
     let studentData = null;
@@ -288,6 +326,15 @@ app.post('/api/sessions/start', async (req, res) => {
       studentName: studentData?.studentName || null,
       studentEmail: studentData?.studentEmail || null,
       group: studentData?.group || null,
+
+      // Layer 3: Session tracking (Feature 2 - Session Resume)
+      currentScenarioIndex: 0,
+      scenarioQueue: scenarioQueue || [],  // Scenarios selected by frontend
+      completedScenarios: [],
+      sessionComplete: false,
+      isAARMode: false,
+      dispatchInfo: null,
+      patientInfo: null,
 
       // Cognitive Coach state
       cognitiveCoach: {

@@ -32,19 +32,85 @@ function App() {
   // ✅ NEW: Track session completion
   const [sessionComplete, setSessionComplete] = useState(false);
 
-  // Layer 3: Check for existing registration on mount
+  // Layer 3: Check for existing registration and session on mount (Feature 2 - Session Resume)
   useEffect(() => {
-    const savedStudentId = localStorage.getItem('kt_studentId');
-    const savedStudentName = localStorage.getItem('kt_studentName');
-    const savedGroup = localStorage.getItem('kt_group');
+    async function checkExistingSession() {
+      // Check for existing registration
+      const savedStudentId = localStorage.getItem('kt_studentId');
+      const savedStudentName = localStorage.getItem('kt_studentName');
+      const savedGroup = localStorage.getItem('kt_group');
+      const savedSessionId = localStorage.getItem('kt_sessionId');
 
-    if (savedStudentId && savedStudentName && savedGroup) {
+      if (!savedStudentId || !savedStudentName || !savedGroup) {
+        // No registration - will show registration screen
+        return;
+      }
+
+      // Registration exists
       console.log(`👤 Existing student found: ${savedStudentName} (Group ${savedGroup})`);
       setStudentId(savedStudentId);
       setStudentName(savedStudentName);
       setGroup(savedGroup);
       setIsRegistered(true);
+
+      // Check if there's an active session to resume
+      if (savedSessionId) {
+        try {
+          console.log(`🔍 Checking for existing session: ${savedSessionId}`);
+          const response = await api.checkSession(savedSessionId);
+
+          if (response.exists && !response.complete) {
+            // Session exists and is active - RESUME IT
+            console.log('✅ Resuming existing session');
+            console.log(`📍 Resume state: ${response.currentAgent}, Scenario ${response.currentScenarioIndex + 1}`);
+
+            setSessionId(savedSessionId);
+            setIsActive(!response.isAARMode); // Active if not in AAR mode
+            setCurrentAgent(response.currentAgent);
+            setCurrentScenarioIndex(response.currentScenarioIndex);
+            setScenarioQueue(response.scenarioQueue);
+            setCompletedScenarios(response.completedScenarios);
+            setIsAARMode(response.isAARMode);
+
+            // Restore scenario data if in core agent mode
+            if (response.dispatchInfo) {
+              setDispatchInfo(response.dispatchInfo);
+            }
+            if (response.patientInfo) {
+              setPatientInfo(response.patientInfo);
+            }
+
+            // Fetch current vitals if in core agent mode
+            if (response.currentAgent === 'core') {
+              try {
+                const vitals = await api.getVitals(savedSessionId);
+                setCurrentVitals(vitals);
+              } catch (error) {
+                console.warn('Could not fetch vitals:', error);
+              }
+            }
+
+          } else if (response.complete) {
+            // Session was completed - show completion screen
+            console.log('✅ Session already completed');
+            setSessionId(savedSessionId);
+            setSessionComplete(true);
+
+          } else {
+            // Session not found (server restarted?) - clear session data
+            console.log('⚠️ Session not found on server, clearing session from localStorage');
+            localStorage.removeItem('kt_sessionId');
+          }
+
+        } catch (error) {
+          // Server error or session not found
+          console.error('❌ Session check failed:', error);
+          localStorage.removeItem('kt_sessionId');
+        }
+      }
     }
+
+    checkExistingSession();
   }, []);
 
   // Layer 3: Handle registration completion
@@ -68,12 +134,20 @@ function App() {
 
     console.log('Selected scenarios for this session:', selectedScenarios);
 
-    // Layer 3: Start first scenario with student ID
-    const response = await api.startSession(selectedScenarios[0], studentId || undefined);
+    // Layer 3: Start first scenario with student ID and scenario queue
+    const response = await api.startSession(
+      selectedScenarios[0],
+      studentId || undefined,
+      selectedScenarios  // Pass full scenario queue for session tracking
+    );
     console.log('Backend response:', response);
-    
+
     setSessionId(response.sessionId);
     setIsActive(true);
+
+    // Layer 3: Store sessionId in localStorage for session resume (Feature 2)
+    localStorage.setItem('kt_sessionId', response.sessionId);
+    console.log('💾 Session ID stored in localStorage for resume capability');
     
     // ✅ NEW: Set current agent from response
     setCurrentAgent(response.currentAgent || 'cognitive_coach');
@@ -193,6 +267,10 @@ function App() {
     setIsAARMode(false);
     setSessionComplete(false);
     sessionStorage.clear();
+
+    // Layer 3: Clear sessionId from localStorage (Feature 2)
+    localStorage.removeItem('kt_sessionId');
+    console.log('🗑️ Session ID cleared from localStorage');
   };
 
   // Layer 3: Show registration screen if not registered
