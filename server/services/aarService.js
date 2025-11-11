@@ -3,6 +3,8 @@
  * Handles After Action Review logic for performance analysis
  */
 
+import { patternAnalysisService } from './patternAnalysisService.js';
+
 class AARService {
   constructor() {
     this.aarSessions = new Map();
@@ -11,13 +13,19 @@ class AARService {
   /**
    * Initialize AAR session with performance data
    * @param {string} sessionId - Session identifier
-   * @param {Object} performanceData - Student performance data from scenario
+   * @param {Array} allScenariosPerformanceData - Array of performance data from all 3 scenarios
    * @returns {Object} - AAR session object
    */
-  initializeAAR(sessionId, performanceData) {
+  initializeAAR(sessionId, allScenariosPerformanceData) {
+    // Calculate patterns from all 3 scenarios
+    const patterns = patternAnalysisService.analyzePerformancePatterns(
+      allScenariosPerformanceData
+    );
+
     const aarSession = {
       sessionId: sessionId,
-      performanceData: performanceData,
+      performanceData: allScenariosPerformanceData, // Now stores ALL scenarios
+      patterns: patterns, // NEW: Store calculated patterns
       phase: 'opening', // opening | scenario_review | pattern_analysis | action_plan | closing | complete
       currentScenarioIndex: 0,
       conversationHistory: [],
@@ -26,6 +34,7 @@ class AARService {
 
     this.aarSessions.set(sessionId, aarSession);
     console.log(`✅ AAR Session initialized for ${sessionId}`);
+    console.log(`📊 Patterns detected: ${this.countDetectedPatterns(patterns)}`);
     return aarSession;
   }
 
@@ -73,108 +82,160 @@ class AARService {
     const aar = this.aarSessions.get(sessionId);
     if (!aar) return '';
 
-    const data = aar.performanceData;
+    const patterns = aar.patterns;
 
-    // Format time
-    const totalMinutes = Math.floor(data.totalTime / 60);
-    const totalSeconds = Math.floor(data.totalTime % 60);
-
-    // Build context
+    // Build comprehensive context including all scenarios and patterns
     let context = `
-# STUDENT PERFORMANCE DATA
+# STUDENT PERFORMANCE DATA - ALL 3 SCENARIOS
 
-## Overall Summary
-- Total Time: ${totalMinutes}m ${totalSeconds}s
-- Final Score: ${data.performanceScore?.percentage || 0}% (${data.performanceScore?.grade || 'N/A'})
-- Scenarios Completed: 3
-- Total Actions Taken: ${data.actionsLog?.length || 0}
-- Safety Violations: ${data.medicationErrors?.length || 0}
+## Overall Session Summary
+- Total Scenarios: 3
+- Total Session Time: ${this.calculateTotalTime(aar.performanceData)}
+- Overall Score: ${this.calculateOverallScore(aar.performanceData)}
+- Total Errors: ${this.countTotalErrors(aar.performanceData)}
 
 `;
 
-    // Critical Actions Timeline
-    if (data.actionsLog && data.actionsLog.length > 0) {
-      context += `## Critical Actions Timeline\n`;
-      data.actionsLog.forEach(action => {
-        const minutes = Math.floor(action.elapsedTime / 60);
-        const seconds = Math.floor(action.elapsedTime % 60);
-        const timeStr = `${minutes}:${String(seconds).padStart(2, '0')}`;
-        context += `- ${timeStr}: ${action.action} (${action.category})\n`;
-      });
-      context += `\n`;
+    // Add individual scenario summaries
+    for (let i = 0; i < aar.performanceData.length; i++) {
+      const scenario = aar.performanceData[i];
+      context += this.buildScenarioSummary(scenario, i + 1);
     }
 
-    // CDP Evaluations
-    if (data.cdpEvaluations && data.cdpEvaluations.length > 0) {
-      context += `## CDP Evaluations\n`;
-      data.cdpEvaluations.forEach(cdp => {
-        context += `### ${cdp.cdp_title}\n`;
-        context += `   Rating: ${cdp.rating?.toUpperCase() || 'NOT_PERFORMED'}\n`;
-        context += `   Explanation: ${cdp.explanation}\n`;
-        context += `   Time: ${Math.floor(cdp.elapsedTime)}m\n\n`;
-      });
+    // Add pattern analysis section
+    context += `
+---
+
+# IDENTIFIED PERFORMANCE PATTERNS
+
+**Pattern Analysis Status:** ${patterns.summary.readyForAnalysis ? 'COMPLETE' : 'INCOMPLETE'}
+**Patterns Detected:** ${this.countDetectedPatterns(patterns)}
+
+`;
+
+    // Add each pattern category
+    if (patterns.temporal.assessmentToTreatmentGap) {
+      context += this.formatPattern(patterns.temporal.assessmentToTreatmentGap);
     }
 
-    // Medication Errors
-    if (data.medicationErrors && data.medicationErrors.length > 0) {
-      context += `## Medication Safety Concerns\n`;
-      data.medicationErrors.forEach(error => {
-        const minutes = Math.floor(error.elapsedTime / 60);
-        const seconds = Math.floor(error.elapsedTime % 60);
-        context += `- ⚠️ ${minutes}:${String(seconds).padStart(2, '0')}: ${error.medication} - ${error.reason}\n`;
-      });
-      context += `\n`;
+    if (patterns.decisionQuality.consistentStrengths) {
+      context += this.formatPattern(patterns.decisionQuality.consistentStrengths);
     }
 
-    // State Progression
-    if (data.stateHistory && data.stateHistory.length > 0) {
-      context += `## Patient State Progression\n`;
-      data.stateHistory.forEach(state => {
-        const minutes = Math.floor(state.elapsedTime / 60);
-        const seconds = Math.floor(state.elapsedTime % 60);
-        const timeStr = `${minutes}:${String(seconds).padStart(2, '0')}`;
-        const stateLabel = state.state?.toUpperCase() || 'UNKNOWN';
-        const prevLabel = state.previousState ? ` (from ${state.previousState.toUpperCase()})` : '';
-        context += `- ${timeStr}: ${stateLabel}${prevLabel}\n`;
-      });
-      context += `\n`;
+    if (patterns.decisionQuality.consistentWeaknesses) {
+      context += this.formatPattern(patterns.decisionQuality.consistentWeaknesses);
     }
 
-    // Treatment Summary
-    if (data.criticalTreatments) {
-      context += `## Critical Treatments Given\n`;
-      context += `- Oxygen: ${data.criticalTreatments.oxygen ? '✅ YES' : '❌ NO'}\n`;
-      context += `- Salbutamol: ${data.criticalTreatments.salbutamol ? '✅ YES' : '❌ NO'}\n`;
-      context += `- Steroids: ${data.criticalTreatments.steroids ? '✅ YES' : '❌ NO'}\n\n`;
+    if (patterns.decisionQuality.highStakesPerformance) {
+      context += this.formatPattern(patterns.decisionQuality.highStakesPerformance);
     }
 
-    // Treatment Timing Analysis
-    if (data.treatmentTiming) {
-      context += `## Treatment Timing Analysis\n`;
-      for (const [treatment, timing] of Object.entries(data.treatmentTiming)) {
-        if (timing.given) {
-          const minutes = Math.floor(timing.timeGiven / 60);
-          const seconds = Math.floor(timing.timeGiven % 60);
-          const status = timing.withinTarget ? '✅ Within target' : '⚠️ Delayed';
-          context += `- ${treatment}: ${minutes}:${String(seconds).padStart(2, '0')} (${status})\n`;
-        } else {
-          context += `- ${treatment}: ❌ Not given\n`;
-        }
-      }
-      context += `\n`;
+    if (patterns.clinicalReasoning.systematicAssessment) {
+      context += this.formatPattern(patterns.clinicalReasoning.systematicAssessment);
     }
 
-    // Final Patient Outcome
-    context += `## Final Patient Outcome\n`;
-    context += `- Final State: ${data.finalState?.toUpperCase() || 'UNKNOWN'}\n`;
-    context += `- Patient Response: ${this.interpretOutcome(data.finalState)}\n\n`;
-
-    // Current AAR Phase
-    context += `# CURRENT AAR PHASE: ${aar.phase.toUpperCase()}\n`;
-    if (aar.phase === 'scenario_review') {
-      context += `Currently reviewing scenario ${aar.currentScenarioIndex + 1} of 3\n`;
+    if (patterns.clinicalReasoning.reactiveVsProactive) {
+      context += this.formatPattern(patterns.clinicalReasoning.reactiveVsProactive);
     }
-    context += `\nUse this data to provide specific, evidence-based feedback. Reference actual timing and actions.\n`;
+
+    if (patterns.clinicalReasoning.reassessmentFrequency) {
+      context += this.formatPattern(patterns.clinicalReasoning.reassessmentFrequency);
+    }
+
+    if (patterns.clinicalReasoning.differentialConsideration) {
+      context += this.formatPattern(patterns.clinicalReasoning.differentialConsideration);
+    }
+
+    if (patterns.errorPatterns.medicationErrorType) {
+      context += this.formatPattern(patterns.errorPatterns.medicationErrorType);
+    }
+
+    if (patterns.errorPatterns.errorRecovery) {
+      context += this.formatPattern(patterns.errorPatterns.errorRecovery);
+    }
+
+    if (patterns.cognitiveLoad.informationOrganization) {
+      context += this.formatPattern(patterns.cognitiveLoad.informationOrganization);
+    }
+
+    if (patterns.cognitiveLoad.challengePointQuality) {
+      context += this.formatPattern(patterns.cognitiveLoad.challengePointQuality);
+    }
+
+    if (patterns.patientAwareness.stateTransitionRecognition) {
+      context += this.formatPattern(patterns.patientAwareness.stateTransitionRecognition);
+    }
+
+    if (patterns.patientAwareness.deteriorationPrevention) {
+      context += this.formatPattern(patterns.patientAwareness.deteriorationPrevention);
+    }
+
+    if (patterns.communication.documentationSpecificity) {
+      context += this.formatPattern(patterns.communication.documentationSpecificity);
+    }
+
+    if (patterns.communication.patientCenteredLanguage) {
+      context += this.formatPattern(patterns.communication.patientCenteredLanguage);
+    }
+
+    if (patterns.metaPatterns.consistencyIndex) {
+      context += this.formatPattern(patterns.metaPatterns.consistencyIndex);
+    }
+
+    if (patterns.metaPatterns.riskToleranceProfile) {
+      context += this.formatPattern(patterns.metaPatterns.riskToleranceProfile);
+    }
+
+    // Add instructions for AAR agent
+    context += `
+
+---
+
+# AAR AGENT INSTRUCTIONS FOR PATTERN USAGE
+
+## Phase 3: Pattern Analysis - PRIMARY USE OF PATTERNS
+
+When you reach Phase 3 (Pattern Analysis) after reviewing all 3 scenarios individually:
+
+1. **Select 2-4 most significant patterns** from the data above
+2. **Reference patterns BY NAME** when discussing cross-scenario performance
+3. **Use the "AAR Talking Point"** as your starting framework for each pattern
+4. **Connect patterns to specific examples** from the scenario data
+5. **Ask student if pattern resonates** with their experience
+
+## Pattern Selection Priority:
+
+**MUST discuss if detected:**
+- Any pattern marked "HIGH" severity
+- Any pattern marked "HIGH" priority
+- Consistent Weakness Domain (always address if detected)
+
+**SHOULD discuss:**
+- Consistent Strength Domain (build confidence)
+- High-Stakes Performance (if gap detected)
+- Reactive vs. Proactive (fundamental care approach)
+- Deterioration Prevention (patient outcome focused)
+
+**MAY discuss if relevant:**
+- Other patterns based on student's self-identified concerns
+- Patterns that explain biggest performance gaps
+- Patterns with clear actionable improvements
+
+## Example Pattern Usage in Phase 3:
+
+"Looking across all three scenarios, I see [PATTERN NAME]. [Use AAR Talking Point]. For example, in the asthma scenario [specific example], and in the cardiac scenario [specific example]. Does this pattern match what you experienced?"
+
+## What NOT to do:
+- ❌ Don't list all patterns mechanically
+- ❌ Don't use technical pattern names without explanation
+- ❌ Don't overwhelm student with too many patterns
+- ❌ Don't discuss patterns without connecting to specific scenario examples
+
+## Current AAR Phase: ${aar.phase}
+${aar.phase === 'scenario_review' ? `Currently reviewing scenario ${aar.currentScenarioIndex + 1} of 3` : ''}
+
+Focus on individual scenario feedback until Phase 3, then shift to pattern-based analysis.
+`;
 
     return context;
   }
@@ -193,6 +254,107 @@ class AARService {
       'initial': 'Patient remained in initial presentation state'
     };
     return interpretations[state] || 'Outcome unclear';
+  }
+
+  /**
+   * Format pattern for AAR context
+   * @param {Object} pattern - Pattern object
+   * @returns {string} - Formatted pattern string
+   */
+  formatPattern(pattern) {
+    return patternAnalysisService.formatPatternForAAR(pattern);
+  }
+
+  /**
+   * Build scenario summary for AAR context
+   * @param {Object} scenarioData - Scenario data object
+   * @param {number} scenarioNumber - Scenario number (1, 2, or 3)
+   * @returns {string} - Formatted scenario summary
+   */
+  buildScenarioSummary(scenarioData, scenarioNumber) {
+    return `
+## Scenario ${scenarioNumber}: ${scenarioData.scenarioId || 'Unknown'}
+
+**Time:** ${Math.floor((scenarioData.totalTime || 0) / 60)} minutes
+**Score:** ${scenarioData.score?.percentage || 'N/A'}% (${scenarioData.score?.grade || 'N/A'})
+**Final State:** ${scenarioData.finalState || 'Unknown'}
+
+**Critical Actions Completed:**
+${scenarioData.checklistResults?.map(item =>
+  `- ${item.action}: ${item.completed ? '✅' : '❌'} ${item.completed && item.timeTarget ? `(${Math.floor(item.timeSinceStart / 60)}min, target ${item.timeTarget}min)` : ''}`
+).join('\n') || 'No checklist data'}
+
+**CDP Evaluations:**
+${scenarioData.cdpEvaluations?.map(cdp =>
+  `- ${cdp.decision}: ${cdp.score.toUpperCase()} - ${cdp.reasoning}`
+).join('\n') || 'No CDP data'}
+
+**Medication Errors:** ${scenarioData.errors?.length || 0}
+${scenarioData.errors?.length > 0 ? scenarioData.errors.map(e => `  - ${e.action}`).join('\n') : ''}
+
+**State Progression:**
+${scenarioData.stateHistory?.map(s =>
+  `- ${Math.floor(s.timeSinceStart || 0)}min: ${(s.state || 'unknown').toUpperCase()}`
+).join('\n') || 'No state data'}
+
+---
+`;
+  }
+
+  /**
+   * Calculate total time across all scenarios
+   * @param {Array} allScenarios - Array of scenario data
+   * @returns {string} - Formatted total time
+   */
+  calculateTotalTime(allScenarios) {
+    const total = allScenarios.reduce((sum, s) => sum + (s.totalTime || 0), 0);
+    return `${Math.floor(total / 60)} minutes`;
+  }
+
+  /**
+   * Calculate overall score across all scenarios
+   * @param {Array} allScenarios - Array of scenario data
+   * @returns {string} - Formatted overall score
+   */
+  calculateOverallScore(allScenarios) {
+    const scores = allScenarios.map(s => s.score?.percentage || 0);
+    const avg = scores.reduce((sum, s) => sum + s, 0) / scores.length;
+    return `${Math.round(avg)}%`;
+  }
+
+  /**
+   * Count total errors across all scenarios
+   * @param {Array} allScenarios - Array of scenario data
+   * @returns {number} - Total error count
+   */
+  countTotalErrors(allScenarios) {
+    return allScenarios.reduce((sum, s) => sum + (s.errors?.length || 0), 0);
+  }
+
+  /**
+   * Count detected patterns
+   * @param {Object} patterns - Patterns object
+   * @returns {number} - Number of detected patterns
+   */
+  countDetectedPatterns(patterns) {
+    let count = 0;
+
+    const checkCategory = (category) => {
+      for (const key in category) {
+        if (category[key]?.detected) count++;
+      }
+    };
+
+    checkCategory(patterns.temporal || {});
+    checkCategory(patterns.decisionQuality || {});
+    checkCategory(patterns.clinicalReasoning || {});
+    checkCategory(patterns.errorPatterns || {});
+    checkCategory(patterns.cognitiveLoad || {});
+    checkCategory(patterns.patientAwareness || {});
+    checkCategory(patterns.communication || {});
+    checkCategory(patterns.metaPatterns || {});
+
+    return count;
   }
 
   /**
