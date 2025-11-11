@@ -47,6 +47,22 @@ class ApiService {
     }
   }
 
+  // ✅ NEW: Get session state including vitals (Phase 5, Task 5.3)
+  async getSessionState(sessionId: string) {
+    try {
+      const response = await fetch(`${this.baseURL}/sessions/${sessionId}/state`);
+      if (!response.ok) {
+        console.error('❌ Session state endpoint failed:', response.status);
+        return null;
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('❌ Session state fetch error:', error);
+      return null;
+    }
+  }
+
   // ✅ NEW: AAR Agent methods (Task 0.2)
   async startAAR(sessionId: string) {
     const response = await fetch(`${this.baseURL}/sessions/${sessionId}/aar/start`, {

@@ -12,8 +12,8 @@ interface MainLayoutProps {
   onNotesUpdate: (notes: string[]) => void;
   currentAgent: 'cognitive_coach' | 'core' | null; // ✅ NEW
   onAgentTransition: (newAgent: 'core', scenarioData: any) => void; // ✅ NEW
-  isAARMode?: boolean; // ✅ NEW
   onAARComplete?: () => void; // ✅ NEW
+  isAARMode?: boolean; // ✅ NEW
 }
 
 function MainLayout({
@@ -24,8 +24,8 @@ function MainLayout({
   onNotesUpdate,
   currentAgent, // ✅ NEW
   onAgentTransition, // ✅ NEW
-  isAARMode = false, // ✅ NEW
-  onAARComplete // ✅ NEW
+  onAARComplete, // ✅ NEW
+  isAARMode = false // ✅ NEW
 }: MainLayoutProps) {
   
   // ✅ NEW: During Cognitive Coach, show only the chat panel (full width)
@@ -72,6 +72,7 @@ function MainLayout({
             vitals={currentVitals}
             sessionId={sessionId}
             isAARMode={isAARMode}
+            onVitalsUpdate={onVitalsUpdate}
           />
         </div>
 

@@ -122,6 +122,7 @@ function App() {
     setIsRegistered(true);
   };
 
+
   const handleStartSession = async () => {
     // Define all available scenarios and randomly select 3
     const allScenarios = ['ASTHMA_MVP_001', 'STEMI_MVP_001', 'SEIZURE_MVP_001', 'TBI_MVP_001'];
@@ -245,6 +246,7 @@ function App() {
     setPatientNotes([]);
   };
 
+<<<<<<< HEAD
   // ✅ NEW: Handle AAR completion
   const handleAARComplete = () => {
     console.log('✅ AAR Complete - showing completion screen');
@@ -256,6 +258,9 @@ function App() {
     setSessionId(null);
     setIsActive(false);
     setScenarioStartTime(Date.now());
+    setIsAARMode(false);
+    setSessionComplete(false);
+    setCurrentAgent(null);
     setCurrentVitals(null);
     setDispatchInfo(null);
     setPatientInfo(null);
@@ -263,9 +268,6 @@ function App() {
     setScenarioQueue([]);
     setCurrentScenarioIndex(0);
     setCompletedScenarios([]);
-    setCurrentAgent(null);
-    setIsAARMode(false);
-    setSessionComplete(false);
     sessionStorage.clear();
 
     // Layer 3: Clear sessionId from localStorage (Feature 2)
@@ -277,6 +279,7 @@ function App() {
   if (!isRegistered) {
     return <Registration onRegistrationComplete={handleRegistrationComplete} />;
   }
+
 
   return (
     <div className="min-h-screen bg-bg-primary text-white">
@@ -291,7 +294,9 @@ function App() {
         currentAgent={currentAgent}
         isAARMode={isAARMode} // ✅ NEW: Pass isAARMode to Header (Task 0.2)
       />
-      {!sessionId ? (
+      {sessionComplete ? (
+        <SessionComplete onStartNewSession={handleResetSession} />
+      ) : !sessionId ? (
         <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
           <div className="text-center">
             <h2 className="text-3xl font-bold mb-4">Emergency Medical Training</h2>
@@ -318,8 +323,8 @@ function App() {
           onNotesUpdate={setPatientNotes}
           currentAgent={currentAgent} // ✅ NEW: Pass currentAgent to MainLayout
           onAgentTransition={handleAgentTransition} // ✅ NEW: Pass transition handler
-          isAARMode={isAARMode} // ✅ NEW: Pass isAARMode to MainLayout
           onAARComplete={handleAARComplete} // ✅ NEW: Pass AAR completion handler
+          isAARMode={isAARMode} // ✅ NEW: Pass isAARMode to MainLayout
         />
       )}
     </div>

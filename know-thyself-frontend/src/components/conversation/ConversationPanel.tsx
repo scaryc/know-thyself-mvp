@@ -138,6 +138,12 @@ function ConversationPanel({
           onNotesUpdate(response.patientNotes);
         }
       }
+
+      // ✅ NEW: Check for AAR completion (Phase 5, Task 5.2)
+      if (response.aarComplete && onAARComplete) {
+        console.log('🎉 AAR completed - triggering session complete');
+        onAARComplete();
+      }
     } catch (error) {
       console.error('Failed to send message:', error);
     } finally {

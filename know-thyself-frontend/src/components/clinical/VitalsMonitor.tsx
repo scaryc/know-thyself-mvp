@@ -15,9 +15,10 @@ interface VitalsMonitorProps {
   vitals: Vitals | null;
   sessionId?: string;
   isAARMode?: boolean;
+  onVitalsUpdate?: (vitals: Vitals) => void;
 }
 
-function VitalsMonitor({ vitals: initialVitals, sessionId, isAARMode = false }: VitalsMonitorProps) {
+function VitalsMonitor({ vitals: initialVitals, sessionId, isAARMode = false, onVitalsUpdate }: VitalsMonitorProps) {
   const [vitals, setVitals] = useState<Vitals | null>(initialVitals);
 
   // Update vitals when prop changes
@@ -34,6 +35,9 @@ function VitalsMonitor({ vitals: initialVitals, sessionId, isAARMode = false }: 
         const updatedVitals = await api.getVitals(sessionId);
         if (updatedVitals) {
           setVitals(updatedVitals);
+          if (onVitalsUpdate) {
+            onVitalsUpdate(updatedVitals);
+          }
         }
       } catch (error) {
         console.error('Vitals polling error:', error);
@@ -41,7 +45,8 @@ function VitalsMonitor({ vitals: initialVitals, sessionId, isAARMode = false }: 
     }, 5000); // Poll every 5 seconds
 
     return () => clearInterval(interval);
-  }, [sessionId, isAARMode]);
+  }, [sessionId, isAARMode, onVitalsUpdate]);
+
   const getAlertColor = (value: number, normal: [number, number]): string => {
     if (value < normal[0] * 0.8 || value > normal[1] * 1.2) return 'text-critical';
     if (value < normal[0] || value > normal[1]) return 'text-warning';
