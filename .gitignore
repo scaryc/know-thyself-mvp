@@ -33,3 +33,4 @@ server/.env
 # Layer 3: Student data and backups (MVP testing)
 data/students/
 data/backups/
+.claude/settings.local.json
