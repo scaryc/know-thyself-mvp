@@ -148,6 +148,89 @@ ${pattern.educationalFocus || 'N/A'}
     return 'other';
   }
 
+  /**
+   * Categorize action type (A/B/C/D/other)
+   * @param {string} action - Action description
+   * @returns {string} - Action category
+   */
+  categorizeActionType(action) {
+    const actionLower = action.toLowerCase();
+
+    if (actionLower.includes('airway') || actionLower.includes('mouth') ||
+        actionLower.includes('obstruction') || actionLower.includes('jaw')) {
+      return 'A';
+    }
+    if (actionLower.includes('breath') || actionLower.includes('lung') ||
+        actionLower.includes('respiratory') || actionLower.includes('spo2') ||
+        actionLower.includes('oxygen') || actionLower.includes('chest')) {
+      return 'B';
+    }
+    if (actionLower.includes('pulse') || actionLower.includes('bp') ||
+        actionLower.includes('circulation') || actionLower.includes('heart') ||
+        actionLower.includes('perfusion') || actionLower.includes('shock')) {
+      return 'C';
+    }
+    if (actionLower.includes('disability') || actionLower.includes('gcs') ||
+        actionLower.includes('conscious') || actionLower.includes('neuro')) {
+      return 'D';
+    }
+
+    return 'other';
+  }
+
+  /**
+   * Check if action sequence follows ABC pattern
+   * @param {Array} actionSequence - Array of action types
+   * @returns {boolean} - True if follows ABC pattern
+   */
+  followsABCPattern(actionSequence) {
+    // Find indices of A, B, C in sequence
+    const aIndex = actionSequence.findIndex(a => a === 'A');
+    const bIndex = actionSequence.findIndex(a => a === 'B');
+    const cIndex = actionSequence.findIndex(a => a === 'C');
+
+    // Check if ABC appears in order (allowing for 'other' actions in between)
+    if (aIndex === -1 || bIndex === -1 || cIndex === -1) {
+      return false; // Missing essential components
+    }
+
+    return aIndex < bIndex && bIndex < cIndex;
+  }
+
+  /**
+   * Categorize medication error type
+   * @param {Object} error - Error object
+   * @returns {string} - Error type
+   */
+  categorizeMedicationError(error) {
+    const actionLower = error.action.toLowerCase();
+
+    // Contraindication errors
+    if (actionLower.includes('beta') || actionLower.includes('blocker') ||
+        actionLower.includes('apaurin') || actionLower.includes('benzodiazepine')) {
+      return 'contraindication';
+    }
+
+    // Dosing errors
+    if (actionLower.includes('dose') || actionLower.includes('mg') ||
+        actionLower.includes('overdose')) {
+      return 'dosing';
+    }
+
+    // Timing errors
+    if (actionLower.includes('delay') || actionLower.includes('late')) {
+      return 'timing';
+    }
+
+    // Route errors
+    if (actionLower.includes('route') || actionLower.includes('IV') ||
+        actionLower.includes('IM')) {
+      return 'route';
+    }
+
+    return 'other';
+  }
+
   // =============================================================================
   // PATTERN ANALYSIS METHODS
   // =============================================================================
@@ -372,8 +455,51 @@ ${pattern.educationalFocus || 'N/A'}
     return { patternName: "High-Stakes Decision Making", detected: false };
   }
 
-  analyzeSystematicAssessment(data) {
-    return { patternName: "Systematic vs. Chaotic Assessment", detected: false };
+  analyzeSystematicAssessment(allScenariosData) {
+    const assessmentSequences = [];
+
+    for (const scenario of allScenariosData) {
+      if (!scenario.criticalActionsLog) continue;
+
+      // Get first 5-8 actions to analyze initial approach
+      const initialActions = scenario.criticalActionsLog
+        .filter(a => a.timeSinceStart < 300) // First 5 minutes
+        .slice(0, 8);
+
+      // Categorize each action
+      const actionSequence = initialActions.map(a => this.categorizeActionType(a.action));
+
+      // Check if follows ABC pattern
+      const isSystematic = this.followsABCPattern(actionSequence);
+
+      assessmentSequences.push({
+        scenario: scenario.scenarioId,
+        sequence: actionSequence,
+        systematic: isSystematic,
+        firstActions: initialActions.map(a => a.action)
+      });
+    }
+
+    const systematicCount = assessmentSequences.filter(s => s.systematic).length;
+
+    return {
+      patternName: "Systematic vs. Chaotic Assessment",
+      detected: true,
+      isStrength: systematicCount >= 2,
+      priority: systematicCount >= 2 ? "P1" : "P1",
+      data: {
+        systematicScenarios: systematicCount,
+        chaoticScenarios: 3 - systematicCount,
+        consistency: `${systematicCount}/3`,
+        sequences: assessmentSequences
+      },
+      educationalFocus: systematicCount >= 2
+        ? "Strong systematic assessment approach - reliable ABC foundation"
+        : "Assessment approach inconsistent - needs structured framework practice",
+      aarTalkingPoint: systematicCount >= 2
+        ? `Your systematic assessment approach was excellent—you followed an ABC structure in ${systematicCount} out of 3 scenarios. That disciplined approach is exactly what makes a reliable paramedic. Even under pressure, you maintained that systematic framework.`
+        : `I notice your assessment approach varied significantly. In ${assessmentSequences.find(s => s.systematic)?.scenario || 'one scenario'}, you followed ABC systematically, but in the other scenarios, the sequence was more chaotic. A consistent systematic approach—checking Airway, then Breathing, then Circulation every time—would serve you better and help you avoid missing critical findings.`
+    };
   }
 
   analyzeReactiveVsProactive(data) {
@@ -388,8 +514,70 @@ ${pattern.educationalFocus || 'N/A'}
     return { patternName: "Differential Diagnosis Consideration", detected: false };
   }
 
-  analyzeMedicationErrorType(data) {
-    return { patternName: "Medication Error Type", detected: false };
+  analyzeMedicationErrorType(allScenariosData) {
+    const allErrors = [];
+
+    for (const scenario of allScenariosData) {
+      if (!scenario.errors || scenario.errors.length === 0) continue;
+
+      for (const error of scenario.errors) {
+        // Categorize error type based on action
+        const errorType = this.categorizeMedicationError(error);
+        allErrors.push({
+          scenario: scenario.scenarioId,
+          type: errorType,
+          action: error.action,
+          timing: error.timeSinceStart
+        });
+      }
+    }
+
+    if (allErrors.length === 0) {
+      return {
+        patternName: "Medication Error Type",
+        detected: false,
+        data: {
+          message: "No medication errors detected - excellent safety profile",
+          totalErrors: 0
+        }
+      };
+    }
+
+    // Group errors by type
+    const errorsByType = {};
+    for (const error of allErrors) {
+      if (!errorsByType[error.type]) {
+        errorsByType[error.type] = [];
+      }
+      errorsByType[error.type].push(error);
+    }
+
+    // Find most common error type
+    let mostCommonType = null;
+    let maxCount = 0;
+
+    for (const [type, errors] of Object.entries(errorsByType)) {
+      if (errors.length > maxCount) {
+        mostCommonType = type;
+        maxCount = errors.length;
+      }
+    }
+
+    return {
+      patternName: "Medication Error Type",
+      detected: true,
+      severity: maxCount >= 2 ? "HIGH" : "MODERATE",
+      priority: "P1",
+      data: {
+        totalErrors: allErrors.length,
+        mostCommonType: mostCommonType,
+        errorCount: maxCount,
+        errorsByType: errorsByType,
+        allErrors: allErrors
+      },
+      educationalFocus: `Recurring ${mostCommonType} errors - specific pharmacology knowledge gap`,
+      aarTalkingPoint: `I need to address a safety concern: you made ${allErrors.length} medication errors across the scenarios, with ${maxCount} being ${mostCommonType} errors. This suggests a specific gap in pharmacology knowledge. Let's discuss why ${mostCommonType} is particularly important to understand—these errors can cause immediate patient harm.`
+    };
   }
 
   analyzeErrorRecovery(data) {
@@ -408,8 +596,48 @@ ${pattern.educationalFocus || 'N/A'}
     return { patternName: "State Transition Recognition", detected: false };
   }
 
-  analyzeDeteriorationPrevention(data) {
-    return { patternName: "Deterioration Prevention", detected: false };
+  analyzeDeteriorationPrevention(allScenariosData) {
+    const outcomes = [];
+
+    for (const scenario of allScenariosData) {
+      if (!scenario.stateHistory || scenario.stateHistory.length === 0) continue;
+
+      // Check final state
+      const finalState = scenario.stateHistory[scenario.stateHistory.length - 1];
+      const reachedCritical = scenario.stateHistory.some(s => s.state === 'critical');
+      const reachedDeteriorating = scenario.stateHistory.some(s => s.state === 'deteriorating');
+
+      outcomes.push({
+        scenario: scenario.scenarioId,
+        finalState: finalState.state,
+        reachedCritical: reachedCritical,
+        reachedDeteriorating: reachedDeteriorating,
+        prevented: finalState.state === 'improving' ||
+                   (finalState.state === 'initial' && !reachedCritical)
+      });
+    }
+
+    const preventedCount = outcomes.filter(o => o.prevented).length;
+    const criticalCount = outcomes.filter(o => o.reachedCritical).length;
+
+    return {
+      patternName: "Deterioration Prevention",
+      detected: true,
+      isStrength: preventedCount >= 2,
+      severity: criticalCount >= 2 ? "HIGH" : criticalCount === 1 ? "MODERATE" : "LOW",
+      priority: criticalCount >= 2 ? "P1" : "P1",
+      data: {
+        preventedDeteriorationCount: preventedCount,
+        reachedCriticalCount: criticalCount,
+        outcomes: outcomes
+      },
+      educationalFocus: preventedCount >= 2
+        ? "Excellent proactive care - consistently prevented patient deterioration"
+        : "Reactive care pattern - patients frequently reached critical state before stabilization",
+      aarTalkingPoint: criticalCount >= 2
+        ? `I see a pattern in patient outcomes: in ${criticalCount} out of 3 scenarios, the patient reached critical state. Our goal is to prevent that deterioration through early, aggressive treatment. ${outcomes.filter(o => o.reachedCritical).map(o => `In the ${o.scenario}, the patient reached critical state`).join(', ')}. Let's discuss how earlier intervention could have prevented these outcomes.`
+        : `Excellent work preventing deterioration—in ${preventedCount} scenarios, you kept the patient stable or improving without reaching critical state. That proactive approach is exactly what we're looking for.`
+    };
   }
 
   analyzeDocumentationSpecificity(data) {
