@@ -246,7 +246,6 @@ function App() {
     setPatientNotes([]);
   };
 
-<<<<<<< HEAD
   // ✅ NEW: Handle AAR completion
   const handleAARComplete = () => {
     console.log('✅ AAR Complete - showing completion screen');
