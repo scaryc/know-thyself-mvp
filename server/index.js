@@ -2891,7 +2891,10 @@ res.json({
   vitalsUpdated: vitalsUpdated,
   vitals: formattedVitals,
   infoUpdated: infoUpdated,
-  patientNotes: session.patientNotes
+  patientNotes: session.patientNotes,
+  currentAgent: 'core',  // ✅ NEW: Include current agent
+  isChallenge: session.activeChallenge && !session.activeChallenge.evaluation ? true : false,  // ✅ NEW: Challenge active?
+  challengeResolved: session.activeChallenge && session.activeChallenge.evaluation ? true : false  // ✅ NEW: Challenge resolved?
 });
 
   } catch (error) {

@@ -32,30 +32,6 @@ function ConversationPanel({
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [activeChallenge, setActiveChallenge] = useState(false);
-  
-  // ✅ NEW: Add initial scene when transitioning to Core Agent
-  useEffect(() => {
-    if (currentAgent === 'core' && messages.length > 0) {
-      // Check if we need to add the scene description
-      const hasSceneDescription = messages.some(msg => 
-        msg.content.includes('You arrive') || msg.role === 'system'
-      );
-      
-      if (!hasSceneDescription) {
-        const sceneDescription = sessionStorage.getItem('initialScene');
-        if (sceneDescription) {
-          setMessages(prev => [
-            ...prev,
-            {
-              role: 'system',
-              content: sceneDescription,
-              timestamp: Date.now()
-            }
-          ]);
-        }
-      }
-    }
-  }, [currentAgent]);
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
@@ -104,17 +80,12 @@ function ConversationPanel({
           setActiveChallenge(false);
         }
 
-        const aiResponse: Message = {
-          role: 'assistant',
-          content: response.message,
-          timestamp: Date.now(),
-          isChallenge: isChallenge
-        };
-        setMessages(prev => [...prev, aiResponse]);
-
-        // ✅ NEW: Handle agent transition
+        // ✅ NEW: Handle agent transition BEFORE adding messages
         if (response.transitioned && response.currentAgent === 'core') {
           console.log('🎬 Transition detected - switching to Core Agent');
+
+          // Clear all messages (remove Cognitive Coach history)
+          setMessages([]);
 
           // Notify parent to update agent state and scenario data
           onAgentTransition('core', {
@@ -124,7 +95,28 @@ function ConversationPanel({
             initialVitals: response.initialVitals,
             scenario: response.scenario
           });
+
+          // Add initial scene description as the first message
+          if (response.initialSceneDescription) {
+            const sceneMessage: Message = {
+              role: 'system',
+              content: response.initialSceneDescription,
+              timestamp: Date.now()
+            };
+            setMessages([sceneMessage]);
+          }
+
+          // Skip adding the transition message to chat (it's the Cognitive Coach's goodbye)
+          return;
         }
+
+        const aiResponse: Message = {
+          role: 'assistant',
+          content: response.message,
+          timestamp: Date.now(),
+          isChallenge: isChallenge
+        };
+        setMessages(prev => [...prev, aiResponse]);
 
         // Update vitals through parent callback (only in Core Agent mode)
         if (response.vitalsUpdated && response.vitals) {
