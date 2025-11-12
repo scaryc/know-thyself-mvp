@@ -31,12 +31,15 @@ function Registration({ onRegistrationComplete }: RegistrationProps) {
       return;
     }
 
-    if (email && email.trim().length > 0) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        setError('Please enter a valid email address');
-        return;
-      }
+    if (!email || email.trim().length === 0) {
+      setError('Please enter your email address');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('Please enter a valid email address');
+      return;
     }
 
     if (!consent) {
@@ -54,7 +57,7 @@ function Registration({ onRegistrationComplete }: RegistrationProps) {
         },
         body: JSON.stringify({
           name: name.trim(),
-          email: email.trim() || null,
+          email: email.trim(),
           consent: consent,
         }),
       });
@@ -131,7 +134,7 @@ function Registration({ onRegistrationComplete }: RegistrationProps) {
           {/* Email Address */}
           <div>
             <label htmlFor="email" className="block text-sm font-medium mb-2">
-              Email Address (optional)
+              Email Address <span className="text-red-400">*</span>
             </label>
             <input
               type="email"
@@ -141,6 +144,7 @@ function Registration({ onRegistrationComplete }: RegistrationProps) {
               placeholder="e.g., alice@example.com"
               className="w-full px-4 py-3 bg-bg-primary border border-border rounded-lg focus:outline-none focus:border-accent transition-colors"
               disabled={isSubmitting}
+              required
             />
           </div>
 

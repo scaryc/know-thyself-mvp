@@ -1,7 +1,6 @@
 // src/components/layout/MainLayout.tsx
 import ConversationPanel from '../conversation/ConversationPanel';
 import VitalsMonitor from '../clinical/VitalsMonitor';
-import ClinicalDataPanel from '../clinical/ClinicalDataPanel';
 import PatientNotes from '../clinical/PatientNotes';
 
 interface MainLayoutProps {
@@ -79,9 +78,6 @@ function MainLayout({
         {/* Right Panel - Clinical Data */}
         <div className="col-span-3 space-y-4">
           <div className="bg-bg-secondary rounded-lg p-4">
-            <ClinicalDataPanel />
-          </div>
-          <div className="bg-bg-secondary rounded-lg p-4 flex-1">
             <PatientNotes notes={patientNotes} />
           </div>
         </div>

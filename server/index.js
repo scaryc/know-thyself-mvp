@@ -374,7 +374,7 @@ app.get('/api/sessions/:sessionId/check', (req, res) => {
  */
 app.post('/api/sessions/start', async (req, res) => {
   try {
-    const { scenarioId = 'asthma_mvp_001', studentId, scenarioQueue } = req.body;
+    const { scenarioId = 'asthma_patient_v2.0_final', studentId, scenarioQueue } = req.body;
 
     // Layer 3: Load student data if provided
     let studentData = null;
@@ -1441,6 +1441,9 @@ function evaluateCDP(session, userMessage) {
  * @returns {Array|null} - Array of detected dangerous medications or null
  */
 function checkMedicationSafety(session, userMessage) {
+  // Guard: If scenario not loaded yet (e.g., during Cognitive Coach), skip check
+  if (!session.scenario) return null;
+
   const scenario = session.scenario;
   const dangerousMeds = scenario.dangerous_medications || [];
 
@@ -1794,7 +1797,7 @@ function generateScenarioSummary(session) {
   const scenario = session.scenario || {};
   return {
     scenarioId: scenario.scenario_id || 'unknown',
-    scenarioTitle: scenario.metadata?.title || scenario.scenario_metadata?.title || 'Unknown Scenario',
+    scenarioTitle: scenario.metadata?.title || 'Unknown Scenario',
     duration: durationMinutes,
     performanceScore: performanceScore,
     challengeSummary: challengeSummary,
@@ -2280,9 +2283,11 @@ if (!scenarioData) {
 }
 
 console.log('✅ Scenario data loaded successfully');
-console.log('🔍 Scenario has metadata?', !!scenarioData.scenario_metadata);
-console.log('🔍 Scenario title:', scenarioData.scenario_metadata?.title);
+console.log('🔍 Scenario has metadata?', !!scenarioData.metadata);
+console.log('🔍 Scenario title:', scenarioData.metadata?.title);
 
+// Store scenario data on session for later use
+session.scenario = scenarioData;
 session.engine = new ScenarioEngine(scenarioData);
 session.measuredVitals = {};
 session.patientNotes = [];
@@ -2326,7 +2331,7 @@ const patientInfo = {
   gender: scenarioData.dispatch_info.sex
 };
 
-console.log('✅ Scenario loaded:', scenarioData.scenario_metadata.title);
+console.log('✅ Scenario loaded:', scenarioData.metadata.title);
 
 
           // ═══════════════════════════════════════════════════════════

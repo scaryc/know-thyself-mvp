@@ -2,14 +2,14 @@ interface PatientNotesProps {
   notes: string[];
 }
 
-export default function PatientNotes({ notes }: PatientNotesProps) {
+export default function PatientNotes({ notes = [] }: PatientNotesProps) {
   return (
     <div className="space-y-3">
       <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-2">
         📋 Clinical Notes
       </h3>
 
-      {notes.length === 0 ? (
+      {!notes || notes.length === 0 ? (
         <div className="text-center text-gray-500 py-8 text-sm italic">
           Clinical notes will appear here as you gather patient information
         </div>

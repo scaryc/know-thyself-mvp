@@ -124,8 +124,13 @@ function App() {
 
 
   const handleStartSession = async () => {
-    // Define all available scenarios and randomly select 3
-    const allScenarios = ['ASTHMA_MVP_001', 'STEMI_MVP_001', 'SEIZURE_MVP_001', 'TBI_MVP_001'];
+    // Define all available scenarios (matching actual scenario filenames without .json)
+    const allScenarios = [
+      'asthma_patient_v2.0_final',
+      'stemi_patient_v2_0_final',
+      'status_epilepticus_patient_v2_0_final',
+      'tbi_patient_v2_0_final'
+    ];
     const shuffled = [...allScenarios].sort(() => Math.random() - 0.5);
     const selectedScenarios = shuffled.slice(0, 3); // Pick 3 random scenarios
 
