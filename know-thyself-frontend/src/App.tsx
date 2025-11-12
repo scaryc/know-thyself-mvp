@@ -329,6 +329,7 @@ function App() {
           onAgentTransition={handleAgentTransition} // ✅ NEW: Pass transition handler
           onAARComplete={handleAARComplete} // ✅ NEW: Pass AAR completion handler
           isAARMode={isAARMode} // ✅ NEW: Pass isAARMode to MainLayout
+          currentScenarioIndex={currentScenarioIndex} // ✅ NEW: Pass scenario index to force chat reset
         />
       )}
     </div>

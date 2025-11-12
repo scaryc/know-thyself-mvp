@@ -13,6 +13,7 @@ interface MainLayoutProps {
   onAgentTransition: (newAgent: 'core', scenarioData: any) => void; // ✅ NEW
   onAARComplete?: () => void; // ✅ NEW
   isAARMode?: boolean; // ✅ NEW
+  currentScenarioIndex?: number; // ✅ NEW: Track scenario changes
 }
 
 function MainLayout({
@@ -24,7 +25,8 @@ function MainLayout({
   currentAgent, // ✅ NEW
   onAgentTransition, // ✅ NEW
   onAARComplete, // ✅ NEW
-  isAARMode = false // ✅ NEW
+  isAARMode = false, // ✅ NEW
+  currentScenarioIndex = 0 // ✅ NEW
 }: MainLayoutProps) {
   
   // ✅ NEW: During Cognitive Coach, show only the chat panel (full width)
@@ -34,6 +36,7 @@ function MainLayout({
         <div className="h-full flex items-center justify-center bg-bg-primary">
           <div className="w-full max-w-4xl h-full">
             <ConversationPanel
+              key={`cognitive-coach`}
               sessionId={sessionId}
               onVitalsUpdate={onVitalsUpdate}
               onNotesUpdate={onNotesUpdate}
@@ -48,13 +51,14 @@ function MainLayout({
     );
   }
 
-  // ✅ EXISTING: Normal 3-column layout for Core Agent mode
+  // ✅ FIXED: 2-column layout - Chat left, Vitals+Notes stacked right
   return (
     <main className="h-[calc(100vh-4rem)]">
       <div className="h-full grid grid-cols-12 gap-4 p-4">
-        {/* Left Panel - Conversation */}
-        <div className="col-span-6 bg-bg-secondary rounded-lg overflow-hidden">
+        {/* Left Panel - Conversation (wider) */}
+        <div className="col-span-8 bg-bg-secondary rounded-lg overflow-hidden">
           <ConversationPanel
+            key={`scenario-${currentScenarioIndex}`}
             sessionId={sessionId}
             onVitalsUpdate={onVitalsUpdate}
             onNotesUpdate={onNotesUpdate}
@@ -65,19 +69,20 @@ function MainLayout({
           />
         </div>
 
-        {/* Middle Panel - Vitals Monitor */}
-        <div className="col-span-3 bg-bg-secondary rounded-lg p-4 overflow-y-auto">
-          <VitalsMonitor
-            vitals={currentVitals}
-            sessionId={sessionId}
-            isAARMode={isAARMode}
-            onVitalsUpdate={onVitalsUpdate}
-          />
-        </div>
+        {/* Right Panel - Vitals + Clinical Notes stacked vertically */}
+        <div className="col-span-4 flex flex-col space-y-4">
+          {/* Vitals Monitor (top) */}
+          <div className="bg-bg-secondary rounded-lg p-4 overflow-y-auto flex-1">
+            <VitalsMonitor
+              vitals={currentVitals}
+              sessionId={sessionId}
+              isAARMode={isAARMode}
+              onVitalsUpdate={onVitalsUpdate}
+            />
+          </div>
 
-        {/* Right Panel - Clinical Data */}
-        <div className="col-span-3 space-y-4">
-          <div className="bg-bg-secondary rounded-lg p-4">
+          {/* Clinical Notes (bottom) */}
+          <div className="bg-bg-secondary rounded-lg p-4 overflow-y-auto flex-1">
             <PatientNotes notes={patientNotes} />
           </div>
         </div>
