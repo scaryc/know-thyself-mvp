@@ -70,17 +70,17 @@ function VitalsMonitor({ vitals: initialVitals, sessionId, isAARMode = false, on
       {/* Primary Vitals - HR, RR, BP */}
       <div className="grid grid-cols-3 gap-3 mb-3">
         {/* Heart Rate with ECG */}
-        <div className={`bg-bg-tertiary rounded-lg p-3 border-l-4 border-critical ${getAlertBg(vitals?.HR ?? 0, [60, 100])}`}>
+        <div className={`bg-bg-tertiary rounded-lg p-2 border-l-4 border-critical ${getAlertBg(vitals?.HR ?? 0, [60, 100])}`}>
           <div className="flex justify-between items-start mb-1">
             <div className="text-xs text-gray-400 font-semibold">HR</div>
             <div className="text-[10px] bg-critical text-white px-2 py-0.5 rounded">TACHY</div>
           </div>
-          <div className={`text-3xl font-bold font-mono ${getAlertColor(vitals?.HR ?? 0, [60, 100])} mb-2`}>
+          <div className={`text-3xl font-bold font-mono ${getAlertColor(vitals?.HR ?? 0, [60, 100])} mb-1`}>
             {vitals?.HR ?? '---'}
             <span className="text-sm ml-1 text-gray-400">bpm</span>
           </div>
           {/* ECG Wave */}
-          <svg className="w-full h-8" viewBox="0 0 200 40" preserveAspectRatio="none">
+          <svg className="w-full h-6" viewBox="0 0 200 40" preserveAspectRatio="none">
             <defs>
               <linearGradient id="ecgGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#ef4444" stopOpacity="0.2" />
@@ -108,17 +108,16 @@ function VitalsMonitor({ vitals: initialVitals, sessionId, isAARMode = false, on
         </div>
 
         {/* Respiratory Rate with Wave */}
-        <div className={`bg-bg-tertiary rounded-lg p-3 border-l-4 border-warning ${getAlertBg(vitals?.RR ?? 0, [12, 20])}`}>
+        <div className={`bg-bg-tertiary rounded-lg p-2 border-l-4 border-warning ${getAlertBg(vitals?.RR ?? 0, [12, 20])}`}>
           <div className="flex justify-between items-start mb-1">
             <div className="text-xs text-gray-400 font-semibold">RR</div>
-            <div className="text-[10px] bg-warning text-black px-2 py-0.5 rounded font-semibold">TACHY</div>
           </div>
-          <div className={`text-3xl font-bold font-mono ${getAlertColor(vitals?.RR ?? 0, [12, 20])} mb-2`}>
+          <div className={`text-3xl font-bold font-mono ${getAlertColor(vitals?.RR ?? 0, [12, 20])} mb-1`}>
             {vitals?.RR ?? '---'}
             <span className="text-sm ml-1 text-gray-400">/min</span>
           </div>
           {/* Respiratory Wave */}
-          <svg className="w-full h-8" viewBox="0 0 200 40" preserveAspectRatio="none">
+          <svg className="w-full h-6" viewBox="0 0 200 40" preserveAspectRatio="none">
             <defs>
               <linearGradient id="respGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.2" />
@@ -146,16 +145,16 @@ function VitalsMonitor({ vitals: initialVitals, sessionId, isAARMode = false, on
         </div>
 
         {/* Blood Pressure */}
-        <div className="bg-bg-tertiary rounded-lg p-3 border-l-4 border-warning">
+        <div className="bg-bg-tertiary rounded-lg p-2 border-l-4 border-warning">
           <div className="flex justify-between items-start mb-1">
             <div className="text-xs text-gray-400 font-semibold">BP</div>
             <div className="text-[10px] bg-warning text-black px-2 py-0.5 rounded font-semibold">HIGH</div>
           </div>
-          <div className="text-3xl font-bold font-mono text-warning mb-2">
+          <div className="text-3xl font-bold font-mono text-warning mb-1">
             {vitals?.BP ?? '---'}
             <span className="text-sm ml-1 text-gray-400">mmHg</span>
           </div>
-          <div className="h-8 flex items-center justify-center text-xs text-gray-500">
+          <div className="h-6 flex items-center justify-center text-xs text-gray-500">
             Hypertensive
           </div>
         </div>

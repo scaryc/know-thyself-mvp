@@ -232,6 +232,9 @@ function App() {
   // ✅ NEW: Handle agent transition (from Cognitive Coach to Core Agent)
   const handleAgentTransition = (newAgent: 'core', scenarioData: any) => {
     console.log('🔄 Transitioning to Core Agent');
+    console.log('📊 Dispatch Info:', scenarioData.dispatchInfo);
+    console.log('👤 Patient Info:', scenarioData.patientInfo);
+
     setCurrentAgent(newAgent);
 
     // Now set all the scenario data that was delayed
@@ -247,8 +250,13 @@ function App() {
 
     // Start the timer NOW
     setScenarioStartTime(Date.now());
-    setCurrentVitals(scenarioData.initialVitals || null);
+
+    // ✅ FIX: Don't set vitals yet - they should be null until user measures them
+    setCurrentVitals(null);
     setPatientNotes([]);
+
+    // Mark as active so header shows properly
+    setIsActive(true);
   };
 
   // ✅ NEW: Handle AAR completion
