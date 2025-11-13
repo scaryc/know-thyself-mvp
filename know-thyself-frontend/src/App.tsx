@@ -32,6 +32,14 @@ function App() {
   // ✅ NEW: Track session completion
   const [sessionComplete, setSessionComplete] = useState(false);
 
+  // ✅ DEBUG: Log when dispatchInfo or patientInfo changes
+  useEffect(() => {
+    console.log('🔄 App.tsx state updated - dispatchInfo:', dispatchInfo);
+    console.log('🔄 App.tsx state updated - patientInfo:', patientInfo);
+    console.log('🔄 App.tsx state updated - currentAgent:', currentAgent);
+    console.log('🔄 App.tsx state updated - isActive:', isActive);
+  }, [dispatchInfo, patientInfo, currentAgent, isActive]);
+
   // Layer 3: Check for existing registration and session on mount (Feature 2 - Session Resume)
   useEffect(() => {
     async function checkExistingSession() {
@@ -274,15 +282,23 @@ function App() {
     try {
       const response = await api.beginScenario(sessionId);
 
-      console.log('✅ Scenario loaded:', response);
-      console.log('📊 Dispatch Info:', response.dispatchInfo);
-      console.log('👤 Patient Info:', response.patientInfo);
+      console.log('✅ Full API Response:', JSON.stringify(response, null, 2));
+      console.log('📊 Dispatch Info from response:', response.dispatchInfo);
+      console.log('👤 Patient Info from response:', response.patientInfo);
 
       // Update all state
+      console.log('🔧 Setting currentAgent to core');
       setCurrentAgent('core');
+
+      console.log('🔧 Setting dispatchInfo:', response.dispatchInfo);
       setDispatchInfo(response.dispatchInfo);
+
+      console.log('🔧 Setting patientInfo:', response.patientInfo);
       setPatientInfo(response.patientInfo);
+
+      console.log('🔧 Setting isActive to true');
       setIsActive(true);
+
       setScenarioStartTime(Date.now());
       setCurrentVitals(null); // Empty until measured
       setPatientNotes([]);
@@ -293,6 +309,12 @@ function App() {
       }
 
       console.log('🎬 Transition complete - now in Core Agent mode');
+
+      // ✅ NEW: Log state after setting (will show on next render)
+      setTimeout(() => {
+        console.log('📸 State after transition (dispatch):', dispatchInfo);
+        console.log('📸 State after transition (patient):', patientInfo);
+      }, 100);
     } catch (error) {
       console.error('❌ Error beginning scenario:', error);
     }
