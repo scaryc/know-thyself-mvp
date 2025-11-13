@@ -111,7 +111,6 @@ function VitalsMonitor({ vitals: initialVitals, sessionId, isAARMode = false, on
         <div className={`bg-bg-tertiary rounded-lg p-2 border-l-4 border-warning ${getAlertBg(vitals?.RR ?? 0, [12, 20])}`}>
           <div className="flex justify-between items-start mb-1">
             <div className="text-xs text-gray-400 font-semibold">RR</div>
-            <div className="text-[10px] bg-warning text-black px-2 py-0.5 rounded font-semibold">TACHY</div>
           </div>
           <div className={`text-3xl font-bold font-mono ${getAlertColor(vitals?.RR ?? 0, [12, 20])} mb-1`}>
             {vitals?.RR ?? '---'}
