@@ -2919,7 +2919,7 @@ app.post('/api/sessions/:id/begin-scenario', async (req, res) => {
     console.log('👤 Patient Info:', patientInfo);
 
     // Return all scenario data
-    res.json({
+    const responsePayload = {
       currentAgent: 'core',
       transitioned: true,
       dispatchInfo: dispatchInfo,
@@ -2927,7 +2927,11 @@ app.post('/api/sessions/:id/begin-scenario', async (req, res) => {
       initialSceneDescription: initialSceneDescription,
       initialVitals: initialContext.current_vitals,
       scenario: session.engine.getScenarioMetadata()
-    });
+    };
+
+    console.log('📤 FULL HTTP RESPONSE PAYLOAD:', JSON.stringify(responsePayload, null, 2));
+
+    res.json(responsePayload);
 
   } catch (error) {
     console.error('❌ ERROR in begin-scenario:', error);
