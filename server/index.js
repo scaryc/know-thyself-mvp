@@ -1348,8 +1348,12 @@ function evaluateCDP(session, userMessage) {
 
   const elapsedMinutes = (Date.now() - session.scenarioStartTime) / 60000;
 
-  // Find applicable CDPs based on elapsed time
+  // ✅ FIX: Filter out CDPs that don't have time_window (different scenario formats)
+  // Some scenarios use time_window, others use evaluate_if
   const applicableCDPs = cdps.filter(cdp => {
+    // Skip CDPs without time_window (they use different evaluation logic)
+    if (!cdp.time_window) return false;
+
     const [minTime, maxTime] = cdp.time_window;
     return elapsedMinutes >= minTime && elapsedMinutes <= maxTime;
   });
@@ -2996,20 +3000,20 @@ app.post('/api/sessions/:sessionId/action', async (req, res) => {
 app.get('/api/sessions/:sessionId/vitals', async (req, res) => {
   try {
     const { sessionId } = req.params;
-    
+
     const session = sessions.get(sessionId);
     if (!session) {
       return res.status(404).json({ error: 'Session not found' });
     }
-    
-    const vitals = session.engine.getCurrentVitals();
-    const formatted = session.engine.vitalsSimulator.getFormattedVitals();
-    const concerns = session.engine.vitalsSimulator.getVitalsConcernLevel();
-    
+
+    // ✅ FIX: Return only MEASURED vitals, not engine's auto-calculated vitals
+    // This ensures vitals panel is empty until user explicitly measures them
+    const vitals = session.measuredVitals || {};
+
     res.json({
       raw: vitals,
-      formatted: formatted,
-      concerns: concerns
+      formatted: vitals, // Keep same structure for compatibility
+      concerns: {} // No concerns for empty vitals
     });
   } catch (error) {
     console.error('Error fetching vitals:', error);
