@@ -123,9 +123,13 @@ function Header({
         </div>
         {dispatchInfo ? (
           <div className="text-sm">
-            <span className="text-gray-400">{dispatchInfo.location}</span>
+            <span className="text-gray-400">
+              {dispatchInfo.location || '[NO LOCATION]'}
+            </span>
             <span className="text-gray-600 mx-2">•</span>
-            <span className="text-gray-400">{dispatchInfo.chiefComplaint}</span>
+            <span className="text-gray-400">
+              {dispatchInfo.chiefComplaint || '[NO CHIEF COMPLAINT]'}
+            </span>
           </div>
         ) : (
           <div className="text-sm text-red-500">
@@ -141,8 +145,12 @@ function Header({
             <span className="text-xl">👤</span>
           </div>
           <div>
-            <div className="font-semibold">{patientInfo.name}</div>
-            <div className="text-sm text-gray-400">{patientInfo.age} {patientInfo.gender}</div>
+            <div className="font-semibold">
+              {patientInfo.name || '[NO NAME]'}
+            </div>
+            <div className="text-sm text-gray-400">
+              {patientInfo.age || '[NO AGE]'} {patientInfo.gender || '[NO GENDER]'}
+            </div>
           </div>
         </div>
       ) : (
