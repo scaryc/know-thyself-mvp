@@ -17,6 +17,8 @@ interface ConversationPanelProps {
   isAARMode?: boolean;
   onAARComplete?: () => void;
   onBeginScenario?: () => void; // ✅ NEW: Callback for Begin Scenario button
+  showAARButton?: boolean; // ✅ NEW: Show AAR Review button
+  onStartAAR?: () => void; // ✅ NEW: Callback for Start AAR button
 }
 
 function ConversationPanel({
@@ -27,7 +29,9 @@ function ConversationPanel({
   onAgentTransition,
   isAARMode = false,
   onAARComplete,
-  onBeginScenario
+  onBeginScenario,
+  showAARButton = false,
+  onStartAAR
 }: ConversationPanelProps) {
   // ✅ FIXED: Start with empty messages - don't pre-fill from sessionStorage
   const [messages, setMessages] = useState<Message[]>([]);
@@ -205,6 +209,23 @@ function ConversationPanel({
                 className="px-8 py-4 bg-accent hover:bg-blue-600 text-white text-lg font-semibold rounded-lg transition-all transform hover:scale-105 shadow-lg"
               >
                 Begin Scenario
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ✅ NEW: Start AAR Review Button Overlay */}
+        {showAARButton && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
+            <div className="bg-bg-secondary border-2 border-green-500 rounded-lg p-8 shadow-2xl text-center max-w-md">
+              <div className="text-5xl mb-4">🎯</div>
+              <h3 className="text-2xl font-bold mb-2">All Scenarios Complete!</h3>
+              <p className="text-gray-400 mb-6">Click the button below to start your After Action Review and reflect on your performance</p>
+              <button
+                onClick={onStartAAR}
+                className="px-8 py-4 bg-green-600 hover:bg-green-700 text-white text-lg font-semibold rounded-lg transition-all transform hover:scale-105 shadow-lg"
+              >
+                Start AAR Review
               </button>
             </div>
           </div>

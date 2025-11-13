@@ -32,6 +32,9 @@ function App() {
   // ✅ NEW: Track session completion
   const [sessionComplete, setSessionComplete] = useState(false);
 
+  // ✅ NEW: Track if we should show the AAR Review button
+  const [showAARButton, setShowAARButton] = useState(false);
+
   // ✅ DEBUG: Log when dispatchInfo or patientInfo changes
   useEffect(() => {
     console.log('🔄 App.tsx state updated - dispatchInfo:', dispatchInfo);
@@ -213,27 +216,17 @@ function App() {
         sessionStorage.setItem('initialScene', response.initialSceneDescription);
       }
     } else {
-      // ALL 3 SCENARIOS COMPLETED → Transition to AAR (Task 0.2)
-      console.log('All scenarios completed! Transitioning to AAR Agent...');
+      // ALL 3 SCENARIOS COMPLETED → Show AAR button
+      console.log('All scenarios completed! Showing AAR Review button...');
 
-      // Set AAR mode
-      setIsAARMode(true);
+      // Clear scenario UI
+      setDispatchInfo(null);
+      setPatientInfo(null);
+      setCurrentVitals(null);
       setIsActive(false);
 
-      // Initialize AAR Agent
-      if (sessionId) {
-        const aarResponse = await api.startAAR(sessionId);
-
-        // Clear scenario UI
-        setDispatchInfo(null);
-        setPatientInfo(null);
-        setCurrentVitals(null);
-
-        // Store AAR introduction message for ConversationPanel
-        sessionStorage.setItem('aarIntroduction', aarResponse.message);
-
-        console.log('AAR mode activated:', aarResponse);
-      }
+      // Show AAR button instead of automatically starting AAR
+      setShowAARButton(true);
     }
   };
   
@@ -265,6 +258,27 @@ function App() {
 
     // Mark as active so header shows properly
     setIsActive(true);
+  };
+
+  // ✅ NEW: Handle Start AAR Review button click
+  const handleStartAAR = async () => {
+    console.log('🚀 User clicked Start AAR Review - initializing AAR Agent...');
+
+    // Hide the button
+    setShowAARButton(false);
+
+    // Set AAR mode
+    setIsAARMode(true);
+
+    // Initialize AAR Agent
+    if (sessionId) {
+      const aarResponse = await api.startAAR(sessionId);
+
+      // Store AAR introduction message for ConversationPanel
+      sessionStorage.setItem('aarIntroduction', aarResponse.message);
+
+      console.log('AAR mode activated:', aarResponse);
+    }
   };
 
   // ✅ NEW: Handle AAR completion
@@ -335,6 +349,7 @@ function App() {
     setScenarioQueue([]);
     setCurrentScenarioIndex(0);
     setCompletedScenarios([]);
+    setShowAARButton(false); // Reset AAR button state
     sessionStorage.clear();
 
     // Layer 3: Clear sessionId from localStorage (Feature 2)
@@ -394,6 +409,8 @@ function App() {
           isAARMode={isAARMode} // ✅ NEW: Pass isAARMode to MainLayout
           currentScenarioIndex={currentScenarioIndex} // ✅ NEW: Pass scenario index to force chat reset
           onBeginScenario={handleBeginScenario} // ✅ NEW: Pass Begin Scenario handler
+          showAARButton={showAARButton} // ✅ NEW: Pass AAR button state
+          onStartAAR={handleStartAAR} // ✅ NEW: Pass Start AAR handler
         />
       )}
     </div>
