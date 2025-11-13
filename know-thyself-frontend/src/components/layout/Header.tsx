@@ -39,6 +39,18 @@ function Header({
 }: HeaderProps) {
   const [elapsedTime, setElapsedTime] = useState(0);
 
+  // ✅ DEBUG: Log props to see what Header receives
+  useEffect(() => {
+    console.log('🔍 Header props:', {
+      currentAgent,
+      isActive,
+      hasDispatchInfo: !!dispatchInfo,
+      hasPatientInfo: !!patientInfo,
+      dispatchInfo,
+      patientInfo
+    });
+  }, [currentAgent, isActive, dispatchInfo, patientInfo]);
+
   // Timer logic - runs inside Header (only when in Core Agent mode)
   useEffect(() => {
     // ✅ FIXED: Only run timer when in Core Agent mode
@@ -109,17 +121,21 @@ function Header({
           <span className="text-red-500">📍</span>
           <span className="text-sm text-gray-400">DISPATCH</span>
         </div>
-        {dispatchInfo && (
+        {dispatchInfo ? (
           <div className="text-sm">
             <span className="text-gray-400">{dispatchInfo.location}</span>
             <span className="text-gray-600 mx-2">•</span>
             <span className="text-gray-400">{dispatchInfo.chiefComplaint}</span>
           </div>
+        ) : (
+          <div className="text-sm text-red-500">
+            [Missing dispatch info - check console]
+          </div>
         )}
       </div>
 
       {/* Center - Patient Info */}
-      {patientInfo && (
+      {patientInfo ? (
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 rounded-full bg-bg-tertiary flex items-center justify-center">
             <span className="text-xl">👤</span>
@@ -129,6 +145,8 @@ function Header({
             <div className="text-sm text-gray-400">{patientInfo.age} {patientInfo.gender}</div>
           </div>
         </div>
+      ) : (
+        <div className="text-sm text-red-500">[Missing patient info]</div>
       )}
 
       {/* Right side - Timer & Status */}
