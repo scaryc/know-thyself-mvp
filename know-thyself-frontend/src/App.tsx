@@ -265,6 +265,39 @@ function App() {
     setSessionComplete(true);
   };
 
+  // ✅ NEW: Handle Begin Scenario button click
+  const handleBeginScenario = async () => {
+    if (!sessionId) return;
+
+    console.log('🚀 User clicked Begin Scenario - calling backend...');
+
+    try {
+      const response = await api.beginScenario(sessionId);
+
+      console.log('✅ Scenario loaded:', response);
+      console.log('📊 Dispatch Info:', response.dispatchInfo);
+      console.log('👤 Patient Info:', response.patientInfo);
+
+      // Update all state
+      setCurrentAgent('core');
+      setDispatchInfo(response.dispatchInfo);
+      setPatientInfo(response.patientInfo);
+      setIsActive(true);
+      setScenarioStartTime(Date.now());
+      setCurrentVitals(null); // Empty until measured
+      setPatientNotes([]);
+
+      // Store initial scene in sessionStorage
+      if (response.initialSceneDescription) {
+        sessionStorage.setItem('initialScene', response.initialSceneDescription);
+      }
+
+      console.log('🎬 Transition complete - now in Core Agent mode');
+    } catch (error) {
+      console.error('❌ Error beginning scenario:', error);
+    }
+  };
+
   // ✅ NEW: Reset session for new training
   const handleResetSession = () => {
     setSessionId(null);
@@ -338,6 +371,7 @@ function App() {
           onAARComplete={handleAARComplete} // ✅ NEW: Pass AAR completion handler
           isAARMode={isAARMode} // ✅ NEW: Pass isAARMode to MainLayout
           currentScenarioIndex={currentScenarioIndex} // ✅ NEW: Pass scenario index to force chat reset
+          onBeginScenario={handleBeginScenario} // ✅ NEW: Pass Begin Scenario handler
         />
       )}
     </div>

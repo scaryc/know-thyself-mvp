@@ -1,5 +1,5 @@
 import { api } from '../../services/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface Message {
   role: 'user' | 'assistant' | 'system';
@@ -16,6 +16,7 @@ interface ConversationPanelProps {
   onAgentTransition: (newAgent: 'core', scenarioData: any) => void;
   isAARMode?: boolean;
   onAARComplete?: () => void;
+  onBeginScenario?: () => void; // ✅ NEW: Callback for Begin Scenario button
 }
 
 function ConversationPanel({
@@ -25,13 +26,36 @@ function ConversationPanel({
   currentAgent,
   onAgentTransition,
   isAARMode = false,
-  onAARComplete
+  onAARComplete,
+  onBeginScenario
 }: ConversationPanelProps) {
   // ✅ FIXED: Start with empty messages - don't pre-fill from sessionStorage
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [activeChallenge, setActiveChallenge] = useState(false);
+  const [showBeginButton, setShowBeginButton] = useState(false); // ✅ NEW: Show transition button
+  const initialSceneAddedRef = useRef(false); // ✅ NEW: Track if initial scene added
+
+  // ✅ NEW: Add initial scene when transitioning to Core Agent
+  useEffect(() => {
+    if (currentAgent === 'core' && messages.length === 0 && !initialSceneAddedRef.current) {
+      const initialScene = sessionStorage.getItem('initialScene');
+      if (initialScene) {
+        console.log('📝 Adding initial scene to Core Agent chat');
+        setMessages([{
+          role: 'assistant',
+          content: initialScene,
+          timestamp: Date.now()
+        }]);
+        initialSceneAddedRef.current = true;
+      }
+    }
+    // Reset flag when switching away from Core Agent
+    if (currentAgent !== 'core') {
+      initialSceneAddedRef.current = false;
+    }
+  }, [currentAgent, messages.length]);
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
@@ -72,6 +96,12 @@ function ConversationPanel({
 
         console.log('📥 Frontend received:', response);
 
+        // ✅ NEW: Check if Cognitive Coach is ready to transition
+        if (response.readyToTransition) {
+          console.log('🔘 Cognitive Coach ready - showing Begin Scenario button');
+          setShowBeginButton(true);
+        }
+
         // Check if this is a challenge point
         const isChallenge = response.isChallenge || false;
         if (isChallenge) {
@@ -80,42 +110,7 @@ function ConversationPanel({
           setActiveChallenge(false);
         }
 
-        // ✅ FIXED: Handle agent transition
-        if (response.transitioned && response.currentAgent === 'core') {
-          console.log('🎬 Transition detected - switching to Core Agent');
-
-          // Clear all messages (remove Cognitive Coach history)
-          setMessages([]);
-
-          // Notify parent to update agent state and scenario data
-          onAgentTransition('core', {
-            dispatchInfo: response.dispatchInfo,
-            patientInfo: response.patientInfo,
-            initialSceneDescription: response.initialSceneDescription,
-            initialVitals: response.initialVitals,
-            scenario: response.scenario
-          });
-
-          // ✅ CRITICAL FIX: Don't add the message yet!
-          // The parent state hasn't updated yet, so we're still in Cognitive Coach mode
-          // The message will be added after the component remounts in Core Agent mode
-          // We'll use a setTimeout to let React finish the state update first
-          setTimeout(() => {
-            const sceneMessage: Message = {
-              role: 'assistant',
-              content: response.message,
-              timestamp: Date.now(),
-              isChallenge: false
-            };
-            setMessages([sceneMessage]);
-          }, 100);
-
-          // Stop loading and return early - don't add message immediately
-          setIsLoading(false);
-          return;
-        }
-
-        // Add the assistant's message (for normal responses, not transitions)
+        // Add the assistant's message (no special handling needed)
         const aiResponse: Message = {
           role: 'assistant',
           content: response.message,
@@ -164,7 +159,7 @@ function ConversationPanel({
         </div>
       )}
       
-      <div className="flex-1 overflow-y-auto p-6 space-y-4">
+      <div className="flex-1 overflow-y-auto p-6 space-y-4 relative">
         {messages.map((msg, idx) => (
           <div
             key={idx}
@@ -189,11 +184,28 @@ function ConversationPanel({
             </div>
           </div>
         ))}
-       
+
         {isLoading && (
           <div className="flex justify-start">
             <div className="bg-bg-secondary text-gray-400 p-4 rounded-lg">
               <span className="animate-pulse">Thinking...</span>
+            </div>
+          </div>
+        )}
+
+        {/* ✅ NEW: Begin Scenario Button Overlay */}
+        {showBeginButton && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
+            <div className="bg-bg-secondary border-2 border-accent rounded-lg p-8 shadow-2xl text-center max-w-md">
+              <div className="text-5xl mb-4">🚀</div>
+              <h3 className="text-2xl font-bold mb-2">Ready to Begin</h3>
+              <p className="text-gray-400 mb-6">Click the button below to start your scenario training</p>
+              <button
+                onClick={onBeginScenario}
+                className="px-8 py-4 bg-accent hover:bg-blue-600 text-white text-lg font-semibold rounded-lg transition-all transform hover:scale-105 shadow-lg"
+              >
+                Begin Scenario
+              </button>
             </div>
           </div>
         )}

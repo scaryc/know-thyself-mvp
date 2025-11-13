@@ -14,6 +14,7 @@ interface MainLayoutProps {
   onAARComplete?: () => void; // ✅ NEW
   isAARMode?: boolean; // ✅ NEW
   currentScenarioIndex?: number; // ✅ NEW: Track scenario changes
+  onBeginScenario?: () => void; // ✅ NEW: Begin scenario callback
 }
 
 function MainLayout({
@@ -26,7 +27,8 @@ function MainLayout({
   onAgentTransition, // ✅ NEW
   onAARComplete, // ✅ NEW
   isAARMode = false, // ✅ NEW
-  currentScenarioIndex = 0 // ✅ NEW
+  currentScenarioIndex = 0, // ✅ NEW
+  onBeginScenario // ✅ NEW
 }: MainLayoutProps) {
   
   // ✅ NEW: During Cognitive Coach, show only the chat panel (full width)
@@ -44,6 +46,7 @@ function MainLayout({
               onAgentTransition={onAgentTransition}
               isAARMode={isAARMode}
               onAARComplete={onAARComplete}
+              onBeginScenario={onBeginScenario}
             />
           </div>
         </div>
@@ -66,6 +69,7 @@ function MainLayout({
             onAgentTransition={onAgentTransition}
             isAARMode={isAARMode}
             onAARComplete={onAARComplete}
+            onBeginScenario={onBeginScenario}
           />
         </div>
 

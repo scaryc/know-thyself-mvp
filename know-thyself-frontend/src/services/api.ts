@@ -81,6 +81,15 @@ class ApiService {
     return response.json();
   }
 
+  // ✅ NEW: Begin scenario transition (user clicked button)
+  async beginScenario(sessionId: string) {
+    const response = await fetch(`${this.baseURL}/sessions/${sessionId}/begin-scenario`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    return response.json();
+  }
+
   // Layer 3: Session resume (Feature 2)
   async checkSession(sessionId: string) {
     const response = await fetch(`${this.baseURL}/sessions/${sessionId}/check`);
