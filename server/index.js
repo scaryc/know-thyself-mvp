@@ -2251,102 +2251,19 @@ app.post('/api/sessions/:id/message', async (req, res) => {
         console.log('Cognitive Coach response:', responseText.substring(0, 100) + '...');
         
 // Check if Cognitive Coach is complete
-        if (responseText.includes('[COGNITIVE_COACH_COMPLETE]') || 
+        if (responseText.includes('[COGNITIVE_COACH_COMPLETE]') ||
             responseText.includes('[TRANSITION_TO_CORE_AGENT]')) {
-          
-          console.log('✅ Cognitive Coach complete - transitioning to Core Agent');
-          
+
+          console.log('✅ Cognitive Coach complete - ready for transition');
+
           // Mark cognitive coach as complete
           session.cognitiveCoach.completed = true;
           session.cognitiveCoach.endTime = Date.now();
-          
-          // Transition to Core Agent
-          session.currentAgent = 'core';
-          
-// ═══════════════════════════════════════════════════════════
-// NOW LOAD SCENARIO FOR THE FIRST TIME
-// ═══════════════════════════════════════════════════════════
 
-console.log('📋 Loading scenario:', session.scenarioId);
+          // ✅ NEW APPROACH: Don't transition yet, wait for user to click button
+          // Mark as ready, but keep in cognitive_coach mode
+          session.readyToTransition = true;
 
-// 🔍 ADD DEBUGGING
-console.log('🔍 Full scenario path will be:', path.join(__dirname, `../scenarios/${session.scenarioId}.json`));
-
-// Load scenario and create engine
-const scenarioData = loadScenario(session.scenarioId);
-
-// 🔍 CHECK IF LOADED
-if (!scenarioData) {
-  console.error('❌ FAILED: Scenario data is undefined!');
-  console.error('❌ Looking for file:', session.scenarioId);
-  console.error('❌ Check if file exists:', path.join(__dirname, `../scenarios/${session.scenarioId}.json`));
-  
-  // Return error to frontend
-  return res.status(500).json({ 
-    error: 'Failed to load scenario',
-    details: `Scenario file not found: ${session.scenarioId}.json`
-  });
-}
-
-console.log('✅ Scenario data loaded successfully');
-console.log('🔍 Scenario has metadata?', !!scenarioData.metadata);
-console.log('🔍 Scenario title:', scenarioData.metadata?.title);
-
-// Store scenario data on session for later use
-session.scenario = scenarioData;
-session.engine = new ScenarioEngine(scenarioData);
-session.measuredVitals = {};
-session.patientNotes = [];
-
-// ═══════════════════════════════════════════════════════════
-// NEW FIELDS - Layer 2 (Task 1.1)
-// ═══════════════════════════════════════════════════════════
-session.currentState = 'initial'; // initial | improving | deteriorating | critical
-session.scenarioStartTime = Date.now();
-session.criticalActionsLog = [];
-session.criticalTreatmentsGiven = {
-  oxygen: false,
-  salbutamol: false,
-  steroids: false
-};
-session.dangerousMedicationsGiven = []; // Track dangerous meds administered
-session.lastDeteriorationCheck = Date.now();
-// Challenge fields already initialized at session creation (Task 3.1)
-session.stateHistory = [{
-  state: 'initial',
-  timestamp: Date.now(),
-  vitals: scenarioData.initial_vitals
-}];
-
-console.log('✅ Layer 2 session fields initialized');
-
-// Get initial context
-const initialContext = session.engine.getRuntimeContext();
-
-// Extract dispatch and patient info
-const dispatchInfo = {
-  location: scenarioData.dispatch_info.location,
-  chiefComplaint: scenarioData.dispatch_info.call_type,
-  callerInfo: `${scenarioData.dispatch_info.caller} reports: ${scenarioData.dispatch_info.additional_info}`,
-  timeOfCall: "14:32"
-};
-
-const patientInfo = {
-  name: scenarioData.patient_profile.name,
-  age: scenarioData.patient_profile.age,
-  gender: scenarioData.dispatch_info.sex
-};
-
-console.log('✅ Scenario loaded:', scenarioData.metadata.title);
-
-          // ✅ IMPORTANT: Store dispatch and patient info in session for later use
-          session.dispatchInfo = dispatchInfo;
-          session.patientInfo = patientInfo;
-
-          // ═══════════════════════════════════════════════════════════
-          // END SCENARIO LOADING
-          // ═══════════════════════════════════════════════════════════
-          
           // Clean ALL transition markers from response
           responseText = responseText
             .replace(/\[COGNITIVE_COACH_COMPLETE\]/g, '')
@@ -2356,40 +2273,19 @@ console.log('✅ Scenario loaded:', scenarioData.metadata.title);
             .replace(/\[COGNITIVE_COACH_SESSION_COMPLETE\]/g, '')
             .trim();
 
-          // ✅ FIX: Don't save Cognitive Coach's transition message to conversation history
-          // Only save the user message, not the assistant's transition message
+          // Add to conversation history
           session.messages.push(
-            { role: 'user', content: message }
+            { role: 'user', content: message },
+            { role: 'assistant', content: responseText }
           );
 
-          // ✅ FIX: Send ONLY the initial scene description, not the Cognitive Coach's message
-          // This ensures NO dispatch info or transition text appears in chat
-          const initialSceneDescription = scenarioData.state_descriptions.initial.student_sees;
+          console.log('🔘 Waiting for user to click "Begin Scenario" button');
 
-          // Add the scene description to conversation history for Core Agent context
-          session.messages.push(
-            { role: 'assistant', content: initialSceneDescription }
-          );
-
-          console.log('🎬 Now in Core Agent mode - scenario ready');
-          console.log('📝 Sending initial scene as message:', initialSceneDescription.substring(0, 100) + '...');
-          console.log('📊 Dispatch Info being sent:', dispatchInfo);
-          console.log('👤 Patient Info being sent:', patientInfo);
-
-          // Return WITH scenario data for the first time
+          // Return with readyToTransition flag - frontend will show button
           return res.json({
-            message: initialSceneDescription,  // ✅ FIX: Send scene description, NOT Cognitive Coach message
-            currentAgent: 'core',
-            transitioned: true,
-
-            // NOW send scenario data
-            scenario: session.engine.getScenarioMetadata(),
-            initialVitals: initialContext.current_vitals,
-            patientProfile: initialContext.patient_profile,
-            sceneDescription: initialContext.current_scene,
-            dispatchInfo: dispatchInfo,
-            patientInfo: patientInfo,
-            initialSceneDescription: initialSceneDescription
+            message: responseText,
+            currentAgent: 'cognitive_coach', // Stay in CC mode
+            readyToTransition: true  // NEW: Signal to show button
           });
         }
         
@@ -2922,6 +2818,120 @@ res.json({
     console.error('❌ ERROR:', error.message);
     console.error(error.stack);
     res.status(500).json({ error: 'Failed to process message' });
+  }
+});
+
+/**
+ * POST /api/sessions/:id/begin-scenario
+ * ✅ NEW: User clicked "Begin Scenario" button - load scenario and transition to Core Agent
+ */
+app.post('/api/sessions/:id/begin-scenario', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const session = sessions.get(id);
+
+    if (!session) {
+      return res.status(404).json({ error: 'Session not found' });
+    }
+
+    // Verify session is ready to transition
+    if (!session.readyToTransition) {
+      return res.status(400).json({ error: 'Session not ready to transition' });
+    }
+
+    console.log('🚀 User clicked "Begin Scenario" - loading scenario now');
+
+    // Transition to Core Agent
+    session.currentAgent = 'core';
+
+    // ═══════════════════════════════════════════════════════════
+    // LOAD SCENARIO FOR THE FIRST TIME
+    // ═══════════════════════════════════════════════════════════
+
+    console.log('📋 Loading scenario:', session.scenarioId);
+
+    // Load scenario and create engine
+    const scenarioData = loadScenario(session.scenarioId);
+
+    // Check if loaded
+    if (!scenarioData) {
+      console.error('❌ FAILED: Scenario data is undefined!');
+      return res.status(500).json({
+        error: 'Failed to load scenario',
+        details: `Scenario file not found: ${session.scenarioId}.json`
+      });
+    }
+
+    console.log('✅ Scenario data loaded successfully');
+    console.log('🔍 Scenario title:', scenarioData.metadata?.title);
+
+    // Store scenario data on session for later use
+    session.scenario = scenarioData;
+    session.engine = new ScenarioEngine(scenarioData);
+    session.measuredVitals = {};
+    session.patientNotes = [];
+
+    // Initialize Layer 2 session fields
+    session.currentState = 'initial';
+    session.scenarioStartTime = Date.now();
+    session.criticalActionsLog = [];
+    session.criticalTreatmentsGiven = {
+      oxygen: false,
+      salbutamol: false,
+      steroids: false
+    };
+    session.dangerousMedicationsGiven = [];
+    session.lastDeteriorationCheck = Date.now();
+    session.stateHistory = [{
+      state: 'initial',
+      timestamp: Date.now(),
+      vitals: scenarioData.initial_vitals
+    }];
+
+    console.log('✅ Layer 2 session fields initialized');
+
+    // Get initial context
+    const initialContext = session.engine.getRuntimeContext();
+
+    // Extract dispatch and patient info
+    const dispatchInfo = {
+      location: scenarioData.dispatch_info.location,
+      chiefComplaint: scenarioData.dispatch_info.call_type,
+      callerInfo: `${scenarioData.dispatch_info.caller} reports: ${scenarioData.dispatch_info.additional_info}`,
+      timeOfCall: "14:32"
+    };
+
+    const patientInfo = {
+      name: scenarioData.patient_profile.name,
+      age: scenarioData.patient_profile.age,
+      gender: scenarioData.dispatch_info.sex
+    };
+
+    // Store in session
+    session.dispatchInfo = dispatchInfo;
+    session.patientInfo = patientInfo;
+
+    // Get initial scene description
+    const initialSceneDescription = scenarioData.state_descriptions.initial.student_sees;
+
+    console.log('🎬 Scenario ready - sending to frontend');
+    console.log('📊 Dispatch Info:', dispatchInfo);
+    console.log('👤 Patient Info:', patientInfo);
+
+    // Return all scenario data
+    res.json({
+      currentAgent: 'core',
+      transitioned: true,
+      dispatchInfo: dispatchInfo,
+      patientInfo: patientInfo,
+      initialSceneDescription: initialSceneDescription,
+      initialVitals: initialContext.current_vitals,
+      scenario: session.engine.getScenarioMetadata()
+    });
+
+  } catch (error) {
+    console.error('❌ ERROR in begin-scenario:', error);
+    res.status(500).json({ error: error.message });
   }
 });
 
