@@ -96,11 +96,26 @@ function ConversationPanel({
             scenario: response.scenario
           });
 
-          // ✅ FIXED: The backend now sends the scene description as response.message
-          // So we add it normally as an assistant message (not system)
+          // ✅ CRITICAL FIX: Don't add the message yet!
+          // The parent state hasn't updated yet, so we're still in Cognitive Coach mode
+          // The message will be added after the component remounts in Core Agent mode
+          // We'll use a setTimeout to let React finish the state update first
+          setTimeout(() => {
+            const sceneMessage: Message = {
+              role: 'assistant',
+              content: response.message,
+              timestamp: Date.now(),
+              isChallenge: false
+            };
+            setMessages([sceneMessage]);
+          }, 100);
+
+          // Stop loading and return early - don't add message immediately
+          setIsLoading(false);
+          return;
         }
 
-        // Add the assistant's message (whether transition or normal response)
+        // Add the assistant's message (for normal responses, not transitions)
         const aiResponse: Message = {
           role: 'assistant',
           content: response.message,
