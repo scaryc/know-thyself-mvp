@@ -1340,7 +1340,9 @@ function checkDangerousCriteria(criteria, session, userMessage) {
  */
 function evaluateCDP(session, userMessage) {
   const scenario = session.scenario;
-  const cdps = scenario.critical_decision_points;
+
+  // ✅ FIX: critical_decision_points is an object with available_evaluations array
+  const cdps = scenario.critical_decision_points?.available_evaluations || [];
 
   if (!cdps || cdps.length === 0) return null;
 
@@ -2333,6 +2335,9 @@ const patientInfo = {
 
 console.log('✅ Scenario loaded:', scenarioData.metadata.title);
 
+          // ✅ IMPORTANT: Store dispatch and patient info in session for later use
+          session.dispatchInfo = dispatchInfo;
+          session.patientInfo = patientInfo;
 
           // ═══════════════════════════════════════════════════════════
           // END SCENARIO LOADING
@@ -2364,6 +2369,8 @@ console.log('✅ Scenario loaded:', scenarioData.metadata.title);
 
           console.log('🎬 Now in Core Agent mode - scenario ready');
           console.log('📝 Sending initial scene as message:', initialSceneDescription.substring(0, 100) + '...');
+          console.log('📊 Dispatch Info being sent:', dispatchInfo);
+          console.log('👤 Patient Info being sent:', patientInfo);
 
           // Return WITH scenario data for the first time
           return res.json({
