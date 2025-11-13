@@ -80,7 +80,7 @@ function ConversationPanel({
           setActiveChallenge(false);
         }
 
-        // ✅ NEW: Handle agent transition BEFORE adding messages
+        // ✅ FIXED: Handle agent transition
         if (response.transitioned && response.currentAgent === 'core') {
           console.log('🎬 Transition detected - switching to Core Agent');
 
@@ -96,20 +96,11 @@ function ConversationPanel({
             scenario: response.scenario
           });
 
-          // Add initial scene description as the first message
-          if (response.initialSceneDescription) {
-            const sceneMessage: Message = {
-              role: 'system',
-              content: response.initialSceneDescription,
-              timestamp: Date.now()
-            };
-            setMessages([sceneMessage]);
-          }
-
-          // Skip adding the transition message to chat (it's the Cognitive Coach's goodbye)
-          return;
+          // ✅ FIXED: The backend now sends the scene description as response.message
+          // So we add it normally as an assistant message (not system)
         }
 
+        // Add the assistant's message (whether transition or normal response)
         const aiResponse: Message = {
           role: 'assistant',
           content: response.message,

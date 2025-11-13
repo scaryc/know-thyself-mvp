@@ -2346,21 +2346,31 @@ console.log('✅ Scenario loaded:', scenarioData.metadata.title);
             .replace(/\[SAVE_COGNITIVE_METRICS\]/g, '')
             .replace(/\[COGNITIVE_COACH_SESSION_COMPLETE\]/g, '')
             .trim();
-          
-          // Add to conversation history
+
+          // ✅ FIX: Don't save Cognitive Coach's transition message to conversation history
+          // Only save the user message, not the assistant's transition message
           session.messages.push(
-            { role: 'user', content: message },
-            { role: 'assistant', content: responseText }
+            { role: 'user', content: message }
           );
-          
+
+          // ✅ FIX: Send ONLY the initial scene description, not the Cognitive Coach's message
+          // This ensures NO dispatch info or transition text appears in chat
+          const initialSceneDescription = scenarioData.state_descriptions.initial.student_sees;
+
+          // Add the scene description to conversation history for Core Agent context
+          session.messages.push(
+            { role: 'assistant', content: initialSceneDescription }
+          );
+
           console.log('🎬 Now in Core Agent mode - scenario ready');
-          
+          console.log('📝 Sending initial scene as message:', initialSceneDescription.substring(0, 100) + '...');
+
           // Return WITH scenario data for the first time
-          return res.json({ 
-            message: responseText,
+          return res.json({
+            message: initialSceneDescription,  // ✅ FIX: Send scene description, NOT Cognitive Coach message
             currentAgent: 'core',
             transitioned: true,
-            
+
             // NOW send scenario data
             scenario: session.engine.getScenarioMetadata(),
             initialVitals: initialContext.current_vitals,
@@ -2368,7 +2378,7 @@ console.log('✅ Scenario loaded:', scenarioData.metadata.title);
             sceneDescription: initialContext.current_scene,
             dispatchInfo: dispatchInfo,
             patientInfo: patientInfo,
-            initialSceneDescription: scenarioData.state_descriptions.initial.student_sees
+            initialSceneDescription: initialSceneDescription
           });
         }
         
