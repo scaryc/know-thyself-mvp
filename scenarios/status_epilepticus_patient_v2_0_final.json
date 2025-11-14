@@ -26,7 +26,8 @@
     "sex": "Female",
     "location": "Residential apartment, 2nd floor",
     "caller": "Boyfriend",
-    "additional_info": "Shaking all over, been going on for several minutes, can't wake her up"
+    "time_of_call": "14:35",
+    "additional_info": "Patient having continuous seizure activity, shaking all over and unresponsive. Boyfriend reports seizure has been ongoing for several minutes without stopping. Patient has known epilepsy but boyfriend states her seizures normally stop after a minute or two. She's on the floor, boyfriend moved furniture away for safety."
   },
 
   "scene_description": {
@@ -56,7 +57,7 @@
 
   "state_descriptions": {
     "initial": {
-      "student_sees": "You arrive to find a young woman lying on her side on the bedroom floor, actively seizing. Her whole body is rigid, then shaking rhythmically - arms and legs jerking violently. Her eyes are rolled back, jaw clenched tight. You can hear a gurgling sound from her airway and see saliva pooling at the corner of her mouth. Her lips have a bluish tinge. The boyfriend is kneeling beside her, crying. 'She's been like this for at least 6 or 7 minutes now! I called as soon as it started. She has epilepsy but her seizures usually stop after a minute or two. This one won't stop!' You can smell urine - she's incontinent. The seizure continues as you watch.",
+      "student_sees": "You arrive to find a young woman lying on her side on the bedroom floor, actively seizing. Her body is rigid and shaking rhythmically with violent jerking movements of her arms and legs. Her eyes are rolled back and her jaw is clenched tight. You can hear gurgling sounds from her airway with saliva visible at her mouth. Her lips appear bluish. The seizure activity continues as you approach. Her boyfriend is kneeling nearby, visibly distressed.",
       "appearance": "Active tonic-clonic seizure, whole body convulsing, cyanotic, eyes rolled back, jaw clenched, incontinent of urine, copious secretions",
       "clinical_note": "STATUS EPILEPTICUS - seizure >5 minutes is medical emergency. Patient is hypoxic (SpO2 88%) from inadequate ventilation during seizure. CRITICAL: Check glucose immediately - hypoglycemia (1.8 mmol/L) is the underlying CAUSE and is immediately reversible with glucose. Position patient on side, protect airway, suction secretions, prepare for benzodiazepine if seizure continues after glucose. High risk of brain damage if seizure continues >30 minutes total. Already 6-7 minutes into seizure per boyfriend.",
       "urgency_level": "critical"

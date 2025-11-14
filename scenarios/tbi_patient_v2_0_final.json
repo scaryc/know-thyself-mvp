@@ -26,7 +26,8 @@
     "sex": "Male",
     "location": "Residential home, found at bottom of stairs",
     "caller": "Wife",
-    "additional_info": "Fell down stairs, hit head, confused, bleeding from head"
+    "time_of_call": "14:26",
+    "additional_info": "Patient fell down full flight of stairs approximately 10 minutes ago, hit his head hard on floor. Wife reports visible bleeding from forehead. Patient is conscious but confused, keeps asking what happened. Wife states he was carrying laundry when he fell, appears to have missed a step. Patient is sitting at bottom of stairs."
   },
 
   "scene_description": {
@@ -56,7 +57,7 @@
 
   "state_descriptions": {
     "initial": {
-      "student_sees": "You arrive to find an elderly man sitting propped against the wall at the bottom of a staircase. There's a visible laceration on his right forehead, bleeding steadily and matting his gray hair. Blood has dripped onto his shirt. He's looking around confusedly, touching his head repeatedly. 'What... what happened?' he asks, seeming disoriented. His wife is kneeling beside him, holding a blood-soaked towel to his head. 'He was carrying laundry down the stairs and I heard a terrible crash,' she says, voice shaking. 'I think he missed a step and fell all the way down - it's 12 steps! He hit his head hard on the floor. That was maybe 10 minutes ago.' When you speak to him, he looks at you but seems confused. 'My head hurts,' he says slowly. 'I want to stand up.' He tries to move but winces. You notice his right pupil looks a bit larger and sluggish when you briefly shine a light.",
+      "student_sees": "You arrive to find an elderly man sitting propped against the wall at the bottom of a staircase. There's a visible laceration on his right forehead, actively bleeding and matting his gray hair with blood. His shirt has bloodstains on it. He's looking around confusedly and touching his head repeatedly. When you approach, he asks 'What... what happened?' in a slow, disoriented manner. His wife is kneeling beside him holding a blood-soaked towel to his head, visibly shaken.",
       "appearance": "Elderly male, confused, bleeding forehead laceration, sitting position, attempted self-movement, disoriented to events, right pupil slightly larger and sluggish",
       "clinical_note": "HIGH-RISK MECHANISM: Fall down full flight of stairs (approximately 12 steps) with direct head impact. Patient has altered mental status (GCS 13) and unequal pupils (right larger, sluggish) - concerning for intracranial bleeding. Vital signs show early hypertension (165/95) and relative bradycardia (HR 68 for injured patient). These could be early signs of rising ICP or just baseline vitals - need to TREND. IMMEDIATE C-SPINE PRECAUTIONS required given mechanism. Must perform and document serial GCS assessments to detect deterioration. This patient is at high risk for epidural or subdural hematoma.",
       "urgency_level": "critical"

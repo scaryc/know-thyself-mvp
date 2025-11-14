@@ -24,7 +24,8 @@
     "sex": "Female",
     "location": "Residential apartment, 3rd floor",
     "caller": "Roommate",
-    "additional_info": "Getting worse, very short of breath"
+    "time_of_call": "14:32",
+    "additional_info": "Patient having severe trouble breathing for past hour. Roommate reports she's getting worse, very short of breath, can barely talk. Patient has asthma history. Roommate states she's pale and sweaty, using inhaler repeatedly but not helping."
   },
 
   "scene_description": {
@@ -53,7 +54,7 @@
 
   "state_descriptions": {
     "initial": {
-      "student_sees": "You arrive to find a 28-year-old female sitting in a tripod position, leaning forward with hands on knees. She's in obvious severe respiratory distress - you can hear audible wheezing from across the room. She's pale, sweaty, and using her neck and shoulder muscles to breathe. When she tries to speak, she can only manage one or two words at a time before gasping for air. Her roommate looks very worried.",
+      "student_sees": "You arrive to find a young woman sitting hunched forward with her hands on her knees, in obvious severe respiratory distress. You can hear loud wheezing from across the room. She's pale and sweating heavily. Her breathing is rapid and labored - she's using her neck and shoulder muscles with each breath. When she tries to speak, she can only manage one or two words before gasping for air.",
       "appearance": "Patient in tripod position, severe respiratory distress, speaking in words only, using accessory muscles, pale and sweaty",
       "clinical_note": "Severe respiratory distress with critical hypoxia (SpO2 88%). Requires immediate oxygen and systematic ABCDE assessment to identify cause. Consider bronchodilators if assessment suggests bronchospasm.",
       "urgency_level": "high"
