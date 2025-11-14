@@ -2893,18 +2893,18 @@ app.post('/api/sessions/:id/begin-scenario', async (req, res) => {
     // Get initial context
     const initialContext = session.engine.getRuntimeContext();
 
-    // Extract dispatch and patient info
+    // Extract dispatch and patient info from runtime context (always fresh)
     const dispatchInfo = {
-      location: scenarioData.dispatch_info.location,
-      chiefComplaint: scenarioData.dispatch_info.call_type,
-      callerInfo: `${scenarioData.dispatch_info.caller} reports: ${scenarioData.dispatch_info.additional_info}`,
-      timeOfCall: "14:32"
+      location: initialContext.dispatch_info.location,
+      chiefComplaint: initialContext.dispatch_info.call_type,
+      callerInfo: `${initialContext.dispatch_info.caller} reports: ${initialContext.dispatch_info.additional_info}`,
+      timeOfCall: initialContext.dispatch_info.time_of_call || "14:32"
     };
 
     const patientInfo = {
-      name: scenarioData.patient_profile.name,
-      age: scenarioData.patient_profile.age,
-      gender: scenarioData.dispatch_info.sex
+      name: initialContext.patient_profile.name,
+      age: initialContext.patient_profile.age,
+      gender: initialContext.dispatch_info.sex
     };
 
     // Store in session
