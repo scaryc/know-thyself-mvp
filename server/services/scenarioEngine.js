@@ -46,6 +46,9 @@ class ScenarioEngine {
         personality: this.blueprint.patient_profile.personality
       },
 
+      // Dispatch info - always fresh from blueprint
+      dispatch_info: this.blueprint.dispatch_info,
+
       // Current scene
       current_scene: {
         location: this.blueprint.scene_description,
