@@ -165,9 +165,15 @@ function App() {
     // Layer 3: Store sessionId in localStorage for session resume (Feature 2)
     localStorage.setItem('kt_sessionId', response.sessionId);
     console.log('💾 Session ID stored in localStorage for resume capability');
-    
+
     // ✅ NEW: Set current agent from response
     setCurrentAgent(response.currentAgent || 'cognitive_coach');
+
+    // ✅ NEW: Store initial Cognitive Coach message if provided
+    if (response.initialMessage) {
+      sessionStorage.setItem('cognitiveCoachInitialMessage', response.initialMessage);
+      console.log('💾 Stored initial Cognitive Coach message for first scenario');
+    }
     
     // ✅ FIXED: Only set scenario data if it exists in response (NOT during Cognitive Coach)
     if (response.dispatchInfo) {
@@ -218,6 +224,12 @@ function App() {
         setCurrentVitals(null);
         setPatientNotes([]);
         sessionStorage.removeItem('initialScene');
+
+        // ✅ NEW: Store initial Cognitive Coach message if provided
+        if (response.initialMessage) {
+          sessionStorage.setItem('cognitiveCoachInitialMessage', response.initialMessage);
+          console.log('💾 Stored initial Cognitive Coach message');
+        }
 
         console.log('🧠 Returned to Cognitive Coach for next scenario');
 
