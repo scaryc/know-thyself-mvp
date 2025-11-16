@@ -3430,10 +3430,15 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`🚀 Know Thyself MVP Server running on http://localhost:${PORT}`);
   console.log(`📋 Available endpoints:`);
+  console.log(`   POST   /api/student/register`);
   console.log(`   POST   /api/sessions/start`);
+  console.log(`   GET    /api/sessions/:id/check`);
   console.log(`   POST   /api/sessions/:id/message`);
   console.log(`   POST   /api/sessions/:id/action`);
+  console.log(`   POST   /api/sessions/:id/begin-scenario`);
+  console.log(`   POST   /api/sessions/:id/complete`);
   console.log(`   GET    /api/sessions/:id/vitals`);
+  console.log(`   GET    /api/sessions/:id/state`);
   console.log(`   GET    /api/sessions/:id/performance`);
   console.log(`   POST   /api/sessions/:id/aar/start`);
   console.log(`   POST   /api/sessions/:id/aar/message`);

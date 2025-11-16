@@ -4,7 +4,7 @@ interface SessionCompleteProps {
 
 function SessionComplete({ onStartNewSession }: SessionCompleteProps) {
   return (
-    <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
+    <div className="flex items-center justify-center h-[calc(100vh-6rem)]">
       <div className="text-center max-w-2xl p-8 bg-bg-secondary rounded-lg border border-border">
         <div className="text-6xl mb-4">🎉</div>
         <h2 className="text-3xl font-bold mb-4">

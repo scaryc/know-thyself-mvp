@@ -35,13 +35,13 @@ function App() {
   // ✅ NEW: Track if we should show the AAR Review button
   const [showAARButton, setShowAARButton] = useState(false);
 
-  // ✅ DEBUG: Log when dispatchInfo or patientInfo changes
-  useEffect(() => {
-    console.log('🔄 App.tsx state updated - dispatchInfo:', dispatchInfo);
-    console.log('🔄 App.tsx state updated - patientInfo:', patientInfo);
-    console.log('🔄 App.tsx state updated - currentAgent:', currentAgent);
-    console.log('🔄 App.tsx state updated - isActive:', isActive);
-  }, [dispatchInfo, patientInfo, currentAgent, isActive]);
+  // ✅ DEBUG: Log when dispatchInfo or patientInfo changes (disabled - working correctly)
+  // useEffect(() => {
+  //   console.log('🔄 App.tsx state updated - dispatchInfo:', JSON.stringify(dispatchInfo, null, 2));
+  //   console.log('🔄 App.tsx state updated - patientInfo:', JSON.stringify(patientInfo, null, 2));
+  //   console.log('🔄 App.tsx state updated - currentAgent:', currentAgent);
+  //   console.log('🔄 App.tsx state updated - isActive:', isActive);
+  // }, [dispatchInfo, patientInfo, currentAgent, isActive]);
 
   // Layer 3: Check for existing registration and session on mount (Feature 2 - Session Resume)
   useEffect(() => {
@@ -379,7 +379,7 @@ function App() {
       {sessionComplete ? (
         <SessionComplete onStartNewSession={handleResetSession} />
       ) : !sessionId ? (
-        <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
+        <div className="flex items-center justify-center h-[calc(100vh-6rem)]">
           <div className="text-center">
             <h2 className="text-3xl font-bold mb-4">Emergency Medical Training</h2>
             <p className="text-gray-400 mb-8 max-w-lg mx-auto">

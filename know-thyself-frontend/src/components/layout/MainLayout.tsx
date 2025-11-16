@@ -38,7 +38,7 @@ function MainLayout({
   // ✅ NEW: During Cognitive Coach, show only the chat panel (full width)
   if (currentAgent === 'cognitive_coach') {
     return (
-      <main className="h-[calc(100vh-4rem)]">
+      <main className="h-[calc(100vh-6rem)]">
         <div className="h-full flex items-center justify-center bg-bg-primary">
           <div className="w-full max-w-4xl h-full">
             <ConversationPanel
@@ -62,7 +62,7 @@ function MainLayout({
 
   // ✅ FIXED: 2-column layout - Chat left, Vitals+Notes stacked right
   return (
-    <main className="h-[calc(100vh-4rem)]">
+    <main className="h-[calc(100vh-6rem)]">
       <div className="h-full grid grid-cols-12 gap-4 p-4">
         {/* Left Panel - Conversation (wider) */}
         <div className="col-span-8 bg-bg-secondary rounded-lg overflow-hidden">
