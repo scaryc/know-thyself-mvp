@@ -2880,6 +2880,9 @@ app.post('/api/sessions/:id/begin-scenario', async (req, res) => {
     }
 
     console.log('🚀 User clicked "Begin Scenario" - loading scenario now');
+    console.log('📍 Current scenario index:', session.currentScenarioIndex);
+    console.log('📍 Scenario queue:', session.scenarioQueue);
+    console.log('📍 Session scenarioId:', session.scenarioId);
 
     // Transition to Core Agent
     session.currentAgent = 'core';
@@ -2933,6 +2936,9 @@ app.post('/api/sessions/:id/begin-scenario', async (req, res) => {
     // Get initial context
     const initialContext = session.engine.getRuntimeContext();
 
+    console.log('🔍 Runtime context dispatch_info:', JSON.stringify(initialContext.dispatch_info, null, 2));
+    console.log('🔍 Runtime context patient_profile:', JSON.stringify(initialContext.patient_profile, null, 2));
+
     // Extract dispatch and patient info from runtime context (always fresh)
     const dispatchInfo = {
       location: initialContext.dispatch_info.location,
@@ -2950,6 +2956,9 @@ app.post('/api/sessions/:id/begin-scenario', async (req, res) => {
     // Store in session
     session.dispatchInfo = dispatchInfo;
     session.patientInfo = patientInfo;
+
+    console.log('✅ Created dispatchInfo:', JSON.stringify(dispatchInfo, null, 2));
+    console.log('✅ Created patientInfo:', JSON.stringify(patientInfo, null, 2));
 
     // Get initial scene description
     const initialSceneDescription = scenarioData.state_descriptions.initial.student_sees;

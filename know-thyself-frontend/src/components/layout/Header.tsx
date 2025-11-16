@@ -39,17 +39,17 @@ function Header({
 }: HeaderProps) {
   const [elapsedTime, setElapsedTime] = useState(0);
 
-  // ✅ DEBUG: Log props to see what Header receives (disabled - working correctly)
-  // useEffect(() => {
-  //   console.log('🔍 Header props:', {
-  //     currentAgent,
-  //     isActive,
-  //     hasDispatchInfo: !!dispatchInfo,
-  //     hasPatientInfo: !!patientInfo,
-  //     dispatchInfo: JSON.stringify(dispatchInfo, null, 2),
-  //     patientInfo: JSON.stringify(patientInfo, null, 2)
-  //   });
-  // }, [currentAgent, isActive, dispatchInfo, patientInfo]);
+  // ✅ DEBUG: Log props to see what Header receives
+  useEffect(() => {
+    console.log('🔍 Header props:', {
+      currentAgent,
+      isActive,
+      hasDispatchInfo: !!dispatchInfo,
+      hasPatientInfo: !!patientInfo,
+      dispatchInfo: JSON.stringify(dispatchInfo, null, 2),
+      patientInfo: JSON.stringify(patientInfo, null, 2)
+    });
+  }, [currentAgent, isActive, dispatchInfo, patientInfo]);
 
   // Timer logic - runs inside Header (only when in Core Agent mode)
   useEffect(() => {

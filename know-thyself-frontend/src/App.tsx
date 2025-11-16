@@ -320,6 +320,8 @@ function App() {
     if (!sessionId) return;
 
     console.log('🚀 User clicked Begin Scenario - calling backend...');
+    console.log('📍 Current scenario index:', currentScenarioIndex);
+    console.log('📍 Scenario queue:', scenarioQueue);
 
     try {
       // Clear cognitive coach message from storage before transitioning
@@ -328,8 +330,19 @@ function App() {
       const response = await api.beginScenario(sessionId);
 
       console.log('✅ Full API Response:', JSON.stringify(response, null, 2));
-      console.log('📊 Dispatch Info from response:', response.dispatchInfo);
-      console.log('👤 Patient Info from response:', response.patientInfo);
+
+      // Validate response has required data
+      if (!response.dispatchInfo) {
+        console.error('❌ CRITICAL: Response missing dispatchInfo!');
+        console.error('Response keys:', Object.keys(response));
+      }
+      if (!response.patientInfo) {
+        console.error('❌ CRITICAL: Response missing patientInfo!');
+        console.error('Response keys:', Object.keys(response));
+      }
+
+      console.log('📊 Dispatch Info from response:', JSON.stringify(response.dispatchInfo, null, 2));
+      console.log('👤 Patient Info from response:', JSON.stringify(response.patientInfo, null, 2));
 
       // Update all state
       console.log('🔧 Setting currentAgent to core');
@@ -354,14 +367,12 @@ function App() {
       }
 
       console.log('🎬 Transition complete - now in Core Agent mode');
-
-      // ✅ NEW: Log state after setting (will show on next render)
-      setTimeout(() => {
-        console.log('📸 State after transition (dispatch):', dispatchInfo);
-        console.log('📸 State after transition (patient):', patientInfo);
-      }, 100);
     } catch (error) {
       console.error('❌ Error beginning scenario:', error);
+      if (error instanceof Error) {
+        console.error('Error details:', error.message);
+        console.error('Stack:', error.stack);
+      }
     }
   };
 
