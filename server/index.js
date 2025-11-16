@@ -2750,7 +2750,13 @@ for (const block of firstResponse.content) {
   } else if (block.type === 'tool_use' && block.name === 'reveal_patient_info') {
   needsSecondCall = true;
   console.log('📋 Note added:', block.input);
-  
+
+  // Ensure patientNotes array is initialized
+  if (!session.patientNotes) {
+    session.patientNotes = [];
+    console.log('⚠️ patientNotes was not initialized, creating new array');
+  }
+
   session.patientNotes.push(block.input.note);
   infoUpdated = true;
   
@@ -2848,7 +2854,7 @@ res.json({
   vitalsUpdated: vitalsUpdated,
   vitals: formattedVitals,
   infoUpdated: infoUpdated,
-  patientNotes: session.patientNotes,
+  patientNotes: session.patientNotes || [],  // ✅ Ensure we always send an array
   currentAgent: 'core',  // ✅ NEW: Include current agent
   isChallenge: session.activeChallenge && !session.activeChallenge.evaluation ? true : false,  // ✅ NEW: Challenge active?
   challengeResolved: session.activeChallenge && session.activeChallenge.evaluation ? true : false  // ✅ NEW: Challenge resolved?
