@@ -224,6 +224,7 @@ function App() {
         setCurrentVitals(null);
         setPatientNotes([]);
         sessionStorage.removeItem('initialScene');
+        sessionStorage.removeItem('cognitiveCoachInitialMessage'); // Clear old CC message
 
         // ✅ NEW: Store initial Cognitive Coach message if provided
         if (response.initialMessage) {
@@ -321,6 +322,9 @@ function App() {
     console.log('🚀 User clicked Begin Scenario - calling backend...');
 
     try {
+      // Clear cognitive coach message from storage before transitioning
+      sessionStorage.removeItem('cognitiveCoachInitialMessage');
+
       const response = await api.beginScenario(sessionId);
 
       console.log('✅ Full API Response:', JSON.stringify(response, null, 2));
