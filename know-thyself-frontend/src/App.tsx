@@ -211,21 +211,20 @@ function App() {
       console.log('✅ Next scenario response:', JSON.stringify(response, null, 2));
 
       if (response.hasNextScenario) {
-        // There's another scenario - transition to Cognitive Coach
-        console.log(`🔄 Moving to scenario ${response.currentScenarioIndex + 1} of ${response.totalScenarios}`);
+        // There's another scenario - load it immediately (NO cognitive coach between scenarios)
+        console.log(`🔄 Moving directly to scenario ${response.currentScenarioIndex + 1} of ${response.totalScenarios}`);
 
-        // Clear old cognitive coach message FIRST
-        console.log('🗑️ Removing old cognitive coach message from sessionStorage');
-        sessionStorage.removeItem('cognitiveCoachInitialMessage');
-        sessionStorage.removeItem('initialScene');
-
-        // Store NEW cognitive coach message before state updates
-        if (response.initialMessage) {
-          console.log('💾 Storing NEW cognitive coach message:', response.initialMessage.substring(0, 100) + '...');
-          sessionStorage.setItem('cognitiveCoachInitialMessage', response.initialMessage);
-        } else {
-          console.error('❌ CRITICAL: No initialMessage in response!');
+        // Validate response has required data
+        if (!response.dispatchInfo) {
+          console.error('❌ CRITICAL: Response missing dispatchInfo!');
         }
+        if (!response.patientInfo) {
+          console.error('❌ CRITICAL: Response missing patientInfo!');
+        }
+
+        // Clear old scenario data from sessionStorage
+        console.log('🗑️ Clearing old scenario data from sessionStorage');
+        sessionStorage.removeItem('initialScene');
 
         // Update frontend state
         const currentScenario = scenarioQueue[currentScenarioIndex];
@@ -234,21 +233,34 @@ function App() {
         console.log('🔧 Setting currentScenarioIndex from', currentScenarioIndex, 'to', response.currentScenarioIndex);
         setCurrentScenarioIndex(response.currentScenarioIndex);
 
-        // Transition back to Cognitive Coach
-        console.log('🔧 Setting currentAgent to cognitive_coach');
-        setCurrentAgent('cognitive_coach');
+        // Stay in Core Agent mode (cognitive coach only runs once at the start)
+        console.log('🔧 Setting currentAgent to core (staying in scenario mode)');
+        setCurrentAgent('core');
         setIsActive(true);
 
-        // Clear scenario-specific UI
-        setDispatchInfo(null);
-        setPatientInfo(null);
+        // Update dispatch and patient info for new scenario
+        console.log('📊 Updating dispatch info:', response.dispatchInfo);
+        setDispatchInfo(response.dispatchInfo);
+
+        console.log('👤 Updating patient info:', response.patientInfo);
+        setPatientInfo(response.patientInfo);
+
+        // Reset scenario-specific state
         setCurrentVitals(null);
         setPatientNotes([]);
+        setScenarioStartTime(Date.now()); // Reset timer for new scenario
 
-        console.log('🧠 Returned to Cognitive Coach for next scenario');
+        // Store initial scene for new scenario
+        if (response.initialSceneDescription) {
+          sessionStorage.setItem('initialScene', response.initialSceneDescription);
+        }
+
+        console.log('✅ Transitioned directly to next scenario');
         console.log('📍 New state:', {
           newScenarioIndex: response.currentScenarioIndex,
-          hasInitialMessage: !!response.initialMessage
+          scenarioName: response.nextScenarioName,
+          hasDispatchInfo: !!response.dispatchInfo,
+          hasPatientInfo: !!response.patientInfo
         });
 
       } else {
