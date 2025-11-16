@@ -41,6 +41,7 @@ function ConversationPanel({
   const [showBeginButton, setShowBeginButton] = useState(false); // ✅ NEW: Show transition button
   const initialSceneAddedRef = useRef(false); // ✅ NEW: Track if initial scene added
   const cognitiveCoachInitialAddedRef = useRef(false); // ✅ NEW: Track if cognitive coach initial message added
+  const aarIntroAddedRef = useRef(false); // ✅ NEW: Track if AAR intro added
 
   // ✅ NEW: Add initial Cognitive Coach message when component mounts in cognitive_coach mode
   useEffect(() => {
@@ -83,6 +84,26 @@ function ConversationPanel({
       initialSceneAddedRef.current = false;
     }
   }, [currentAgent, messages.length]);
+
+  // ✅ NEW: Add AAR introduction message when entering AAR mode
+  useEffect(() => {
+    if (isAARMode && messages.length === 0 && !aarIntroAddedRef.current) {
+      const aarIntroduction = sessionStorage.getItem('aarIntroduction');
+      if (aarIntroduction) {
+        console.log('📊 Adding AAR introduction to chat');
+        setMessages([{
+          role: 'assistant',
+          content: aarIntroduction,
+          timestamp: Date.now()
+        }]);
+        aarIntroAddedRef.current = true;
+      }
+    }
+    // Reset flag when switching away from AAR mode
+    if (!isAARMode) {
+      aarIntroAddedRef.current = false;
+    }
+  }, [isAARMode, messages.length]);
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
@@ -185,6 +206,19 @@ function ConversationPanel({
           </div>
         </div>
       )}
+
+      {/* ✅ NEW: AAR mode header */}
+      {isAARMode && (
+        <div className="bg-green-900 border-b border-green-700 px-6 py-3">
+          <div className="flex items-center space-x-2">
+            <span className="text-2xl">📊</span>
+            <div>
+              <div className="font-semibold text-white">After Action Review</div>
+              <div className="text-xs text-green-300">Reflecting on your performance</div>
+            </div>
+          </div>
+        </div>
+      )}
       
       <div className="flex-1 overflow-y-auto p-6 space-y-4 relative">
         {messages.map((msg, idx) => (
@@ -263,8 +297,10 @@ function ConversationPanel({
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
             placeholder={
-              currentAgent === 'cognitive_coach' 
-                ? "Share your thinking..." 
+              currentAgent === 'cognitive_coach'
+                ? "Share your thinking..."
+                : isAARMode
+                ? "Reflect on your performance..."
                 : "Type your message or question..."
             }
             disabled={isLoading}
