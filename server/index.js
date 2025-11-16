@@ -358,7 +358,8 @@ app.get('/api/sessions/:sessionId/check', (req, res) => {
       studentName: session.studentName,
       group: session.group,
       dispatchInfo: session.dispatchInfo || null,
-      patientInfo: session.patientInfo || null
+      patientInfo: session.patientInfo || null,
+      patientNotes: session.patientNotes || []  // ✅ Include patientNotes for session resume
     });
 
   } catch (error) {

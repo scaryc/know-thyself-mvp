@@ -99,6 +99,12 @@ function App() {
               } catch (error) {
                 console.warn('Could not fetch vitals:', error);
               }
+
+              // ✅ Restore patient notes from session
+              if (response.patientNotes && response.patientNotes.length > 0) {
+                console.log('📋 Restoring patient notes:', response.patientNotes);
+                setPatientNotes(response.patientNotes);
+              }
             }
 
           } else if (response.complete) {
