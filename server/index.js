@@ -2975,6 +2975,90 @@ app.post('/api/sessions/:id/complete', (req, res) => {
 });
 
 /**
+ * POST /api/sessions/:id/next-scenario
+ * Complete current scenario and prepare for next one (within same session)
+ */
+app.post('/api/sessions/:id/next-scenario', (req, res) => {
+  try {
+    const sessionId = req.params.id;
+    const session = sessions.get(sessionId);
+
+    if (!session) {
+      return res.status(404).json({ error: 'Session not found' });
+    }
+
+    // Mark current scenario as completed
+    const currentScenario = session.scenarioQueue[session.currentScenarioIndex];
+    if (currentScenario && !session.completedScenarios.includes(currentScenario)) {
+      session.completedScenarios.push(currentScenario);
+    }
+
+    console.log(`✅ Scenario ${session.currentScenarioIndex + 1} completed: ${currentScenario}`);
+
+    // Check if there are more scenarios
+    if (session.currentScenarioIndex < session.scenarioQueue.length - 1) {
+      // Move to next scenario
+      session.currentScenarioIndex += 1;
+      const nextScenario = session.scenarioQueue[session.currentScenarioIndex];
+
+      console.log(`🔄 Loading scenario ${session.currentScenarioIndex + 1} of ${session.scenarioQueue.length}: ${nextScenario}`);
+
+      // Update session for new scenario
+      session.scenarioId = nextScenario;
+      session.currentAgent = 'cognitive_coach';
+      session.readyToTransition = false;
+
+      // Clear previous scenario data
+      session.dispatchInfo = null;
+      session.patientInfo = null;
+      session.scenario = null;
+      session.engine = null;
+      session.measuredVitals = {};
+      session.patientNotes = [];
+      session.messages = []; // Clear chat history
+
+      // Reset Cognitive Coach for new scenario
+      const selectedQuestions = cognitiveCoachService.selectRandomQuestions(3);
+      session.cognitiveCoach = {
+        selectedQuestions: selectedQuestions.map(q => q.questionID),
+        currentQuestionIndex: 0,
+        responses: [],
+        startTime: Date.now(),
+        completed: false
+      };
+
+      console.log('🧠 Reset to Cognitive Coach for next scenario');
+      console.log('Selected questions:', selectedQuestions.map(q => q.questionID));
+
+      res.json({
+        success: true,
+        hasNextScenario: true,
+        currentAgent: 'cognitive_coach',
+        currentScenarioIndex: session.currentScenarioIndex,
+        totalScenarios: session.scenarioQueue.length,
+        nextScenarioName: nextScenario,
+        questionCount: selectedQuestions.length
+      });
+
+    } else {
+      // All scenarios completed
+      console.log('🎉 All scenarios completed! Ready for AAR');
+
+      res.json({
+        success: true,
+        hasNextScenario: false,
+        allScenariosComplete: true,
+        totalCompleted: session.completedScenarios.length
+      });
+    }
+
+  } catch (error) {
+    console.error('Error moving to next scenario:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
  * POST /api/sessions/:sessionId/action
  * Process student action (treatment, assessment, etc)
  */
@@ -3436,6 +3520,7 @@ app.listen(PORT, () => {
   console.log(`   POST   /api/sessions/:id/message`);
   console.log(`   POST   /api/sessions/:id/action`);
   console.log(`   POST   /api/sessions/:id/begin-scenario`);
+  console.log(`   POST   /api/sessions/:id/next-scenario`);
   console.log(`   POST   /api/sessions/:id/complete`);
   console.log(`   GET    /api/sessions/:id/vitals`);
   console.log(`   GET    /api/sessions/:id/state`);
