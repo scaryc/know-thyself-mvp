@@ -262,7 +262,12 @@ function ConversationPanel({
               <h3 className="text-2xl font-bold mb-2">Ready to Begin</h3>
               <p className="text-gray-400 mb-6">Click the button below to start your scenario training</p>
               <button
-                onClick={onBeginScenario}
+                onClick={() => {
+                  setShowBeginButton(false); // Hide button immediately
+                  if (onBeginScenario) {
+                    onBeginScenario();
+                  }
+                }}
                 className="px-8 py-4 bg-accent hover:bg-blue-600 text-white text-lg font-semibold rounded-lg transition-all transform hover:scale-105 shadow-lg"
               >
                 Begin Scenario

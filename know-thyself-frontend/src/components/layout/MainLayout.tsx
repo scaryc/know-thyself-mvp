@@ -42,7 +42,7 @@ function MainLayout({
         <div className="h-full flex items-center justify-center bg-bg-primary">
           <div className="w-full max-w-4xl h-full">
             <ConversationPanel
-              key={isAARMode ? `aar-mode` : `cognitive-coach`}
+              key={isAARMode ? `aar-mode` : `cognitive-coach-${currentScenarioIndex}`}
               sessionId={sessionId}
               onVitalsUpdate={onVitalsUpdate}
               onNotesUpdate={onNotesUpdate}
