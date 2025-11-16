@@ -480,16 +480,55 @@ app.post('/api/sessions/start', async (req, res) => {
         console.error('Error updating student file:', error);
       }
     }
-    
+
     console.log('✅ Session created (Cognitive Coach mode):', sessionId);
-    
-    // Return MINIMAL response (no scenario data yet)
-    res.json({
-      sessionId,
-      currentAgent: 'cognitive_coach',
-      questionCount: selectedQuestions.length
-      // NO scenario, NO vitals, NO dispatch info, NO scene description
-    });
+
+    // ✅ NEW: Generate initial Cognitive Coach greeting
+    try {
+      console.log('🎓 Generating initial Cognitive Coach message...');
+
+      // Build Cognitive Coach prompt with current session context
+      const systemPrompt = cognitiveCoachPromptBuilder.buildCognitiveCoachPrompt(session);
+
+      // Call Claude API to get initial greeting
+      const response = await anthropic.messages.create({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 4096,
+        system: systemPrompt,
+        messages: [
+          {
+            role: 'user',
+            content: 'Hello, I\'m ready to begin the cognitive warm-up.'
+          }
+        ]
+      });
+
+      const initialMessage = response.content[0].text;
+      console.log('✅ Initial message generated:', initialMessage.substring(0, 100) + '...');
+
+      // Add to session messages
+      session.messages.push(
+        { role: 'user', content: 'Hello, I\'m ready to begin the cognitive warm-up.', timestamp: Date.now() },
+        { role: 'assistant', content: initialMessage, timestamp: Date.now() }
+      );
+
+      // Return response with initial message
+      res.json({
+        sessionId,
+        currentAgent: 'cognitive_coach',
+        questionCount: selectedQuestions.length,
+        initialMessage: initialMessage // ✅ NEW: Include initial message for frontend
+      });
+
+    } catch (error) {
+      console.error('❌ Error generating initial Cognitive Coach message:', error);
+      // Fallback: return without initial message
+      res.json({
+        sessionId,
+        currentAgent: 'cognitive_coach',
+        questionCount: selectedQuestions.length
+      });
+    }
     
   } catch (error) {
     console.error('Error starting session:', error);
@@ -2893,18 +2932,18 @@ app.post('/api/sessions/:id/begin-scenario', async (req, res) => {
     // Get initial context
     const initialContext = session.engine.getRuntimeContext();
 
-    // Extract dispatch and patient info
+    // Extract dispatch and patient info from runtime context (always fresh)
     const dispatchInfo = {
-      location: scenarioData.dispatch_info.location,
-      chiefComplaint: scenarioData.dispatch_info.call_type,
-      callerInfo: `${scenarioData.dispatch_info.caller} reports: ${scenarioData.dispatch_info.additional_info}`,
-      timeOfCall: "14:32"
+      location: initialContext.dispatch_info.location,
+      chiefComplaint: initialContext.dispatch_info.call_type,
+      callerInfo: `${initialContext.dispatch_info.caller} reports: ${initialContext.dispatch_info.additional_info}`,
+      timeOfCall: initialContext.dispatch_info.time_of_call || "14:32"
     };
 
     const patientInfo = {
-      name: scenarioData.patient_profile.name,
-      age: scenarioData.patient_profile.age,
-      gender: scenarioData.dispatch_info.sex
+      name: initialContext.patient_profile.name,
+      age: initialContext.patient_profile.age,
+      gender: initialContext.dispatch_info.sex
     };
 
     // Store in session
@@ -2970,6 +3009,135 @@ app.post('/api/sessions/:id/complete', (req, res) => {
     });
   } catch (error) {
     console.error('Error completing scenario:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * POST /api/sessions/:id/next-scenario
+ * Complete current scenario and prepare for next one (within same session)
+ */
+app.post('/api/sessions/:id/next-scenario', async (req, res) => {
+  try {
+    const sessionId = req.params.id;
+    const session = sessions.get(sessionId);
+
+    if (!session) {
+      return res.status(404).json({ error: 'Session not found' });
+    }
+
+    // Mark current scenario as completed
+    const currentScenario = session.scenarioQueue[session.currentScenarioIndex];
+    if (currentScenario && !session.completedScenarios.includes(currentScenario)) {
+      session.completedScenarios.push(currentScenario);
+    }
+
+    console.log(`✅ Scenario ${session.currentScenarioIndex + 1} completed: ${currentScenario}`);
+
+    // Check if there are more scenarios
+    if (session.currentScenarioIndex < session.scenarioQueue.length - 1) {
+      // Move to next scenario
+      session.currentScenarioIndex += 1;
+      const nextScenario = session.scenarioQueue[session.currentScenarioIndex];
+
+      console.log(`🔄 Loading scenario ${session.currentScenarioIndex + 1} of ${session.scenarioQueue.length}: ${nextScenario}`);
+
+      // Update session for new scenario
+      session.scenarioId = nextScenario;
+      session.currentAgent = 'cognitive_coach';
+      session.readyToTransition = false;
+
+      // Clear previous scenario data
+      session.dispatchInfo = null;
+      session.patientInfo = null;
+      session.scenario = null;
+      session.engine = null;
+      session.measuredVitals = {};
+      session.patientNotes = [];
+      session.messages = []; // Clear chat history
+
+      // Reset Cognitive Coach for new scenario
+      const selectedQuestions = cognitiveCoachService.selectRandomQuestions(3);
+      session.cognitiveCoach = {
+        selectedQuestions: selectedQuestions.map(q => q.questionID),
+        currentQuestionIndex: 0,
+        responses: [],
+        startTime: Date.now(),
+        completed: false
+      };
+
+      console.log('🧠 Reset to Cognitive Coach for next scenario');
+      console.log('Selected questions:', selectedQuestions.map(q => q.questionID));
+
+      // ✅ NEW: Get initial Cognitive Coach greeting
+      try {
+        console.log('🎓 Generating initial Cognitive Coach message...');
+
+        // Build Cognitive Coach prompt with current session context
+        const systemPrompt = cognitiveCoachPromptBuilder.buildCognitiveCoachPrompt(session);
+
+        // Call Claude API to get initial greeting
+        const response = await anthropic.messages.create({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 4096,
+          system: systemPrompt,
+          messages: [
+            {
+              role: 'user',
+              content: 'Hello, I\'m ready to begin the cognitive warm-up for the next scenario.'
+            }
+          ]
+        });
+
+        const initialMessage = response.content[0].text;
+        console.log('✅ Initial message generated:', initialMessage.substring(0, 100) + '...');
+
+        // Add to session messages
+        session.messages.push(
+          { role: 'user', content: 'Hello, I\'m ready to begin the cognitive warm-up for the next scenario.', timestamp: Date.now() },
+          { role: 'assistant', content: initialMessage, timestamp: Date.now() }
+        );
+
+        // Return response with initial message
+        res.json({
+          success: true,
+          hasNextScenario: true,
+          currentAgent: 'cognitive_coach',
+          currentScenarioIndex: session.currentScenarioIndex,
+          totalScenarios: session.scenarioQueue.length,
+          nextScenarioName: nextScenario,
+          questionCount: selectedQuestions.length,
+          initialMessage: initialMessage // ✅ NEW: Include initial message for frontend
+        });
+
+      } catch (error) {
+        console.error('❌ Error generating initial Cognitive Coach message:', error);
+        // Fallback: return without initial message
+        res.json({
+          success: true,
+          hasNextScenario: true,
+          currentAgent: 'cognitive_coach',
+          currentScenarioIndex: session.currentScenarioIndex,
+          totalScenarios: session.scenarioQueue.length,
+          nextScenarioName: nextScenario,
+          questionCount: selectedQuestions.length
+        });
+      }
+
+    } else {
+      // All scenarios completed
+      console.log('🎉 All scenarios completed! Ready for AAR');
+
+      res.json({
+        success: true,
+        hasNextScenario: false,
+        allScenariosComplete: true,
+        totalCompleted: session.completedScenarios.length
+      });
+    }
+
+  } catch (error) {
+    console.error('Error moving to next scenario:', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -3430,10 +3598,16 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`🚀 Know Thyself MVP Server running on http://localhost:${PORT}`);
   console.log(`📋 Available endpoints:`);
+  console.log(`   POST   /api/student/register`);
   console.log(`   POST   /api/sessions/start`);
+  console.log(`   GET    /api/sessions/:id/check`);
   console.log(`   POST   /api/sessions/:id/message`);
   console.log(`   POST   /api/sessions/:id/action`);
+  console.log(`   POST   /api/sessions/:id/begin-scenario`);
+  console.log(`   POST   /api/sessions/:id/next-scenario`);
+  console.log(`   POST   /api/sessions/:id/complete`);
   console.log(`   GET    /api/sessions/:id/vitals`);
+  console.log(`   GET    /api/sessions/:id/state`);
   console.log(`   GET    /api/sessions/:id/performance`);
   console.log(`   POST   /api/sessions/:id/aar/start`);
   console.log(`   POST   /api/sessions/:id/aar/message`);

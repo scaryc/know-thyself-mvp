@@ -26,7 +26,8 @@
     "sex": "Male",
     "location": "Residential home, ground floor",
     "caller": "Wife",
-    "additional_info": "Severe chest pain for 25 minutes, sweating heavily, pain won't go away"
+    "time_of_call": "14:28",
+    "additional_info": "Patient complaining of severe crushing chest pain for approximately 25 minutes. Wife reports he's sweating profusely, looks very pale and unwell. Pain started while watching TV, he thought it was indigestion but it's not improving. Patient appears distressed and frightened."
   },
 
   "scene_description": {
@@ -56,7 +57,7 @@
 
   "state_descriptions": {
     "initial": {
-      "student_sees": "You arrive to find a 58-year-old male sitting forward in an armchair, clutching his chest with his right hand. He's visibly pale, with sweat beading on his forehead and upper lip. His shirt is soaked with perspiration. He grimaces with pain as you enter. 'It feels like an elephant sitting on my chest,' he says, his voice strained. 'The pain goes down my left arm... to my jaw. I've never felt anything like this.' His wife hovers nearby, wringing her hands. 'It started about 25 minutes ago while he was watching TV. He said it was just indigestion, but it's not getting better.'",
+      "student_sees": "You arrive to find a middle-aged man sitting forward in an armchair, clutching the center of his chest with his right hand. He's visibly pale with sweat beading on his forehead and soaking through his shirt. He grimaces continuously and his breathing appears labored. When you enter, he looks at you with obvious fear in his eyes. His wife is standing nearby, wringing her hands anxiously.",
       "appearance": "Pale, diaphoretic, anxious, sitting forward, clutching chest, grimacing with pain, left arm pain evident",
       "clinical_note": "Classic STEMI presentation: crushing substernal chest pain >20 minutes, radiation to left arm and jaw, diaphoresis, no relief with rest. High suspicion for anterior MI given severe presentation. Requires IMMEDIATE 12-lead ECG within 4 minutes, aspirin immediately, and STEMI network activation. This is time-critical - every minute delays definitive treatment. SpO2 96% means DO NOT give oxygen per ERC 2021 guidelines.",
       "urgency_level": "critical"

@@ -40,7 +40,30 @@ function ConversationPanel({
   const [activeChallenge, setActiveChallenge] = useState(false);
   const [showBeginButton, setShowBeginButton] = useState(false); // ✅ NEW: Show transition button
   const initialSceneAddedRef = useRef(false); // ✅ NEW: Track if initial scene added
+  const cognitiveCoachInitialAddedRef = useRef(false); // ✅ NEW: Track if cognitive coach initial message added
   const aarIntroAddedRef = useRef(false); // ✅ NEW: Track if AAR intro added
+
+  // ✅ NEW: Add initial Cognitive Coach message when component mounts in cognitive_coach mode
+  useEffect(() => {
+    if (currentAgent === 'cognitive_coach' && messages.length === 0 && !cognitiveCoachInitialAddedRef.current) {
+      const initialMessage = sessionStorage.getItem('cognitiveCoachInitialMessage');
+      if (initialMessage) {
+        console.log('📝 Adding initial Cognitive Coach message to chat');
+        setMessages([{
+          role: 'assistant',
+          content: initialMessage,
+          timestamp: Date.now()
+        }]);
+        cognitiveCoachInitialAddedRef.current = true;
+        // Clean up after using it
+        sessionStorage.removeItem('cognitiveCoachInitialMessage');
+      }
+    }
+    // Reset flag when switching away from Cognitive Coach
+    if (currentAgent !== 'cognitive_coach') {
+      cognitiveCoachInitialAddedRef.current = false;
+    }
+  }, [currentAgent, messages.length]);
 
   // ✅ NEW: Add initial scene when transitioning to Core Agent
   useEffect(() => {

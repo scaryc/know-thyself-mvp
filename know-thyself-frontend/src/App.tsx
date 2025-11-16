@@ -35,13 +35,13 @@ function App() {
   // ✅ NEW: Track if we should show the AAR Review button
   const [showAARButton, setShowAARButton] = useState(false);
 
-  // ✅ DEBUG: Log when dispatchInfo or patientInfo changes
-  useEffect(() => {
-    console.log('🔄 App.tsx state updated - dispatchInfo:', dispatchInfo);
-    console.log('🔄 App.tsx state updated - patientInfo:', patientInfo);
-    console.log('🔄 App.tsx state updated - currentAgent:', currentAgent);
-    console.log('🔄 App.tsx state updated - isActive:', isActive);
-  }, [dispatchInfo, patientInfo, currentAgent, isActive]);
+  // ✅ DEBUG: Log when dispatchInfo or patientInfo changes (disabled - working correctly)
+  // useEffect(() => {
+  //   console.log('🔄 App.tsx state updated - dispatchInfo:', JSON.stringify(dispatchInfo, null, 2));
+  //   console.log('🔄 App.tsx state updated - patientInfo:', JSON.stringify(patientInfo, null, 2));
+  //   console.log('🔄 App.tsx state updated - currentAgent:', currentAgent);
+  //   console.log('🔄 App.tsx state updated - isActive:', isActive);
+  // }, [dispatchInfo, patientInfo, currentAgent, isActive]);
 
   // Layer 3: Check for existing registration and session on mount (Feature 2 - Session Resume)
   useEffect(() => {
@@ -165,9 +165,15 @@ function App() {
     // Layer 3: Store sessionId in localStorage for session resume (Feature 2)
     localStorage.setItem('kt_sessionId', response.sessionId);
     console.log('💾 Session ID stored in localStorage for resume capability');
-    
+
     // ✅ NEW: Set current agent from response
     setCurrentAgent(response.currentAgent || 'cognitive_coach');
+
+    // ✅ NEW: Store initial Cognitive Coach message if provided
+    if (response.initialMessage) {
+      sessionStorage.setItem('cognitiveCoachInitialMessage', response.initialMessage);
+      console.log('💾 Stored initial Cognitive Coach message for first scenario');
+    }
     
     // ✅ FIXED: Only set scenario data if it exists in response (NOT during Cognitive Coach)
     if (response.dispatchInfo) {
@@ -189,44 +195,65 @@ function App() {
   };
 
   const handleCompleteScenario = async () => {
-    // Mark current scenario as completed
-    const currentScenario = scenarioQueue[currentScenarioIndex];
-    setCompletedScenarios(prev => [...prev, currentScenario]);
+    if (!sessionId) return;
 
-    console.log(`Scenario ${currentScenarioIndex + 1} completed: ${currentScenario}`);
+    console.log(`📋 Completing scenario ${currentScenarioIndex + 1}...`);
 
-    // Check if there are more scenarios
-    if (currentScenarioIndex < scenarioQueue.length - 1) {
-      // Load next scenario
-      const nextIndex = currentScenarioIndex + 1;
-      const nextScenario = scenarioQueue[nextIndex];
+    try {
+      // Call backend to handle scenario completion and prepare next scenario
+      const response = await api.nextScenario(sessionId);
 
-      console.log(`Loading scenario ${nextIndex + 1} of ${scenarioQueue.length}: ${nextScenario}`);
+      console.log('✅ Next scenario response:', response);
 
-      // Start next scenario (reusing same session)
-      const response = await api.startSession(nextScenario);
-      setCurrentScenarioIndex(nextIndex);
-      setScenarioStartTime(Date.now());
-      setCurrentVitals(null);
-      setPatientNotes([]);
-      setDispatchInfo(response.dispatchInfo);
-      setPatientInfo(response.patientInfo);
+      if (response.hasNextScenario) {
+        // There's another scenario - transition to Cognitive Coach
+        console.log(`🔄 Moving to scenario ${response.currentScenarioIndex + 1} of ${response.totalScenarios}`);
 
-      if (response.initialSceneDescription) {
-        sessionStorage.setItem('initialScene', response.initialSceneDescription);
+        // Update frontend state
+        const currentScenario = scenarioQueue[currentScenarioIndex];
+        setCompletedScenarios(prev => [...prev, currentScenario]);
+        setCurrentScenarioIndex(response.currentScenarioIndex);
+
+        // Transition back to Cognitive Coach
+        setCurrentAgent('cognitive_coach');
+        setIsActive(true);
+
+        // Clear scenario-specific UI
+        setDispatchInfo(null);
+        setPatientInfo(null);
+        setCurrentVitals(null);
+        setPatientNotes([]);
+        sessionStorage.removeItem('initialScene');
+
+        // ✅ NEW: Store initial Cognitive Coach message if provided
+        if (response.initialMessage) {
+          sessionStorage.setItem('cognitiveCoachInitialMessage', response.initialMessage);
+          console.log('💾 Stored initial Cognitive Coach message');
+        }
+
+        console.log('🧠 Returned to Cognitive Coach for next scenario');
+
+      } else {
+        // All scenarios completed - show AAR button
+        console.log('🎉 All scenarios completed! Showing AAR Review button...');
+
+        // Mark all scenarios as completed
+        const currentScenario = scenarioQueue[currentScenarioIndex];
+        setCompletedScenarios(prev => [...prev, currentScenario]);
+
+        // Clear scenario UI
+        setDispatchInfo(null);
+        setPatientInfo(null);
+        setCurrentVitals(null);
+        setIsActive(false);
+        setCurrentAgent(null);
+
+        // Show AAR button
+        setShowAARButton(true);
       }
-    } else {
-      // ALL 3 SCENARIOS COMPLETED → Show AAR button
-      console.log('All scenarios completed! Showing AAR Review button...');
 
-      // Clear scenario UI
-      setDispatchInfo(null);
-      setPatientInfo(null);
-      setCurrentVitals(null);
-      setIsActive(false);
-
-      // Show AAR button instead of automatically starting AAR
-      setShowAARButton(true);
+    } catch (error) {
+      console.error('❌ Error completing scenario:', error);
     }
   };
   
@@ -379,7 +406,7 @@ function App() {
       {sessionComplete ? (
         <SessionComplete onStartNewSession={handleResetSession} />
       ) : !sessionId ? (
-        <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
+        <div className="flex items-center justify-center h-[calc(100vh-6rem)]">
           <div className="text-center">
             <h2 className="text-3xl font-bold mb-4">Emergency Medical Training</h2>
             <p className="text-gray-400 mb-8 max-w-lg mx-auto">
