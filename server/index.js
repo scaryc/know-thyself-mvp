@@ -429,6 +429,7 @@ app.post('/api/sessions/start', async (req, res) => {
       currentScenarioIndex: 0,
       scenarioQueue: scenarioQueue || [],  // Scenarios selected by frontend
       completedScenarios: [],
+      scenarioPerformanceHistory: [],  // ✅ NEW: Store complete performance data for AAR
       sessionComplete: false,
       isAARMode: false,
       dispatchInfo: null,
@@ -3026,9 +3027,55 @@ app.post('/api/sessions/:id/next-scenario', async (req, res) => {
       return res.status(404).json({ error: 'Session not found' });
     }
 
-    // Mark current scenario as completed
+    // ✅ NEW: Capture complete performance data BEFORE clearing
     const currentScenario = session.scenarioQueue[session.currentScenarioIndex];
+
     if (currentScenario && !session.completedScenarios.includes(currentScenario)) {
+      console.log(`📊 Capturing performance data for scenario ${session.currentScenarioIndex + 1}: ${currentScenario}`);
+
+      // Calculate performance metrics using existing helper functions
+      const performanceScore = calculatePerformanceScore(session);
+      const timeline = generateCriticalActionsTimeline(session);
+      const treatmentTiming = analyzeTreatmentTiming(session);
+      const scenarioSummary = generateScenarioSummary(session);
+
+      // Create comprehensive performance snapshot
+      const performanceSnapshot = {
+        scenarioId: session.scenario?.scenario_id || session.scenarioId,
+        scenarioIndex: session.currentScenarioIndex,
+        totalTime: session.scenarioStartTime ? (Date.now() - session.scenarioStartTime) / 1000 : 0,
+        finalState: session.currentState,
+
+        // CDP Performance
+        score: performanceScore,
+        cdpEvaluations: session.cdpEvaluations || [],
+
+        // Medication Safety
+        errors: session.medicationErrors || [],
+        medicationWarnings: session.medicationWarnings || [],
+
+        // Critical treatments tracking
+        criticalTreatments: session.criticalTreatmentsGiven || {},
+        actionsLog: session.criticalActionsLog || [],
+        stateHistory: session.stateHistory || [],
+
+        // Timeline and analysis
+        timeline: timeline,
+        treatmentTiming: treatmentTiming,
+        scenarioSummary: scenarioSummary,
+
+        // Checklist results
+        checklistResults: session.checklistResults || [],
+
+        // Timestamp
+        completedAt: new Date().toISOString()
+      };
+
+      // Store in performance history
+      session.scenarioPerformanceHistory.push(performanceSnapshot);
+      console.log(`✅ Performance data captured for scenario ${session.currentScenarioIndex + 1}`);
+
+      // Mark as completed
       session.completedScenarios.push(currentScenario);
     }
 
@@ -3361,46 +3408,23 @@ app.post('/api/sessions/:sessionId/aar/start', async (req, res) => {
 
     console.log('📊 Starting AAR for session:', sessionId);
 
-    // Calculate CDP performance score
-    const performanceScore = calculatePerformanceScore(session);
+    // ✅ NEW: Use scenarioPerformanceHistory array instead of current session
+    const performanceHistoryArray = session.scenarioPerformanceHistory || [];
 
-    // Generate critical actions timeline
-    const timeline = generateCriticalActionsTimeline(session);
+    console.log(`📊 Performance history contains ${performanceHistoryArray.length} scenarios`);
 
-    // Analyze treatment timing
-    const treatmentTiming = analyzeTreatmentTiming(session);
+    // Validate we have all 3 scenarios
+    if (performanceHistoryArray.length < 3) {
+      console.error(`❌ AAR Error: Expected 3 scenarios, found ${performanceHistoryArray.length}`);
+      return res.status(400).json({
+        error: 'Cannot start AAR - incomplete performance data',
+        scenariosCompleted: performanceHistoryArray.length,
+        scenariosRequired: 3
+      });
+    }
 
-    // Generate comprehensive scenario summary
-    const scenarioSummary = generateScenarioSummary(session);
-
-    // Prepare comprehensive performance data
-    const performanceData = {
-      sessionId: session.sessionId,
-      scenarioId: session.scenario?.scenario_id || session.scenarioId,
-      totalTime: session.scenarioStartTime ? (Date.now() - session.scenarioStartTime) / 1000 : 0,
-      finalState: session.currentState,
-
-      // CDP Performance
-      performanceScore: performanceScore,
-      cdpEvaluations: session.cdpEvaluations || [],
-
-      // Medication Safety
-      medicationErrors: session.medicationErrors || [],
-      medicationWarnings: session.medicationWarnings || [],
-
-      // Critical treatments tracking
-      criticalTreatments: session.criticalTreatmentsGiven || {},
-      actionsLog: session.criticalActionsLog || [],
-      stateHistory: session.stateHistory || [],
-
-      // Timeline and analysis
-      timeline: timeline,
-      treatmentTiming: treatmentTiming,
-      scenarioSummary: scenarioSummary
-    };
-
-    // Initialize AAR session
-    const aarSession = aarService.initializeAAR(sessionId, performanceData);
+    // Initialize AAR session with ALL scenario performance data
+    const aarSession = aarService.initializeAAR(sessionId, performanceHistoryArray);
 
     // Load AAR prompt
     const aarPromptPath = path.join(__dirname, './prompts/aarAgent.txt');
