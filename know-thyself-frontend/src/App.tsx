@@ -198,23 +198,44 @@ function App() {
     if (!sessionId) return;
 
     console.log(`📋 Completing scenario ${currentScenarioIndex + 1}...`);
+    console.log('📍 Current state before completion:', {
+      currentScenarioIndex,
+      currentAgent,
+      scenarioQueue
+    });
 
     try {
       // Call backend to handle scenario completion and prepare next scenario
       const response = await api.nextScenario(sessionId);
 
-      console.log('✅ Next scenario response:', response);
+      console.log('✅ Next scenario response:', JSON.stringify(response, null, 2));
 
       if (response.hasNextScenario) {
         // There's another scenario - transition to Cognitive Coach
         console.log(`🔄 Moving to scenario ${response.currentScenarioIndex + 1} of ${response.totalScenarios}`);
 
+        // Clear old cognitive coach message FIRST
+        console.log('🗑️ Removing old cognitive coach message from sessionStorage');
+        sessionStorage.removeItem('cognitiveCoachInitialMessage');
+        sessionStorage.removeItem('initialScene');
+
+        // Store NEW cognitive coach message before state updates
+        if (response.initialMessage) {
+          console.log('💾 Storing NEW cognitive coach message:', response.initialMessage.substring(0, 100) + '...');
+          sessionStorage.setItem('cognitiveCoachInitialMessage', response.initialMessage);
+        } else {
+          console.error('❌ CRITICAL: No initialMessage in response!');
+        }
+
         // Update frontend state
         const currentScenario = scenarioQueue[currentScenarioIndex];
         setCompletedScenarios(prev => [...prev, currentScenario]);
+
+        console.log('🔧 Setting currentScenarioIndex from', currentScenarioIndex, 'to', response.currentScenarioIndex);
         setCurrentScenarioIndex(response.currentScenarioIndex);
 
         // Transition back to Cognitive Coach
+        console.log('🔧 Setting currentAgent to cognitive_coach');
         setCurrentAgent('cognitive_coach');
         setIsActive(true);
 
@@ -223,16 +244,12 @@ function App() {
         setPatientInfo(null);
         setCurrentVitals(null);
         setPatientNotes([]);
-        sessionStorage.removeItem('initialScene');
-        sessionStorage.removeItem('cognitiveCoachInitialMessage'); // Clear old CC message
-
-        // ✅ NEW: Store initial Cognitive Coach message if provided
-        if (response.initialMessage) {
-          sessionStorage.setItem('cognitiveCoachInitialMessage', response.initialMessage);
-          console.log('💾 Stored initial Cognitive Coach message');
-        }
 
         console.log('🧠 Returned to Cognitive Coach for next scenario');
+        console.log('📍 New state:', {
+          newScenarioIndex: response.currentScenarioIndex,
+          hasInitialMessage: !!response.initialMessage
+        });
 
       } else {
         // All scenarios completed - show AAR button

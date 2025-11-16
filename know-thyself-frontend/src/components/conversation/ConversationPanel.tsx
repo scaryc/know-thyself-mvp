@@ -43,10 +43,29 @@ function ConversationPanel({
   const cognitiveCoachInitialAddedRef = useRef(false); // ✅ NEW: Track if cognitive coach initial message added
   const aarIntroAddedRef = useRef(false); // ✅ NEW: Track if AAR intro added
 
+  // ✅ DEBUG: Track component mount/unmount
+  useEffect(() => {
+    console.log('🎬 ConversationPanel MOUNTED - currentAgent:', currentAgent, 'isAARMode:', isAARMode);
+    return () => {
+      console.log('💀 ConversationPanel UNMOUNTED - currentAgent was:', currentAgent);
+    };
+  }, []); // Empty dependency array = runs only on mount/unmount
+
   // ✅ NEW: Add initial Cognitive Coach message when component mounts in cognitive_coach mode
   useEffect(() => {
+    console.log('🔍 ConversationPanel useEffect - Cognitive Coach check:', {
+      currentAgent,
+      messagesLength: messages.length,
+      refCurrent: cognitiveCoachInitialAddedRef.current
+    });
+
     if (currentAgent === 'cognitive_coach' && messages.length === 0 && !cognitiveCoachInitialAddedRef.current) {
       const initialMessage = sessionStorage.getItem('cognitiveCoachInitialMessage');
+      console.log('🔍 Checking sessionStorage for cognitive coach message:', {
+        hasMessage: !!initialMessage,
+        messagePreview: initialMessage ? initialMessage.substring(0, 100) + '...' : 'null'
+      });
+
       if (initialMessage) {
         console.log('📝 Adding initial Cognitive Coach message to chat');
         setMessages([{
@@ -56,11 +75,15 @@ function ConversationPanel({
         }]);
         cognitiveCoachInitialAddedRef.current = true;
         // Clean up after using it
+        console.log('🗑️ Removing cognitive coach message from sessionStorage after adding to chat');
         sessionStorage.removeItem('cognitiveCoachInitialMessage');
+      } else {
+        console.warn('⚠️ No cognitive coach initial message found in sessionStorage!');
       }
     }
     // Reset flag when switching away from Cognitive Coach
     if (currentAgent !== 'cognitive_coach') {
+      console.log('🔄 Resetting cognitiveCoachInitialAddedRef because agent changed to:', currentAgent);
       cognitiveCoachInitialAddedRef.current = false;
     }
   }, [currentAgent, messages.length]);
