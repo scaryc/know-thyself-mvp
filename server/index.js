@@ -3105,10 +3105,9 @@ app.post('/api/sessions/:id/next-scenario', async (req, res) => {
 
       console.log(`🔄 Loading scenario ${session.currentScenarioIndex + 1} of ${session.scenarioQueue.length}: ${nextScenario}`);
 
-      // Update session for new scenario
+      // Update session for new scenario - STAY in Core Agent mode (no cognitive coach between scenarios)
       session.scenarioId = nextScenario;
-      session.currentAgent = 'cognitive_coach';
-      session.readyToTransition = false;
+      session.currentAgent = 'core'; // ✅ STAY in core agent mode
 
       // Clear previous scenario data
       session.dispatchInfo = null;
@@ -3119,73 +3118,91 @@ app.post('/api/sessions/:id/next-scenario', async (req, res) => {
       session.patientNotes = [];
       session.messages = []; // Clear chat history
 
-      // Reset Cognitive Coach for new scenario
-      const selectedQuestions = cognitiveCoachService.selectRandomQuestions(3);
-      session.cognitiveCoach = {
-        selectedQuestions: selectedQuestions.map(q => q.questionID),
-        currentQuestionIndex: 0,
-        responses: [],
-        startTime: Date.now(),
-        completed: false
-      };
+      // ═══════════════════════════════════════════════════════════
+      // LOAD NEXT SCENARIO IMMEDIATELY (like begin-scenario does)
+      // ═══════════════════════════════════════════════════════════
 
-      console.log('🧠 Reset to Cognitive Coach for next scenario');
-      console.log('Selected questions:', selectedQuestions.map(q => q.questionID));
+      console.log('📋 Loading next scenario:', nextScenario);
 
-      // ✅ NEW: Get initial Cognitive Coach greeting
-      try {
-        console.log('🎓 Generating initial Cognitive Coach message...');
+      // Load scenario and create engine
+      const scenarioData = loadScenario(nextScenario);
 
-        // Build Cognitive Coach prompt with current session context
-        const systemPrompt = cognitiveCoachPromptBuilder.buildCognitiveCoachPrompt(session);
-
-        // Call Claude API to get initial greeting
-        const response = await anthropic.messages.create({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 4096,
-          system: systemPrompt,
-          messages: [
-            {
-              role: 'user',
-              content: 'Hello, I\'m ready to begin the cognitive warm-up for the next scenario.'
-            }
-          ]
-        });
-
-        const initialMessage = response.content[0].text;
-        console.log('✅ Initial message generated:', initialMessage.substring(0, 100) + '...');
-
-        // Add to session messages
-        session.messages.push(
-          { role: 'user', content: 'Hello, I\'m ready to begin the cognitive warm-up for the next scenario.', timestamp: Date.now() },
-          { role: 'assistant', content: initialMessage, timestamp: Date.now() }
-        );
-
-        // Return response with initial message
-        res.json({
-          success: true,
-          hasNextScenario: true,
-          currentAgent: 'cognitive_coach',
-          currentScenarioIndex: session.currentScenarioIndex,
-          totalScenarios: session.scenarioQueue.length,
-          nextScenarioName: nextScenario,
-          questionCount: selectedQuestions.length,
-          initialMessage: initialMessage // ✅ NEW: Include initial message for frontend
-        });
-
-      } catch (error) {
-        console.error('❌ Error generating initial Cognitive Coach message:', error);
-        // Fallback: return without initial message
-        res.json({
-          success: true,
-          hasNextScenario: true,
-          currentAgent: 'cognitive_coach',
-          currentScenarioIndex: session.currentScenarioIndex,
-          totalScenarios: session.scenarioQueue.length,
-          nextScenarioName: nextScenario,
-          questionCount: selectedQuestions.length
+      if (!scenarioData) {
+        console.error('❌ FAILED: Scenario data is undefined!');
+        return res.status(500).json({
+          error: 'Failed to load scenario',
+          details: `Scenario file not found: ${nextScenario}.json`
         });
       }
+
+      console.log('✅ Scenario data loaded successfully');
+      console.log('🔍 Scenario title:', scenarioData.metadata?.title);
+
+      // Store scenario data on session
+      session.scenario = scenarioData;
+      session.engine = new ScenarioEngine(scenarioData);
+      session.measuredVitals = {};
+      session.patientNotes = [];
+
+      // Initialize Layer 2 session fields for new scenario
+      session.currentState = 'initial';
+      session.scenarioStartTime = Date.now();
+      session.criticalActionsLog = [];
+      session.criticalTreatmentsGiven = {
+        oxygen: false,
+        salbutamol: false,
+        steroids: false
+      };
+      session.dangerousMedicationsGiven = [];
+      session.lastDeteriorationCheck = Date.now();
+      session.stateHistory = [{
+        state: 'initial',
+        timestamp: Date.now(),
+        vitals: scenarioData.initial_vitals
+      }];
+
+      // Get initial context
+      const initialContext = session.engine.getRuntimeContext();
+
+      // Extract dispatch and patient info
+      const dispatchInfo = {
+        location: initialContext.dispatch_info.location,
+        chiefComplaint: initialContext.dispatch_info.call_type,
+        callerInfo: `${initialContext.dispatch_info.caller} reports: ${initialContext.dispatch_info.additional_info}`,
+        timeOfCall: initialContext.dispatch_info.time_of_call || "14:32"
+      };
+
+      const patientInfo = {
+        name: initialContext.patient_profile.name,
+        age: initialContext.patient_profile.age,
+        gender: initialContext.dispatch_info.sex
+      };
+
+      // Store in session
+      session.dispatchInfo = dispatchInfo;
+      session.patientInfo = patientInfo;
+
+      // Get initial scene description
+      const initialSceneDescription = scenarioData.state_descriptions.initial.student_sees;
+
+      console.log('✅ Next scenario ready - staying in Core Agent mode');
+      console.log('📊 Dispatch Info:', dispatchInfo);
+      console.log('👤 Patient Info:', patientInfo);
+
+      // Return scenario data (like begin-scenario does)
+      res.json({
+        success: true,
+        hasNextScenario: true,
+        currentAgent: 'core', // ✅ Stay in core mode
+        currentScenarioIndex: session.currentScenarioIndex,
+        totalScenarios: session.scenarioQueue.length,
+        nextScenarioName: nextScenario,
+        dispatchInfo: dispatchInfo,
+        patientInfo: patientInfo,
+        initialSceneDescription: initialSceneDescription,
+        initialVitals: initialContext.current_vitals,
+        scenario: session.engine.getScenarioMetadata()
+      });
 
     } else {
       // All scenarios completed
