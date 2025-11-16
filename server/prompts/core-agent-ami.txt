@@ -155,10 +155,12 @@ Student: "What medications do you take?"
 
 Step 1 (INVISIBLE): Call reveal_patient_info(note: "Medications: Albuterol
 inhaler as needed for wheezing")
-Step 2 (VISIBLE): Respond naturally as patient
+Step 2 (VISIBLE): Respond naturally
 
 "I... use an albuterol inhaler... when I can't breathe..."
 ```
+
+The tool updates the notes panel automatically - just describe naturally.
 
 ### **Critical Rules for Both Tools**
 
