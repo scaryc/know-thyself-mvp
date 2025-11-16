@@ -189,44 +189,59 @@ function App() {
   };
 
   const handleCompleteScenario = async () => {
-    // Mark current scenario as completed
-    const currentScenario = scenarioQueue[currentScenarioIndex];
-    setCompletedScenarios(prev => [...prev, currentScenario]);
+    if (!sessionId) return;
 
-    console.log(`Scenario ${currentScenarioIndex + 1} completed: ${currentScenario}`);
+    console.log(`📋 Completing scenario ${currentScenarioIndex + 1}...`);
 
-    // Check if there are more scenarios
-    if (currentScenarioIndex < scenarioQueue.length - 1) {
-      // Load next scenario
-      const nextIndex = currentScenarioIndex + 1;
-      const nextScenario = scenarioQueue[nextIndex];
+    try {
+      // Call backend to handle scenario completion and prepare next scenario
+      const response = await api.nextScenario(sessionId);
 
-      console.log(`Loading scenario ${nextIndex + 1} of ${scenarioQueue.length}: ${nextScenario}`);
+      console.log('✅ Next scenario response:', response);
 
-      // Start next scenario (reusing same session)
-      const response = await api.startSession(nextScenario);
-      setCurrentScenarioIndex(nextIndex);
-      setScenarioStartTime(Date.now());
-      setCurrentVitals(null);
-      setPatientNotes([]);
-      setDispatchInfo(response.dispatchInfo);
-      setPatientInfo(response.patientInfo);
+      if (response.hasNextScenario) {
+        // There's another scenario - transition to Cognitive Coach
+        console.log(`🔄 Moving to scenario ${response.currentScenarioIndex + 1} of ${response.totalScenarios}`);
 
-      if (response.initialSceneDescription) {
-        sessionStorage.setItem('initialScene', response.initialSceneDescription);
+        // Update frontend state
+        const currentScenario = scenarioQueue[currentScenarioIndex];
+        setCompletedScenarios(prev => [...prev, currentScenario]);
+        setCurrentScenarioIndex(response.currentScenarioIndex);
+
+        // Transition back to Cognitive Coach
+        setCurrentAgent('cognitive_coach');
+        setIsActive(true);
+
+        // Clear scenario-specific UI
+        setDispatchInfo(null);
+        setPatientInfo(null);
+        setCurrentVitals(null);
+        setPatientNotes([]);
+        sessionStorage.removeItem('initialScene');
+
+        console.log('🧠 Returned to Cognitive Coach for next scenario');
+
+      } else {
+        // All scenarios completed - show AAR button
+        console.log('🎉 All scenarios completed! Showing AAR Review button...');
+
+        // Mark all scenarios as completed
+        const currentScenario = scenarioQueue[currentScenarioIndex];
+        setCompletedScenarios(prev => [...prev, currentScenario]);
+
+        // Clear scenario UI
+        setDispatchInfo(null);
+        setPatientInfo(null);
+        setCurrentVitals(null);
+        setIsActive(false);
+        setCurrentAgent(null);
+
+        // Show AAR button
+        setShowAARButton(true);
       }
-    } else {
-      // ALL 3 SCENARIOS COMPLETED → Show AAR button
-      console.log('All scenarios completed! Showing AAR Review button...');
 
-      // Clear scenario UI
-      setDispatchInfo(null);
-      setPatientInfo(null);
-      setCurrentVitals(null);
-      setIsActive(false);
-
-      // Show AAR button instead of automatically starting AAR
-      setShowAARButton(true);
+    } catch (error) {
+      console.error('❌ Error completing scenario:', error);
     }
   };
   
