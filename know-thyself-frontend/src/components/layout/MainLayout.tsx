@@ -35,14 +35,14 @@ function MainLayout({
   onStartAAR // ✅ NEW
 }: MainLayoutProps) {
   
-  // ✅ NEW: During Cognitive Coach, show only the chat panel (full width)
-  if (currentAgent === 'cognitive_coach') {
+  // ✅ NEW: During Cognitive Coach or AAR mode, show only the chat panel (full width)
+  if (currentAgent === 'cognitive_coach' || isAARMode) {
     return (
       <main className="h-[calc(100vh-4rem)]">
         <div className="h-full flex items-center justify-center bg-bg-primary">
           <div className="w-full max-w-4xl h-full">
             <ConversationPanel
-              key={`cognitive-coach`}
+              key={isAARMode ? `aar-mode` : `cognitive-coach`}
               sessionId={sessionId}
               onVitalsUpdate={onVitalsUpdate}
               onNotesUpdate={onNotesUpdate}
