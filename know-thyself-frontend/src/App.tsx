@@ -99,6 +99,12 @@ function App() {
               } catch (error) {
                 console.warn('Could not fetch vitals:', error);
               }
+
+              // ✅ Restore patient notes from session
+              if (response.patientNotes && response.patientNotes.length > 0) {
+                console.log('📋 Restoring patient notes:', response.patientNotes);
+                setPatientNotes(response.patientNotes);
+              }
             }
 
           } else if (response.complete) {
@@ -198,41 +204,70 @@ function App() {
     if (!sessionId) return;
 
     console.log(`📋 Completing scenario ${currentScenarioIndex + 1}...`);
+    console.log('📍 Current state before completion:', {
+      currentScenarioIndex,
+      currentAgent,
+      scenarioQueue
+    });
 
     try {
       // Call backend to handle scenario completion and prepare next scenario
       const response = await api.nextScenario(sessionId);
 
-      console.log('✅ Next scenario response:', response);
+      console.log('✅ Next scenario response:', JSON.stringify(response, null, 2));
 
       if (response.hasNextScenario) {
-        // There's another scenario - transition to Cognitive Coach
-        console.log(`🔄 Moving to scenario ${response.currentScenarioIndex + 1} of ${response.totalScenarios}`);
+        // There's another scenario - load it immediately (NO cognitive coach between scenarios)
+        console.log(`🔄 Moving directly to scenario ${response.currentScenarioIndex + 1} of ${response.totalScenarios}`);
+
+        // Validate response has required data
+        if (!response.dispatchInfo) {
+          console.error('❌ CRITICAL: Response missing dispatchInfo!');
+        }
+        if (!response.patientInfo) {
+          console.error('❌ CRITICAL: Response missing patientInfo!');
+        }
+
+        // Clear old scenario data from sessionStorage
+        console.log('🗑️ Clearing old scenario data from sessionStorage');
+        sessionStorage.removeItem('initialScene');
 
         // Update frontend state
         const currentScenario = scenarioQueue[currentScenarioIndex];
         setCompletedScenarios(prev => [...prev, currentScenario]);
+
+        console.log('🔧 Setting currentScenarioIndex from', currentScenarioIndex, 'to', response.currentScenarioIndex);
         setCurrentScenarioIndex(response.currentScenarioIndex);
 
-        // Transition back to Cognitive Coach
-        setCurrentAgent('cognitive_coach');
+        // Stay in Core Agent mode (cognitive coach only runs once at the start)
+        console.log('🔧 Setting currentAgent to core (staying in scenario mode)');
+        setCurrentAgent('core');
         setIsActive(true);
 
-        // Clear scenario-specific UI
-        setDispatchInfo(null);
-        setPatientInfo(null);
+        // Update dispatch and patient info for new scenario
+        console.log('📊 Updating dispatch info:', response.dispatchInfo);
+        setDispatchInfo(response.dispatchInfo);
+
+        console.log('👤 Updating patient info:', response.patientInfo);
+        setPatientInfo(response.patientInfo);
+
+        // Reset scenario-specific state
         setCurrentVitals(null);
         setPatientNotes([]);
-        sessionStorage.removeItem('initialScene');
-        sessionStorage.removeItem('cognitiveCoachInitialMessage'); // Clear old CC message
+        setScenarioStartTime(Date.now()); // Reset timer for new scenario
 
-        // ✅ NEW: Store initial Cognitive Coach message if provided
-        if (response.initialMessage) {
-          sessionStorage.setItem('cognitiveCoachInitialMessage', response.initialMessage);
-          console.log('💾 Stored initial Cognitive Coach message');
+        // Store initial scene for new scenario
+        if (response.initialSceneDescription) {
+          sessionStorage.setItem('initialScene', response.initialSceneDescription);
         }
 
-        console.log('🧠 Returned to Cognitive Coach for next scenario');
+        console.log('✅ Transitioned directly to next scenario');
+        console.log('📍 New state:', {
+          newScenarioIndex: response.currentScenarioIndex,
+          scenarioName: response.nextScenarioName,
+          hasDispatchInfo: !!response.dispatchInfo,
+          hasPatientInfo: !!response.patientInfo
+        });
 
       } else {
         // All scenarios completed - show AAR button
