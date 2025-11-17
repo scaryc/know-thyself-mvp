@@ -13,10 +13,30 @@ This folder contains original versions of all agent prompts before implementing 
 - **Duration:** 2-5 minutes
 - **Key Features:** Question pool integration, mental organization technique, transition to Core Agent
 
-### 2. `core-agent-ami_v1_original.txt` (8.5K)
-- **Purpose:** Core Agent (Patient Simulator) system prompt
+### 2. Core Agent (Patient Simulator) Versions
+
+#### `core-agent-ami_v1_original.txt` (8.5K) - ✅ WORKING VERSION
+- **Status:** Original production prompt - KNOWN TO WORK
+- **Lines:** 172
 - **Function:** Realistic patient simulation with dynamic physiological responses
-- **Key Features:** Mandatory response structure, state-dependent communication, tool integration (update_vitals, reveal_patient_info)
+- **Key Features:** Simple mandatory response structure, state-dependent communication, tool integration
+- **Perspective:** Third-person narration for physical observations, first-person only in quoted dialogue
+- **Notes:** This version works correctly with clinical notes and maintains proper perspective
+
+#### `core-agent-ami_v2_simplified.txt` (11K) - ⚠️ ATTEMPTED FIX
+- **Status:** Simplified version with information disclosure boundaries
+- **Lines:** 211
+- **Changes from v1:** Added section on what to reveal without assessment (pupil findings fix)
+- **Result:** Still had perspective violations - NOT WORKING
+- **Created:** 2025-11-17 during perspective fix attempts
+
+#### `core-agent-ami_v3_bloated.txt` (19K) - ❌ FAILED VERSION
+- **Status:** Over-engineered with verbose perspective reinforcement
+- **Lines:** 443
+- **Changes from v1:** Added multiple WRONG examples, checklists, reinforcement sections throughout
+- **Result:** Paradoxically caused MORE violations due to prompt bloat - WORSE THAN v2
+- **Created:** 2025-11-17 during perspective fix attempts
+- **Lesson:** More instructions ≠ better performance. Prompt bloat confuses the model.
 
 ### 3. `aarAgent_v1_original.txt` (24K)
 - **Purpose:** AAR (After Action Review) Agent system prompt
@@ -55,6 +75,14 @@ Or restore individual prompts as needed.
 
 ## Version History
 
+### Core Agent Versions
+- **v1 (Original - 2025-11-14):** Initial production prompt - 172 lines ✅ WORKING
+- **v2 (Simplified - 2025-11-17):** Added information disclosure boundaries - 211 lines ⚠️ FAILED
+- **v3 (Bloated - 2025-11-17):** Over-engineered with excessive reinforcement - 443 lines ❌ WORSE
+
+**Current active version:** v1 (reverted on 2025-11-17)
+
+### Other Agents
 - **v1 (Original):** Initial production prompts (backed up 2025-11-14)
 - **v2 (Planned):** Communication style improvements based on recommendations
 
