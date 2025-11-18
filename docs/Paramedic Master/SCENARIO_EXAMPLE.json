@@ -1,0 +1,570 @@
+{
+  // =============================================================================
+  // PARAMEDIC TRAINING SCENARIO - DEMONSTRATION FILE
+  // =============================================================================
+  // This is a condensed example showing the structure and sophistication of 
+  // the full scenario system. Production scenarios are 2,000+ lines with 
+  // comprehensive medical data, 30+ medications, and extensive cognitive training.
+  // =============================================================================
+
+  "scenario_id": "ASTHMA_DEMO_001",
+  
+  // =============================================================================
+  // SECTION 1: METADATA
+  // =============================================================================
+  // Defines scenario parameters, difficulty, and learning objectives
+  // Used by: Student selection UI, Performance tracking system, AAR Agent
+  
+  "metadata": {
+    "title": "Severe Asthma Exacerbation",
+    "version": "2.0_Demo",
+    "difficulty": "intermediate",
+    "estimated_duration_minutes": 15,
+    "scenario_type": "medical_respiratory",
+    
+    // Learning objectives guide AAR feedback generation
+    "learning_objectives": [
+      "Recognize life-threatening asthma presentation",
+      "Perform systematic ABCDE assessment under pressure",
+      "Administer bronchodilators with correct technique",
+      "Recognize patient deterioration patterns",
+      "Apply evidence-based oxygen therapy"
+    ]
+  },
+
+  // =============================================================================
+  // SECTION 2: DISPATCH INFORMATION
+  // =============================================================================
+  // CRITICAL: Uses diagnosis-neutral language to prevent premature diagnosis
+  // Students must deduce the condition from assessment, not from dispatch
+  
+  "dispatch_info": {
+    "call_type": "Difficulty breathing",  // Generic, not "asthma attack"
+    "age": "28",
+    "sex": "Female",
+    "location": "Residential apartment, 3rd floor",
+    "caller": "Roommate",
+    "additional_info": "Getting worse, very short of breath"
+  },
+
+  // =============================================================================
+  // SECTION 3: SCENE DESCRIPTION
+  // =============================================================================
+  // Environmental context for scene safety and situational awareness training
+  
+  "scene_description": {
+    "location": "Small apartment living room, moderately cluttered",
+    "safety": "Scene safe, no immediate hazards",
+    "access": "3rd floor walkup, narrow stairs, no elevator",
+    "bystanders": "Roommate present - anxious but cooperative, knows patient well",
+    "environmental_triggers": "Visible cigarette smoke smell, ashtray on table"
+  },
+
+  // =============================================================================
+  // SECTION 4: PATIENT PROFILE
+  // =============================================================================
+  // Demographic and personality data for realistic interaction simulation
+  
+  "patient_profile": {
+    "name": "Sarah",
+    "age": 28,
+    "weight_kg": 65,
+    "height_cm": 168,
+    
+    // Personality affects patient communication patterns in simulation
+    "personality_traits": [
+      "Anxious about her breathing",
+      "Cooperative when able to speak",
+      "Downplays severity initially ('it's just my asthma')",
+      "Becomes more distressed as dyspnea worsens"
+    ],
+    
+    "baseline_mental_status": "Alert, oriented x4, intelligent, articulate"
+  },
+
+  // =============================================================================
+  // SECTION 5: INITIAL VITAL SIGNS
+  // =============================================================================
+  // Baseline measurements - students should obtain these immediately
+  // These values indicate LIFE-THREATENING emergency
+  
+  "initial_vitals": {
+    "HR": 128,                    // Tachycardia from hypoxia + beta-agonist effect
+    "RR": 32,                     // Severe tachypnea
+    "SpO2": 88,                   // Critical hypoxia - immediate oxygen needed
+    "BP_systolic": 138,           // Slightly elevated from stress
+    "BP_diastolic": 86,
+    "temperature": 37.1,          // Normal
+    "GCS": 14,                    // E4 V4 M6 - verbal impaired by dyspnea
+    "AVPU": "Alert but distressed"
+  },
+
+  // =============================================================================
+  // SECTION 6: STATE DESCRIPTIONS - THREE-LAYER VISIBILITY SYSTEM
+  // =============================================================================
+  // CRITICAL ARCHITECTURE: Prevents diagnosis leakage to students
+  //
+  // Layer 1 (student_sees): Narrative description shown to student
+  // Layer 2 (appearance): Clinical observations AI uses during conversation
+  // Layer 3 (clinical_note): Medical reasoning for AI only - NEVER shown to student
+  //
+  // This prevents students from seeing "This is severe asthma" in opening message
+  
+  "state_descriptions": {
+    
+    "initial_presentation": {
+      // SHOWN TO STUDENT: Vivid scene description without diagnosis
+      "student_sees": "You arrive to find a 28-year-old female sitting in tripod position, leaning forward with hands on knees. She's in obvious severe respiratory distress - you can hear audible wheezing from across the room even before approaching. She's pale, sweaty, and using her neck and shoulder muscles with every breath. When she tries to speak, she can only manage one or two words at a time before gasping for air: 'Can't... breathe... getting... worse...' Her roommate looks very worried: 'She's been getting worse for two days, but the last hour has been terrible. She ran out of her inhaler.'",
+      
+      // AI USES FOR CONVERSATION: Clinical observations during interaction
+      "appearance": "Patient in tripod position, severe respiratory distress, speaking in words only (not sentences), using accessory muscles, pale and diaphoretic, audible wheeze throughout room, intercostal retractions visible",
+      
+      // AI INTERNAL ONLY: Medical reasoning guidance - NEVER displayed
+      "clinical_note": "Life-threatening asthma exacerbation with critical hypoxia (SpO2 88%). Patient requires immediate high-flow oxygen and systematic ABCDE assessment. Silent chest in bases is ominous sign. This patient is at high risk for respiratory arrest if not treated aggressively within minutes."
+    },
+    
+    "improving_with_treatment": {
+      // State transitions tracked by backend when critical treatments given + time elapsed
+      "student_sees": "After treatment, the patient appears less distressed. She's no longer using her accessory muscles as prominently. Her breathing rate has decreased, and she can now speak in short phrases instead of just single words. 'That's... much better... thank you.' Her color is improving, and she's less sweaty. She still has some audible wheeze, but it's less prominent than before.",
+      
+      "appearance": "Improved respiratory effort, speaking in short phrases, decreased accessory muscle use, better color, decreased diaphoresis, still has wheeze but less severe",
+      
+      "clinical_note": "Patient responding to bronchodilator therapy. Continue current treatment and monitor closely. Still requires transport to ED for observation and further management. Risk of relapse if corticosteroids not administered."
+    }
+  },
+
+  // =============================================================================
+  // SECTION 7: VITAL SIGNS PROGRESSION
+  // =============================================================================
+  // Time-based deterioration creates urgency and rewards rapid decision-making
+  // Backend tracks elapsed time and updates vitals accordingly
+  
+  "time_based_progression": {
+    "at_3_minutes_no_treatment": {
+      "vitals": {
+        "HR": 135,
+        "RR": 36,
+        "SpO2": 85,              // Worsening hypoxia
+        "BP_systolic": 145,
+        "GCS": 13                 // Decreasing consciousness from hypoxia
+      },
+      "clinical_changes": "Patient becoming more exhausted, decreased air movement ('silent chest'), altered mental status developing"
+    },
+    
+    "at_6_minutes_no_treatment": {
+      "vitals": {
+        "HR": 142,
+        "RR": 38,
+        "SpO2": 81,              // Critical hypoxia
+        "BP_systolic": 155,
+        "GCS": 12                 // Further decreased consciousness
+      },
+      "clinical_changes": "Severe exhaustion, minimal air movement, cyanosis developing, patient barely responsive, impending respiratory arrest"
+    }
+  },
+
+  // =============================================================================
+  // SECTION 8: TREATMENT RESPONSES
+  // =============================================================================
+  // Embedded pharmacology - all drug knowledge lives in scenario file
+  // Backend uses this for dose validation and physiological simulation
+  
+  "medications_available": {
+    
+    "salbutamol": {
+      "generic_name": "Salbutamol (Albuterol)",
+      "brand_names": ["Ventolin"],
+      "indication": "Acute bronchospasm",
+      
+      // Dosing per Slovak EMS protocols
+      "dose_adult": "5mg",
+      "route": "Nebulized (oxygen-driven)",
+      "administration_time_minutes": 5,
+      
+      // Pharmacokinetics
+      "onset_minutes": 3,
+      "peak_effect_minutes": 5,
+      "duration_minutes": 90,
+      
+      // Absolute contraindications (backend checks before administration)
+      "contraindications_absolute": [],
+      "contraindications_relative": ["Tachycardia >150", "Known arrhythmia"],
+      
+      // Vital sign changes - backend applies these after onset time
+      "vital_effects": {
+        "HR": "+10 to +20",        // Beta-agonist effect
+        "RR": "-8 to -12",         // Improved breathing
+        "SpO2": "+6 to +10",       // Improved oxygenation
+        "BP_systolic": "+5 to +10" // Slight increase
+      },
+      
+      // What student/AI observes clinically
+      "clinical_effect": "Visible improvement in respiratory effort, decreased wheeze, patient able to speak in phrases instead of words, improved color",
+      
+      // Expected side effects
+      "side_effects": [
+        "Tremor (hands)",
+        "Tachycardia",
+        "Palpitations",
+        "Anxiety/jitteriness"
+      ],
+      
+      // Teaching points for AAR
+      "teaching_points": [
+        "First-line treatment for acute bronchospasm",
+        "Oxygen-driven nebulizer essential in hypoxic patient",
+        "Can repeat every 20 minutes if needed",
+        "Monitor for tachycardia"
+      ]
+    },
+    
+    "oxygen": {
+      "indication": "Hypoxia (SpO2 < 94%)",
+      "dose_adult": "High-flow non-rebreather mask, target SpO2 94-98%",
+      "route": "Inhalation",
+      
+      "onset_minutes": 1,
+      "peak_effect_minutes": 2,
+      
+      "vital_effects": {
+        "SpO2": "+8 to +12",       // Rapid improvement
+        "RR": "-4 to -6",          // Decreased hypoxic drive
+        "HR": "-10 to -15"         // Decreased sympathetic response
+      },
+      
+      "clinical_effect": "Rapid improvement in color, decreased work of breathing, patient less distressed",
+      
+      "teaching_points": [
+        "Apply immediately for SpO2 <94%",
+        "High-flow needed in severe asthma (not nasal cannula)",
+        "DO NOT withhold oxygen in acute emergency",
+        "Target SpO2 94-98% (not 100%)"
+      ]
+    },
+    
+    "hydrocortisone": {
+      "generic_name": "Hydrocortisone",
+      "indication": "Severe asthma - prevents relapse",
+      "dose_adult": "100mg",
+      "route": "IV bolus",
+      
+      "onset_minutes": 60,          // Delayed effect
+      "peak_effect_minutes": 240,
+      "duration_hours": 8,
+      
+      "contraindications_absolute": [],
+      
+      // No immediate vital sign changes (delayed steroid effect)
+      "vital_effects": {},
+      
+      "clinical_effect": "No immediate effect - prevents relapse 4-6 hours later",
+      
+      "teaching_points": [
+        "Essential in severe asthma even though delayed effect",
+        "Prevents relapse after initial bronchodilator wears off",
+        "Give early - effects take 60+ minutes",
+        "Cannot be substituted with inhaled steroids in acute phase"
+      ]
+    }
+  },
+
+  // =============================================================================
+  // SECTION 9: ASSESSMENT FINDINGS
+  // =============================================================================
+  // Hidden findings revealed through systematic examination
+  // Students must perform ABCDE + SAMPLE to discover these
+  
+  "assessment_findings": {
+    
+    // ABCDE Primary Survey
+    "airway": {
+      "patency": "Open, no obstruction",
+      "sounds": "Audible expiratory wheeze throughout",
+      "student_discovers": "Patient can maintain own airway but severe dyspnea limits speech"
+    },
+    
+    "breathing": {
+      "rate": 32,
+      "depth": "Shallow",
+      "effort": "Severe - using accessory muscles (sternocleidomastoid, scalenes)",
+      "chest_inspection": "Hyperinflation, intercostal retractions, paradoxical breathing pattern",
+      "auscultation": {
+        "anterior": "Bilateral decreased air entry with expiratory wheeze",
+        "posterior": "Diffuse wheeze throughout, SILENT CHEST in lower zones bilaterally",
+        "student_discovers": "Silent chest is OMINOUS SIGN - indicates minimal air movement"
+      },
+      "percussion": "Hyperresonant throughout (air trapping)"
+    },
+    
+    "circulation": {
+      "HR": 128,
+      "rhythm": "Regular but rapid",
+      "pulse_quality": "Weak radial, thready",
+      "BP": "138/86",
+      "capillary_refill": "<2 seconds",
+      "skin": "Pale, diaphoretic, cool peripherally",
+      "student_discovers": "Tachycardia from hypoxia and sympathetic response"
+    },
+    
+    "disability": {
+      "GCS": 14,
+      "GCS_breakdown": "E4 V4 M6 (verbal impaired by dyspnea)",
+      "AVPU": "Alert but distressed",
+      "pupils": "Equal and reactive (PEARL)",
+      "blood_glucose": "5.8 mmol/L (normal)",
+      "student_discovers": "Consciousness preserved but patient exhausted"
+    },
+    
+    "exposure": {
+      "injuries": "None visible",
+      "rashes": "None",
+      "temperature": "37.1°C (normal)",
+      "other_findings": "Mild cyanosis around lips"
+    },
+    
+    // SAMPLE History (if student asks appropriate questions)
+    "sample_history": {
+      "symptoms": {
+        "onset": "Gradual worsening over 2 days",
+        "character": "Tight chest, difficulty breathing, wheezing",
+        "severity": "10/10 dyspnea, worst ever",
+        "timing": "Constant, worse at night and early morning",
+        "student_discovers": "Pattern consistent with asthma exacerbation"
+      },
+      
+      "allergies": {
+        "environmental": ["Pollen", "Dust mites", "Cigarette smoke"],
+        "medications": "None known",
+        "student_discovers": "Strong environmental triggers present"
+      },
+      
+      "medications": {
+        "regular": [
+          "Salbutamol inhaler (rescue) - EMPTY for 2 days",
+          "Fluticasone inhaler (preventer) - ran out 3 days ago"
+        ],
+        "student_discovers": "Non-compliance + running out of medications = major risk factor"
+      },
+      
+      "past_medical_history": {
+        "asthma": "Diagnosed age 8, usually well-controlled",
+        "hospitalizations": "ICU admission 2 years ago for severe exacerbation requiring intubation",
+        "student_discovers": "History of life-threatening asthma = HIGH RISK patient"
+      },
+      
+      "last_oral_intake": {
+        "food": "None today - too breathless to eat",
+        "fluids": "Small sips of water only",
+        "student_discovers": "Poor intake from dyspnea"
+      },
+      
+      "events_leading_to_call": {
+        "triggers": "Roommate started smoking indoors 3 days ago + ran out of medications + upper respiratory infection",
+        "student_discovers": "Multiple triggers combined = severe exacerbation"
+      }
+    }
+  },
+
+  // =============================================================================
+  // SECTION 10: CRITICAL DECISION POINTS
+  // =============================================================================
+  // Key moments where student choices significantly impact outcome
+  // Used by AAR Agent to evaluate clinical judgment
+  
+  "critical_decision_points": [
+    {
+      "id": "CDP1",
+      "decision_point": "Recognize life-threatening emergency",
+      "time_window_minutes": 2,
+      "correct_action": "Immediately identify SpO2 88%, inability to speak sentences, severe distress as LIFE-THREATENING",
+      "incorrect_action": "Treat as routine asthma, perform leisurely assessment",
+      "consequence_correct": "Aggressive treatment started quickly, patient outcome better",
+      "consequence_incorrect": "Delayed treatment → rapid deterioration → potential respiratory arrest",
+      "teaching_point": "SpO2 <92% + can't complete sentences + severe distress = LIFE-THREATENING asthma requiring immediate intervention"
+    },
+    
+    {
+      "id": "CDP2",
+      "decision_point": "Apply oxygen immediately vs. withhold",
+      "time_window_minutes": 2,
+      "correct_action": "Apply high-flow oxygen immediately via non-rebreather mask",
+      "incorrect_action": "Withhold oxygen ('not indicated in asthma'), low-flow only, nasal cannula",
+      "consequence_correct": "SpO2 improves to 96%, buys time for bronchodilators to work",
+      "consequence_incorrect": "Persistent hypoxia → confusion → respiratory failure",
+      "teaching_point": "ALWAYS give oxygen in acute severe asthma with hypoxia. Myth about 'oxygen causing CO2 retention' does NOT apply to acute asthma emergency. Target SpO2 94-98%."
+    },
+    
+    {
+      "id": "CDP3",
+      "decision_point": "Bronchodilator administration technique",
+      "time_window_minutes": 5,
+      "correct_action": "Salbutamol 5mg via oxygen-driven nebulizer",
+      "incorrect_action": "MDI (inhaler) alone, air-driven nebulizer in hypoxic patient",
+      "consequence_correct": "Optimal drug delivery + continued oxygenation during treatment",
+      "consequence_incorrect": "Poor drug delivery + worsening hypoxia during treatment",
+      "teaching_point": "In severe asthma with hypoxia, MUST use oxygen-driven nebulizer (not MDI, not air-driven). Patient too dyspneic for effective MDI technique."
+    }
+  ],
+
+  // =============================================================================
+  // SECTION 11: PERFORMANCE EVALUATION CRITERIA
+  // =============================================================================
+  // Checklist-based scoring system for objective performance measurement
+  // Used by: Performance Tracker (Tier 2) and AAR Agent (Tier 3)
+  
+  "critical_actions_checklist": [
+    {
+      "id": "CA1",
+      "action": "Scene safety assessment",
+      "category": "scene_safety",
+      "time_target_minutes": 1,
+      "points": 5,
+      "importance": "essential"
+    },
+    {
+      "id": "CA2",
+      "action": "Recognize life-threatening asthma",
+      "category": "assessment",
+      "time_target_minutes": 2,
+      "points": 15,
+      "importance": "critical",
+      "criteria": "Student explicitly states this is LIFE-THREATENING emergency"
+    },
+    {
+      "id": "CA3",
+      "action": "Apply high-flow oxygen immediately",
+      "category": "treatment",
+      "time_target_minutes": 2,
+      "points": 15,
+      "importance": "critical"
+    },
+    {
+      "id": "CA4",
+      "action": "Administer salbutamol nebulizer",
+      "category": "treatment",
+      "time_target_minutes": 5,
+      "points": 25,
+      "importance": "critical",
+      "criteria": "Correct dose (5mg), oxygen-driven, proper technique"
+    },
+    {
+      "id": "CA5",
+      "action": "Complete ABCDE primary survey",
+      "category": "assessment",
+      "time_target_minutes": 5,
+      "points": 10,
+      "importance": "essential"
+    },
+    {
+      "id": "CA6",
+      "action": "Obtain SAMPLE history",
+      "category": "assessment",
+      "time_target_minutes": 8,
+      "points": 5,
+      "importance": "important"
+    },
+    {
+      "id": "CA7",
+      "action": "Administer corticosteroid (hydrocortisone)",
+      "category": "treatment",
+      "time_target_minutes": 10,
+      "points": 10,
+      "importance": "important"
+    },
+    {
+      "id": "CA8",
+      "action": "Reassess vital signs after treatment",
+      "category": "monitoring",
+      "time_target_minutes": 10,
+      "points": 10,
+      "importance": "essential"
+    },
+    {
+      "id": "CA9",
+      "action": "Prepare for transport",
+      "category": "management",
+      "time_target_minutes": 12,
+      "points": 5,
+      "importance": "essential"
+    }
+  ],
+
+  // Common errors to watch for and provide teaching feedback
+  "common_errors": [
+    {
+      "error": "Withholding oxygen due to misconception about CO2 retention",
+      "frequency": "common",
+      "severity": "dangerous",
+      "teaching_point": "MYTH: 'Oxygen causes CO2 retention in asthma.' REALITY: Give oxygen liberally in acute asthma. Hypoxia kills faster than hypercarbia. Target SpO2 94-98%."
+    },
+    {
+      "error": "Using MDI (inhaler) instead of nebulizer in severe distress",
+      "frequency": "common",
+      "severity": "moderate",
+      "teaching_point": "Patient in severe distress cannot coordinate MDI technique effectively. Nebulizer provides superior drug delivery in acute severe asthma."
+    },
+    {
+      "error": "Delaying bronchodilator to 'complete full assessment first'",
+      "frequency": "occasional",
+      "severity": "dangerous",
+      "teaching_point": "Life-threatening emergencies require SIMULTANEOUS assessment and treatment. Apply oxygen and start bronchodilator while conducting ABCDE assessment."
+    }
+  ],
+
+  // =============================================================================
+  // SECTION 12: AAR TEACHING POINTS
+  // =============================================================================
+  // Key learning points for post-scenario feedback
+  
+  "aar_teaching_points": {
+    "scene_safety": [
+      "Quick scene size-up essential but don't delay patient care",
+      "Identify environmental triggers (smoke) that contributed to exacerbation"
+    ],
+    
+    "recognition": [
+      "SpO2 <92% + inability to speak sentences + severe distress = LIFE-THREATENING",
+      "Silent chest is OMINOUS sign (not 'improved') - indicates minimal air movement",
+      "Accessory muscle use + tripod position indicate severe work of breathing"
+    ],
+    
+    "treatment": [
+      "Oxygen first - ALWAYS in acute hypoxia (SpO2 <94%)",
+      "Salbutamol via oxygen-driven nebulizer is first-line bronchodilator",
+      "Corticosteroids essential even though delayed effect - prevents relapse",
+      "Can repeat salbutamol every 20 minutes if inadequate response"
+    ],
+    
+    "assessment": [
+      "ABCDE approach ensures systematic evaluation",
+      "SAMPLE history reveals triggers and risk factors",
+      "Prior ICU admission = HIGH RISK patient requiring aggressive treatment"
+    ],
+    
+    "monitoring": [
+      "Reassess vital signs every 5 minutes after each intervention",
+      "Trending improvement vs deterioration guides further treatment",
+      "Watch for exhaustion, decreased consciousness, worsening hypoxia"
+    ],
+    
+    "transport": [
+      "All severe asthma requires ED evaluation even if improved",
+      "Risk of relapse when bronchodilator wears off",
+      "Continue treatment during transport"
+    ]
+  },
+
+  // =============================================================================
+  // END OF DEMONSTRATION SCENARIO
+  // =============================================================================
+  // Full production scenarios include:
+  // - 4 patient states (initial, improving, deteriorating, critical)
+  // - 30+ medications with complete pharmacology
+  // - 50+ assessment findings across all body systems
+  // - Interactive challenge questions for cognitive training
+  // - Secondary medication responses organized by harm level
+  // - Comprehensive contraindication checking
+  // - ECG interpretation (for cardiac scenarios)
+  // - Complex decision trees and cascading consequences
+  // =============================================================================
+}

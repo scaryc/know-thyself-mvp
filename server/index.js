@@ -1111,7 +1111,7 @@ function updatePatientState(session) {
  */
 function buildPatientContext(session) {
   const scenario = session.scenario;
-  const currentStateDesc = scenario.state_descriptions[session.currentState];
+  const currentStateDesc = scenario.state_descriptions?.[session.currentState];
   const elapsedMinutes = Math.floor((Date.now() - session.scenarioStartTime) / 60000);
 
   // Build treatment status
@@ -1132,11 +1132,15 @@ function buildPatientContext(session) {
     }).join('\n');
   }
 
+  // Get clinical presentation - fallback to general description if state not defined
+  const clinicalPresentation = currentStateDesc?.student_sees ||
+    `Patient in ${session.currentState} condition. Vitals: HR ${session.vitals.HR}, RR ${session.vitals.RR}, SpO2 ${session.vitals.SpO2}%`;
+
   const context = `
 === CURRENT PATIENT STATE ===
 State: ${session.currentState.toUpperCase()}
 Time Elapsed: ${elapsedMinutes} minutes
-Clinical Presentation: ${currentStateDesc.student_sees}
+Clinical Presentation: ${clinicalPresentation}
 
 === CURRENT VITALS ===
 Heart Rate: ${session.vitals.HR} bpm
@@ -2932,6 +2936,7 @@ app.post('/api/sessions/:id/begin-scenario', async (req, res) => {
     };
     session.dangerousMedicationsGiven = [];
     session.lastDeteriorationCheck = Date.now();
+    session.vitals = scenarioData.initial_vitals; // Initialize vitals
     session.stateHistory = [{
       state: 'initial',
       timestamp: Date.now(),
