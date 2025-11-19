@@ -1,13 +1,13 @@
 import VitalsMonitor from './VitalsMonitor';
 import PatientNotes from './PatientNotes';
+import type { Vitals } from '../../interfaces';
 
 interface ClinicalDataPanelProps {
-  sessionId: string;
-  vitals: any;
+  vitals: Vitals | null;
   patientNotes: string[];  // ✅ CHANGED
 }
 
-function ClinicalDataPanel({ sessionId, vitals, patientNotes }: ClinicalDataPanelProps) {
+function ClinicalDataPanel({ vitals, patientNotes }: ClinicalDataPanelProps) {
   return (
     <div className="flex flex-col h-full bg-bg-primary">
       {/* Vitals Monitor */}

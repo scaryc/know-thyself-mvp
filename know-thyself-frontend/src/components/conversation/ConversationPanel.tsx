@@ -1,5 +1,6 @@
 import { api } from '../../services/api';
 import { useState, useEffect, useRef } from 'react';
+import type { Vitals } from '../../interfaces';
 
 interface Message {
   role: 'user' | 'assistant' | 'system';
@@ -10,10 +11,9 @@ interface Message {
 
 interface ConversationPanelProps {
   sessionId: string;
-  onVitalsUpdate: (vitals: any) => void;
+  onVitalsUpdate: (vitals: Vitals) => void;
   onNotesUpdate: (notes: string[]) => void;
   currentAgent: 'cognitive_coach' | 'core' | null;
-  onAgentTransition: (newAgent: 'core', scenarioData: any) => void;
   isAARMode?: boolean;
   onAARComplete?: () => void;
   onBeginScenario?: () => void; // ✅ NEW: Callback for Begin Scenario button
@@ -26,7 +26,6 @@ function ConversationPanel({
   onVitalsUpdate,
   onNotesUpdate,
   currentAgent,
-  onAgentTransition,
   isAARMode = false,
   onAARComplete,
   onBeginScenario,
@@ -37,7 +36,6 @@ function ConversationPanel({
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [activeChallenge, setActiveChallenge] = useState(false);
   const [showBeginButton, setShowBeginButton] = useState(false); // ✅ NEW: Show transition button
   const initialSceneAddedRef = useRef(false); // ✅ NEW: Track if initial scene added
   const cognitiveCoachInitialAddedRef = useRef(false); // ✅ NEW: Track if cognitive coach initial message added
@@ -175,11 +173,6 @@ function ConversationPanel({
 
         // Check if this is a challenge point
         const isChallenge = response.isChallenge || false;
-        if (isChallenge) {
-          setActiveChallenge(true);
-        } else if (response.challengeResolved) {
-          setActiveChallenge(false);
-        }
 
         // Add the assistant's message (no special handling needed)
         const aiResponse: Message = {

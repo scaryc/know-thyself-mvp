@@ -4,6 +4,7 @@ import Header from './components/layout/Header';
 import SessionComplete from './components/SessionComplete';
 import Registration from './components/Registration';
 import { api } from './services/api';
+import type { Vitals, DispatchInfo, PatientInfo } from './interfaces';
 
 function App() {
   // Layer 3: Student registration state
@@ -15,13 +16,13 @@ function App() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [isActive, setIsActive] = useState(false);
   const [scenarioStartTime, setScenarioStartTime] = useState<number>(Date.now());
-  const [currentVitals, setCurrentVitals] = useState<any>(null);
-  const [dispatchInfo, setDispatchInfo] = useState<any>(null);  
-  const [patientInfo, setPatientInfo] = useState<any>(null);    
+  const [currentVitals, setCurrentVitals] = useState<Vitals | null>(null);
+  const [dispatchInfo, setDispatchInfo] = useState<DispatchInfo | null>(null);
+  const [patientInfo, setPatientInfo] = useState<PatientInfo | null>(null);    
   const [patientNotes, setPatientNotes] = useState<string[]>([]);
   const [scenarioQueue, setScenarioQueue] = useState<string[]>([]);
   const [currentScenarioIndex, setCurrentScenarioIndex] = useState(0);
-  const [completedScenarios, setCompletedScenarios] = useState<string[]>([]);
+  // Removed: completedScenarios state - was being set but never read/displayed
 
   // ✅ NEW: Track current agent
   const [currentAgent, setCurrentAgent] = useState<'cognitive_coach' | 'core' | null>(null);
@@ -80,7 +81,6 @@ function App() {
             setCurrentAgent(response.currentAgent);
             setCurrentScenarioIndex(response.currentScenarioIndex);
             setScenarioQueue(response.scenarioQueue);
-            setCompletedScenarios(response.completedScenarios);
             setIsAARMode(response.isAARMode);
 
             // Restore scenario data if in core agent mode
@@ -153,7 +153,6 @@ function App() {
 
     setScenarioQueue(selectedScenarios);
     setCurrentScenarioIndex(0);
-    setCompletedScenarios([]);
 
     console.log('Selected scenarios for this session:', selectedScenarios);
 
@@ -233,9 +232,6 @@ function App() {
         sessionStorage.removeItem('initialScene');
 
         // Update frontend state
-        const currentScenario = scenarioQueue[currentScenarioIndex];
-        setCompletedScenarios(prev => [...prev, currentScenario]);
-
         console.log('🔧 Setting currentScenarioIndex from', currentScenarioIndex, 'to', response.currentScenarioIndex);
         setCurrentScenarioIndex(response.currentScenarioIndex);
 
@@ -273,10 +269,6 @@ function App() {
         // All scenarios completed - show AAR button
         console.log('🎉 All scenarios completed! Showing AAR Review button...');
 
-        // Mark all scenarios as completed
-        const currentScenario = scenarioQueue[currentScenarioIndex];
-        setCompletedScenarios(prev => [...prev, currentScenario]);
-
         // Clear scenario UI
         setDispatchInfo(null);
         setPatientInfo(null);
@@ -291,36 +283,6 @@ function App() {
     } catch (error) {
       console.error('❌ Error completing scenario:', error);
     }
-  };
-  
-  // ✅ NEW: Handle agent transition (from Cognitive Coach to Core Agent)
-  const handleAgentTransition = (newAgent: 'core', scenarioData: any) => {
-    console.log('🔄 Transitioning to Core Agent');
-    console.log('📊 Dispatch Info:', scenarioData.dispatchInfo);
-    console.log('👤 Patient Info:', scenarioData.patientInfo);
-
-    setCurrentAgent(newAgent);
-
-    // Now set all the scenario data that was delayed
-    if (scenarioData.dispatchInfo) {
-      setDispatchInfo(scenarioData.dispatchInfo);
-    }
-    if (scenarioData.patientInfo) {
-      setPatientInfo(scenarioData.patientInfo);
-    }
-    if (scenarioData.initialSceneDescription) {
-      sessionStorage.setItem('initialScene', scenarioData.initialSceneDescription);
-    }
-
-    // Start the timer NOW
-    setScenarioStartTime(Date.now());
-
-    // ✅ FIX: Don't set vitals yet - they should be null until user measures them
-    setCurrentVitals(null);
-    setPatientNotes([]);
-
-    // Mark as active so header shows properly
-    setIsActive(true);
   };
 
   // ✅ NEW: Handle Start AAR Review button click
@@ -425,7 +387,6 @@ function App() {
     setPatientNotes([]);
     setScenarioQueue([]);
     setCurrentScenarioIndex(0);
-    setCompletedScenarios([]);
     setShowAARButton(false); // Reset AAR button state
     sessionStorage.clear();
 
@@ -481,7 +442,6 @@ function App() {
           patientNotes={patientNotes}
           onNotesUpdate={setPatientNotes}
           currentAgent={currentAgent} // ✅ NEW: Pass currentAgent to MainLayout
-          onAgentTransition={handleAgentTransition} // ✅ NEW: Pass transition handler
           onAARComplete={handleAARComplete} // ✅ NEW: Pass AAR completion handler
           isAARMode={isAARMode} // ✅ NEW: Pass isAARMode to MainLayout
           currentScenarioIndex={currentScenarioIndex} // ✅ NEW: Pass scenario index to force chat reset
