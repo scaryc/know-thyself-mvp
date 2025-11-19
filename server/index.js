@@ -18,6 +18,10 @@ import cognitiveCoachPromptBuilder from './services/cognitiveCoachPrompt.js';
 import cognitiveCoachService from './services/cognitiveCoachService.js';
 import aarService from './services/aarService.js';
 
+// Database services
+import db from './services/databaseService.js';
+import { dbToRuntimeSession, runtimeToDbSession } from './services/sessionHelpers.js';
+
 // Initialize
 const app = express();
 const anthropic = new Anthropic({
@@ -28,8 +32,49 @@ const anthropic = new Anthropic({
 app.use(cors());
 app.use(express.json());
 
-// In-memory session storage (MVP - replace with database later)
-const sessions = new Map();
+// Session cache (backed by database)
+const sessionCache = new Map();
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+/**
+ * Get session from cache or database
+ */
+async function getSession(sessionId) {
+  // Check cache first
+  const cached = sessionCache.get(sessionId);
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+    return cached.session;
+  }
+
+  // Load from database
+  const dbSession = await db.getSession(sessionId);
+  if (!dbSession) return null;
+
+  // Convert to runtime format
+  const session = dbToRuntimeSession(dbSession);
+
+  // Cache it
+  sessionCache.set(sessionId, {
+    session: session,
+    timestamp: Date.now()
+  });
+
+  return session;
+}
+
+/**
+ * Save session to database (and update cache)
+ */
+async function saveSession(session) {
+  const updates = runtimeToDbSession(session);
+  await db.updateSession(session.sessionId, updates);
+
+  // Update cache
+  sessionCache.set(session.sessionId, {
+    session: session,
+    timestamp: Date.now()
+  });
+}
 
 /**
  * Load scenario from JSON file
@@ -334,10 +379,10 @@ app.post('/api/student/register', async (req, res) => {
  * Check if session exists and get its current state
  * Layer 3: Used for session resume on browser refresh
  */
-app.get('/api/sessions/:sessionId/check', (req, res) => {
+app.get('/api/sessions/:sessionId/check', async (req, res) => {
   try {
     const { sessionId } = req.params;
-    const session = sessions.get(sessionId);
+    const session = await getSession(sessionId);
 
     if (!session) {
       return res.json({ exists: false });
@@ -469,7 +514,8 @@ app.post('/api/sessions/start', async (req, res) => {
       // NO engine, NO measuredVitals, NO patientNotes yet
     };
 
-    sessions.set(sessionId, session);
+    // Create session in database
+    await db.createSession(session);
 
     // Layer 3: Update student file with session ID
     if (studentData) {
@@ -508,7 +554,10 @@ app.post('/api/sessions/start', async (req, res) => {
       const initialMessage = response.content[0].text;
       console.log('✅ Initial message generated:', initialMessage.substring(0, 100) + '...');
 
-      // Add to session messages
+      // Add to session messages and database
+      await db.addMessage(sessionId, 'user', 'Hello, I\'m ready to begin the cognitive warm-up.');
+      await db.addMessage(sessionId, 'assistant', initialMessage);
+
       session.messages.push(
         { role: 'user', content: 'Hello, I\'m ready to begin the cognitive warm-up.', timestamp: Date.now() },
         { role: 'assistant', content: initialMessage, timestamp: Date.now() }
@@ -2258,7 +2307,7 @@ app.post('/api/sessions/:id/message', async (req, res) => {
   try {
     const { id } = req.params;
     const { message } = req.body;
-    const session = sessions.get(id);
+    const session = await getSession(id);
 
     if (!session) {
       return res.status(404).json({ error: 'Session not found' });
@@ -2318,11 +2367,17 @@ app.post('/api/sessions/:id/message', async (req, res) => {
             .replace(/\[COGNITIVE_COACH_SESSION_COMPLETE\]/g, '')
             .trim();
 
-          // Add to conversation history
+          // Add to conversation history and database
+          await db.addMessage(id, 'user', message);
+          await db.addMessage(id, 'assistant', responseText);
+
           session.messages.push(
             { role: 'user', content: message },
             { role: 'assistant', content: responseText }
           );
+
+          // Save session updates
+          await saveSession(session);
 
           console.log('🔘 Waiting for user to click "Begin Scenario" button');
 
@@ -2346,13 +2401,19 @@ app.post('/api/sessions/:id/message', async (req, res) => {
         
         // Increment question index
         session.cognitiveCoach.currentQuestionIndex++;
-        
-        // Add to conversation history
+
+        // Add to conversation history and database
+        await db.addMessage(id, 'user', message);
+        await db.addMessage(id, 'assistant', responseText);
+
         session.messages.push(
           { role: 'user', content: message },
           { role: 'assistant', content: responseText }
         );
-        
+
+        // Save session updates
+        await saveSession(session);
+
         return res.json({ 
           message: responseText,
           currentAgent: 'cognitive_coach'
@@ -2809,10 +2870,17 @@ if (!finalResponse) {
   finalResponse = 'I am examining the patient...';
 }
 
+// Add to conversation history and database
+await db.addMessage(id, 'user', message);
+await db.addMessage(id, 'assistant', finalResponse);
+
 session.messages.push(
   { role: 'user', content: message },
   { role: 'assistant', content: finalResponse }
 );
+
+// Save session updates
+await saveSession(session);
 
 // Clear state change notice after use (so it doesn't persist to next message)
 if (session.stateChangeNotice) {
@@ -2879,7 +2947,7 @@ res.json({
 app.post('/api/sessions/:id/begin-scenario', async (req, res) => {
   try {
     const { id } = req.params;
-    const session = sessions.get(id);
+    const session = await getSession(id);
 
     if (!session) {
       return res.status(404).json({ error: 'Session not found' });
@@ -2992,6 +3060,9 @@ app.post('/api/sessions/:id/begin-scenario', async (req, res) => {
 
     console.log('📤 FULL HTTP RESPONSE PAYLOAD:', JSON.stringify(responsePayload, null, 2));
 
+    // Save session updates
+    await saveSession(session);
+
     res.json(responsePayload);
 
   } catch (error) {
@@ -3004,10 +3075,10 @@ app.post('/api/sessions/:id/begin-scenario', async (req, res) => {
  * POST /api/sessions/:id/complete
  * Mark scenario complete and get performance summary
  */
-app.post('/api/sessions/:id/complete', (req, res) => {
+app.post('/api/sessions/:id/complete', async (req, res) => {
   try {
     const sessionId = req.params.id;
-    const session = sessions.get(sessionId);
+    const session = await getSession(sessionId);
 
     if (!session) {
       return res.status(404).json({ error: 'Session not found' });
@@ -3024,6 +3095,9 @@ app.post('/api/sessions/:id/complete', (req, res) => {
     console.log('📊 Scenario completed:', summary.scenarioId);
     console.log('🎯 Performance Score:', summary.performanceScore.overallScore + '%');
     console.log('📈 Breakdown:', summary.performanceScore.breakdown);
+
+    // Save session updates
+    await saveSession(session);
 
     res.json({
       success: true,
@@ -3042,7 +3116,7 @@ app.post('/api/sessions/:id/complete', (req, res) => {
 app.post('/api/sessions/:id/next-scenario', async (req, res) => {
   try {
     const sessionId = req.params.id;
-    const session = sessions.get(sessionId);
+    const session = await getSession(sessionId);
 
     if (!session) {
       return res.status(404).json({ error: 'Session not found' });
@@ -3194,6 +3268,9 @@ app.post('/api/sessions/:id/next-scenario', async (req, res) => {
       console.log('📊 Dispatch Info:', dispatchInfo);
       console.log('👤 Patient Info:', patientInfo);
 
+      // Save session updates
+      await saveSession(session);
+
       // Return scenario data (like begin-scenario does)
       res.json({
         success: true,
@@ -3212,6 +3289,9 @@ app.post('/api/sessions/:id/next-scenario', async (req, res) => {
     } else {
       // All scenarios completed
       console.log('🎉 All scenarios completed! Ready for AAR');
+
+      // Save session updates
+      await saveSession(session);
 
       res.json({
         success: true,
@@ -3236,7 +3316,7 @@ app.post('/api/sessions/:sessionId/action', async (req, res) => {
     const { sessionId } = req.params;
     const { action } = req.body;
     
-    const session = sessions.get(sessionId);
+    const session = await getSession(sessionId);
     if (!session) {
       return res.status(404).json({ error: 'Session not found' });
     }
@@ -3246,7 +3326,10 @@ app.post('/api/sessions/:sessionId/action', async (req, res) => {
     
     // Check if scenario should end
     const endCheck = session.engine.shouldScenarioEnd();
-    
+
+    // Save session updates
+    await saveSession(session);
+
     res.json({
       success: result.success,
       results: result.results,
@@ -3268,7 +3351,7 @@ app.get('/api/sessions/:sessionId/vitals', async (req, res) => {
   try {
     const { sessionId } = req.params;
 
-    const session = sessions.get(sessionId);
+    const session = await getSession(sessionId);
     if (!session) {
       return res.status(404).json({ error: 'Session not found' });
     }
@@ -3297,7 +3380,7 @@ app.get('/api/sessions/:sessionId/state', async (req, res) => {
   try {
     const { sessionId } = req.params;
 
-    const session = sessions.get(sessionId);
+    const session = await getSession(sessionId);
     if (!session) {
       return res.status(404).json({ error: 'Session not found' });
     }
@@ -3328,7 +3411,7 @@ app.get('/api/sessions/:sessionId/performance', async (req, res) => {
   try {
     const { sessionId } = req.params;
 
-    const session = sessions.get(sessionId);
+    const session = await getSession(sessionId);
     if (!session) {
       return res.status(404).json({ error: 'Session not found' });
     }
@@ -3406,7 +3489,7 @@ app.delete('/api/sessions/:sessionId', async (req, res) => {
   try {
     const { sessionId } = req.params;
     
-    const session = sessions.get(sessionId);
+    const session = await getSession(sessionId);
     if (!session) {
       return res.status(404).json({ error: 'Session not found' });
     }
@@ -3415,7 +3498,7 @@ app.delete('/api/sessions/:sessionId', async (req, res) => {
     const finalReport = session.engine.generatePerformanceReport();
     
     // Delete session
-    sessions.delete(sessionId);
+    await db.disconnect(); // sessionId);
     
     res.json({
       message: 'Session ended',
@@ -3439,7 +3522,7 @@ app.post('/api/sessions/:sessionId/aar/start', async (req, res) => {
   try {
     const { sessionId } = req.params;
 
-    const session = sessions.get(sessionId);
+    const session = await getSession(sessionId);
     if (!session) {
       return res.status(404).json({ error: 'Session not found' });
     }
@@ -3545,7 +3628,7 @@ app.post('/api/sessions/:sessionId/aar/message', async (req, res) => {
       aarService.updatePhase(sessionId, 'complete');
 
       // Layer 3: Feature 3 - Mark session as complete and auto-save
-      const session = sessions.get(sessionId);
+      const session = await getSession(sessionId);
       if (session) {
         session.sessionComplete = true;
         session.completedAt = new Date().toISOString();
@@ -3562,6 +3645,9 @@ app.post('/api/sessions/:sessionId/aar/message', async (req, res) => {
         } else {
           console.log('✅ AAR session completed (no student ID - data not saved)');
         }
+
+        // Save session updates to database
+        await saveSession(session);
       }
     }
 
@@ -3583,7 +3669,7 @@ app.post('/api/sessions/:sessionId/aar/message', async (req, res) => {
  * GET /api/sessions/:sessionId/aar/status
  * Get AAR session status
  */
-app.get('/api/sessions/:sessionId/aar/status', (req, res) => {
+app.get('/api/sessions/:sessionId/aar/status', async (req, res) => {
   try {
     const { sessionId } = req.params;
     const aarSession = aarService.getAAR(sessionId);
