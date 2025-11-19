@@ -2,15 +2,15 @@
 import ConversationPanel from '../conversation/ConversationPanel';
 import VitalsMonitor from '../clinical/VitalsMonitor';
 import PatientNotes from '../clinical/PatientNotes';
+import type { Vitals } from '../../interfaces';
 
 interface MainLayoutProps {
   sessionId: string;
-  currentVitals: any;
-  onVitalsUpdate: (vitals: any) => void;
+  currentVitals: Vitals | null;
+  onVitalsUpdate: (vitals: Vitals) => void;
   patientNotes: string[];
   onNotesUpdate: (notes: string[]) => void;
   currentAgent: 'cognitive_coach' | 'core' | null; // ✅ NEW
-  onAgentTransition: (newAgent: 'core', scenarioData: any) => void; // ✅ NEW
   onAARComplete?: () => void; // ✅ NEW
   isAARMode?: boolean; // ✅ NEW
   currentScenarioIndex?: number; // ✅ NEW: Track scenario changes
@@ -26,7 +26,6 @@ function MainLayout({
   patientNotes,
   onNotesUpdate,
   currentAgent, // ✅ NEW
-  onAgentTransition, // ✅ NEW
   onAARComplete, // ✅ NEW
   isAARMode = false, // ✅ NEW
   currentScenarioIndex = 0, // ✅ NEW
@@ -47,7 +46,6 @@ function MainLayout({
               onVitalsUpdate={onVitalsUpdate}
               onNotesUpdate={onNotesUpdate}
               currentAgent={currentAgent}
-              onAgentTransition={onAgentTransition}
               isAARMode={isAARMode}
               onAARComplete={onAARComplete}
               onBeginScenario={onBeginScenario}
@@ -72,7 +70,6 @@ function MainLayout({
             onVitalsUpdate={onVitalsUpdate}
             onNotesUpdate={onNotesUpdate}
             currentAgent={currentAgent}
-            onAgentTransition={onAgentTransition}
             isAARMode={isAARMode}
             onAARComplete={onAARComplete}
             onBeginScenario={onBeginScenario}

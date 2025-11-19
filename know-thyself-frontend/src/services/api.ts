@@ -1,8 +1,10 @@
+import type { StartSessionBody } from '../interfaces';
+
 class ApiService {
   private baseURL = 'http://localhost:3001/api';
 
   async startSession(scenarioId: string, studentId?: string, scenarioQueue?: string[]) {
-    const body: any = { scenarioId };
+    const body: StartSessionBody = { scenarioId };
 
     // Layer 3: Include studentId if provided (for A/B group auto-configuration)
     if (studentId) {
