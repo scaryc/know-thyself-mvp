@@ -1,30 +1,96 @@
-// Database structure for our medical training app
+// Database structure for Know Thyself Medical Training Platform
+// Updated with comprehensive session persistence fields
 
 generator client {
   provider = "prisma-client-js"
+  engineType = "library"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
-// A training session (one student doing one scenario)
+// ============================================================================
+// MAIN SESSION TABLE
+// ============================================================================
 model Session {
   id            String         @id @default(uuid())
-  userId        String         @default("demo-user")
-  scenarioType  String         // "ami" for heart attack
+
+  // Student Identity (Layer 3 - MVP Testing)
+  studentId     String?
+  studentName   String?
+  studentEmail  String?
+  group         String?        // "A" or "B" for A/B testing
+
+  // Session Metadata
+  scenarioId    String?
   status        SessionStatus  @default(IN_PROGRESS)
   startedAt     DateTime       @default(now())
   completedAt   DateTime?
-  
-  // Connected data
+
+  // Agent State
+  currentAgent  String         @default("cognitive_coach")  // cognitive_coach, core_agent, aar_agent
+
+  // Scenario Progress
+  currentScenarioIndex  Int    @default(0)
+  scenarioQueue         String @default("[]")  // JSON array as string
+  completedScenarios    String @default("[]")  // JSON array as string
+  sessionComplete       Boolean @default(false)
+  isAARMode             Boolean @default(false)
+
+  // Cognitive Coach State
+  cognitiveCoachState   String?  // JSON: { selectedQuestions, currentQuestionIndex, responses, completed }
+
+  // Performance Tracking (CDP System)
+  performanceScore      Int    @default(0)
+  optimalCount          Int    @default(0)
+  acceptableCount       Int    @default(0)
+  suboptimalCount       Int    @default(0)
+  dangerousCount        Int    @default(0)
+  cdpEvaluations        String @default("[]")  // JSON array as string
+
+  // Medication Safety
+  medicationErrors      String @default("[]")  // JSON array as string
+  medicationWarnings    String @default("[]")  // JSON array as string
+  safetyViolations      Int    @default(0)
+
+  // Challenge Points System (A/B Testing - CRITICAL)
+  challengePointsEnabled Boolean @default(false)
+  challengePointsUsed    String @default("[]")  // JSON array as string
+  activeChallenge        String?  // JSON object as string
+
+  // Critical Actions Tracking
+  criticalActionsLog     String @default("[]")  // JSON array as string
+  criticalTreatmentsGiven String @default("{}")  // JSON object as string
+
+  // Patient State
+  currentState          String?
+  stateHistory          String @default("[]")  // JSON array as string
+  currentVitals         String?  // JSON object as string
+
+  // Scenario Context
+  scenarioData          String?  // JSON: Full scenario blueprint (Layer 2)
+  dispatchInfo          String?  // JSON object as string
+  patientInfo           String?  // JSON object as string
+
+  // Performance History (For AAR Agent)
+  scenarioPerformanceHistory String @default("[]")  // CRITICAL: Array of 3 scenario snapshots
+
+  // Timestamp tracking
+  scenarioStartTime     String?  // Stored as string to avoid BigInt issues in SQLite
+
+  // Relations
   messages      Message[]
-  vitalSigns    VitalSignsLog[]
+  vitalSignsLog VitalSignsLog[]
   performance   PerformanceData?
+
+  @@index([studentId])
+  @@index([status])
+  @@index([group])
+  @@index([startedAt])
 }
 
-// Session can be: in progress, paused, completed, or abandoned
 enum SessionStatus {
   IN_PROGRESS
   PAUSED
@@ -32,43 +98,100 @@ enum SessionStatus {
   ABANDONED
 }
 
-// Each message in the conversation
+// ============================================================================
+// MESSAGE TABLE (Conversation History)
+// ============================================================================
 model Message {
   id          String   @id @default(uuid())
   sessionId   String
   role        String   // "user" or "assistant"
-  content     String   @db.Text
+  content     String
   timestamp   DateTime @default(now())
-  
-  session     Session  @relation(fields: [sessionId], references: [id])
+
+  session     Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@index([timestamp])
 }
 
-// Patient vital signs at different times
+// ============================================================================
+// VITAL SIGNS LOG (Time-Series Data)
+// ============================================================================
 model VitalSignsLog {
   id            String   @id @default(uuid())
   sessionId     String
   timestamp     DateTime @default(now())
-  
-  bloodPressure String   // "168/94"
-  heartRate     Int      // 102
-  respRate      Int      // 22
-  spO2          Int      // 94
-  painScore     Int      // 8
-  
-  session       Session  @relation(fields: [sessionId], references: [id])
+
+  // Vital signs snapshot
+  heartRate     Int?
+  respRate      Int?
+  spO2          Int?
+  systolic      Int?
+  diastolic     Int?
+  temperature   Float?
+  gcs           Int?
+  glucose       Float?
+
+  // Patient state at this time
+  patientState  String?
+
+  session       Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@index([timestamp])
 }
 
-// Final performance scores
+// ============================================================================
+// PERFORMANCE DATA (Final Scores)
+// ============================================================================
 model PerformanceData {
   id                      String  @id @default(uuid())
   sessionId               String  @unique
-  
+
+  // Overall metrics
   totalMessages           Int
-  hintsUsed               Int
-  completionRate          Float   // 0.0 to 1.0
-  assessmentCompleteness  Float   // How thorough was student
-  criticalActions         Json    // ["aspirin", "oxygen"]
-  safetyScore             Float   // 0 to 100
-  
-  session                 Session @relation(fields: [sessionId], references: [id])
+  totalDuration           Int     // seconds
+  scenariosCompleted      Int
+
+  // CDP Performance
+  overallScore            Int
+  optimalTotal            Int
+  acceptableTotal         Int
+  suboptimalTotal         Int
+  dangerousTotal          Int
+
+  // Critical actions
+  criticalActionsCompleted Int
+  criticalActionsMissed    Int
+
+  // Safety
+  medicationErrorCount    Int
+  medicationWarningCount  Int
+  safetyScore             Float
+
+  // A/B Testing metrics
+  challengePointsCount    Int     // How many challenge points used
+
+  // Analysis results (from pattern analysis)
+  patternAnalysisResults  String?   // JSON: Full pattern analysis from AAR
+
+  session                 Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([overallScore])
+  @@index([scenariosCompleted])
+}
+
+// ============================================================================
+// STUDENT TABLE (Optional - for future user management)
+// ============================================================================
+model Student {
+  id            String   @id @default(uuid())
+  studentId     String   @unique  // Generated ID
+  name          String
+  email         String?
+  group         String   // "A" or "B"
+  registeredAt  DateTime @default(now())
+
+  @@index([studentId])
+  @@index([group])
 }
