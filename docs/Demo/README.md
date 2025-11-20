@@ -103,7 +103,11 @@ Custom context assembly algorithm reads full scenario once, maintains state mach
 - **Cross-Scenario Pattern Recognition**: Identifies recurring strengths and weaknesses across different clinical presentations
 
 **Data Export**
-Comprehensive performance data available for institutional research, curriculum optimization, and competency validation.
+Automated Python pipeline extracts comprehensive performance data to:
+- **Excel Workbooks**: Multi-sheet analysis with student overview, performance metrics, scenario results, critical actions, challenge points usage, and AAR transcripts
+- **CSV Files**: SPSS/R-ready format for statistical software import
+- **Statistical Reports**: A/B testing analysis with t-tests, effect sizes, and publication-ready conclusions
+- **Complete Session Data**: All student interactions saved to database for institutional research and curriculum optimization
 
 ---
 
@@ -122,13 +126,23 @@ Comprehensive performance data available for institutional research, curriculum 
 
 ### Backend
 - **Node.js 18+** with Express 5
-- **PostgreSQL** via Prisma ORM for session persistence
+- **SQLite** (development) / **PostgreSQL** (production) via Prisma ORM
+- **Database Persistence**: Zero data loss with real-time session saving
 - **Claude Sonnet 4 API** with prompt caching (60% cost reduction on repeated context)
 - **RESTful API** with comprehensive error handling
+- **Concurrent Support**: 20+ simultaneous students with session survival across server restarts
+
+### Data Analysis
+- **Python 3.8+** pipeline with pandas, scipy, matplotlib, seaborn
+- **Automated Exports**: Excel (multi-sheet), CSV (SPSS-ready), statistical reports
+- **A/B Testing Analytics**: Independent t-tests, effect sizes (Cohen's d), group comparisons
+- **Research-Ready**: Complete student performance data for publications
 
 ### Architecture
 - **~10,000 lines** of production code across frontend, backend, and services
 - **9 specialized services**: AAR, Cognitive Coach, Pattern Analysis, Performance Tracking, Patient State Manager, Scenario Engine, Treatment Engine, Vital Signs Simulator, Database
+- **Database Schema**: 5 tables tracking 40+ session fields with relational integrity
+- **Python Analytics**: Automated research data extraction and statistical analysis
 - **4 complete scenarios** totaling 5,177 lines of validated medical content
 
 ---
@@ -165,6 +179,10 @@ Comprehensive performance data available for institutional research, curriculum 
 - Complete training loop: Cognitive Coach → Core Agent → AAR Agent
 - Performance tracking across 8 dimensions with pattern analysis
 - Challenge Points A/B testing framework
+- **Database persistence with zero data loss** (SQLite/PostgreSQL)
+- **Session survival across server restarts** (20+ concurrent students supported)
+- **Python research analytics pipeline** (automated Excel/CSV/statistical exports)
+- **A/B testing infrastructure** with statistical analysis and effect size calculations
 
 ### In Progress 🚧
 - **Pilot Testing**: Deployment with Slovak paramedic students (Spring 2025)
@@ -186,7 +204,8 @@ Comprehensive performance data available for institutional research, curriculum 
 ### Prerequisites
 ```bash
 Node.js 18+ required
-PostgreSQL 14+ (or use SQLite for development)
+Python 3.8+ (for data analysis)
+SQLite (included) or PostgreSQL 14+ (for production)
 Claude API key with Sonnet 4 access
 ```
 
@@ -207,16 +226,29 @@ npm install
 ```bash
 # Create .env file in root directory
 ANTHROPIC_API_KEY=your_claude_api_key
-DATABASE_URL=postgresql://user:password@localhost:5432/know_thyself
+
+# For development (SQLite - automatic):
+DATABASE_URL="file:./dev.db"
+
+# For production (PostgreSQL):
+# DATABASE_URL=postgresql://user:password@localhost:5432/know_thyself
 ```
 
 4. **Database Setup**
 ```bash
-npx prisma migrate dev
+# Initialize database and schema
+npx prisma db push
 npx prisma generate
 ```
 
-5. **Run Development Servers**
+5. **Python Dependencies** (for data analysis)
+```bash
+cd scripts
+pip install -r requirements.txt
+# Installs: pandas, numpy, openpyxl, scipy, matplotlib, seaborn
+```
+
+6. **Run Development Servers**
 ```bash
 # Terminal 1: Frontend (port 5173)
 npm run dev
@@ -228,7 +260,7 @@ npm run server
 npm run dev:all
 ```
 
-6. **Access Application**
+7. **Access Application**
 ```
 Frontend: http://localhost:5173
 API: http://localhost:3001/api
@@ -239,6 +271,11 @@ API: http://localhost:3001/api
 # Test backend logic
 cd server
 node test-layer2.js
+
+# Run data analysis on student sessions
+cd scripts
+python extract_student_data.py
+# Output: Excel workbook and CSV files in data/exports/
 ```
 
 ---

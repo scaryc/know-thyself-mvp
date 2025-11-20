@@ -28,9 +28,20 @@ dist-ssr
 # Environment variables (contains secrets)
 .env
 *.env
+*.env.backup
 server/.env
+server/.env.backup
+
+# Database files
+*.db
+*.db-journal
+prisma/*.db
+prisma/*.db-journal
 
 # Layer 3: Student data and backups (MVP testing)
 data/students/
 data/backups/
 .claude/settings.local.json
+
+# Windows artifacts
+nul
