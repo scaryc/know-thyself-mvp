@@ -3,7 +3,6 @@ services:
   - type: web
     name: know-thyself-backend
     runtime: node
-    plan: starter
     buildCommand: npm install && npx prisma generate
     startCommand: npm run server
     envVars:
@@ -15,13 +14,10 @@ services:
         value: 3001
       - key: NODE_ENV
         value: production
-    healthCheckPath: /api/health
 
   # Frontend Static Site (React/Vite)
-  - type: web
+  - type: static
     name: know-thyself-frontend
-    runtime: static
-    plan: starter
     buildCommand: cd know-thyself-frontend && npm install && npm run build
     staticPublishPath: ./know-thyself-frontend/dist
     envVars:
