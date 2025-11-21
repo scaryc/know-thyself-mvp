@@ -1,7 +1,7 @@
 import type { StartSessionBody } from '../interfaces';
 
 class ApiService {
-  private baseURL = 'http://localhost:3001/api';
+  private baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
   async startSession(scenarioId: string, studentId?: string, scenarioQueue?: string[]) {
     const body: StartSessionBody = { scenarioId };
