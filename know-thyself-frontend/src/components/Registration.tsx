@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+
 interface RegistrationProps {
   onRegistrationComplete: (studentId: string, group: string, studentName: string) => void;
 }
@@ -50,7 +52,7 @@ function Registration({ onRegistrationComplete }: RegistrationProps) {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('http://localhost:3001/api/student/register', {
+      const response = await fetch(`${API_URL}/student/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
