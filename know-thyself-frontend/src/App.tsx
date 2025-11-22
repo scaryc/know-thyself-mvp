@@ -17,8 +17,8 @@ function App() {
   const [isActive, setIsActive] = useState(false);
   const [scenarioStartTime, setScenarioStartTime] = useState<number>(Date.now());
   const [currentVitals, setCurrentVitals] = useState<Vitals | null>(null);
-  const [dispatchInfo, setDispatchInfo] = useState<DispatchInfo | null>(null);
-  const [patientInfo, setPatientInfo] = useState<PatientInfo | null>(null);    
+  const [dispatchInfo, setDispatchInfo] = useState<DispatchInfo | undefined>(undefined);
+  const [patientInfo, setPatientInfo] = useState<PatientInfo | undefined>(undefined);    
   const [patientNotes, setPatientNotes] = useState<string[]>([]);
   const [scenarioQueue, setScenarioQueue] = useState<string[]>([]);
   const [currentScenarioIndex, setCurrentScenarioIndex] = useState(0);
@@ -270,8 +270,8 @@ function App() {
         console.log('🎉 All scenarios completed! Showing AAR Review button...');
 
         // Clear scenario UI
-        setDispatchInfo(null);
-        setPatientInfo(null);
+        setDispatchInfo(undefined);
+        setPatientInfo(undefined);
         setCurrentVitals(null);
         setIsActive(false);
         setCurrentAgent(null);
@@ -382,8 +382,8 @@ function App() {
     setSessionComplete(false);
     setCurrentAgent(null);
     setCurrentVitals(null);
-    setDispatchInfo(null);
-    setPatientInfo(null);
+    setDispatchInfo(undefined);
+    setPatientInfo(undefined);
     setPatientNotes([]);
     setScenarioQueue([]);
     setCurrentScenarioIndex(0);
