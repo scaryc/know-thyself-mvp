@@ -29,7 +29,14 @@ const anthropic = new Anthropic({
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:5173',  // Local development
+    'https://know-thyself-frontend.onrender.com',  // Production frontend
+    process.env.FRONTEND_URL  // Custom frontend URL from env var
+  ].filter(Boolean),  // Remove undefined values
+  credentials: true
+}));
 app.use(express.json());
 
 // Session cache (backed by database)
