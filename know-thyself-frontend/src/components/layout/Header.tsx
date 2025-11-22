@@ -1,18 +1,6 @@
 // src/components/layout/Header.tsx
 import { useEffect, useState } from 'react';
-
-interface DispatchInfo {
-  location: string;
-  chiefComplaint: string;
-  callerInfo: string;
-  timeOfCall: string;
-}
-
-interface PatientInfo {
-  name: string;
-  age: number;
-  gender: string;
-}
+import type { DispatchInfo, PatientInfo } from '../../interfaces';
 
 interface HeaderProps {
   isActive: boolean;
