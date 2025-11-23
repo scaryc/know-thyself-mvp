@@ -2650,17 +2650,53 @@ Describe this change in your response - the patient's condition is actively chan
     }));
 
     // Reconstruct ScenarioEngine if it's null (happens when session is loaded from database)
-    if (!session.engine && session.scenario) {
-      console.log('🔧 Reconstructing ScenarioEngine from saved scenario data');
-      session.engine = new ScenarioEngine(session.scenario);
+    if (!session.engine) {
+      // Try to get scenario data from either session.scenario or session.scenarioData
+      const scenarioData = session.scenario || session.scenarioData;
+
+      if (scenarioData) {
+        console.log('🔧 Reconstructing ScenarioEngine from saved scenario data');
+        session.engine = new ScenarioEngine(scenarioData);
+        // Also ensure session.scenario is set for consistency
+        if (!session.scenario) {
+          session.scenario = scenarioData;
+        }
+      } else {
+        // No scenario data available - try to reload from scenarioId
+        if (session.scenarioId) {
+          console.log('⚠️ No scenario data in session, attempting to reload from scenarioId:', session.scenarioId);
+          try {
+            const reloadedScenario = loadScenario(session.scenarioId);
+            if (reloadedScenario) {
+              session.scenario = reloadedScenario;
+              session.engine = new ScenarioEngine(reloadedScenario);
+              console.log('✅ Successfully reloaded scenario from file');
+            }
+          } catch (error) {
+            console.error('❌ Failed to reload scenario:', error.message);
+          }
+        }
+      }
     }
 
     // Verify engine exists before calling getRuntimeContext
     if (!session.engine) {
       console.error('❌ ERROR: session.engine is null and could not be reconstructed');
+      console.error('📊 Debug info:', {
+        hasEngine: !!session.engine,
+        hasScenario: !!session.scenario,
+        hasScenarioData: !!session.scenarioData,
+        scenarioId: session.scenarioId,
+        currentAgent: session.currentAgent,
+        sessionId: session.sessionId
+      });
       return res.status(500).json({
         error: 'Scenario engine not initialized',
-        details: 'Session does not have a valid scenario engine. Please restart the scenario.'
+        details: 'Session does not have a valid scenario engine. Please restart the scenario.',
+        debug: {
+          hasScenario: !!session.scenario,
+          scenarioId: session.scenarioId
+        }
       });
     }
 
@@ -3344,9 +3380,26 @@ app.post('/api/sessions/:sessionId/action', async (req, res) => {
     }
 
     // Reconstruct ScenarioEngine if needed
-    if (!session.engine && session.scenario) {
-      console.log('🔧 Reconstructing ScenarioEngine from saved scenario data');
-      session.engine = new ScenarioEngine(session.scenario);
+    if (!session.engine) {
+      const scenarioData = session.scenario || session.scenarioData;
+
+      if (scenarioData) {
+        console.log('🔧 Reconstructing ScenarioEngine from saved scenario data');
+        session.engine = new ScenarioEngine(scenarioData);
+        if (!session.scenario) session.scenario = scenarioData;
+      } else if (session.scenarioId) {
+        console.log('⚠️ No scenario data in session, reloading from scenarioId:', session.scenarioId);
+        try {
+          const reloadedScenario = loadScenario(session.scenarioId);
+          if (reloadedScenario) {
+            session.scenario = reloadedScenario;
+            session.engine = new ScenarioEngine(reloadedScenario);
+            console.log('✅ Successfully reloaded scenario from file');
+          }
+        } catch (error) {
+          console.error('❌ Failed to reload scenario:', error.message);
+        }
+      }
     }
 
     if (!session.engine) {
@@ -3530,9 +3583,26 @@ app.delete('/api/sessions/:sessionId', async (req, res) => {
     }
 
     // Reconstruct ScenarioEngine if needed
-    if (!session.engine && session.scenario) {
-      console.log('🔧 Reconstructing ScenarioEngine from saved scenario data');
-      session.engine = new ScenarioEngine(session.scenario);
+    if (!session.engine) {
+      const scenarioData = session.scenario || session.scenarioData;
+
+      if (scenarioData) {
+        console.log('🔧 Reconstructing ScenarioEngine from saved scenario data');
+        session.engine = new ScenarioEngine(scenarioData);
+        if (!session.scenario) session.scenario = scenarioData;
+      } else if (session.scenarioId) {
+        console.log('⚠️ No scenario data in session, reloading from scenarioId:', session.scenarioId);
+        try {
+          const reloadedScenario = loadScenario(session.scenarioId);
+          if (reloadedScenario) {
+            session.scenario = reloadedScenario;
+            session.engine = new ScenarioEngine(reloadedScenario);
+            console.log('✅ Successfully reloaded scenario from file');
+          }
+        } catch (error) {
+          console.error('❌ Failed to reload scenario:', error.message);
+        }
+      }
     }
 
     // Generate final report (if engine available)
