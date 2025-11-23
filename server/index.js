@@ -3708,7 +3708,7 @@ app.get('/api/sessions/:sessionId/aar/status', async (req, res) => {
  * This ensures patients deteriorate even if student doesn't interact
  */
 setInterval(() => {
-  for (const [sessionId, session] of sessions.entries()) {
+  for (const [sessionId, session] of sessionCache.entries()) {
     // Only check active Core Agent scenarios
     if (session.currentAgent === 'core' && session.scenario && session.currentState !== 'aar') {
       // Only evaluate if at least 25 seconds passed since last check
