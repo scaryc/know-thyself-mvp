@@ -5,11 +5,47 @@
 
 import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient({
-  log: ['error', 'warn'], // Enable logging for debugging
-});
+// Singleton pattern for Prisma client with proper connection management
+let prisma;
+
+function getPrismaClient() {
+  if (!prisma) {
+    // Build connection string with pgbouncer mode to avoid prepared statement conflicts
+    let databaseUrl = process.env.DATABASE_URL;
+
+    // Add pgbouncer=true to connection string if not present
+    // This disables prepared statements and prevents "already exists" errors
+    if (databaseUrl && !databaseUrl.includes('pgbouncer=')) {
+      const separator = databaseUrl.includes('?') ? '&' : '?';
+      databaseUrl = `${databaseUrl}${separator}pgbouncer=true`;
+    }
+
+    prisma = new PrismaClient({
+      log: ['error', 'warn'],
+      datasources: {
+        db: {
+          url: databaseUrl
+        }
+      }
+    });
+
+    // Handle connection errors
+    prisma.$connect()
+      .then(() => console.log('✅ Prisma connected successfully (pgbouncer mode)'))
+      .catch((error) => {
+        console.error('❌ Prisma connection error:', error);
+        prisma = null; // Reset on error to allow retry
+      });
+  }
+  return prisma;
+}
 
 class DatabaseService {
+
+  // Get Prisma client on demand
+  get client() {
+    return getPrismaClient();
+  }
 
   /**
    * Create a new session in database
@@ -19,7 +55,7 @@ class DatabaseService {
   async createSession(sessionData) {
     try {
       // Parse JSON fields for storage
-      const session = await prisma.session.create({
+      const session = await this.client.session.create({
         data: {
           id: sessionData.sessionId,
 
@@ -97,7 +133,7 @@ class DatabaseService {
    */
   async getSession(sessionId) {
     try {
-      const session = await prisma.session.findUnique({
+      const session = await this.client.session.findUnique({
         where: { id: sessionId },
         include: {
           messages: {
@@ -137,7 +173,7 @@ class DatabaseService {
         }
       }
 
-      const session = await prisma.session.update({
+      const session = await this.client.session.update({
         where: { id: sessionId },
         data: processedUpdates
       });
@@ -158,7 +194,7 @@ class DatabaseService {
    */
   async addMessage(sessionId, role, content) {
     try {
-      const message = await prisma.message.create({
+      const message = await this.client.message.create({
         data: {
           sessionId: sessionId,
           role: role,
@@ -181,7 +217,7 @@ class DatabaseService {
    */
   async logVitalSigns(sessionId, vitals) {
     try {
-      const vitalLog = await prisma.vitalSignsLog.create({
+      const vitalLog = await this.client.vitalSignsLog.create({
         data: {
           sessionId: sessionId,
           heartRate: vitals.heartRate,
@@ -212,7 +248,7 @@ class DatabaseService {
   async completeSession(sessionId, performanceData) {
     try {
       // Update session status
-      await prisma.session.update({
+      await this.client.session.update({
         where: { id: sessionId },
         data: {
           status: 'COMPLETED',
@@ -222,7 +258,7 @@ class DatabaseService {
       });
 
       // Save performance data
-      const performance = await prisma.performanceData.create({
+      const performance = await this.client.performanceData.create({
         data: {
           sessionId: sessionId,
           totalMessages: performanceData.totalMessages || 0,
@@ -257,7 +293,7 @@ class DatabaseService {
    */
   async getActiveSessions() {
     try {
-      const sessions = await prisma.session.findMany({
+      const sessions = await this.client.session.findMany({
         where: {
           status: 'IN_PROGRESS'
         },
@@ -285,14 +321,17 @@ class DatabaseService {
    * Cleanup: Close database connection
    */
   async disconnect() {
-    await prisma.$disconnect();
+    if (prisma) {
+      await prisma.$disconnect();
+      prisma = null; // Reset after disconnect
+    }
   }
 
   /**
    * Get Prisma client instance (for direct queries if needed)
    */
   get prisma() {
-    return prisma;
+    return this.client;
   }
 }
 
