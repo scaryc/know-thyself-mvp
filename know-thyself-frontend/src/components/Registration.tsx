@@ -97,7 +97,7 @@ function Registration({ onRegistrationComplete }: RegistrationProps) {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="text-5xl mb-4">🏥</div>
-          <h1 className="text-3xl font-bold mb-2">KNOW THYSELF MVP</h1>
+          <h1 className="text-3xl font-bold mb-2 text-white">KNOW THYSELF MVP</h1>
           <p className="text-gray-400">Paramedic Training Simulation</p>
         </div>
 
@@ -119,7 +119,7 @@ function Registration({ onRegistrationComplete }: RegistrationProps) {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Full Name */}
           <div>
-            <label htmlFor="name" className="block text-sm font-medium mb-2">
+            <label htmlFor="name" className="block text-sm font-medium mb-2 text-white">
               Full Name <span className="text-red-400">*</span>
             </label>
             <input
@@ -128,14 +128,14 @@ function Registration({ onRegistrationComplete }: RegistrationProps) {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g., Alice Smith"
-              className="w-full px-4 py-3 bg-bg-primary border border-border rounded-lg focus:outline-none focus:border-accent transition-colors"
+              className="w-full px-4 py-3 bg-bg-primary border border-border rounded-lg focus:outline-none focus:border-accent transition-colors text-white placeholder-gray-500"
               disabled={isSubmitting}
             />
           </div>
 
           {/* Email Address */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium mb-2">
+            <label htmlFor="email" className="block text-sm font-medium mb-2 text-white">
               Email Address <span className="text-red-400">*</span>
             </label>
             <input
@@ -144,7 +144,7 @@ function Registration({ onRegistrationComplete }: RegistrationProps) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="e.g., alice@example.com"
-              className="w-full px-4 py-3 bg-bg-primary border border-border rounded-lg focus:outline-none focus:border-accent transition-colors"
+              className="w-full px-4 py-3 bg-bg-primary border border-border rounded-lg focus:outline-none focus:border-accent transition-colors text-white placeholder-gray-500"
               disabled={isSubmitting}
               required
             />
