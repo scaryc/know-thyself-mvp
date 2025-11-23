@@ -2649,6 +2649,21 @@ Describe this change in your response - the patient's condition is actively chan
       content: msg.content
     }));
 
+    // Reconstruct ScenarioEngine if it's null (happens when session is loaded from database)
+    if (!session.engine && session.scenario) {
+      console.log('🔧 Reconstructing ScenarioEngine from saved scenario data');
+      session.engine = new ScenarioEngine(session.scenario);
+    }
+
+    // Verify engine exists before calling getRuntimeContext
+    if (!session.engine) {
+      console.error('❌ ERROR: session.engine is null and could not be reconstructed');
+      return res.status(500).json({
+        error: 'Scenario engine not initialized',
+        details: 'Session does not have a valid scenario engine. Please restart the scenario.'
+      });
+    }
+
     const runtimeContext = session.engine.getRuntimeContext();
     const coreAgentPrompt = loadSystemPrompt();
 
@@ -3322,12 +3337,25 @@ app.post('/api/sessions/:sessionId/action', async (req, res) => {
   try {
     const { sessionId } = req.params;
     const { action } = req.body;
-    
+
     const session = await getSession(sessionId);
     if (!session) {
       return res.status(404).json({ error: 'Session not found' });
     }
-    
+
+    // Reconstruct ScenarioEngine if needed
+    if (!session.engine && session.scenario) {
+      console.log('🔧 Reconstructing ScenarioEngine from saved scenario data');
+      session.engine = new ScenarioEngine(session.scenario);
+    }
+
+    if (!session.engine) {
+      return res.status(500).json({
+        error: 'Scenario engine not initialized',
+        details: 'Session does not have a valid scenario engine.'
+      });
+    }
+
     // Process action through engine
     const result = session.engine.processStudentAction(action);
     
@@ -3495,14 +3523,23 @@ app.get('/api/sessions/:sessionId/performance', async (req, res) => {
 app.delete('/api/sessions/:sessionId', async (req, res) => {
   try {
     const { sessionId } = req.params;
-    
+
     const session = await getSession(sessionId);
     if (!session) {
       return res.status(404).json({ error: 'Session not found' });
     }
-    
-    // Generate final report
-    const finalReport = session.engine.generatePerformanceReport();
+
+    // Reconstruct ScenarioEngine if needed
+    if (!session.engine && session.scenario) {
+      console.log('🔧 Reconstructing ScenarioEngine from saved scenario data');
+      session.engine = new ScenarioEngine(session.scenario);
+    }
+
+    // Generate final report (if engine available)
+    let finalReport = null;
+    if (session.engine && typeof session.engine.generatePerformanceReport === 'function') {
+      finalReport = session.engine.generatePerformanceReport();
+    }
     
     // Delete session
     await db.disconnect(); // sessionId);
