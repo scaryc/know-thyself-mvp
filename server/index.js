@@ -1216,7 +1216,8 @@ ${recentActionsText}
 - Describe the patient exactly as shown in the clinical presentation above
 - Use the current vitals when student checks them
 - If treatments were just given, acknowledge them and show appropriate response
-- Stay in character as the patient - respond naturally to questions and assessments
+- CRITICAL: Describe physical observations in THIRD PERSON (he/she/the patient). Only use FIRST PERSON (I/me/my) inside quotation marks for patient dialogue
+- Respond naturally to questions and assessments in character
 - Be realistic about timing - don't improve instantly, show gradual changes
 `;
 
@@ -2910,7 +2911,7 @@ if (needsSecondCall) {
       { role: 'assistant', content: firstResponse.content },
       { role: 'user', content: [
         ...toolResults,
-        { type: 'text', text: 'Now respond as the patient, describing what the student observes.' }
+        { type: 'text', text: 'Now respond as the patient. Describe what the student observes using QUALITATIVE descriptions (rapid, slow, weak, strong, labored, etc). DO NOT include numeric vital sign values in your text - those are already displayed in the vitals monitor.' }
       ]}
     ]
   });
