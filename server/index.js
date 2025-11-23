@@ -1017,7 +1017,7 @@ function evaluateStateProgression(session) {
       vitals: { ...newVitals },
       previousVitals: { ...oldVitals },
       treatmentsGiven: { ...session.criticalTreatmentsGiven },
-      dangerousMedicationsGiven: session.dangerousMedicationsGiven.length,
+      dangerousMedicationsGiven: (session.dangerousMedicationsGiven || []).length,
       reason: reason
     });
 
@@ -2491,6 +2491,10 @@ app.post('/api/sessions/:id/message', async (req, res) => {
         }
         else if (treatment.type === 'dangerous_medication') {
           // Add to dangerous medications array
+          // Ensure array is initialized
+          if (!session.dangerousMedicationsGiven) {
+            session.dangerousMedicationsGiven = [];
+          }
           session.dangerousMedicationsGiven.push({
             drug: treatment.drug,
             keyword: treatment.keyword,
