@@ -84,7 +84,7 @@
 **Status:** Fully Functional | **Location:** server/ (multiple services)
 
 **Capabilities:**
-- Realistic patient responses via Claude Sonnet 3.5
+- Realistic patient responses via Claude Sonnet 4.0
 - Dynamic vital signs simulation with real-time updates
 - Treatment validation and medication effects
 - State progression (initial → improving → deteriorating → critical)
