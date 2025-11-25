@@ -28,7 +28,7 @@ Complete translation and localization of the Know Thyself MVP medical simulation
 1. **Language Selection**: Students choose language at registration
 2. **Medical Terminology**: Not constrained to specific textbook (handled by translator)
 3. **Patient Address Style**: Formal (vy) throughout all scenarios
-4. **Vital Signs Units**: Keep existing units (mmHg, °C, mmol/L, etc.)
+4. **Vital Signs Units**: Keep existing units (mmHg, ï¿½C, mmol/L, etc.)
 5. **Code Comments**: Remain in English for international maintenance
 
 ---
@@ -148,7 +148,7 @@ Four complete patient simulation scenarios requiring medical translation accurac
 #### 2.4 Traumatic Brain Injury (TBI) Patient
 - **File**: `scenarios/tbi_patient_v2_0_final.json`
 - **Lines**: 1,198
-- **Patient**: Ján (male)  Already Slovak name!
+- **Patient**: Jï¿½n (male)  Already Slovak name!
 - **Key Medical Content**:
   - Fall mechanism descriptions
   - Glasgow Coma Scale scoring
@@ -325,7 +325,8 @@ Student-facing interface text requiring translation.
   - Information note about session duration
 
 **New Feature Required**: Language selection dropdown
-- Options: "English" / "Slovak" (or "English" / "Slovenina")
+- Options: "English" / "Slovak" (or "English" / "Sloven
+ina")
 - Default: English
 - Stored in session data
 
@@ -363,14 +364,14 @@ Student-facing interface text requiring translation.
     - HR (Heart Rate)
     - RR (Respiratory Rate)
     - BP (Blood Pressure)
-    - SpO‚ (Oxygen Saturation)
+    - SpOï¿½ (Oxygen Saturation)
     - Temp (Temperature)
     - GCS (Glasgow Coma Scale)
     - Glucose (Blood Sugar)
-  - Units: bpm, /min, mmHg, %, °C, mmol/L  Keep as-is
+  - Units: bpm, /min, mmHg, %, ï¿½C, mmol/L  Keep as-is
   - Status badges: "TACHY", "HIGH", "LOW", "Hypertensive"
 
-**Translation Note**: Medical abbreviations (HR, RR, BP, SpO‚, GCS) should match what Slovak paramedics use.
+**Translation Note**: Medical abbreviations (HR, RR, BP, SpOï¿½, GCS) should match what Slovak paramedics use.
 
 #### 4.5 Patient Notes Panel
 - **File**: `know-thyself-frontend/src/components/clinical/PatientNotes.tsx`
@@ -408,8 +409,8 @@ User-visible error and status messages in backend.
    - "High-risk intervention attempted"
 
 4. **State Transition Messages**
-   - "State Transition: INITIAL ’ IMPROVING"
-   - "State Transition: INITIAL ’ DETERIORATING"
+   - "State Transition: INITIAL ï¿½ IMPROVING"
+   - "State Transition: INITIAL ï¿½ DETERIORATING"
    - "Critical treatments given"
    - "No oxygen after X minutes"
    - "Patient responding well to treatment"
@@ -693,7 +694,7 @@ Each scenario requires 6-8 hours of careful medical translation:
 
 - [ ] **TBI Patient** (`scenarios/sk/tbi_patient_v2_0_final.json`) - 6-8 hours
   - Translate dispatch info, scene description
-  - Translate patient dialogue (Ján) - male, formal vy
+  - Translate patient dialogue (Jï¿½n) - male, formal vy
   - Translate trauma terminology (fall mechanism, C-spine, herniation)
   - Translate Cushing's triad descriptions
   - Translate 30+ medication responses
@@ -703,7 +704,7 @@ Each scenario requires 6-8 hours of careful medical translation:
 **Special Instructions for Translator**:
 1. All patient dialogue must use formal address (vy)
 2. Medication names: Use Slovak generic names where applicable
-3. Vital signs units: Keep as-is (mmHg, °C, mmol/L)
+3. Vital signs units: Keep as-is (mmHg, ï¿½C, mmol/L)
 4. `patient_says` fields must sound natural - not literal translation
 5. Medical terminology must match Slovak paramedic curriculum
 6. Teaching points must align with Slovak EMS protocols
@@ -768,7 +769,8 @@ For each question:
 
 **Tasks**:
 - [ ] Add language selection dropdown to Registration component
-  - Options: "English" / "Slovenina"
+  - Options: "English" / "Sloven
+ina"
   - Store selection in component state
   - Pass to registration API call
 - [ ] Replace all hardcoded strings with `t()` function calls
@@ -969,14 +971,14 @@ For each question:
 - Patient dialogue: Always "vy" (never "ty")
 - Verbs conjugated for formal second person
 - Example (Slovak):
-  -  Correct: "Ako sa **cítite**?" (How do **you** [formal] feel?)
-  - L Incorrect: "Ako sa **cítia**?" (How do **you** [informal] feel?)
+  -  Correct: "Ako sa **cï¿½tite**?" (How do **you** [formal] feel?)
+  - L Incorrect: "Ako sa **cï¿½tia**?" (How do **you** [informal] feel?)
 
 **Add to Core Agent Prompt**:
 ```
 IMPORTANT: When simulating patient speech in Slovak, ALWAYS use formal address (vy form).
 - Use "vy" not "ty"
-- Conjugate verbs appropriately: cítite (not cítia), máte (not máa), viete (not viea)
+- Conjugate verbs appropriately: cï¿½tite (not cï¿½tia), mï¿½te (not mï¿½a), viete (not viea)
 - This reflects professional paramedic-patient interaction in Slovak culture.
 ```
 
@@ -989,20 +991,20 @@ SLOVAK LANGUAGE GUIDELINES:
 
 1. FORMAL ADDRESS (VY):
    - Always use formal "vy" when patient speaks to paramedic
-   - Verbs: cítite, máte, viete, potrebujete, mô~ete
+   - Verbs: cï¿½tite, mï¿½te, viete, potrebujete, mï¿½~ete
 
 2. THIRD-PERSON DESCRIPTION:
    - Use correct pronouns: on (he), ona (she), oni (they)
    - Gender agreement for adjectives
 
 3. NATURAL DISTRESS EXPRESSIONS:
-   - Calm: "Bolí ma to." (It hurts.)
-   - Distressed: "Ve>mi ma to bolí!" (It hurts a lot!)
-   - Critical: "Nemô~em dýchae! Pomô~te mi!" (I can't breathe! Help me!)
+   - Calm: "Bolï¿½ ma to." (It hurts.)
+   - Distressed: "Ve>mi ma to bolï¿½!" (It hurts a lot!)
+   - Critical: "Nemï¿½~em dï¿½chae! Pomï¿½~te mi!" (I can't breathe! Help me!)
 
 4. MEDICAL TERMS:
    - Use Slovak medical terminology, not English
-   - Example: "dýchanie" not "breathing", "bolese" not "pain"
+   - Example: "dï¿½chanie" not "breathing", "bolese" not "pain"
 ```
 
 ### 3. Medical Terminology Guidance
@@ -1011,16 +1013,18 @@ SLOVAK LANGUAGE GUIDELINES:
 
 | English | Slovak | Notes |
 |---------|--------|-------|
-| Blood pressure | Krvný tlak | Standard term |
-| Heart rate | Srdcová frekvencia / Pulz | Both acceptable |
-| Respiratory rate | Dychová frekvencia | Standard term |
-| Oxygen saturation | Saturácia kyslíkom | Standard term |
-| Glasgow Coma Scale | Glasgowská kóma akála | Same abbreviation (GCS) |
-| SAMPLE history | SAMPLE anamnéza | Acronym kept, may need explanation |
-| Chest pain | Bolese na hrudníku | Standard |
-| Shortness of breath | Dýchavinose | Standard |
-| Seizure | Záchvat / KUe | Context-dependent |
-| Traumatic brain injury | Traumatické poranenie mozgu | Standard |
+| Blood pressure | Krvnï¿½ tlak | Standard term |
+| Heart rate | Srdcovï¿½ frekvencia / Pulz | Both acceptable |
+| Respiratory rate | Dychovï¿½ frekvencia | Standard term |
+| Oxygen saturation | Saturï¿½cia kyslï¿½kom | Standard term |
+| Glasgow Coma Scale | Glasgowskï¿½ kï¿½ma akï¿½la | Same abbreviation (GCS) |
+| SAMPLE history | SAMPLE anamnï¿½za | Acronym kept, may need explanation |
+| Chest pain | Bolese na hrudnï¿½ku | Standard |
+| Shortness of breath | Dï¿½chavi
+nose | Standard |
+| Seizure | Zï¿½chvat / KU
+e | Context-dependent |
+| Traumatic brain injury | Traumatickï¿½ poranenie mozgu | Standard |
 
 **Note**: Translator should verify terms with Slovak paramedic textbooks.
 
@@ -1034,10 +1038,10 @@ SLOVAK LANGUAGE GUIDELINES:
 | English Generic | Slovak Generic | Notes |
 |----------------|----------------|-------|
 | Albuterol | Salbutamol | Preferred in Europe |
-| Epinephrine | Epinefrín / Adrenalín | Both used |
-| Nitroglycerin | Nitroglycerín | Same |
-| Aspirin | Kyselina acetylsalicylová / Aspirín | Medical term / common name |
-| Morphine | Morfín | Same |
+| Epinephrine | Epinefrï¿½n / Adrenalï¿½n | Both used |
+| Nitroglycerin | Nitroglycerï¿½n | Same |
+| Aspirin | Kyselina acetylsalicylovï¿½ / Aspirï¿½n | Medical term / common name |
+| Morphine | Morfï¿½n | Same |
 
 **Add to scenarios**: Check all medication names with Slovak pharmacology references.
 
@@ -1048,10 +1052,10 @@ SLOVAK LANGUAGE GUIDELINES:
 | Parameter | Unit | Slovak Term |
 |-----------|------|-------------|
 | Blood Pressure | mmHg | mmHg (same) |
-| Heart Rate | bpm | úderov/min |
+| Heart Rate | bpm | ï¿½derov/min |
 | Respiratory Rate | /min | dychov/min |
-| Temperature | °C | °C (same) |
-| SpO‚ | % | % (same) |
+| Temperature | ï¿½C | ï¿½C (same) |
+| SpOï¿½ | % | % (same) |
 | Glucose | mmol/L | mmol/L (same) |
 | GCS | points | bodov |
 
@@ -1071,7 +1075,8 @@ SLOVAK LANGUAGE GUIDELINES:
 ### 7. UTF-8 Character Encoding
 
 **Slovak Special Characters**:
-á, ä, , , é, í, :, >, H, ó, ô, U, a, e, ú, ý, ~
+ï¿½, ï¿½, 
+, , ï¿½, ï¿½, :, >, H, ï¿½, ï¿½, U, a, e, ï¿½, ï¿½, ~
 
 **Technical Requirements**:
 - Database: Ensure UTF-8 encoding (already set in PostgreSQL)
@@ -1081,8 +1086,9 @@ SLOVAK LANGUAGE GUIDELINES:
 
 **Test strings**:
 ```
-"da~ká dýchavinose, bolese na hrudníku, aok."
-"Príaerná bolese hlavy, nevo>nose, zmätenose."
+"da~kï¿½ dï¿½chavi
+nose, bolese na hrudnï¿½ku, aok."
+"Prï¿½aernï¿½ bolese hlavy, nevo>nose, zmï¿½tenose."
 ```
 
 ### 8. AI Prompt Strengthening Techniques
@@ -1091,7 +1097,7 @@ SLOVAK LANGUAGE GUIDELINES:
 
 **Add to ALL agent prompts**:
 ```
-  CRITICAL: You MUST respond ONLY in Slovak language.
+ï¿½ CRITICAL: You MUST respond ONLY in Slovak language.
 - All your responses must be in Slovak
 - Patient dialogue must be in Slovak
 - Clinical notes must be in Slovak
@@ -1112,21 +1118,21 @@ REMINDER: Respond in SLOVAK language only. This is a Slovak-language training se
 
 #### Agent Prompts
 
-- [ ] `server/prompts/en/core-agent-ami.txt` ’ `server/prompts/sk/core-agent-ami.txt`
+- [ ] `server/prompts/en/core-agent-ami.txt` ï¿½ `server/prompts/sk/core-agent-ami.txt`
   - **Lines**: 259
   - **Complexity**: HIGH
   - **Estimated time**: 8-10 hours
   - **Reviewer**: Slovak paramedic instructor
   - **Special notes**: Add Slovak grammar rules, formal address instructions
 
-- [ ] `server/prompts/en/cognitiveCoachAgent.txt` ’ `server/prompts/sk/cognitiveCoachAgent.txt`
+- [ ] `server/prompts/en/cognitiveCoachAgent.txt` ï¿½ `server/prompts/sk/cognitiveCoachAgent.txt`
   - **Lines**: 664
   - **Complexity**: MEDIUM
   - **Estimated time**: 12-15 hours
   - **Reviewer**: Slovak medical education expert
   - **Special notes**: Pedagogical language, encouraging tone
 
-- [ ] `server/prompts/en/aarAgent.txt` ’ `server/prompts/sk/aarAgent.txt`
+- [ ] `server/prompts/en/aarAgent.txt` ï¿½ `server/prompts/sk/aarAgent.txt`
   - **Lines**: 452
   - **Complexity**: MEDIUM
   - **Estimated time**: 8-10 hours
@@ -1135,36 +1141,36 @@ REMINDER: Respond in SLOVAK language only. This is a Slovak-language training se
 
 #### Scenarios
 
-- [ ] `scenarios/en/asthma_patient_v2.0_final.json` ’ `scenarios/sk/asthma_patient_v2.0_final.json`
+- [ ] `scenarios/en/asthma_patient_v2.0_final.json` ï¿½ `scenarios/sk/asthma_patient_v2.0_final.json`
   - **Lines**: 1,269
   - **Patient**: Sarah (young adult female)
   - **Estimated time**: 6-8 hours
   - **Medical review**: Respiratory terminology
   - **Key focus**: Natural patient dialogue, medication responses
 
-- [ ] `scenarios/en/stemi_patient_v2_0_final.json` ’ `scenarios/sk/stemi_patient_v2_0_final.json`
+- [ ] `scenarios/en/stemi_patient_v2_0_final.json` ï¿½ `scenarios/sk/stemi_patient_v2_0_final.json`
   - **Lines**: 1,415
   - **Patient**: Miroslav  Slovak name
   - **Estimated time**: 7-9 hours
   - **Medical review**: Cardiac terminology, ECG terms
   - **Key focus**: STEMI protocol language
 
-- [ ] `scenarios/en/status_epilepticus_patient_v2_0_final.json` ’ `scenarios/sk/status_epilepticus_patient_v2_0_final.json`
+- [ ] `scenarios/en/status_epilepticus_patient_v2_0_final.json` ï¿½ `scenarios/sk/status_epilepticus_patient_v2_0_final.json`
   - **Lines**: 1,295
   - **Estimated time**: 6-8 hours
   - **Medical review**: Neurological terms, GCS
   - **Key focus**: Seizure descriptions
 
-- [ ] `scenarios/en/tbi_patient_v2_0_final.json` ’ `scenarios/sk/tbi_patient_v2_0_final.json`
+- [ ] `scenarios/en/tbi_patient_v2_0_final.json` ï¿½ `scenarios/sk/tbi_patient_v2_0_final.json`
   - **Lines**: 1,198
-  - **Patient**: Ján  Slovak name
+  - **Patient**: Jï¿½n  Slovak name
   - **Estimated time**: 6-8 hours
   - **Medical review**: Trauma terminology
   - **Key focus**: C-spine, herniation language
 
 #### Cognitive Questions
 
-- [ ] `server/data/en/cognitiveCoachQuestions.json` ’ `server/data/sk/cognitiveCoachQuestions.json`
+- [ ] `server/data/en/cognitiveCoachQuestions.json` ï¿½ `server/data/sk/cognitiveCoachQuestions.json`
   - **Lines**: 362
   - **Questions**: 20 complete questions
   - **Estimated time**: 8-10 hours
@@ -1265,7 +1271,7 @@ REMINDER: Respond in SLOVAK language only. This is a Slovak-language training se
 
 ### 3. AI Response Quality Testing
 
-**Test Matrix** (3 agents × 2 languages = 6 combinations):
+**Test Matrix** (3 agents ï¿½ 2 languages = 6 combinations):
 
 #### Core Agent Slovak Testing:
 - [ ] Patient dialogue naturalness
@@ -1277,7 +1283,7 @@ REMINDER: Respond in SLOVAK language only. This is a Slovak-language training se
 - [ ] Clinical note quality
   - Generate 5 clinical notes, review accuracy
 - [ ] State transition descriptions
-  - Test all 4 states × 4 scenarios = 16 tests
+  - Test all 4 states ï¿½ 4 scenarios = 16 tests
 
 #### Cognitive Coach Slovak Testing:
 - [ ] Question presentation clarity
@@ -1341,7 +1347,8 @@ REMINDER: Respond in SLOVAK language only. This is a Slovak-language training se
 ### 7. UTF-8 Encoding Verification
 
 - [ ] Test all Slovak special characters display correctly:
-  - á, ä, , , é, í, :, >, H, ó, ô, U, a, e, ú, ý, ~
+  - ï¿½, ï¿½, 
+, , ï¿½, ï¿½, :, >, H, ï¿½, ï¿½, U, a, e, ï¿½, ï¿½, ~
 - [ ] Test in all UI components
 - [ ] Test in database storage and retrieval
 - [ ] Test in API responses
@@ -1558,32 +1565,32 @@ REMINDER: Respond in SLOVAK language only. This is a Slovak-language training se
   - Slovak native speaker
   - Medical background or experience
   - Paramedic terminology knowledge preferred
-  - **Estimated cost**: ¬2,000-¬3,000 (¬50/hour × 40-60 hours)
+  - **Estimated cost**: ï¿½2,000-ï¿½3,000 (ï¿½50/hour ï¿½ 40-60 hours)
 
 #### Review Team
 - **Slovak Paramedic Instructor** (12-16 hours)
   - Medical accuracy review
   - Terminology verification
   - Teaching point review
-  - **Estimated cost**: ¬600-¬800 (¬50/hour × 12-16 hours)
+  - **Estimated cost**: ï¿½600-ï¿½800 (ï¿½50/hour ï¿½ 12-16 hours)
 
 - **Native Slovak Speaker** (4-6 hours)
   - Linguistic quality review
   - Grammar check
   - Natural language verification
-  - **Estimated cost**: ¬200-¬300 (¬50/hour × 4-6 hours)
+  - **Estimated cost**: ï¿½200-ï¿½300 (ï¿½50/hour ï¿½ 4-6 hours)
 
 #### Testing Team
 - **QA Tester** (8-12 hours)
   - End-to-end testing
   - Regression testing
   - Bug documentation
-  - **Estimated cost**: ¬320-¬480 (¬40/hour × 8-12 hours)
+  - **Estimated cost**: ï¿½320-ï¿½480 (ï¿½40/hour ï¿½ 8-12 hours)
 
-- **Slovak Paramedic Students** (3 students × 2 hours)
+- **Slovak Paramedic Students** (3 students ï¿½ 2 hours)
   - Pilot testing
   - Feedback session
-  - **Estimated cost**: ¬180 (¬30/hour × 3 students × 2 hours) or volunteer
+  - **Estimated cost**: ï¿½180 (ï¿½30/hour ï¿½ 3 students ï¿½ 2 hours) or volunteer
 
 ### 2. Technology
 
@@ -1593,7 +1600,7 @@ REMINDER: Respond in SLOVAK language only. This is a Slovak-language training se
 - **Testing Tools**: Existing (no additional cost)
 - **Translation Memory Tool** (optional): Recommended for consistency
   - Options: OmegaT (free), memoQ (paid), Trados (paid)
-  - **Cost**: ¬0-¬500 (if using paid tool)
+  - **Cost**: ï¿½0-ï¿½500 (if using paid tool)
 
 #### Infrastructure
 - **No additional infrastructure required**
@@ -1623,14 +1630,14 @@ REMINDER: Respond in SLOVAK language only. This is a Slovak-language training se
 
 | Item | Cost Estimate |
 |------|---------------|
-| **Professional Medical Translator** | ¬2,000-¬3,000 |
-| **Slovak Paramedic Instructor Review** | ¬600-¬800 |
-| **Native Slovak Speaker Review** | ¬200-¬300 |
-| **QA Testing** | ¬320-¬480 |
-| **Pilot Test Participants** | ¬180 (or volunteer) |
-| **Translation Tools** (optional) | ¬0-¬500 |
+| **Professional Medical Translator** | ï¿½2,000-ï¿½3,000 |
+| **Slovak Paramedic Instructor Review** | ï¿½600-ï¿½800 |
+| **Native Slovak Speaker Review** | ï¿½200-ï¿½300 |
+| **QA Testing** | ï¿½320-ï¿½480 |
+| **Pilot Test Participants** | ï¿½180 (or volunteer) |
+| **Translation Tools** (optional) | ï¿½0-ï¿½500 |
 | **Development Team** | Internal cost (28-36 hours) |
-| **Total External Costs** | **¬3,300-¬5,260** |
+| **Total External Costs** | **ï¿½3,300-ï¿½5,260** |
 
 ---
 
@@ -1743,7 +1750,7 @@ REMINDER: Respond in SLOVAK language only. This is a Slovak-language training se
 **Recommended References for Translator**:
 1. Slovak Paramedic Textbooks (latest editions)
 2. Slovak Emergency Medical Services Protocols
-3. Slovenská komora záchranárov (Slovak Chamber of Paramedics) terminology guides
+3. Slovenskï¿½ komora zï¿½chranï¿½rov (Slovak Chamber of Paramedics) terminology guides
 4. Medical terminology databases (Slovak medical universities)
 
 ### B. Translation Tools Recommendations
@@ -1755,13 +1762,13 @@ REMINDER: Respond in SLOVAK language only. This is a Slovak-language training se
    - Consistency checking
    - Good for JSON files
 
-2. **memoQ** (Paid - ¬50-100/month)
+2. **memoQ** (Paid - ï¿½50-100/month)
    - Professional translation tool
    - Excellent terminology management
    - Quality assurance features
    - Better for large projects
 
-3. **DeepL Pro** (Paid - ¬25/month)
+3. **DeepL Pro** (Paid - ï¿½25/month)
    - Machine translation for initial draft
    - **Must be reviewed by professional translator**
    - Good for consistency in terminology

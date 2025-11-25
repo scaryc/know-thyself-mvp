@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
@@ -7,6 +8,7 @@ interface RegistrationProps {
 }
 
 function Registration({ onRegistrationComplete }: RegistrationProps) {
+  const { language, setLanguage, supportedLanguages } = useLanguage();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [consent, setConsent] = useState(false);
@@ -61,6 +63,7 @@ function Registration({ onRegistrationComplete }: RegistrationProps) {
           name: name.trim(),
           email: email.trim(),
           consent: consent,
+          language: language, // Send selected language
         }),
       });
 
@@ -148,6 +151,26 @@ function Registration({ onRegistrationComplete }: RegistrationProps) {
               disabled={isSubmitting}
               required
             />
+          </div>
+
+          {/* Language Selection */}
+          <div>
+            <label htmlFor="language" className="block text-sm font-medium mb-2 text-white">
+              Language / Jazyk <span className="text-red-400">*</span>
+            </label>
+            <select
+              id="language"
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
+              className="w-full px-4 py-3 bg-bg-primary border border-border rounded-lg focus:outline-none focus:border-accent transition-colors text-white cursor-pointer"
+              disabled={isSubmitting}
+            >
+              {supportedLanguages.map((lang) => (
+                <option key={lang.code} value={lang.code}>
+                  {lang.label}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Consent Checkbox */}

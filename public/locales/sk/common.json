@@ -1,0 +1,18 @@
+{
+  "buttons": {
+    "submit": "Odoslať",
+    "cancel": "Zrušiť",
+    "continue": "Pokračovať",
+    "back": "Späť",
+    "next": "Ďalej",
+    "finish": "Dokončiť",
+    "close": "Zatvoriť"
+  },
+  "messages": {
+    "loading": "Načítavam...",
+    "saving": "Ukladám...",
+    "success": "Úspech",
+    "error": "Chyba",
+    "confirm": "Ste si istý?"
+  }
+}

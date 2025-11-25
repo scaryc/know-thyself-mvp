@@ -40,7 +40,8 @@
       "Bash(ipconfig:*)",
       "Bash(netsh interface teredo show state)",
       "Bash(timeout 10 npm run server:*)",
-      "Bash(del \"C:\\Users\\peter\\know-thyself-mvp\\.git\\index.lock\" 2)"
+      "Bash(del \"C:\\Users\\peter\\know-thyself-mvp\\.git\\index.lock\" 2)",
+      "Bash(npm install:*)"
     ],
     "deny": [],
     "ask": []

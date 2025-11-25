@@ -22,6 +22,7 @@ model Session {
   studentName   String?
   studentEmail  String?
   group         String?        // "A" or "B" for A/B testing
+  language      String         @default("en")  // "en" or "sk" - Language preference for session
 
   // Session Metadata
   scenarioId    String?

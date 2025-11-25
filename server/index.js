@@ -22,6 +22,9 @@ import aarService from './services/aarService.js';
 import db from './services/databaseService.js';
 import { dbToRuntimeSession, runtimeToDbSession } from './services/sessionHelpers.js';
 
+// Language loader
+import { loadPrompt, loadScenario as loadScenarioWithLang, loadQuestions, getTranslation } from './utils/languageLoader.js';
+
 // Initialize
 const app = express();
 const anthropic = new Anthropic({
@@ -84,25 +87,19 @@ async function saveSession(session) {
 }
 
 /**
- * Load scenario from JSON file
+ * Load scenario from JSON file (with language support)
+ * @deprecated Use loadScenarioWithLang from languageLoader instead
  */
-function loadScenario(scenarioId) {
-  const scenarioPath = path.join(__dirname, `../scenarios/${scenarioId}.json`);
-  return JSON.parse(fs.readFileSync(scenarioPath, 'utf8'));
+function loadScenario(scenarioId, language = 'en') {
+  return loadScenarioWithLang(scenarioId, language);
 }
 
 /**
- * Load AI system prompt
+ * Load AI system prompt (with language support)
+ * @deprecated Use loadPrompt from languageLoader instead
  */
-function loadSystemPrompt() {
-  const promptPath = path.join(__dirname, '../prompts/core-agent-ami.txt');
-  if (fs.existsSync(promptPath)) {
-    return fs.readFileSync(promptPath, 'utf8');
-  }
-  // Fallback prompt if file doesn't exist
-  return `You are simulating a patient in a medical training scenario. 
-Respond as the patient would, showing realistic symptoms and reactions.
-Be authentic and follow the scenario context provided.`;
+function loadSystemPrompt(language = 'en') {
+  return loadPrompt('core-agent-ami', language);
 }
 
 // ============================================================================
@@ -294,7 +291,7 @@ async function saveStudentData(session) {
  */
 app.post('/api/student/register', async (req, res) => {
   try {
-    const { name, email, consent } = req.body;
+    const { name, email, consent, language = 'en' } = req.body;
 
     // Validation
     if (!name || name.trim().length < 2) {
@@ -348,6 +345,7 @@ app.post('/api/student/register', async (req, res) => {
       studentName: name.trim(),
       studentEmail: email?.trim() || null,
       group,
+      language: language || 'en', // Store language preference
       registeredAt: new Date().toISOString(),
       sessionId: null,
       status: 'registered'
@@ -432,6 +430,7 @@ app.post('/api/sessions/start', async (req, res) => {
     // Layer 3: Load student data if provided
     let studentData = null;
     let challengePointsEnabled = true; // Default
+    let language = 'en'; // Default language
 
     if (studentId) {
       try {
@@ -442,7 +441,8 @@ app.post('/api/sessions/start', async (req, res) => {
           // Group A = Challenge Points ENABLED
           // Group B = Challenge Points DISABLED
           challengePointsEnabled = studentData.group === 'A';
-          console.log(`👤 Student: ${studentData.studentName} (Group ${studentData.group})`);
+          language = studentData.language || 'en'; // Get language preference
+          console.log(`👤 Student: ${studentData.studentName} (Group ${studentData.group}, Language: ${language})`);
         } else {
           console.warn(`⚠️ Student file not found: ${studentId}`);
         }
@@ -454,6 +454,7 @@ app.post('/api/sessions/start', async (req, res) => {
       challengePointsEnabled = req.body.challengePointsEnabled !== undefined
         ? req.body.challengePointsEnabled
         : true;
+      language = req.body.language || 'en'; // Allow language override
     }
 
     console.log('🎓 Starting new session with Cognitive Coach');
@@ -477,6 +478,7 @@ app.post('/api/sessions/start', async (req, res) => {
       studentName: studentData?.studentName || null,
       studentEmail: studentData?.studentEmail || null,
       group: studentData?.group || null,
+      language: language, // Store language preference for session
 
       // Layer 3: Session tracking (Feature 2 - Session Resume)
       currentScenarioIndex: 0,
@@ -2671,7 +2673,7 @@ Describe this change in your response - the patient's condition is actively chan
         if (session.scenarioId) {
           console.log('⚠️ No scenario data in session, attempting to reload from scenarioId:', session.scenarioId);
           try {
-            const reloadedScenario = loadScenario(session.scenarioId);
+            const reloadedScenario = loadScenario(session.scenarioId, session.language || 'en');
             if (reloadedScenario) {
               session.scenario = reloadedScenario;
               session.engine = new ScenarioEngine(reloadedScenario);
@@ -2706,7 +2708,7 @@ Describe this change in your response - the patient's condition is actively chan
     }
 
     const runtimeContext = session.engine.getRuntimeContext();
-    const coreAgentPrompt = loadSystemPrompt();
+    const coreAgentPrompt = loadSystemPrompt(session.language || 'en');
 
     // Build rich patient context (for all Core Agent messages)
     let patientContext = '';
@@ -3035,8 +3037,8 @@ app.post('/api/sessions/:id/begin-scenario', async (req, res) => {
 
     console.log('📋 Loading scenario:', session.scenarioId);
 
-    // Load scenario and create engine
-    const scenarioData = loadScenario(session.scenarioId);
+    // Load scenario and create engine (with language support)
+    const scenarioData = loadScenario(session.scenarioId, session.language || 'en');
 
     // Check if loaded
     if (!scenarioData) {
@@ -3266,8 +3268,8 @@ app.post('/api/sessions/:id/next-scenario', async (req, res) => {
 
       console.log('📋 Loading next scenario:', nextScenario);
 
-      // Load scenario and create engine
-      const scenarioData = loadScenario(nextScenario);
+      // Load scenario and create engine (with language support)
+      const scenarioData = loadScenario(nextScenario, session.language || 'en');
 
       if (!scenarioData) {
         console.error('❌ FAILED: Scenario data is undefined!');
@@ -3395,7 +3397,7 @@ app.post('/api/sessions/:sessionId/action', async (req, res) => {
       } else if (session.scenarioId) {
         console.log('⚠️ No scenario data in session, reloading from scenarioId:', session.scenarioId);
         try {
-          const reloadedScenario = loadScenario(session.scenarioId);
+          const reloadedScenario = loadScenario(session.scenarioId, session.language || 'en');
           if (reloadedScenario) {
             session.scenario = reloadedScenario;
             session.engine = new ScenarioEngine(reloadedScenario);
@@ -3598,7 +3600,7 @@ app.delete('/api/sessions/:sessionId', async (req, res) => {
       } else if (session.scenarioId) {
         console.log('⚠️ No scenario data in session, reloading from scenarioId:', session.scenarioId);
         try {
-          const reloadedScenario = loadScenario(session.scenarioId);
+          const reloadedScenario = loadScenario(session.scenarioId, session.language || 'en');
           if (reloadedScenario) {
             session.scenario = reloadedScenario;
             session.engine = new ScenarioEngine(reloadedScenario);

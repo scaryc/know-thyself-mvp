@@ -1,0 +1,31 @@
+{
+  "registration": {
+    "success": "Student registered successfully",
+    "failed": "Registration failed",
+    "invalidData": "Invalid student data"
+  },
+  "session": {
+    "created": "Session created successfully",
+    "notFound": "Session not found",
+    "alreadyCompleted": "Session already completed",
+    "invalidId": "Invalid session ID"
+  },
+  "medication": {
+    "dangerousDetected": "DANGEROUS MEDICATION DETECTED",
+    "contraindicated": "This medication is contraindicated",
+    "highRisk": "High-risk intervention attempted"
+  },
+  "stateTransition": {
+    "initialToImproving": "State Transition: INITIAL → IMPROVING",
+    "initialToDeteriorating": "State Transition: INITIAL → DETERIORATING",
+    "criticalTreatments": "Critical treatments given",
+    "noOxygenWarning": "No oxygen after {{minutes}} minutes",
+    "respondingWell": "Patient responding well to treatment"
+  },
+  "performance": {
+    "optimal": "Optimal decision",
+    "acceptable": "Acceptable decision",
+    "suboptimal": "Suboptimal decision",
+    "dangerous": "Dangerous decision"
+  }
+}

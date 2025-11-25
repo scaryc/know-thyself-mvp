@@ -5,6 +5,7 @@ import SessionComplete from './components/SessionComplete';
 import Registration from './components/Registration';
 import { api } from './services/api';
 import type { Vitals, DispatchInfo, PatientInfo } from './interfaces';
+import { LanguageProvider } from './contexts/LanguageContext';
 
 function App() {
   // Layer 3: Student registration state
@@ -397,12 +398,17 @@ function App() {
 
   // Layer 3: Show registration screen if not registered
   if (!isRegistered) {
-    return <Registration onRegistrationComplete={handleRegistrationComplete} />;
+    return (
+      <LanguageProvider>
+        <Registration onRegistrationComplete={handleRegistrationComplete} />
+      </LanguageProvider>
+    );
   }
 
 
   return (
-    <div className="min-h-screen bg-bg-primary text-white">
+    <LanguageProvider>
+      <div className="min-h-screen bg-bg-primary text-white">
       <Header
         isActive={isActive}
         scenarioStartTime={scenarioStartTime}
@@ -450,7 +456,8 @@ function App() {
           onStartAAR={handleStartAAR} // ✅ NEW: Pass Start AAR handler
         />
       )}
-    </div>
+      </div>
+    </LanguageProvider>
   );
 }
 

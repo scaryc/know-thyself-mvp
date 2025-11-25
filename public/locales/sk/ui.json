@@ -1,0 +1,78 @@
+{
+  "registration": {
+    "title": "KNOW THYSELF MVP",
+    "subtitle": "Simulácia výcviku záchranárov",
+    "welcome": "Vitajte v tréningovej simulácii",
+    "fullName": "Celé meno",
+    "fullNamePlaceholder": "Zadajte svoje celé meno",
+    "email": "E-mailová adresa",
+    "emailPlaceholder": "Zadajte svoj e-mail",
+    "language": "Jazyk",
+    "languageSelect": "Vyberte si jazyk",
+    "consent": "Súhlasím s účasťou na tejto tréningovej simulácii a rozumiem, že údaje z mojej relácie budú zaznamenané na vzdelávacie účely.",
+    "startTraining": "Začať výcvik",
+    "registering": "Registrujem...",
+    "sessionInfo": "Táto relácia bude trvať približne 60-90 minút.",
+    "errors": {
+      "nameRequired": "Celé meno je povinné",
+      "emailRequired": "E-mailová adresa je povinná",
+      "emailInvalid": "Prosím zadajte platnú e-mailovú adresu",
+      "consentRequired": "Musíte súhlasiť s účasťou",
+      "registrationFailed": "Registrácia zlyhala. Prosím skúste znova."
+    }
+  },
+  "header": {
+    "appName": "Know Thyself",
+    "phases": {
+      "cognitiveWarmup": "Fáza kognitívneho rozcvičenia",
+      "preparing": "Pripravujem...",
+      "dispatch": "VÝJAZD",
+      "scenario": "SCENÁR {{number}} z 3",
+      "aar": "Hodnotenie po akcii",
+      "performanceAnalysis": "Relácia analýzy výkonu"
+    },
+    "completeScenario": "Dokončiť scenár",
+    "active": "AKTÍVNE"
+  },
+  "vitals": {
+    "title": "Monitor životných funkcií",
+    "hr": "SF",
+    "hrLabel": "Srdcová frekvencia",
+    "rr": "DF",
+    "rrLabel": "Dychová frekvencia",
+    "bp": "KT",
+    "bpLabel": "Krvný tlak",
+    "spo2": "SpO₂",
+    "spo2Label": "Saturácia kyslíkom",
+    "temp": "Teplota",
+    "tempLabel": "Teplota",
+    "gcs": "GCS",
+    "gcsLabel": "Glasgowská kóma škála",
+    "glucose": "Glukóza",
+    "glucoseLabel": "Hladina cukru v krvi",
+    "units": {
+      "bpm": "úderov/min",
+      "perMin": "/min",
+      "mmHg": "mmHg",
+      "percent": "%",
+      "celsius": "°C",
+      "mmolL": "mmol/L"
+    },
+    "status": {
+      "tachy": "TACHY",
+      "high": "VYSOKÝ",
+      "low": "NÍZKY",
+      "hypertensive": "Hypertenzia"
+    }
+  },
+  "patientNotes": {
+    "title": "Klinické poznámky",
+    "emptyState": "Klinické poznámky sa tu objavia, keď začnete zbierať informácie o pacientovi"
+  },
+  "sessionComplete": {
+    "heading": "Tréningová relácia dokončená",
+    "message": "Ďakujeme za dokončenie tréningovej relácie. Vaše údaje o výkone boli uložené.",
+    "dataSaved": "Všetky údaje boli úspešne uložené.",
+    "startNew": "Začať novú tréningovú reláciu"
+  }
+}

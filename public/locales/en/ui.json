@@ -1,0 +1,78 @@
+{
+  "registration": {
+    "title": "KNOW THYSELF MVP",
+    "subtitle": "Paramedic Training Simulation",
+    "welcome": "Welcome to the training simulation",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Enter your full name",
+    "email": "Email Address",
+    "emailPlaceholder": "Enter your email",
+    "language": "Language",
+    "languageSelect": "Select your language",
+    "consent": "I consent to participate in this training simulation and understand that my session data will be recorded for educational purposes.",
+    "startTraining": "Start Training",
+    "registering": "Registering...",
+    "sessionInfo": "This session will take approximately 60-90 minutes to complete.",
+    "errors": {
+      "nameRequired": "Full name is required",
+      "emailRequired": "Email address is required",
+      "emailInvalid": "Please enter a valid email address",
+      "consentRequired": "You must consent to participate",
+      "registrationFailed": "Registration failed. Please try again."
+    }
+  },
+  "header": {
+    "appName": "Know Thyself",
+    "phases": {
+      "cognitiveWarmup": "Cognitive Warm-Up Phase",
+      "preparing": "Preparing...",
+      "dispatch": "DISPATCH",
+      "scenario": "SCENARIO {{number}} of 3",
+      "aar": "After Action Review",
+      "performanceAnalysis": "Performance Analysis Session"
+    },
+    "completeScenario": "Complete Scenario",
+    "active": "ACTIVE"
+  },
+  "vitals": {
+    "title": "Vital Signs Monitor",
+    "hr": "HR",
+    "hrLabel": "Heart Rate",
+    "rr": "RR",
+    "rrLabel": "Respiratory Rate",
+    "bp": "BP",
+    "bpLabel": "Blood Pressure",
+    "spo2": "SpO₂",
+    "spo2Label": "Oxygen Saturation",
+    "temp": "Temp",
+    "tempLabel": "Temperature",
+    "gcs": "GCS",
+    "gcsLabel": "Glasgow Coma Scale",
+    "glucose": "Glucose",
+    "glucoseLabel": "Blood Sugar",
+    "units": {
+      "bpm": "bpm",
+      "perMin": "/min",
+      "mmHg": "mmHg",
+      "percent": "%",
+      "celsius": "°C",
+      "mmolL": "mmol/L"
+    },
+    "status": {
+      "tachy": "TACHY",
+      "high": "HIGH",
+      "low": "LOW",
+      "hypertensive": "Hypertensive"
+    }
+  },
+  "patientNotes": {
+    "title": "Clinical Notes",
+    "emptyState": "Clinical notes will appear here as you gather patient information"
+  },
+  "sessionComplete": {
+    "heading": "Training Session Complete",
+    "message": "Thank you for completing the training session. Your performance data has been saved.",
+    "dataSaved": "All data has been successfully saved.",
+    "startNew": "Start New Training Session"
+  }
+}
