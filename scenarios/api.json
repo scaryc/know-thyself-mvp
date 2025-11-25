@@ -1,0 +1,11 @@
+{
+  "registrationSuccess": "Študent úspešne zaregistrovaný",
+  "registrationFailed": "Registrácia zlyhala: Neplatné údaje o študentovi",
+  "sessionCreated": "Sedenie úspešne vytvorené",
+  "sessionNotFound": "Sedenie sa nenašlo",
+  "dangerousMedication": "ZISTENÝ NEBEZPEČNÝ LIEK: Tento liek je kontraindikovaný.",
+  "stateImproving": "Zmena stavu: Pacient dobre reaguje na liečbu.",
+  "stateDeteriorating": "Zmena stavu: Stav pacienta sa zhoršuje.",
+  "decisionOptimal": "Zaznamenané optimálne rozhodnutie.",
+  "decisionDangerous": "Zaznamenané nebezpečné rozhodnutie."
+}

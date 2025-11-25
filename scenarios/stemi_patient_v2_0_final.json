@@ -1,47 +1,47 @@
 {
-  "scenario_id": "STEMI_MVP_001",
+  "scenario_id": "STEMI_MVP_001_SK",
   "metadata": {
-    "title": "Acute Chest Pain - Anterior STEMI",
-    "version": "2.0_Final_Enhanced",
-    "difficulty": "high",
+    "title": "Akútna bolesť na hrudníku - Predný STEMI",
+    "version": "2.0_Final_Enhanced_SK",
+    "difficulty": "vysoká",
     "estimated_duration_minutes": 15,
-    "scenario_type": "cardiac_acs",
+    "scenario_type": "kardiálny_aks",
     "learning_objectives": [
-      "Recognize acute coronary syndrome presentation",
-      "Perform and interpret 12-lead ECG rapidly",
-      "Administer critical antiplatelet therapy correctly",
-      "Activate Slovak STEMI network appropriately",
-      "Recognize contraindications to nitrates",
-      "Manage VF/VT cardiac arrest complication",
-      "Apply evidence-based oxygen therapy guidelines"
+      "Rozpoznať prezentáciu akútneho koronárneho syndrómu",
+      "Rýchlo vykonať a interpretovať 12-zvodové EKG",
+      "Správne podať kritickú antiagregačnú liečbu",
+      "Primerane aktivovať slovenskú STEMI sieť",
+      "Rozpoznať kontraindikácie nitrátov",
+      "Zvládnuť komplikáciu zástavy srdca pri VF/VT",
+      "Aplikovať usmernenia pre kyslíkovú terapiu založené na dôkazoch"
     ],
     "changelog": {
-      "v2.0_final_enhanced": "Added Layer Two cognitive training (interactive challenge points, critical decision points with full rubrics). Expanded medication formulary to 30+ drugs organized by harm level. Added treatment_responses, aar_teaching_points, and simulation_config sections. Enhanced pharmacokinetics for all medications. Complete parity with Asthma blueprint structure."
+      "v2.0_final_enhanced": "Pridaný kognitívny tréning druhej úrovne (interaktívne výzvy, kritické rozhodovacie body s úplnými rubrikami). Rozšírený zoznam liekov na 30+ liekov organizovaných podľa úrovne poškodenia. Pridané sekcie treatment_responses, aar_teaching_points a simulation_config. Vylepšená farmakokinetika pre všetky lieky. Úplná parita so štruktúrou scenára Astma."
     }
   },
 
   "dispatch_info": {
-    "call_type": "Chest pain",
+    "call_type": "Bolesť na hrudníku",
     "age": "58",
-    "sex": "Male",
-    "location": "Residential home, ground floor",
-    "caller": "Wife",
+    "sex": "Muž",
+    "location": "Rodinný dom, prízemie",
+    "caller": "Manželka",
     "time_of_call": "14:28",
-    "additional_info": "Patient complaining of severe crushing chest pain for approximately 25 minutes. Wife reports he's sweating profusely, looks very pale and unwell. Pain started while watching TV, he thought it was indigestion but it's not improving. Patient appears distressed and frightened."
+    "additional_info": "Pacient sa sťažuje na silnú zvieravú bolesť na hrudníku približne 25 minút. Manželka hlási, že sa silno potí, vyzerá veľmi bledo a zle. Bolesť začala pri sledovaní televízie, myslel si, že je to zlé trávenie, ale nezlepšuje sa to. Pacient vyzerá byť v tiesni a vystrašený."
   },
 
   "scene_description": {
-    "location": "Living room, patient sitting in armchair",
-    "safety": "Scene safe, no hazards",
-    "access": "Ground floor, easy access",
-    "bystanders": "Wife present, very anxious, knows patient's medical history"
+    "location": "Obývačka, pacient sedí v kresle",
+    "safety": "Scéna bezpečná, žiadne nebezpečenstvo",
+    "access": "Prízemie, ľahký prístup",
+    "bystanders": "Prítomná manželka, veľmi úzkostlivá, pozná pacientovu anamnézu"
   },
 
   "patient_profile": {
     "name": "Miroslav",
     "age": 58,
     "weight_kg": 92,
-    "personality": "Anxious, trying to downplay symptoms, afraid he's having heart attack"
+    "personality": "Úzkostlivý, snaží sa zľahčovať symptómy, bojí sa, že má infarkt"
   },
 
   "initial_vitals": {
@@ -57,28 +57,28 @@
 
   "state_descriptions": {
     "initial": {
-      "student_sees": "You arrive to find a middle-aged man sitting forward in an armchair, clutching the center of his chest with his right hand. He's visibly pale with sweat beading on his forehead and soaking through his shirt. He grimaces continuously and his breathing appears labored. When you enter, he looks at you with obvious fear in his eyes. His wife is standing nearby, wringing her hands anxiously.",
-      "appearance": "Pale, diaphoretic, anxious, sitting forward, clutching chest, grimacing with pain, left arm pain evident",
-      "clinical_note": "Classic STEMI presentation: crushing substernal chest pain >20 minutes, radiation to left arm and jaw, diaphoresis, no relief with rest. High suspicion for anterior MI given severe presentation. Requires IMMEDIATE 12-lead ECG within 4 minutes, aspirin immediately, and STEMI network activation. This is time-critical - every minute delays definitive treatment. SpO2 96% means DO NOT give oxygen per ERC 2021 guidelines.",
-      "urgency_level": "critical"
+      "student_sees": "Prichádzate k mužovi v strednom veku, ktorý sedí predklonený v kresle a pravou rukou si zviera stred hrudníka. Je viditeľne bledý, na čele mu perlí pot a presakuje mu cez košeľu. Neustále sa mračí od bolesti a jeho dýchanie sa zdá byť namáhavé. Keď vstúpite, pozerá na vás s očividným strachom v očiach. Jeho manželka stojí neďaleko a úzkostlivo si žmolí ruky.",
+      "appearance": "Bledý, spotený, úzkostlivý, sedí predklonený, zviera si hrudník, mračí sa od bolesti, zjavná bolesť v ľavej ruke",
+      "clinical_note": "Klasická prezentácia STEMI: zvieravá substernálna bolesť na hrudníku >20 minút, vyžarovanie do ľavej ruky a sánky, potenie, žiadna úľava v pokoji. Vysoké podozrenie na predný IM vzhľadom na závažnú prezentáciu. Vyžaduje OKAMŽITÉ 12-zvodové EKG do 4 minút, okamžite aspirín a aktiváciu STEMI siete. Toto je časovo kritické - každá minúta oneskoruje definitívnu liečbu. SpO2 96% znamená NEPODÁVAŤ kyslík podľa usmernení ERC 2021.",
+      "urgency_level": "kritická"
     },
     "improving": {
-      "student_sees": "The patient looks noticeably more comfortable now. His breathing has eased, and while he's still pale, he's no longer grimacing constantly. 'The pain is... it's still there, but it's better,' he says, his voice less strained. 'Maybe 5 out of 10 now instead of 9. I can breathe a bit easier.' The sweating has reduced, though his shirt is still damp. His wife looks slightly less panicked. He's able to speak in full sentences without pausing for breath.",
-      "appearance": "Still pale but less diaphoretic, pain visibly reduced, speaking full sentences, less anxious, breathing easier",
-      "clinical_note": "Patient responding to antianginal therapy (aspirin ± nitrates). Pain reduction is favorable but does NOT mean MI is prevented - cellular damage continues. ECG will show ST elevations. Continue with urgent transport to PKI center. Time from symptom onset to PCI is critical - target <120 minutes from diagnosis. This improvement is symptomatic only; myocardial salvage requires emergency PCI.",
-      "urgency_level": "high"
+      "student_sees": "Pacient vyzerá teraz viditeľne pohodlnejšie. Jeho dýchanie sa uvoľnilo, a hoci je stále bledý, už sa neustále nemračí. 'Bolesť je... stále tam, ale je to lepšie,' hovorí, jeho hlas je menej napätý. 'Možno tak 5 z 10 teraz namiesto 9. Môžem trochu ľahšie dýchať.' Potenie sa znížilo, hoci jeho košeľa je stále vlhká. Jeho manželka vyzerá o niečo menej panicky. Je schopný hovoriť v celých vetách bez prerušenia na nádych.",
+      "appearance": "Stále bledý, ale menej spotený, bolesť viditeľne znížená, hovorí v celých vetách, menej úzkostlivý, dýcha ľahšie",
+      "clinical_note": "Pacient reaguje na antianginóznu liečbu (aspirín ± nitráty). Zníženie bolesti je priaznivé, ale NEZNAMENÁ to, že sa zabránilo IM - poškodenie buniek pokračuje. EKG ukáže ST elevácie. Pokračujte v urgentnom transporte do PCI centra. Čas od nástupu symptómov po PCI je kritický - cieľ <120 minút od diagnózy. Toto zlepšenie je len symptomatické; záchrana myokardu vyžaduje urgentnú PCI.",
+      "urgency_level": "vysoká"
     },
     "deteriorating": {
-      "student_sees": "The patient suddenly looks worse. His pain, which had improved, is intensifying again. 'It's... it's getting worse,' he gasps, his face contorted. 'Pressure... can't... breathe...' His skin has turned ashen gray with a bluish tinge around his lips. He's breathing rapidly and shallowly, struggling for each breath. Suddenly, he clutches his chest violently and his eyes roll back. His wife screams. You see him starting to lose consciousness, his body going limp in the chair.",
-      "appearance": "Severe distress, ashen/cyanotic, rapid shallow breathing, chest clutching, losing consciousness, pre-arrest state",
-      "clinical_note": "CRITICAL: Patient developing cardiogenic shock or malignant arrhythmia (VF/VT imminent). This is anterior STEMI with extensive myocardial damage causing either pump failure or electrical instability. Immediate preparation for cardiac arrest - attach defibrillator NOW, prepare for CPR. If not already done, this patient needs EMERGENCY transport with pre-hospital notification. High risk of sudden cardiac death. Anterior MI affecting large territory of myocardium.",
-      "urgency_level": "life-threatening"
+      "student_sees": "Pacient náhle vyzerá horšie. Jeho bolesť, ktorá sa zlepšila, sa opäť zintenzívňuje. 'Je to... je to horšie,' lapá po dychu, tvár má skrivenú. 'Tlak... nemôžem... dýchať...' Jeho koža zosivela s modrastým nádychom okolo pier. Dýcha rýchlo a plytko, bojuje o každý nádych. Zrazu si prudko zviera hrudník a oči sa mu prevrátia. Jeho manželka kričí. Vidíte, ako začína strácať vedomie, jeho telo ochabuje v kresle.",
+      "appearance": "Závažná tieseň, popolavý/cyanotický, rýchle plytké dýchanie, zviera si hrudník, stráca vedomie, predzástavový stav",
+      "clinical_note": "KRITICKÉ: Pacient rozvíja kardiogénny šok alebo malígnu arytmiu (hroziaca VF/VT). Toto je predný STEMI s rozsiahlym poškodením myokardu spôsobujúcim buď zlyhanie pumpy alebo elektrickú nestabilitu. Okamžitá príprava na zástavu srdca - pripojte defibrilátor TERAZ, pripravte sa na KPR. Ak to ešte nebolo urobené, tento pacient potrebuje URGENTNÝ transport s prednemocničným oznámením. Vysoké riziko náhlej srdcovej smrti. Predný IM postihujúci veľké teritórium myokardu.",
+      "urgency_level": "život ohrozujúca"
     },
     "critical": {
-      "student_sees": "The patient is unresponsive. He's slumped in the chair, not breathing normally - just occasional gasping breaths. His wife is crying hysterically. When you check for a pulse, you can't find one at the carotid. The monitor shows ventricular fibrillation - a chaotic, quivering rhythm. This is sudden cardiac arrest from his heart attack. You need to start CPR immediately and prepare to shock him.",
-      "appearance": "Unresponsive, pulseless, agonal or absent respirations, VF on monitor, cardiac arrest",
-      "clinical_note": "CARDIAC ARREST secondary to anterior STEMI. VF/pulseless VT is the presenting rhythm in ~80% of sudden cardiac death from MI. Requires immediate CPR and defibrillation per ERC 2021 guidelines. After ROSC, patient needs emergency PCI for coronary reperfusion - this is the definitive treatment. Prognosis guarded but salvageable if ROSC achieved quickly and PCI performed. Continue aspirin even in arrest (can give via NG tube if intubated). This arrest is from ischemic VF, highly shockable.",
-      "urgency_level": "arrest"
+      "student_sees": "Pacient nereaguje. Je zosunutý v kresle, nedýcha normálne - len občasné lapavé dychy. Jeho manželka hystericky plače. Keď kontrolujete pulz, na karotíde ho nenájdete. Monitor ukazuje komorovú fibriláciu - chaotický, mihotavý rytmus. Toto je náhla zástava srdca z jeho infarktu. Musíte okamžite začať KPR a pripraviť sa na výboj.",
+      "appearance": "Nereagujúci, bez pulzu, agonálne alebo neprítomné dýchanie, VF na monitore, zástava srdca",
+      "clinical_note": "ZÁSTAVA SRDCA sekundárne pri prednom STEMI. VF/bezpulzová VT je prezentujúci rytmus v ~80% náhlych srdcových smrtí z IM. Vyžaduje okamžitú KPR a defibriláciu podľa usmernení ERC 2021. Po ROSC pacient potrebuje urgentnú PCI na koronárnu reperfúziu - toto je definitívna liečba. Prognóza je neistá, ale zachrániteľná, ak sa ROSC dosiahne rýchlo a vykoná sa PCI. Pokračujte v podávaní aspirínu aj pri zástave (možno podať cez NG sondu, ak je intubovaný). Táto zástava je z ischemickej VF, vysoko šokovateľná.",
+      "urgency_level": "zástava"
     }
   },
 
@@ -87,129 +87,129 @@
       "required_treatments": ["aspirin", "12_lead_ecg"],
       "optional_helpful": ["nitroglycerin_if_bp_allows", "iv_access"],
       "time_minimum_minutes": 5,
-      "student_actions_needed": "Aspirin given + ECG performed + STEMI recognized",
-      "teaching_note": "Early aspirin and ECG acquisition are critical. Nitrates help symptoms but don't prevent MI - definitive treatment is PCI. DO NOT give oxygen if SpO2 ≥90%."
+      "student_actions_needed": "Podaný aspirín + vykonané EKG + rozpoznaný STEMI",
+      "teaching_note": "Včasné podanie aspirínu a zhotovenie EKG sú kritické. Nitráty pomáhajú symptómom, ale nezabránia IM - definitívna liečba je PCI. NEPODÁVAJTE kyslík, ak je SpO2 ≥90%."
     },
     "initial_to_deteriorating": {
       "trigger": "no_aspirin_or_delayed_ecg",
       "time_elapsed_minutes": 8,
-      "description": "Without antiplatelet therapy and rapid diagnosis, MI extends causing cardiogenic shock or malignant arrhythmia"
+      "description": "Bez antiagregačnej liečby a rýchlej diagnózy sa IM rozširuje, čo spôsobuje kardiogénny šok alebo malígnu arytmiu"
     },
     "deteriorating_to_critical": {
       "trigger": "continued_poor_management",
       "time_elapsed_minutes": 12,
-      "description": "Extensive MI leads to VF arrest - shockable cardiac arrest"
+      "description": "Rozsiahly IM vedie k zástave pri VF - šokovateľná zástava srdca"
     },
     "improving_to_stable": {
       "required_treatments": ["aspirin", "12_lead_ecg", "stemi_network_activated", "transport_initiated"],
       "time_minimum_minutes": 10,
-      "description": "Patient stabilized with appropriate treatment, en route to PKI center"
+      "description": "Pacient stabilizovaný primeranou liečbou, na ceste do PCI centra"
     }
   },
 
   "assessment_findings": {
     "abcde": {
       "airway": {
-        "initial": "Patent, speaking clearly",
-        "improving": "Patent, speaking in full sentences",
-        "deteriorating": "At risk, patient becoming less responsive",
-        "critical": "Unresponsive, requires basic airway maneuvers, prepare for intubation"
+        "initial": "Priechodné, hovorí zreteľne",
+        "improving": "Priechodné, hovorí v celých vetách",
+        "deteriorating": "V ohrození, pacient sa stáva menej responzívnym",
+        "critical": "Nereagujúci, vyžaduje základné manévre na uvoľnenie dýchacích ciest, pripraviť na intubáciu"
       },
       "breathing": {
-        "initial": "Slightly increased RR 22/min, clear lung sounds bilaterally, no crackles or wheezes, SpO2 96% on room air",
-        "improving": "RR 20/min, clear bilaterally, SpO2 97%",
-        "deteriorating": "RR 28/min, labored, possible pulmonary edema developing if LV failure, crackles in bases, SpO2 92%",
-        "critical": "Agonal respirations or apneic, requires ventilatory support"
+        "initial": "Mierne zvýšená DF 22/min, čisté dýchacie zvuky bilaterálne, žiadne vrapky ani piskoty, SpO2 96% na izbovom vzduchu",
+        "improving": "DF 20/min, čisté bilaterálne, SpO2 97%",
+        "deteriorating": "DF 28/min, namáhavé, možný rozvoj pľúcneho edému pri zlyhaní ĽK, vrapky na bázach, SpO2 92%",
+        "critical": "Agonálne dýchanie alebo apnoe, vyžaduje ventilačnú podporu"
       },
       "circulation": {
-        "initial": "HR 98/min regular, BP 145/88, strong radial pulses bilaterally, CRT <2sec, skin pale and diaphoretic",
-        "improving": "HR 92/min, BP 138/84, pulses strong, less diaphoretic",
-        "deteriorating": "HR 118/min or bradycardic if heart block developing, BP 110/70 or dropping, pulses weak, skin cold and clammy, signs of shock",
-        "critical": "Pulseless, VF/VT on monitor, cardiac arrest"
+        "initial": "SF 98/min pravidelná, TK 145/88, silné radiálne pulzy bilaterálne, CRT <2s, koža bledá a spotená",
+        "improving": "SF 92/min, TK 138/84, pulzy silné, menej spotený",
+        "deteriorating": "SF 118/min alebo bradykardický pri rozvoji srdcového bloku, TK 110/70 alebo klesajúci, pulzy slabé, koža studená a vlhká, známky šoku",
+        "critical": "Bez pulzu, VF/VT na monitore, zástava srdca"
       },
       "disability": {
-        "initial": "GCS 15 (E4 V5 M6), alert and anxious, pupils equal and reactive",
-        "improving": "GCS 15, less anxious",
-        "deteriorating": "GCS 13-14, confused, pupils equal",
-        "critical": "GCS 3, unresponsive"
+        "initial": "GCS 15 (O4 V5 M6), pri vedomí a úzkostlivý, zrenice izokorické, reagujúce na svetlo",
+        "improving": "GCS 15, menej úzkostlivý",
+        "deteriorating": "GCS 13-14, zmätený, zrenice izokorické",
+        "critical": "GCS 3, nereagujúci"
       },
       "exposure": {
-        "initial": "No trauma, no rashes, diaphoretic, check for medication patches (remove any nitrate patches before giving nitrates)",
-        "improving": "Less diaphoresis",
-        "deteriorating": "Profoundly diaphoretic, cyanotic",
-        "critical": "Cyanotic, mottled"
+        "initial": "Bez traumy, bez vyrážok, spotený, skontrolovať náplasti s liekmi (odstrániť všetky nitrátové náplasti pred podaním nitrátov)",
+        "improving": "Menej potenia",
+        "deteriorating": "Výrazne spotený, cyanotický",
+        "critical": "Cyanotický, mramorovaná koža"
       }
     },
     "sample_history": {
       "symptoms": {
-        "chief_complaint": "Crushing substernal chest pain, 'elephant on chest'",
-        "onset": "25 minutes ago while watching TV",
-        "character": "Crushing, pressure, severe 9/10",
-        "radiation": "Left arm, jaw",
-        "associated": "Nausea, diaphoresis, fear of dying",
-        "timing": "Constant, no relief with rest",
-        "provoking": "Nothing",
-        "relieving": "Nothing helped",
-        "wife_reports": "He's never had pain like this before. He kept saying it was indigestion but I knew something was wrong."
+        "chief_complaint": "Zvieravá substernálna bolesť na hrudníku, 'slon na hrudi'",
+        "onset": "Pred 25 minútami pri sledovaní televízie",
+        "character": "Zvieravá, tlaková, silná 9/10",
+        "radiation": "Ľavá ruka, sánka",
+        "associated": "Nevoľnosť, potenie, strach zo smrti",
+        "timing": "Konštantná, žiadna úľava v pokoji",
+        "provoking": "Nič",
+        "relieving": "Nič nepomohlo",
+        "wife_reports": "Nikdy predtým takúto bolesť nemal. Stále hovoril, že je to zlé trávenie, ale vedela som, že niečo nie je v poriadku."
       },
       "allergies": {
-        "medications": "No known drug allergies",
-        "other": "None"
+        "medications": "Žiadne známe alergie na lieky",
+        "other": "Žiadne"
       },
       "medications": {
         "current": [
-          "Amlodipine 10mg daily (for hypertension)",
-          "Atorvastatin 40mg evening (for cholesterol)",
-          "Aspirin 100mg daily - CRITICAL: 'I take it but I stopped 2 weeks ago because I ran out'"
+          "Amlodipín 10mg denne (na hypertenziu)",
+          "Atorvastatín 40mg večer (na cholesterol)",
+          "Aspirín 100mg denne - KRITICKÉ: 'Užívam ho, ale pred 2 týždňami som prestal, lebo mi došiel'"
         ],
-        "recent_use": "Took his blood pressure medicine this morning",
-        "viagra_cialis_check": "MUST ASK: 'Have you taken Viagra, Cialis, or similar medications in last 48 hours?' - Patient denies"
+        "recent_use": "Dnes ráno si vzal liek na tlak",
+        "viagra_cialis_check": "TREBA SA OPÝTAŤ: 'Užili ste Viagru, Cialis alebo podobné lieky za posledných 48 hodín?' - Pacient popiera"
       },
       "past_medical_history": {
         "major_conditions": [
-          "Hypertension - diagnosed 10 years ago",
-          "Hyperlipidemia",
-          "Type 2 Diabetes - managed with diet",
-          "Ex-smoker - quit 5 years ago (30 pack-year history)"
+          "Hypertenzia - diagnostikovaná pred 10 rokmi",
+          "Hyperlipidémia",
+          "Diabetes mellitus 2. typu - liečený diétou",
+          "Bývalý fajčiar - prestal pred 5 rokmi (30 balíčkorokov)"
         ],
-        "cardiac_history": "No previous MI, no previous chest pain episodes",
-        "last_physical": "6 months ago, doctor said 'watch your cholesterol'"
+        "cardiac_history": "Žiadny predchádzajúci IM, žiadne predchádzajúce epizódy bolesti na hrudníku",
+        "last_physical": "Pred 6 mesiacmi, lekár povedal 'dávajte si pozor na cholesterol'"
       },
       "last_oral_intake": {
-        "food": "Lunch 3 hours ago (chicken soup)",
-        "fluid": "Water, normally drinks",
+        "food": "Obed pred 3 hodinami (kuracia polievka)",
+        "fluid": "Voda, bežne pije",
         "last_meal_time": "13:00"
       },
       "events": {
-        "precipitating": "No exertion, sitting watching TV when pain started",
-        "progression": "Started suddenly, got worse over first 5 minutes, stayed severe 9/10 since then",
-        "family_context": "Wife very worried, father died of heart attack at age 62"
+        "precipitating": "Žiadna námaha, sedel pri sledovaní televízie, keď bolesť začala",
+        "progression": "Začala náhle, zhoršila sa počas prvých 5 minút, odvtedy zostala silná 9/10",
+        "family_context": "Manželka veľmi znepokojená, otec zomrel na infarkt vo veku 62 rokov"
       }
     },
 
     "focused_exam": {
-      "cardiovascular": "Heart sounds normal S1 S2, no murmurs audible initially (may develop if MR from papillary muscle dysfunction), JVP normal initially (may rise if RV involvement), no peripheral edema, both radial pulses present and equal",
-      "respiratory": "Clear lung sounds bilaterally initially, no crackles (may develop if LV failure occurs later)",
-      "neurological": "Alert and oriented x3, cranial nerves grossly intact, moving all extremities",
-      "other": "Abdomen soft, non-tender, no guarding or rebound. No signs of aortic dissection (equal pulses, no BP differential arms)"
+      "cardiovascular": "Srdcové ozvy normálne S1 S2, žiadne šelesty počuteľné na začiatku (môžu sa vyvinúť pri MR z dysfunkcie papilárneho svalu), JVP na začiatku normálne (môže stúpať pri postihnutí PK), žiadny periférny edém, oba radiálne pulzy prítomné a rovnaké",
+      "respiratory": "Čisté dýchacie zvuky bilaterálne na začiatku, žiadne vrapky (môžu sa vyvinúť neskôr pri zlyhaní ĽK)",
+      "neurological": "Pri vedomí, orientovaný x3, hlavové nervy hrubo intaktné, pohybuje všetkými končatinami",
+      "other": "Brucho mäkké, nebolestivé, bez défense alebo rebound. Žiadne známky disekcie aorty (rovnaké pulzy, žiadny rozdiel TK na rukách)"
     },
     
-    "chief_complaint_detail": "Patient describes: 'It feels like an elephant is sitting on my chest. The pressure is terrible. It goes down my left arm, into my jaw. I feel sick to my stomach. I'm sweating like crazy even though I'm cold. I... I think this might be a heart attack. My father died from one.'"
+    "chief_complaint_detail": "Pacient opisuje: 'Cítim sa, akoby mi na hrudi sedel slon. Ten tlak je hrozný. Ide mi to do ľavej ruky, do sánky. Je mi na vracanie. Potím sa ako blázon, aj keď mi je zima. Ja... myslím, že by to mohol byť infarkt. Môj otec na jeden zomrel.'"
   },
 
   "ecg_findings": {
-    "note": "ECG integration for visual display - for MVP, describe findings to student",
-    "rhythm": "Sinus rhythm",
+    "note": "Integrácia EKG pre vizuálne zobrazenie - pre MVP, opíšte nálezy študentovi",
+    "rhythm": "Sínusový rytmus",
     "rate": 98,
     "findings": [
-      "ST elevation 3-4mm in leads V1, V2, V3, V4 (anterior wall)",
-      "ST elevation 2mm in leads I and aVL (high lateral involvement)",
-      "Reciprocal ST depression in leads II, III, aVF (inferior leads)",
-      "Tall peaked T waves in anterior leads (hyperacute T waves)",
-      "No Q waves yet (acute MI, Q waves develop later)"
+      "ST elevácia 3-4mm vo zvodoch V1, V2, V3, V4 (predná stena)",
+      "ST elevácia 2mm vo zvodoch I a aVL (vysoké laterálne postihnutie)",
+      "Recipročné ST depresie vo zvodoch II, III, aVF (spodné zvody)",
+      "Vysoké špicaté T vlny v predných zvodoch (hyperakútne T vlny)",
+      "Zatiaľ žiadne Q vlny (akútny IM, Q vlny sa vyvíjajú neskôr)"
     ],
-    "interpretation": "ACUTE ANTERIOR STEMI - LAD (left anterior descending) artery occlusion",
-    "teaching_point": "Anterior STEMI with high lateral extension - large area of myocardium at risk. LAD supplies anterior wall, septum, and apex - this is a BIG MI. The reciprocal changes (ST depression in inferior leads) confirm this is NOT pericarditis or other STEMI mimics. Hyperacute T waves suggest very early MI (<1 hour). This patient needs emergency PCI NOW. Every minute of delay increases mortality and reduces likelihood of full recovery."
+    "interpretation": "AKÚTNY PREDNÝ STEMI - oklúzia RIA (ramus interventricularis anterior)",
+    "teaching_point": "Predný STEMI s vysokým laterálnym rozšírením - veľká oblasť myokardu v ohrození. RIA zásobuje prednú stenu, septum a hrot - toto je VEĽKÝ IM. Recipročné zmeny (ST depresie v spodných zvodoch) potvrdzujú, že toto NIE JE perikarditída alebo iné napodobeniny STEMI. Hyperakútne T vlny naznačujú veľmi skorý IM (<1 hodina). Tento pacient potrebuje urgentnú PCI TERAZ. Každá minúta oneskorenia zvyšuje mortalitu a znižuje pravdepodobnosť úplného zotavenia."
   },
 
   "critical_treatments": ["aspirin", "12_lead_ecg", "stemi_network_activation"],
@@ -218,16 +218,16 @@
     "anopyrin_aspirin": {
       "generic_name": "Acetylsalicylic acid (Aspirin)",
       "brand_names": ["Anopyrin", "Aspirin", "Acylpyrin"],
-      "class": "Antiplatelet agent, NSAID",
-      "indication": "Acute coronary syndrome, STEMI, NSTEMI, unstable angina, TIA/stroke, fever, pain",
-      "mechanism": "Irreversibly inhibits platelet cyclooxygenase (COX-1), preventing thromboxane A2 synthesis, thereby inhibiting platelet aggregation. Effect lasts lifetime of platelet (~7-10 days). In ACS, prevents thrombus propagation at site of ruptured plaque.",
+      "class": "Antiagregancium, NSAID",
+      "indication": "Akútny koronárny syndróm, STEMI, NSTEMI, nestabilná angína, TIA/CMP, horúčka, bolesť",
+      "mechanism": "Ireverzibilne inhibuje cyklooxygenázu (COX-1) doštičiek, čím zabraňuje syntéze tromboxánu A2 a tým inhibuje agregáciu doštičiek. Účinok trvá po celú dobu života doštičky (~7-10 dní). Pri AKS zabraňuje propagácii trombu v mieste ruptúry plaku.",
       
       "dosing": {
-        "acs_loading_adult": "200mg PO (chewed for faster absorption)",
-        "acs_loading_rationale": "Loading dose achieves therapeutic antiplatelet effect in 14 minutes when chewed vs 30 minutes if swallowed",
-        "maintenance": "100mg daily (patient may already be on this)",
-        "pediatric": "Not typically used in pediatric ACS",
-        "administration": "MUST BE CHEWED for rapid absorption in ACS"
+        "acs_loading_adult": "200mg PO (rozžuť pre rýchlejšiu absorpciu)",
+        "acs_loading_rationale": "Nasycovacia dávka dosiahne terapeutický antiagregačný účinok za 14 minút pri rozžuvaní vs 30 minút pri prehltnutí",
+        "maintenance": "100mg denne (pacient už môže byť na tejto liečbe)",
+        "pediatric": "Zvyčajne sa nepoužíva pri pediatrickom AKS",
+        "administration": "MUSÍ SA ROZŽUŤ pre rýchlu absorpciu pri AKS"
       },
       
       "pharmacokinetics": {
@@ -236,58 +236,58 @@
         "peak_effect_hours": 1,
         "duration_days": "7-10",
         "half_life_minutes": 20,
-        "note": "Antiplatelet effect lasts lifetime of platelet despite short half-life"
+        "note": "Antiagregačný účinok trvá po celú dobu života doštičky napriek krátkemu polčasu"
       },
       
       "contraindications": {
-        "absolute": ["active_gi_bleeding", "known_allergy", "hemophilia"],
-        "relative": ["asthma_aspirin_sensitive", "peptic_ulcer_disease", "severe_liver_disease"]
+        "absolute": ["aktívne_krvácanie_do_GIT", "známa_alergia", "hemofília"],
+        "relative": ["astma_citlivá_na_aspirín", "peptický_vred", "závažné_ochorenie_pečene"]
       },
       
       "side_effects": [
-        "GI upset, nausea",
-        "Increased bleeding risk",
-        "Rare: bronchospasm in aspirin-sensitive asthmatics",
-        "Rare: anaphylaxis if allergic"
+        "GIT ťažkosti, nevoľnosť",
+        "Zvýšené riziko krvácania",
+        "Zriedkavé: bronchospazmus u astmatikov citlivých na aspirín",
+        "Zriedkavé: anafylaxia pri alergii"
       ],
       
       "warnings": [
-        "MUST give loading dose 200mg in ACS even if patient takes daily aspirin",
-        "MUST be chewed, not swallowed, for faster effect",
-        "Ask about aspirin allergy before giving",
-        "In this scenario: patient takes aspirin 100mg at home but stopped 2 weeks ago - still give 200mg loading dose"
+        "MUSÍTE podať nasycovaciu dávku 200mg pri AKS, aj keď pacient užíva denný aspirín",
+        "MUSÍ sa rozžuť, nie prehltnúť, pre rýchlejší účinok",
+        "Opýtajte sa na alergiu na aspirín pred podaním",
+        "V tomto scenári: pacient užíva aspirín 100mg doma, ale prestal pred 2 týždňami - stále podajte 200mg nasycovaciu dávku"
       ],
       
       "scenario_specific_response": {
         "appropriate_for_case": true,
         "critical_treatment": true,
-        "importance": "critical",
+        "importance": "kritická",
         "time_to_effect_minutes": 14,
         "vital_changes": {
           "pain_score": 8,
-          "note": "No immediate vital sign changes, but antiplatelet effect starts within 14 minutes"
+          "note": "Žiadne okamžité zmeny vitálnych funkcií, ale antiagregačný účinok začína do 14 minút"
         },
-        "patient_says": "Patient chews tablet, grimaces at bitter taste. 'That tastes awful... but if it helps...' No immediate pain relief.",
-        "clinical_effect": "Aspirin reduces mortality in STEMI by 23%. Prevents thrombus propagation at site of ruptured coronary plaque. Effect is immediate on platelets but patient won't feel subjective improvement - this is cellular-level protection. Essential first-line treatment. Give BEFORE completing full assessment - this is that critical.",
+        "patient_says": "Pacient rozžuje tabletu, mračí sa na horkú chuť. 'To chutí hrozne... ale ak to pomôže...' Žiadna okamžitá úľava od bolesti.",
+        "clinical_effect": "Aspirín znižuje mortalitu pri STEMI o 23%. Zabraňuje propagácii trombu v mieste ruptúry koronárneho plaku. Účinok je okamžitý na doštičky, ale pacient nepocíti subjektívne zlepšenie - toto je ochrana na bunkovej úrovni. Nevyhnutná liečba prvej línie. Podajte PRED dokončením úplného vyšetrenia - je to tak kritické.",
         "points_if_given": 25,
         "points_if_given_within_3min": 30,
-        "timing_critical": "Must give within 3 minutes of arrival for full points. Every minute of delay increases mortality.",
-        "teaching_point": "Aspirin is THE most important prehospital medication for STEMI - 23% mortality reduction. Give it IMMEDIATELY after recognizing probable ACS, don't wait for ECG confirmation. Loading dose is 200mg chewed (even if patient takes daily aspirin at home). Chewing is critical - achieves therapeutic levels in 14 min vs 30 min if swallowed. This one simple intervention saves more lives than anything else we do prehospital except defibrillation."
+        "timing_critical": "Musí sa podať do 3 minút od príchodu pre plný počet bodov. Každá minúta oneskorenia zvyšuje mortalitu.",
+        "teaching_point": "Aspirín je NAJdôležitejší prednemocničný liek pri STEMI - 23% zníženie mortality. Podajte ho OKAMŽITE po rozpoznaní pravdepodobného AKS, nečakajte na potvrdenie EKG. Nasycovacia dávka je 200mg rozžuvaná (aj keď pacient užíva denný aspirín doma). Žuvanie je kritické - dosahuje terapeutické hladiny za 14 minút vs 30 minút pri prehltnutí. Tento jeden jednoduchý zásah zachraňuje viac životov ako čokoľvek iné, čo robíme v prednemocničnej starostlivosti okrem defibrilácie."
       }
     },
 
     "nitromin_nitroglycerin": {
       "generic_name": "Nitroglycerin (Glyceryl trinitrate)",
       "brand_names": ["Nitromin", "Nitroglycerin", "GTN"],
-      "class": "Nitrate vasodilator",
-      "indication": "Angina pectoris, acute coronary syndrome (symptom relief), hypertensive emergency, acute pulmonary edema",
-      "mechanism": "Nitric oxide donor → vascular smooth muscle relaxation → venodilation (↓preload) > arterial dilation (↓afterload). In ACS: reduces myocardial oxygen demand, may improve collateral coronary flow. Does NOT prevent MI or reduce mortality - purely symptomatic.",
+      "class": "Nitrátový vazodilatátor",
+      "indication": "Angina pectoris, akútny koronárny syndróm (úľava od symptómov), hypertenzná kríza, akútny pľúcny edém",
+      "mechanism": "Donor oxidu dusnatého → relaxácia hladkého svalstva ciev → venodilatácia (↓preload) > arteriálna dilatácia (↓afterload). Pri AKS: znižuje spotrebu kyslíka myokardom, môže zlepšiť kolaterálny koronárny prietok. NEZABRAŇUJE IM ani neznižuje mortalitu - čisto symptomatický.",
       
       "dosing": {
-        "sublingual_adult": "0.4mg (400 mcg) SL spray or tablet",
-        "repeat": "Can repeat every 5 minutes x3 doses maximum",
-        "iv_infusion": "5-10 mcg/min, titrate (hospital setting)",
-        "administration": "Patient should be sitting or lying (risk of syncope from hypotension)"
+        "sublingual_adult": "0.4mg (400 mcg) SL sprej alebo tableta",
+        "repeat": "Možno opakovať každých 5 minút, maximálne 3 dávky",
+        "iv_infusion": "5-10 mcg/min, titrovať (nemocničné prostredie)",
+        "administration": "Pacient by mal sedieť alebo ležať (riziko synkopy z hypotenzie)"
       },
       
       "pharmacokinetics": {
@@ -299,36 +299,36 @@
       
       "contraindications": {
         "absolute": [
-          "systolic_bp_less_than_90",
-          "recent_pde5_inhibitor_use (Viagra within 24h, Cialis within 48h)",
-          "right_ventricular_infarction",
-          "severe_aortic_stenosis",
-          "hypertrophic_obstructive_cardiomyopathy"
+          "systolický_tk_menej_ako_90",
+          "nedávne_užitie_inhibítora_pde5 (Viagra do 24h, Cialis do 48h)",
+          "infarkt_pravej_komory",
+          "závažná_aortálna_stenóza",
+          "hypertrofická_obštrukčná_kardiomyopatia"
         ],
-        "relative": ["inferior_mi_with_rv_involvement (check with right-sided ECG leads)"]
+        "relative": ["spodný_im_s_postihnutím_pk (skontrolovať pravostrannými EKG zvodmi)"]
       },
       
       "side_effects": [
-        "Headache (very common, 50-80% of patients)",
-        "Dizziness, lightheadedness",
-        "Hypotension (potentially severe)",
-        "Reflex tachycardia",
-        "Syncope if severe hypotension"
+        "Bolesť hlavy (veľmi častá, 50-80% pacientov)",
+        "Závrat, točenie hlavy",
+        "Hypotenzia (potenciálne závažná)",
+        "Reflexná tachykardia",
+        "Synkopa pri závažnej hypotenzii"
       ],
       
       "warnings": [
-        "ALWAYS check BP before giving - hold if SBP <90",
-        "ALWAYS ask about Viagra/Cialis - combination causes severe hypotension and death",
-        "In ANTERIOR MI (this patient): nitrates are SAFE if BP allows",
-        "In INFERIOR MI with RV involvement: nitrates are CONTRAINDICATED",
-        "Patient should sit/lie down before administration",
-        "Have patient remove any nitrate patches before giving additional nitrates"
+        "VŽDY skontrolujte TK pred podaním - nepodávajte, ak je sTK <90",
+        "VŽDY sa pýtajte na Viagru/Cialis - kombinácia spôsobuje závažnú hypotenziu a smrť",
+        "Pri PREDNOM IM (tento pacient): nitráty sú BEZPEČNÉ, ak to TK dovoľuje",
+        "Pri SPODNOM IM s postihnutím PK: nitráty sú KONTRAINDIKOVANÉ",
+        "Pacient by mal pred podaním sedieť/ležať",
+        "Nechajte pacienta odstrániť všetky nitrátové náplasti pred podaním ďalších nitrátov"
       ],
       
       "scenario_specific_response": {
         "appropriate_for_case": true,
         "critical_treatment": false,
-        "importance": "important",
+        "importance": "dôležitá",
         "time_to_effect_minutes": 2,
         "vital_changes": {
           "pain_score": 6,
@@ -336,25 +336,25 @@
           "BP_diastolic": 78,
           "HR": 105
         },
-        "patient_says": "'Oh... that helps a little. The pressure is less. But my head... I have a headache now.' Patient looks more comfortable but not pain-free.",
-        "clinical_effect": "Symptomatic relief via preload reduction. Pain decreases from 9→6/10. Headache is expected side effect. BP drops 15-20mmHg (acceptable). Does NOT prevent MI or reduce mortality - just symptom management. The definitive treatment is PCI. Nitrates are supportive care.",
+        "patient_says": "'Ó... to trochu pomáha. Tlak je menší. Ale moja hlava... teraz ma bolí hlava.' Pacient vyzerá pohodlnejšie, ale nie bez bolesti.",
+        "clinical_effect": "Symptomatická úľava prostredníctvom zníženia preloadu. Bolesť klesá z 9→6/10. Bolesť hlavy je očakávaný vedľajší účinok. TK klesá o 15-20mmHg (prijateľné). NEZABRAŇUJE IM ani neznižuje mortalitu - len manažment symptómov. Definitívna liečba je PCI. Nitráty sú podporná starostlivosť.",
         "points_if_given": 5,
         "points_if_given_without_bp_check": -10,
-        "teaching_point": "Nitrates are for SYMPTOM relief in ACS, not mortality reduction. They reduce preload → reduce myocardial oxygen demand → less chest pain. CRITICAL SAFETY: (1) Check BP first (hold if <90 systolic), (2) Ask about Viagra/Cialis (contraindicated within 24-48h), (3) Anterior MI (this patient) = nitrates SAFE. Inferior MI + RV involvement = nitrates DANGEROUS (causes severe hypotension). The headache is expected - nitroglycerin vasodilates cerebral vessels too. Patient can take paracetamol for headache later."
+        "teaching_point": "Nitráty sú na úľavu od SYMPTÓMOV pri AKS, nie na zníženie mortality. Znižujú preload → znižujú spotrebu kyslíka myokardom → menej bolesti na hrudníku. KRITICKÁ BEZPEČNOSŤ: (1) Najprv skontrolujte TK (nepodávajte, ak je systolický <90), (2) Opýtajte sa na Viagru/Cialis (kontraindikované do 24-48h), (3) Predný IM (tento pacient) = nitráty BEZPEČNÉ. Spodný IM + postihnutie PK = nitráty NEBEZPEČNÉ (spôsobujú závažnú hypotenziu). Bolesť hlavy je očakávaná - nitroglycerín vazodilatuje aj mozgové cievy. Pacient si môže neskôr vziať paracetamol na bolesť hlavy."
       }
     },
 
     "tramal_morphine": {
       "generic_name": "Morphine sulfate",
       "brand_names": ["Morfin", "Morphine"],
-      "class": "Opioid analgesic",
-      "indication": "Severe pain, acute coronary syndrome (refractory chest pain), acute pulmonary edema (reduces preload and anxiety)",
-      "mechanism": "Mu-opioid receptor agonist → analgesia, anxiolysis, venodilation (reduces preload), respiratory depression at high doses",
+      "class": "Opioidné analgetikum",
+      "indication": "Silná bolesť, akútny koronárny syndróm (refraktérna bolesť na hrudníku), akútny pľúcny edém (znižuje preload a úzkosť)",
+      "mechanism": "Agonista mü-opioidných receptorov → analgézia, anxiolýza, venodilatácia (znižuje preload), útlm dýchania pri vysokých dávkach",
       
       "dosing": {
-        "acs_adult": "2-4mg IV slowly, repeat every 5-10 minutes PRN for refractory pain",
-        "maximum_initial": "10mg total",
-        "administration": "Give slowly IV over 2-3 minutes to avoid respiratory depression"
+        "acs_adult": "2-4mg IV pomaly, opakovať každých 5-10 minút PRN pri refraktérnej bolesti",
+        "maximum_initial": "celkovo 10mg",
+        "administration": "Podávajte pomaly IV počas 2-3 minút, aby sa predišlo útlmu dýchania"
       },
       
       "pharmacokinetics": {
@@ -365,31 +365,31 @@
       },
       
       "contraindications": {
-        "absolute": ["respiratory_depression", "severe_copd_with_hypercapnia"],
-        "relative": ["hypotension", "altered_mental_status", "elderly"]
+        "absolute": ["útlm_dýchania", "závažná_chochp_s_hyperkapniou"],
+        "relative": ["hypotenzia", "zmenený_stav_vedomia", "starší_pacienti"]
       },
       
       "side_effects": [
-        "Respiratory depression (dose-dependent)",
-        "Nausea and vomiting (30-40%)",
-        "Hypotension",
-        "Bradycardia",
-        "Sedation",
-        "Constipation (with repeated dosing)"
+        "Útlm dýchania (závislý od dávky)",
+        "Nevoľnosť a vracanie (30-40%)",
+        "Hypotenzia",
+        "Bradykardia",
+        "Sedácia",
+        "Zápcha (pri opakovanom dávkovaní)"
       ],
       
       "warnings": [
-        "2025 ACC/AHA guidelines: morphine NOT routine in ACS",
-        "Morphine delays absorption of oral antiplatelet drugs (ticagrelor, prasugrel)",
-        "Use for REFRACTORY pain only, after nitrates tried",
-        "Monitor respiratory rate - have naloxone available",
-        "Give slowly IV to minimize side effects"
+        "Usmernenia ACC/AHA 2025: morfín NIE JE rutinný pri AKS",
+        "Morfín oneskoruje absorpciu perorálnych antiagregačných liekov (tikagrelor, prasugrel)",
+        "Používajte len pri REFRAKTÉRNEJ bolesti, po vyskúšaní nitrátov",
+        "Monitorujte dychovú frekvenciu - majte k dispozícii naloxón",
+        "Podávajte pomaly IV na minimalizáciu vedľajších účinkov"
       ],
       
       "scenario_specific_response": {
-        "appropriate_for_case": "conditional",
+        "appropriate_for_case": "podmienečne",
         "critical_treatment": false,
-        "importance": "acceptable_for_severe_refractory_pain",
+        "importance": "prijateľné_pre_silnú_refraktérnu_bolesť",
         "time_to_effect_minutes": 4,
         "vital_changes": {
           "pain_score": 4,
@@ -397,85 +397,85 @@
           "BP_systolic": 130,
           "HR": 92
         },
-        "patient_says": "'The pain is much better now... I feel relaxed... a bit drowsy.' Patient noticeably more comfortable but slightly sedated.",
-        "clinical_effect": "Significant analgesia and anxiolysis. Pain relief is welcome but morphine delays absorption of oral antiplatelet drugs patient will receive in hospital. Not first-line anymore per 2025 guidelines. Reasonable to use for severe refractory pain after nitrates tried. Monitor for respiratory depression.",
+        "patient_says": "'Bolesť je teraz oveľa lepšia... Cítim sa uvoľnene... trochu ospalo.' Pacient je viditeľne pohodlnejší, ale mierne sedovaný.",
+        "clinical_effect": "Významná analgézia a anxiolýza. Úľava od bolesti je vítaná, ale morfín oneskoruje absorpciu perorálnych antiagregačných liekov, ktoré pacient dostane v nemocnici. Podľa usmernení z roku 2025 už nie je prvou líniou. Rozumné použiť pri silnej refraktérnej bolesti po vyskúšaní nitrátov. Monitorujte útlm dýchania.",
         "points_if_given_first_line": -3,
         "points_if_given_for_refractory_pain": 3,
-        "teaching_point": "Morphine role in ACS has changed. OLD practice: routine morphine for all ACS. NEW practice (2025 ACC/AHA): morphine for REFRACTORY pain only. Why? Morphine delays absorption of oral P2Y12 inhibitors (ticagrelor, prasugrel) that patient will get in hospital - delays antiplatelet effect. Also: nausea/vomiting risk. Sequence: Try nitrates FIRST. If pain still severe after nitrates, THEN morphine is reasonable. Give 2-4mg slowly IV, can repeat. Monitor respiratory rate. Have naloxone available. But aspirin + rapid PCI are what save lives, not morphine."
+        "teaching_point": "Úloha morfínu pri AKS sa zmenila. STARÁ prax: rutinný morfín pre všetky AKS. NOVÁ prax (2025 ACC/AHA): morfín len pri REFRAKTÉRNEJ bolesti. Prečo? Morfín oneskoruje absorpciu perorálnych inhibítorov P2Y12 (tikagrelor, prasugrel), ktoré pacient dostane v nemocnici - oneskoruje antiagregačný účinok. Tiež: riziko nevoľnosti/vracania. Postup: Najprv vyskúšajte nitráty. Ak je bolesť stále silná po nitrátoch, POTOM je morfín rozumný. Podajte 2-4mg pomaly IV, možno opakovať. Monitorujte dychovú frekvenciu. Majte k dispozícii naloxón. Ale život zachraňuje aspirín + rýchla PCI, nie morfín."
       }
     },
 
     "normal_saline": {
       "generic_name": "0.9% Sodium Chloride (Normal Saline)",
-      "class": "Crystalloid IV fluid",
-      "indication": "IV access maintenance, medication administration, hypotension, dehydration",
-      "mechanism": "Intravascular volume expansion via isotonic crystalloid",
+      "class": "Kryštaloidný IV roztok",
+      "indication": "Udržiavanie IV prístupu, podávanie liekov, hypotenzia, dehydratácia",
+      "mechanism": "Expanzia intravaskulárneho objemu izotonickým kryštaloidom",
       
       "dosing": {
-        "iv_lock": "Flush 5-10ml to maintain access",
-        "hypotension_acs": "250-500ml bolus if BP drops significantly",
-        "avoid_overload": "Do NOT give large volume fluid boluses routinely in ACS"
+        "iv_lock": "Preplach 5-10ml na udržanie prístupu",
+        "hypotension_acs": "250-500ml bolus, ak TK výrazne klesne",
+        "avoid_overload": "NEPODÁVAJTE veľkoobjemové bolusy tekutín rutinne pri AKS"
       },
       
       "contraindications": {
         "absolute": [],
-        "relative": ["pulmonary_edema", "heart_failure", "volume_overload"]
+        "relative": ["pľúcny_edém", "zlyhanie_srdca", "preťaženie_objemom"]
       },
       
       "warnings": [
-        "In ACS, avoid aggressive fluid boluses unless patient develops hypotension",
-        "Excessive fluids can worsen pulmonary edema if LV dysfunction develops",
-        "Establish IV access early but be conservative with fluid volume"
+        "Pri AKS sa vyhnite agresívnym bolusom tekutín, pokiaľ pacient nerozvinie hypotenziu",
+        "Nadmerné tekutiny môžu zhoršiť pľúcny edém, ak sa rozvinie dysfunkcia ĽK",
+        "Zaveďte IV prístup včas, ale buďte konzervatívni s objemom tekutín"
       ],
       
       "scenario_specific_response": {
         "appropriate_for_case": true,
         "critical_treatment": false,
-        "importance": "supportive",
-        "clinical_effect": "Maintains IV access for medication administration and in case patient develops hypotension or arrest. Avoid large volume fluid boluses - patient is currently normotensive (145/88) and not hypovolemic. Excessive fluids can worsen pulmonary edema if LV dysfunction develops from extensive MI. Establish access, flush to maintain patency, but don't give routine 500ml boluses in normotensive ACS patient.",
-        "teaching_point": "IV access in ACS serves two purposes: (1) medication route if needed, (2) volume resuscitation if hypotension develops. But be conservative with fluids. Unlike trauma where we fluid resuscitate aggressively, in ACS excessive fluids can WORSEN outcomes by causing pulmonary edema if LV function impaired. Establish access, flush to keep patent, but hold fluids unless BP drops <90 systolic or patient shows signs of hypovolemia."
+        "importance": "podporná",
+        "clinical_effect": "Udržiava IV prístup na podávanie liekov a pre prípad, že pacient rozvinie hypotenziu alebo zástavu. Vyhnite sa veľkoobjemovým bolusom tekutín - pacient je momentálne normotenzný (145/88) a nie je hypovolemický. Nadmerné tekutiny môžu zhoršiť pľúcny edém, ak sa rozvinie dysfunkcia ĽK z rozsiahleho IM. Zaveďte prístup, prepláchnite na udržanie priechodnosti, ale nepodávajte rutinné 500ml bolusy normotenznému pacientovi s AKS.",
+        "teaching_point": "IV prístup pri AKS slúži dvom účelom: (1) cesta pre lieky, ak je to potrebné, (2) objemová resuscitácia, ak sa rozvinie hypotenzia. Ale buďte konzervatívni s tekutinami. Na rozdiel od traumy, kde resuscitujeme tekutinami agresívne, pri AKS môžu nadmerné tekutiny ZHORŠIŤ výsledky spôsobením pľúcneho edému, ak je narušená funkcia ĽK. Zaveďte prístup, prepláchnite na udržanie priechodnosti, ale zadržte tekutiny, pokiaľ TK neklesne <90 systolický alebo pacient nejaví známky hypovolémie."
       }
     },
 
     "oxygen": {
-      "generic_name": "Oxygen",
-      "class": "Medical gas",
+      "generic_name": "Kyslík",
+      "class": "Medicínsky plyn",
       "indication": "Hypoxia (SpO2 <90%)",
-      "mechanism": "Increases arterial oxygen content",
+      "mechanism": "Zvyšuje obsah kyslíka v arteriálnej krvi",
       
       "delivery_options": {
-        "nasal_cannula": "1-6 L/min",
-        "simple_mask": "6-10 L/min",
-        "non_rebreather": "15 L/min"
+        "nasal_cannula": "1-6 l/min",
+        "simple_mask": "6-10 l/min",
+        "non_rebreather": "15 l/min"
       },
       
-      "target_spo2_acs": "94-98% (DO NOT exceed 98%)",
+      "target_spo2_acs": "94-98% (NEPREKRAČUJTE 98%)",
       
       "contraindications": {
         "absolute": [],
-        "relative": ["normoxia_spo2_above_90"]
+        "relative": ["normoxia_spo2_nad_90"]
       },
       
       "warnings": [
-        "ERC 2021 and ACC/AHA 2025: Do NOT give routine oxygen to normoxic ACS patients",
-        "Give oxygen ONLY if SpO2 <90%",
-        "Hyperoxia (SpO2 >98%) may worsen ACS outcomes via vasoconstriction and free radicals"
+        "ERC 2021 a ACC/AHA 2025: NEPODÁVAJTE rutinne kyslík normoxickým pacientom s AKS",
+        "Podávajte kyslík LEN ak je SpO2 <90%",
+        "Hyperoxia (SpO2 >98%) môže zhoršiť výsledky AKS prostredníctvom vazokonstrikcie a voľných radikálov"
       ],
       
       "scenario_specific_response": {
         "appropriate_for_case": false,
-        "reason": "Patient SpO2 96% = normoxic, oxygen NOT indicated per current guidelines",
+        "reason": "SpO2 pacienta 96% = normoxický, kyslík NIE JE indikovaný podľa súčasných usmernení",
         "critical_treatment": false,
-        "importance": "contraindicated_if_normoxic",
+        "importance": "kontraindikovaný_pri_normoxii",
         "vital_changes": {
           "SpO2": 99,
-          "note": "Hyperoxia may cause coronary vasoconstriction"
+          "note": "Hyperoxia môže spôsobiť koronárnu vazokonstrikciu"
         },
-        "patient_says": "Patient accepts oxygen but doesn't notice any difference.",
-        "clinical_effect": "NO BENEFIT and potential harm. ERC 2021 and ACC/AHA 2025 guidelines explicitly state: Do NOT give routine oxygen in normoxic ACS patients. Evidence shows hyperoxia causes coronary vasoconstriction and free radical damage, possibly worsening MI size and outcomes. This is a PARADIGM SHIFT from old practice. Only give O2 if SpO2 <90%.",
+        "patient_says": "Pacient prijíma kyslík, ale nevšimne si žiadny rozdiel.",
+        "clinical_effect": "ŽIADNY PRÍNOS a potenciálne poškodenie. Usmernenia ERC 2021 a ACC/AHA 2025 explicitne uvádzajú: NEPODÁVAJTE rutinne kyslík normoxickým pacientom s AKS. Dôkazy ukazujú, že hyperoxia spôsobuje koronárnu vazokonstrikciu a poškodenie voľnými radikálmi, čo môže zhoršiť veľkosť IM a výsledky. Toto je ZMENA PARADIGMY oproti starej praxi. Podávajte O2 len ak je SpO2 <90%.",
         "points_if_given_when_normoxic": -10,
         "points_if_withheld_appropriately": 5,
-        "teaching_point": "MAJOR PARADIGM SHIFT: Oxygen is NO LONGER routine in ACS. OLD practice (pre-2015): everyone with chest pain gets oxygen. NEW practice (ERC 2021, ACC/AHA 2025): oxygen ONLY if SpO2 <90%. Why? Studies showed routine oxygen in normoxic MI patients may worsen outcomes - hyperoxia causes coronary vasoconstriction and free radical damage. This patient SpO2 96% = do NOT give oxygen. If SpO2 drops <90%, THEN give oxygen to target 94-98%. This is evidence-based medicine overriding tradition. Test whether student knows current guidelines vs outdated practice."
+        "teaching_point": "VÝZNAMNÁ ZMENA PARADIGMY: Kyslík už NIE JE rutinný pri AKS. STARÁ prax (pred 2015): každý s bolesťou na hrudníku dostane kyslík. NOVÁ prax (ERC 2021, ACC/AHA 2025): kyslík LEN ak je SpO2 <90%. Prečo? Štúdie ukázali, že rutinný kyslík u normoxických pacientov s IM môže zhoršiť výsledky - hyperoxia spôsobuje koronárnu vazokonstrikciu a poškodenie voľnými radikálmi. Tento pacient má SpO2 96% = nepodávajte kyslík. Ak SpO2 klesne <90%, POTOM podajte kyslík s cieľom 94-98%. Toto je medicína založená na dôkazoch, ktorá nahrádza tradíciu. Testuje, či študent pozná súčasné usmernenia vs zastaranú prax."
       }
     }
   },

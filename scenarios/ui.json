@@ -1,0 +1,31 @@
+{
+  "registration": {
+    "title": "KNOW THYSELF MVP",
+    "subtitle": "Tréningová simulácia pre záchranárov",
+    "welcome": "Vitajte! Zaregistrujte sa, prosím, aby ste mohli začať tréningové sedenie.",
+    "fullNameLabel": "Celé meno",
+    "fullNamePlaceholder": "napr. Ján Vážny",
+    "emailLabel": "Emailová adresa",
+    "emailPlaceholder": "napr. jan.vazny@example.com",
+    "languageLabel": "Jazyk",
+    "consentLabel": "Súhlasím so zhromažďovaním mojich údajov o výkone na účely výskumu a zlepšovania.",
+    "startButton": "Začať tréning",
+    "registeringButton": "Registrujem...",
+    "errorRequired": "Toto pole je povinné.",
+    "errorEmail": "Zadajte platnú emailovú adresu."
+  },
+  "sessionComplete": {
+    "heading": "Tréningové sedenie ukončené",
+    "message": "Gratulujeme! Dokončili ste všetky scenáre. Vaše údaje o výkone boli uložené.",
+    "newSessionButton": "Začať nové tréningové sedenie"
+  },
+  "header": {
+    "appName": "Know Thyself",
+    "phaseCognitive": "Fáza kognitívneho zahriatia",
+    "phaseDispatch": "VÝZVA",
+    "phaseScenario": "SCENÁR {{current}} z {{total}}",
+    "phaseAAR": "Hodnotenie po akcii (AAR)",
+    "completeButton": "Ukončiť scenár",
+    "activeBadge": "AKTÍVNY"
+  }
+}
