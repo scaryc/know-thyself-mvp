@@ -31,6 +31,11 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
+// Model configuration - allows switching between different Claude models per agent
+const COGNITIVE_COACH_MODEL = process.env.COGNITIVE_COACH_MODEL || 'claude-3-5-haiku-20241022';
+const CORE_AGENT_MODEL = process.env.CORE_AGENT_MODEL || 'claude-sonnet-4-20250514';
+const AAR_AGENT_MODEL = process.env.AAR_AGENT_MODEL || 'claude-3-5-haiku-20241022';
+
 // Middleware
 app.use(cors({
   origin: [
@@ -44,7 +49,49 @@ app.use(express.json());
 
 // Session cache (backed by database)
 const sessionCache = new Map();
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const CACHE_TTL = 20 * 60 * 1000; // 20 minutes (increased to match session lifetime)
+
+// Session locks to prevent concurrent modifications
+const sessionLocks = new Map();
+
+// API timeout configuration
+const API_TIMEOUT = 5 * 60 * 1000; // 5 minutes for Anthropic API calls
+
+/**
+ * Timeout wrapper for Anthropic API calls
+ * Prevents indefinite hanging when API is unresponsive
+ */
+async function callAnthropicWithTimeout(apiCall, timeoutMs = API_TIMEOUT) {
+  return Promise.race([
+    apiCall,
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Anthropic API call timed out')), timeoutMs)
+    )
+  ]);
+}
+
+/**
+ * Acquire a lock for a session to prevent concurrent modifications
+ */
+async function acquireSessionLock(sessionId, maxWaitMs = 30000) {
+  const startTime = Date.now();
+
+  while (sessionLocks.get(sessionId)) {
+    if (Date.now() - startTime > maxWaitMs) {
+      throw new Error(`Failed to acquire lock for session ${sessionId} - timeout`);
+    }
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+
+  sessionLocks.set(sessionId, true);
+}
+
+/**
+ * Release a session lock
+ */
+function releaseSessionLock(sessionId) {
+  sessionLocks.delete(sessionId);
+}
 
 /**
  * Get session from cache or database
@@ -549,7 +596,7 @@ app.post('/api/sessions/start', async (req, res) => {
 
       // Call Claude API to get initial greeting
       const response = await anthropic.messages.create({
-        model: 'claude-sonnet-4-20250514',
+        model: COGNITIVE_COACH_MODEL,
         max_tokens: 4096,
         system: systemPrompt,
         messages: [
@@ -2314,12 +2361,20 @@ function summarizeChallenges(session) {
  * Send message to AI patient
  */
 app.post('/api/sessions/:id/message', async (req, res) => {
+  let lockAcquired = false;
   try {
     const { id } = req.params;
     const { message } = req.body;
+
+    // Acquire session lock to prevent concurrent modifications
+    await acquireSessionLock(id);
+    lockAcquired = true;
+
     const session = await getSession(id);
 
     if (!session) {
+      releaseSessionLock(id);
+      lockAcquired = false;
       return res.status(404).json({ error: 'Session not found' });
     }
 
@@ -2335,14 +2390,16 @@ app.post('/api/sessions/:id/message', async (req, res) => {
           role: msg.role,
           content: msg.content
         }));
-        
-        // Call Claude API with Cognitive Coach prompt
-        const response = await anthropic.messages.create({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 4096,
-          system: systemPrompt,
-          messages: [...cognitiveMessages, { role: 'user', content: message }]
-        });
+
+        // Call Claude API with Cognitive Coach prompt (with timeout protection)
+        const response = await callAnthropicWithTimeout(
+          anthropic.messages.create({
+            model: COGNITIVE_COACH_MODEL,
+            max_tokens: 4096,
+            system: systemPrompt,
+            messages: [...cognitiveMessages, { role: 'user', content: message }]
+          })
+        );
         
         // Extract text response
         let responseText = '';
@@ -2792,13 +2849,14 @@ CURRENT SCENARIO CONTEXT:
 ${JSON.stringify(runtimeContext, null, 2)}${treatmentContext}`;
 
     console.log('=== FIRST CLAUDE CALL ===');
-    const firstResponse = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      temperature: 0.7,
-      system: systemPrompt,
-      messages: [...messages, { role: 'user', content: message }],
-      tools: [{
+    const firstResponse = await callAnthropicWithTimeout(
+      anthropic.messages.create({
+        model: CORE_AGENT_MODEL,
+        max_tokens: 1000,
+        temperature: 0.7,
+        system: systemPrompt,
+        messages: [...messages, { role: 'user', content: message }],
+        tools: [{
     name: 'update_vitals',
     description: 'Update patient vital signs when measured',
     input_schema: {
@@ -2832,7 +2890,8 @@ ${JSON.stringify(runtimeContext, null, 2)}${treatmentContext}`;
   }
 }
 ]
-    });
+      })
+    );
 
  console.log('Response content types:', firstResponse.content.map(block => block.type));
 
@@ -2901,22 +2960,24 @@ for (const block of firstResponse.content) {
 
 if (needsSecondCall) {
   console.log('=== SECOND CLAUDE CALL (with tool_result) ===');
-  
-  const secondResponse = await anthropic.messages.create({
-    model: 'claude-sonnet-4-20250514',
-    max_tokens: 1000,
-    temperature: 0.7,
-    system: systemPrompt,
-    messages: [
-      ...messages,
-      { role: 'user', content: message },
-      { role: 'assistant', content: firstResponse.content },
-      { role: 'user', content: [
-        ...toolResults,
-        { type: 'text', text: 'Now respond as the patient. Describe what the student observes using QUALITATIVE descriptions (rapid, slow, weak, strong, labored, etc). DO NOT include numeric vital sign values in your text - those are already displayed in the vitals monitor.' }
-      ]}
-    ]
-  });
+
+  const secondResponse = await callAnthropicWithTimeout(
+    anthropic.messages.create({
+      model: CORE_AGENT_MODEL,
+      max_tokens: 1000,
+      temperature: 0.7,
+      system: systemPrompt,
+      messages: [
+        ...messages,
+        { role: 'user', content: message },
+        { role: 'assistant', content: firstResponse.content },
+        { role: 'user', content: [
+          ...toolResults,
+          { type: 'text', text: 'Now respond as the patient. Describe what the student observes using QUALITATIVE descriptions (rapid, slow, weak, strong, labored, etc). DO NOT include numeric vital sign values in your text - those are already displayed in the vitals monitor.' }
+        ]}
+      ]
+    })
+  );
   
   console.log('Second response content types:', secondResponse.content.map(block => block.type));
   
@@ -3001,7 +3062,26 @@ res.json({
   } catch (error) {
     console.error('❌ ERROR:', error.message);
     console.error(error.stack);
-    res.status(500).json({ error: 'Failed to process message' });
+
+    // Provide more detailed error context
+    if (error.message === 'Anthropic API call timed out') {
+      res.status(504).json({
+        error: 'Request timed out. The AI service took too long to respond. Please try again.',
+        timeout: true
+      });
+    } else if (error.message?.includes('Failed to acquire lock')) {
+      res.status(503).json({
+        error: 'Server is busy processing another request. Please wait a moment and try again.',
+        busy: true
+      });
+    } else {
+      res.status(500).json({ error: 'Failed to process message' });
+    }
+  } finally {
+    // Always release the session lock
+    if (lockAcquired) {
+      releaseSessionLock(req.params.id);
+    }
   }
 });
 
@@ -3677,7 +3757,7 @@ app.post('/api/sessions/:sessionId/aar/start', async (req, res) => {
 
     // Get opening message from Claude
     const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: AAR_AGENT_MODEL,
       max_tokens: 2048,
       system: aarPrompt + '\n\n' + context,
       messages: [
@@ -3732,13 +3812,15 @@ app.post('/api/sessions/:sessionId/aar/message', async (req, res) => {
     // Get conversation history
     const conversationHistory = aarService.getConversationHistory(sessionId);
 
-    // Get Claude response
-    const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 2048,
-      system: aarPrompt + '\n\n' + context,
-      messages: conversationHistory
-    });
+    // Get Claude response (with timeout protection)
+    const response = await callAnthropicWithTimeout(
+      anthropic.messages.create({
+        model: AAR_AGENT_MODEL,
+        max_tokens: 2048,
+        system: aarPrompt + '\n\n' + context,
+        messages: conversationHistory
+      })
+    );
 
     let aarMessage = response.content[0].text;
 
@@ -3823,6 +3905,12 @@ app.get('/api/sessions/:sessionId/aar/status', async (req, res) => {
  */
 setInterval(() => {
   for (const [sessionId, session] of sessionCache.entries()) {
+    // Skip locked sessions to prevent race conditions
+    if (sessionLocks.has(sessionId)) {
+      console.log(`⏰ [AUTO-DETERIORATION] Skipping locked session: ${sessionId}`);
+      continue;
+    }
+
     // Only check active Core Agent scenarios
     if (session.currentAgent === 'core' && session.scenario && session.currentState !== 'aar') {
       // Only evaluate if at least 25 seconds passed since last check
