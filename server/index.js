@@ -28,6 +28,11 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
+// Model configuration - allows switching between different Claude models per agent
+const COGNITIVE_COACH_MODEL = process.env.COGNITIVE_COACH_MODEL || 'claude-3-5-haiku-20241022';
+const CORE_AGENT_MODEL = process.env.CORE_AGENT_MODEL || 'claude-sonnet-4-20250514';
+const AAR_AGENT_MODEL = process.env.AAR_AGENT_MODEL || 'claude-3-5-haiku-20241022';
+
 // Middleware
 app.use(cors({
   origin: [
@@ -589,7 +594,7 @@ app.post('/api/sessions/start', async (req, res) => {
 
       // Call Claude API to get initial greeting
       const response = await anthropic.messages.create({
-        model: 'claude-sonnet-4-20250514',
+        model: COGNITIVE_COACH_MODEL,
         max_tokens: 4096,
         system: systemPrompt,
         messages: [
@@ -2383,11 +2388,11 @@ app.post('/api/sessions/:id/message', async (req, res) => {
           role: msg.role,
           content: msg.content
         }));
-        
+
         // Call Claude API with Cognitive Coach prompt (with timeout protection)
         const response = await callAnthropicWithTimeout(
           anthropic.messages.create({
-            model: 'claude-sonnet-4-20250514',
+            model: COGNITIVE_COACH_MODEL,
             max_tokens: 4096,
             system: systemPrompt,
             messages: [...cognitiveMessages, { role: 'user', content: message }]
@@ -2844,7 +2849,7 @@ ${JSON.stringify(runtimeContext, null, 2)}${treatmentContext}`;
     console.log('=== FIRST CLAUDE CALL ===');
     const firstResponse = await callAnthropicWithTimeout(
       anthropic.messages.create({
-        model: 'claude-sonnet-4-20250514',
+        model: CORE_AGENT_MODEL,
         max_tokens: 1000,
         temperature: 0.7,
         system: systemPrompt,
@@ -2956,7 +2961,7 @@ if (needsSecondCall) {
 
   const secondResponse = await callAnthropicWithTimeout(
     anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: CORE_AGENT_MODEL,
       max_tokens: 1000,
       temperature: 0.7,
       system: systemPrompt,
@@ -3750,7 +3755,7 @@ app.post('/api/sessions/:sessionId/aar/start', async (req, res) => {
 
     // Get opening message from Claude
     const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: AAR_AGENT_MODEL,
       max_tokens: 2048,
       system: aarPrompt + '\n\n' + context,
       messages: [
@@ -3808,7 +3813,7 @@ app.post('/api/sessions/:sessionId/aar/message', async (req, res) => {
     // Get Claude response (with timeout protection)
     const response = await callAnthropicWithTimeout(
       anthropic.messages.create({
-        model: 'claude-sonnet-4-20250514',
+        model: AAR_AGENT_MODEL,
         max_tokens: 2048,
         system: aarPrompt + '\n\n' + context,
         messages: conversationHistory
