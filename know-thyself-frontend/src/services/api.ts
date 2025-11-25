@@ -2,6 +2,48 @@ import type { StartSessionBody } from '../interfaces';
 
 class ApiService {
   private baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+  private activeRequests = new Map<string, AbortController>();
+  private readonly REQUEST_TIMEOUT = 60000; // 60 seconds
+
+  /**
+   * Create AbortController with timeout for a request
+   */
+  private createAbortController(requestKey: string): AbortController {
+    // Cancel any existing request with the same key
+    this.cancelRequest(requestKey);
+
+    const controller = new AbortController();
+    this.activeRequests.set(requestKey, controller);
+
+    // Set timeout
+    setTimeout(() => {
+      if (this.activeRequests.has(requestKey)) {
+        console.warn(`Request timeout for ${requestKey}`);
+        controller.abort();
+        this.activeRequests.delete(requestKey);
+      }
+    }, this.REQUEST_TIMEOUT);
+
+    return controller;
+  }
+
+  /**
+   * Cancel an active request
+   */
+  cancelRequest(requestKey: string): void {
+    const controller = this.activeRequests.get(requestKey);
+    if (controller) {
+      controller.abort();
+      this.activeRequests.delete(requestKey);
+    }
+  }
+
+  /**
+   * Clean up completed request
+   */
+  private cleanupRequest(requestKey: string): void {
+    this.activeRequests.delete(requestKey);
+  }
 
   async startSession(scenarioId: string, studentId?: string, scenarioQueue?: string[]) {
     const body: StartSessionBody = { scenarioId };
@@ -25,12 +67,35 @@ class ApiService {
   }
 
   async sendMessage(sessionId: string, message: string) {
-    const response = await fetch(`${this.baseURL}/sessions/${sessionId}/message`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message })
-    });
-    return response.json();
+    const requestKey = `message-${sessionId}`;
+    const controller = this.createAbortController(requestKey);
+
+    try {
+      const response = await fetch(`${this.baseURL}/sessions/${sessionId}/message`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message }),
+        signal: controller.signal
+      });
+
+      this.cleanupRequest(requestKey);
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        throw new Error(errorData.error || `HTTP ${response.status}`);
+      }
+
+      return response.json();
+    } catch (error: any) {
+      this.cleanupRequest(requestKey);
+
+      // Handle abort errors
+      if (error.name === 'AbortError') {
+        throw new Error('Request timed out. Please try again.');
+      }
+
+      throw error;
+    }
   }
 
   async getVitals(sessionId: string) {
@@ -75,12 +140,35 @@ class ApiService {
   }
 
   async sendAARMessage(sessionId: string, message: string) {
-    const response = await fetch(`${this.baseURL}/sessions/${sessionId}/aar/message`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message })
-    });
-    return response.json();
+    const requestKey = `aar-message-${sessionId}`;
+    const controller = this.createAbortController(requestKey);
+
+    try {
+      const response = await fetch(`${this.baseURL}/sessions/${sessionId}/aar/message`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message }),
+        signal: controller.signal
+      });
+
+      this.cleanupRequest(requestKey);
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        throw new Error(errorData.error || `HTTP ${response.status}`);
+      }
+
+      return response.json();
+    } catch (error: any) {
+      this.cleanupRequest(requestKey);
+
+      // Handle abort errors
+      if (error.name === 'AbortError') {
+        throw new Error('Request timed out. Please try again.');
+      }
+
+      throw error;
+    }
   }
 
   // ✅ NEW: Begin scenario transition (user clicked button)

@@ -36,6 +36,7 @@ function ConversationPanel({
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null); // ✅ NEW: Error state
   const [showBeginButton, setShowBeginButton] = useState(false); // ✅ NEW: Show transition button
   const initialSceneAddedRef = useRef(false); // ✅ NEW: Track if initial scene added
   const cognitiveCoachInitialAddedRef = useRef(false); // ✅ NEW: Track if cognitive coach initial message added
@@ -201,8 +202,18 @@ function ConversationPanel({
         console.log('🎉 AAR completed - triggering session complete');
         onAARComplete();
       }
-    } catch (error) {
+
+      // Clear any previous errors on successful response
+      setError(null);
+    } catch (error: any) {
       console.error('Failed to send message:', error);
+
+      // Set user-friendly error message
+      const errorMessage = error.message || 'Failed to send message. Please try again.';
+      setError(errorMessage);
+
+      // Auto-clear error after 10 seconds
+      setTimeout(() => setError(null), 10000);
     } finally {
       setIsLoading(false);
     }
@@ -309,6 +320,24 @@ function ConversationPanel({
           </div>
         )}
       </div>
+
+      {/* ✅ NEW: Error banner */}
+      {error && (
+        <div className="border-t border-red-500 bg-red-900 bg-opacity-20 px-4 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <span className="text-red-500 text-xl">⚠️</span>
+              <span className="text-red-300 text-sm">{error}</span>
+            </div>
+            <button
+              onClick={() => setError(null)}
+              className="text-red-400 hover:text-red-300 text-xl leading-none"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="border-t border-border p-4">
         <div className="flex space-x-2">
