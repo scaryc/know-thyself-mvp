@@ -1,0 +1,1199 @@
+{
+  "scenario_id": "TBI_MVP_001_SK",
+  "metadata": {
+    "title": "Pád s poranením hlavy - Závažné TBI",
+    "version": "2.0_Final_Enhanced_SK",
+    "difficulty": "vysoká",
+    "estimated_duration_minutes": 15,
+    "scenario_type": "trauma_neurologický",
+    "learning_objectives": [
+      "Rozpoznať vysoko rizikový mechanizmus úrazu pre TBI",
+      "Vykonať systematické hodnotenie GCS a sledovanie trendov",
+      "Identifikovať Cushingovu triádu (neskorý príznak stúpajúceho ICP)",
+      "Implementovať primerané opatrenia na ochranu krčnej chrbtice",
+      "Rozpoznať vzorce neurologického zhoršenia",
+      "Predchádzať sekundárnemu poškodeniu mozgu (hypoxia, hypotenzia)",
+      "Preukázať kritické myslenie pri manažmente neurotraumy"
+    ],
+    "changelog": {
+      "v2.0_final_enhanced": "Pridaný kognitívny tréning druhej úrovne (interaktívne výzvy, kritické rozhodovacie body s úplnými rubrikami). Rozšírený zoznam liekov na 30+ liekov organizovaných podľa úrovne poškodenia. Vylepšená farmakokinetika pre všetky lieky. Opravené časovanie progresie bez liečby na 3/5/10 min. Pridané rubriky pre sekvenciu liečby a štruktúra výučby AAR. Úplná parita s rozšírenými scenármi STEMI a Status Epilepticus."
+    }
+  },
+
+  "dispatch_info": {
+    "call_type": "Pád s poranením",
+    "age": "72",
+    "sex": "Muž",
+    "location": "Rodinný dom, nájdený na spodku schodiska",
+    "caller": "Manželka",
+    "time_of_call": "14:26",
+    "additional_info": "Pacient spadol z celého schodiska pred približne 10 minútami, silno si udrel hlavu o podlahu. Manželka hlási viditeľné krvácanie z čela. Pacient je pri vedomí, ale zmätený, stále sa pýta, čo sa stalo. Manželka uvádza, že niesol bielizeň, keď spadol, zdá sa, že minul schod. Pacient sedí na spodku schodiska."
+  },
+
+  "scene_description": {
+    "location": "Vnútri domu, pacient na spodku schodiska (približne 12-14 schodov)",
+    "safety": "Scéna bezpečná, žiadne prebiehajúce nebezpečenstvo, schody viditeľné, ukazujú mechanizmus",
+    "access": "Prízemie, dobrý prístup pre nosidlá",
+    "bystanders": "Prítomná manželka, veľmi rozrušená, počula pád z inej izby"
+  },
+
+  "patient_profile": {
+    "name": "Ján",
+    "age": 72,
+    "weight_kg": 78,
+    "personality": "Spočiatku zmätený, zľahčuje zranenia ('Som v poriadku'), postupom času sa stáva menej responzívnym"
+  },
+
+  "initial_vitals": {
+    "HR": 68,
+    "RR": 18,
+    "SpO2": 97,
+    "BP_systolic": 165,
+    "BP_diastolic": 95,
+    "temperature": 36.8,
+    "GCS": 13,
+    "pupils": "3mm bilaterálne, spomalená reakcia pravej zrenice"
+  },
+
+  "state_descriptions": {
+    "initial": {
+      "student_sees": "Prichádzate k staršiemu mužovi, ktorý sedí opretý o stenu na spodku schodiska. Na pravom čele má viditeľnú tržnú ranu, ktorá aktívne krváca a zliepa mu sivé vlasy krvou. Na košeli má škvrny od krvi. Zmätene sa obzerá a opakovane sa dotýka hlavy. Keď sa priblížite, pomalým, dezorientovaným spôsobom sa pýta 'Čo... čo sa stalo?'. Jeho manželka kľačí vedľa neho a drží mu na hlave krvou nasiaknutý uterák, viditeľne otrasená.",
+      "appearance": "Starší muž, zmätený, krvácajúca tržná rana na čele, sediaca poloha, pokus o vlastný pohyb, dezorientovaný o udalostiach, pravá zrenica mierne väčšia a spomalená",
+      "clinical_note": "VYSOKO RIZIKOVÝ MECHANIZMUS: Pád z celého schodiska (približne 12 schodov) s priamym nárazom hlavy. Pacient má zmenený stav vedomia (GCS 13) a nerovnaké zrenice (pravá väčšia, spomalená) - znepokojujúce pre intrakraniálne krvácanie. Vitálne funkcie ukazujú skorú hypertenziu (165/95) a relatívnu bradykardiu (SF 68 pre zraneného pacienta). Môžu to byť skoré príznaky stúpajúceho ICP alebo len základné vitálne funkcie - treba SLEDOVAŤ TREND. Vzhľadom na mechanizmus sú potrebné OKAMŽITÉ OPATRENIA NA OCHRANU KRČNEJ CHRBTICE. Musí sa vykonávať a dokumentovať sériové hodnotenie GCS na zistenie zhoršenia. Tento pacient je vo vysokom riziku epidurálneho alebo subdurálneho hematómu.",
+      "urgency_level": "kritická"
+    },
+    "improving": {
+      "student_sees": "Pacient sa teraz zdá byť stabilnejší. S vašou liečbou sa zdá byť o niečo bdelejší, aj keď stále nie je v základnom stave. 'Som Ján,' hovorí, keď sa ho pýtate na meno. 'Ja... ja tu bývam. Aký je deň?' Je orientovaný osobou, ale nie časom ani presnými okolnosťami. Jeho GCS sa mierne zlepšilo na 14. Krvácanie z čela je teraz pod kontrolou tlakom. Leží na chrbte na chrbticovej doske s krčným golierom, s kyslíkom. 'Hlava ma naozaj bolí,' sťažuje sa. 'Môžem dostať niečo od bolesti?' Jeho zrenice, zatiaľ čo ich pozorne sledujete, zostávajú nerovnaké, ale jeho stav sa nezhoršuje. Jeho vitálne funkcie sú stabilné. Jeho manželka vyzerá trochu upokojená, keď ho vidí viac responzívneho.",
+      "appearance": "Bdelejší ako na začiatku, GCS 14, krčná chrbtica chránená, krvácanie pod kontrolou, stále má bolesti, vitálne funkcie stabilné",
+      "clinical_note": "Pacient vykazuje mierne zlepšenie s primeranou podpornou starostlivosťou (kyslík, ochrana krčnej chrbtice, polohovanie). GCS sa zlepšilo z 13 na 14. Stále má znepokojujúce príznaky (nerovnaké zrenice, amnézia na udalosť, významný mechanizmus) vyžadujúce urgentné vyšetrenie v traumacentre. Kľúčová je PREVENCIA SEKUNDÁRNEHO POŠKODENIA MOZGU - udržiavať SpO2 nad 90 percent, sTK nad 90, vyhnúť sa hyperkapnii, správne polohovanie (hlava zdvihnutá o 30 stupňov, ak nie sú kontraindikácie). Pokračujte v starostlivom neurologickom monitorovaní počas transportu. Toto 'zlepšenie' je povzbudzujúce, ale nevylučuje intrakraniálne krvácanie - pacient stále potrebuje CT vyšetrenie.",
+      "urgency_level": "vysoká"
+    },
+    "deteriorating": {
+      "student_sees": "Všimli ste si, že stav pacienta sa mení - a nie k lepšiemu. Jeho oči, ktoré boli otvorené, sa teraz zatvárajú. 'Pán Ján, počujete ma?' pýtate sa, tentoraz hlasnejšie. Neodpovedá okamžite. Jeho manželka vás vystrašene chytí za ruku. 'Práve hovoril! Čo sa deje?' Keď znova skontrolujete jeho GCS, kleslo na 9 - oči otvára len na bolesť, vydáva nezrozumiteľné zvuky a má abnormálnu flexiu. Jeho pravá zrenica je teraz výrazne väčšia ako ľavá - možno 6 mm oproti 3 mm - a sotva reaguje na svetlo. Jeho dýchanie sa stalo nepravidelným - hlboké nádychy, potom plytké, potom pauzy. Skontrolujete mu pulz: len 52 úderov za minútu, pokles zo 68. Jeho krvný tlak na monitore ukazuje 185/98. Toto je Cushingova triáda - hypertenzia, bradykardia, nepravidelné dýchanie - neskorý a zlovestný príznak kriticky vysokého intrakraniálneho tlaku.",
+      "appearance": "Znížená úroveň vedomia GCS 9, anizokória (nerovnaké zrenice) sa zhoršuje, nepravidelný vzor dýchania, rozvíja sa Cushingova triáda, pacient sa zhoršuje",
+      "clinical_note": "KRITICKÉ ZHORŠENIE: Klasické príznaky stúpajúceho intrakraniálneho tlaku s hroziacou herniáciou. Prítomná Cushingova triáda: (1) Hypertenzia 185/98, (2) Bradykardia SF 52, (3) Nepravidelné dýchanie. GCS kleslo z 13 na 9 (pokles o 4 body). Zhoršujúca sa anizokória (pravá zrenica 6 mm, ľavá 3 mm). To naznačuje expandujúci intrakraniálny hematóm s kompresiou mozgového kmeňa. POTREBNÉ OKAMŽITÉ AKCIE: (1) Zabezpečiť dýchacie cesty - pripraviť sa na možnú asistovanú ventiláciu alebo intubáciu, (2) Udržiavať oxygenáciu nad 90 percent, (3) Udržiavať sTK nad 90 (zabrániť hypotenzii, ktorá zhoršuje výsledok), (4) Polohovať hlavu zdvihnutú o 30 stupňov, (5) URGENTNÝ transport do traumacentra s neurochirurgiou, (6) Zvážiť hyperventiláciu LEN ak sú prítomné príznaky herniácie (tento prípad spĺňa kritériá). Prognóza neistá - potrebuje urgentné CT a pravdepodobne neurochirurgický zákrok.",
+      "urgency_level": "život ohrozujúca"
+    },
+    "critical": {
+      "student_sees": "Pacient je teraz úplne nereagujúci. Jeho GCS je 3 - žiadne otváranie očí ani na bolesť, žiadna verbálna odpoveď, žiadny cielený pohyb. Jeho pravá zrenica je úplne rozšírená na 8 mm a nereaktívna - fixovaná a dilatovaná. Jeho ľavá zrenica je 4 mm a spomalená. Jeho dýchanie sa stalo agonálnym - nepravidelné lapavé dychy každých 10-15 sekúnd, úplne nedostatočné na oxygenáciu. Jeho SpO2 klesá napriek kyslíku - teraz 82 percent. Jeho srdcová frekvencia je 48 a nepravidelná. Jeho krvný tlak je 195/105. Toto je herniácia mozgu. Bez okamžitého zásahu utrpí zástavu srdca v dôsledku smrti mozgového kmeňa.",
+      "appearance": "GCS 3, fixovaná dilatovaná pravá zrenica, agonálne dýchanie, závažná bradykardia, hypertenzný, herniačný syndróm",
+      "clinical_note": "PREBIEHAJÚCA HERNIÁCIA: Pacient má unkálnu herniáciu (dilatovaná nereaktívna zrenica ipsilaterálne k zraneniu). Toto je konečné štádium zvýšeného ICP. Vyžaduje OKAMŽITE: (1) Asistovanú ventiláciu s BVM - cieľom je normálna ventilácia (NIE hyperventilácia, okrem poslednej možnosti), (2) Udržiavať oxygenáciu, (3) Udržiavať krvný tlak nad 90 systolický, (4) Hlava zdvihnutá o 30 stupňov, (5) URGENTNÝ transport - vopred zavolať do traumacentra na aktiváciu neurochirurgie. Zvážiť kontrolovanú hyperventiláciu (10-12 dychov za minútu, nie nadmerne) ako dočasné opatrenie len pri prítomnosti príznakov herniácie. Prognóza veľmi zlá. Toto predstavuje zlyhanie v rozpoznaní a liečbe skoršieho zhoršenia. Prospel by z intubácie a monitorovania ICP, ale to je mimo rozsahu záchranára - kritický je rýchly transport.",
+      "urgency_level": "hroziaca_zástava"
+    }
+  },
+
+  "state_transitions": {
+    "initial_to_improving": {
+      "required_treatments": ["c_spine_protection", "oxygen_if_needed", "bleeding_control", "position_appropriate", "gcs_assessment"],
+      "optional_helpful": ["iv_access", "pain_management_cautious"],
+      "time_minimum_minutes": 5,
+      "student_actions_needed": "Imobilizácia krčnej chrbtice + Kyslík + Sériové hodnotenie GCS + Primerané polohovanie",
+      "teaching_note": "Manažment TBI je o PREVENCII sekundárneho poškodenia mozgu. Podporujte oxygenáciu, udržiavajte krvný tlak, chráňte chrbticu, neurologicky monitorujte. V prednemocničnom prostredí neexistujú žiadne zázračné lieky."
+    },
+    "initial_to_deteriorating": {
+      "trigger": "poor_management_or_natural_progression",
+      "time_elapsed_minutes": 5,
+      "description": "Expandujúci intrakraniálny hematóm spôsobuje stúpajúci ICP, pacient sa zhoršuje napriek liečbe ALEBO sa zhoršuje rýchlejšie v dôsledku hypoxie alebo hypotenzie"
+    },
+    "deteriorating_to_critical": {
+      "trigger": "continued_poor_management",
+      "time_elapsed_minutes": 10,
+      "description": "Unkálna herniácia postupuje ku kompresii mozgového kmeňa, agonálnemu dýchaniu, hroziacej zástave"
+    },
+    "improving_to_stable": {
+      "required_treatments": ["maintain_oxygenation", "maintain_blood_pressure", "c_spine_protected", "serial_gcs_trending"],
+      "time_minimum_minutes": 10,
+      "description": "Pacient zostáva stabilný s GCS 13-14, bezpečne transportovaný do traumacentra"
+    }
+  },
+
+  "no_treatment_progression": {
+    "3_minutes": {
+      "vital_changes": {
+        "GCS": 13,
+        "HR": 66,
+        "BP_systolic": 168,
+        "SpO2": 97
+      },
+      "patient_status": "Pacient zmätený, nie je primerane manažovaný, krčná chrbtica nie je chránená (ak je to relevantné), krvácanie pokračuje",
+      "clinical_note": "Kritická chyba, ak nie je chránená krčná chrbtica. Pacient je v riziku ďalšieho zranenia.",
+      "teaching_point": "Každá minúta bez ochrany krčnej chrbtice je minútou rizika poranenia miechy. Vysoko rizikový mechanizmus vyžaduje okamžitú imobilizáciu."
+    },
+    "5_minutes": {
+      "vital_changes": {
+        "GCS": 12,
+        "HR": 64,
+        "BP_systolic": 172,
+        "SpO2": 96,
+        "pupils": "Pravá 4mm, Ľavá 3mm"
+      },
+      "patient_status": "GCS pomaly klesá, skoré príznaky zhoršenia, manželka je čoraz viac znepokojená",
+      "clinical_note": "GCS klesá z 13 na 12. Znepokojujúci trend. Intrakraniálny hematóm sa pravdepodobne zväčšuje. Potrebné sú sériové hodnotenia.",
+      "state_transition": "deteriorating",
+      "teaching_point": "Pokles GCS je NAJcitlivejším indikátorom zhoršenia pri TBI. Pokles o jeden bod by mal zvýšiť ostražitosť. Pokles o dva body si vyžaduje akciu."
+    },
+    "10_minutes": {
+      "vital_changes": {
+        "GCS": 9,
+        "HR": 54,
+        "BP_systolic": 183,
+        "RR": "nepravidelné",
+        "SpO2": 93,
+        "pupils": "Pravá 6mm, Ľavá 3mm"
+      },
+      "patient_status": "Závažné neurologické zhoršenie, rozvíja sa Cushingova triáda, hrozí herniácia",
+      "clinical_note": "Významné zhoršenie. GCS teraz 9 (pokles o 4 body). Rozvíja sa bradykardia a hypertenzia. Objavuje sa Cushingova triáda. Kritická situácia vyžadujúca okamžité pokročilé zásahy.",
+      "state_transition": "critical",
+      "teaching_point": "Cushingova triáda je NESKORÝ príznak. Kým sa objaví úplne, pacient je v extrémne zlom stave. Kľúčom je rozpoznať SKORŠIE príznaky - pokles GCS a zmeny zreníc - a konať skôr, ako sa Cushingova triáda rozvinie."
+    }
+  },
+
+  "assessment_findings": {
+    "abcde_assessment_findings": {
+      "airway": {
+        "initial": "Priechodné, pacient hovorí (zmätená reč), krv v orofaryngu z rany na hlave, môže potrebovať odsávanie",
+        "improving": "Priechodné, chránené s opatreniami na ochranu krčnej chrbtice, odsávané",
+        "deteriorating": "V ohrození - znížená úroveň vedomia (GCS 9), môže stratiť ochranné reflexy dýchacích ciest, pripraviť sa na asistovanú ventiláciu",
+        "critical": "Kompromitované - agonálne dýchanie, GCS 3, vyžaduje ventiláciu pomocou BVM a možno pokročilé dýchacie cesty (mimo rozsahu)"
+      },
+      "breathing": {
+        "initial": "DF 18 za minútu, pravidelný vzor, SpO2 97 percent, adekvátny dychový objem, čisté dýchacie zvuky bilaterálne",
+        "improving": "DF 16 za minútu, pravidelné, SpO2 98 percent na kyslíku, adekvátna ventilácia",
+        "deteriorating": "DF nepravidelná (Cheyne-Stokesov vzor), periódy hlbokého dýchania striedajúce sa s plytkým, DF sa mení 10-22 za minútu, SpO2 94 percent",
+        "critical": "Agonálne dýchanie, DF 4-6 za minútu, úplne nedostatočné, SpO2 82 percent, vyžaduje BVM"
+      },
+      "circulation": {
+        "initial": "SF 68 za minútu pravidelná (bradykardia relatívna k zraneniu), TK 165/95 (hypertenzný), radiálne pulzy silné, koža teplá, CRT 2 sekundy, žiadne masívne vonkajšie krvácanie (krvácanie z hlavy pod kontrolou)",
+        "improving": "SF 72 za minútu, TK 158/92, perfúzia adekvátna",
+        "deteriorating": "SF 52 za minútu (zhoršujúca sa bradykardia), TK 185/98 (zhoršujúca sa hypertenzia) - CUSHINGOVA TRIÁDA",
+        "critical": "SF 48 za minútu nepravidelná, TK 195/105, príznaky hroziaceho kardiovaskulárneho kolapsu"
+      },
+      "disability": {
+        "initial": "GCS 13 (O3 V4 M6): Otvára oči na hlas, zmätená konverzácia, poslúcha príkazy. Zmätený o udalostiach. Pravá zrenica 4mm spomalená, ľavá zrenica 3mm reaktívna. Amnézia na pád. Pohybuje všetkými končatinami, ale pomaly reaguje.",
+        "improving": "GCS 14 (O4 V4 M6): Oči otvorené spontánne, zmätená konverzácia, poslúcha príkazy. Zrenice stále nerovnaké, ale stabilné.",
+        "deteriorating": "GCS 9 (O2 V2 M5): Otvára oči len na bolesť, nezrozumiteľné zvuky, lokalizuje bolesť. Pravá zrenica 6mm spomalená, ľavá 3mm reaktívna. Významná anizokória naznačuje lateralizovaný masový efekt.",
+        "critical": "GCS 3 (O1 V1 M1): Žiadne otváranie očí, žiadna verbálna odpoveď, žiadna motorická odpoveď. Pravá zrenica 8mm fixovaná a dilatovaná, ľavá 4mm spomalená. Toto je unkálna herniácia."
+      },
+      "exposure": {
+        "initial": "5cm tržná rana na pravom čele, možná depresia hmatateľná na lebke (zlomenina lebky?), Battleov príznak neprítomný (príliš skoro), mývalie oči neprítomné (príliš skoro), starostlivo skontrolovať krv z nosa alebo uší",
+        "improving": "Tržná rana pod kontrolou, žiadne nové nálezy",
+        "deteriorating": "Žiadne ďalšie traumatické nálezy, zamerať sa na neurologickú krízu",
+        "critical": "Zamerať sa na život ohrozujúce ABC, nie na vyšetrenie expozície"
+      }
+    },
+    
+    "sample_history": {
+      "symptoms": {
+        "chief_complaint": "Pád zo schodov s nárazom hlavy, zmenený stav vedomia, bolesť hlavy",
+        "onset": "Pred 10 minútami podľa manželky",
+        "mechanism": "VYSOKO RIZIKOVÝ: Pád z približne 12 schodov pri nesení bielizne, priamy náraz hlavy o podlahu",
+        "loss_of_consciousness": "Neznáme - manželka ho našla po páde, on si nepamätá",
+        "amnesia": "Nepomätá si pád ani udalosti bezprostredne po ňom",
+        "headache": "Áno, silná - pacient sa stále dotýka hlavy, hovorí 'bolí ma hlava'",
+        "nausea_vomiting": "Zatiaľ žiadne (ale opýtajte sa - vracanie je bežné pri TBI)",
+        "vision_changes": "Nedá sa spoľahlivo posúdiť kvôli zmenenému stavu vedomia",
+        "weakness_numbness": "Pohybuje všetkými končatinami, ale ťažko posúdiť jemné deficity vzhľadom na zmätenosť"
+      },
+      "allergies": {
+        "medications": "Žiadne známe alergie na lieky podľa manželky",
+        "other": "Žiadne známe"
+      },
+      "medications": {
+        "current": [
+          "Warfarín 5mg denne pre fibriláciu predsiení - KRITICKÉ: antikoagulovaný pacient s poranením hlavy",
+          "Metoprolol 50mg denne pre hypertenziu",
+          "Atorvastatín 20mg pre cholesterol"
+        ],
+        "last_doses": "Ráno o 8:00 si vzal lieky vrátane warfarínu",
+        "compliance": "Dobrá podľa manželky, nikdy nevynecháva dávky",
+        "critical_note": "WARFARÍN = VEĽMI VYSOKÉ RIZIKO. Aj menšia trauma hlavy môže spôsobiť katastrofické intrakraniálne krvácanie u antikoagulovaných pacientov. Tento pacient potrebuje URGENTNÉ CT a pravdepodobne reverziu warfarínu."
+      },
+      "past_medical_history": {
+        "major_conditions": [
+          "Fibrilácia predsiení - na warfaríne",
+          "Hypertenzia - kontrolovaná metoprololom",
+          "Hyperlipidémia",
+          "Predchádzajúca cievna mozgová príhoda pred 3 rokmi (mierna, úplné zotavenie)"
+        ],
+        "surgeries": "Žiadne významné",
+        "hospitalizations": "Hospitalizácia pre CMP pred 3 rokmi"
+      },
+      "last_oral_intake": {
+        "food": "Raňajky o 8:00 - hrianka a káva",
+        "fluids": "Voda počas dopoludnia",
+        "nothing_abnormal": "Normálne ráno, robil bielizeň, keď spadol"
+      },
+      "events_leading_to_injury": {
+        "activity": "Niesol kôš s bielizňou po schodoch",
+        "wife_account": "Počula som hrozný rachot z prízemia. Pribehla som a našla som ho na spodku schodov. Bielizeň bola všade rozhádzaná. Myslím, že minul schod blízko vrchu - je to 12 schodov na podestu. Bol pri vedomí, ale veľmi zmätený, pýtal sa, čo sa stalo. Z čela mu tiekla veľa krvi. Priložila som mu na to uterák a hneď som vám zavolala.",
+        "estimated_height_of_fall": "12 schodov = približne 2.4-3 metre (8-10 stôp)",
+        "position_found": "Sediaci na spodku schodov, opretý o stenu",
+        "immediate_symptoms": "Zmätenosť, krvácanie z rany na čele"
+      }
+    },
+    
+    "focused_exam": {
+      "head": "5cm tržná rana na pravom čele aktívne krvácajúca, hmatateľný schodík alebo depresia znepokojujúca pre zlomeninu lebky, opuch hlavy, krv zlepená vo vlasoch. Starostlivo skontrolujte Battleov príznak (modrina za ušami - neskorý príznak, objaví sa o niekoľko hodín). Skontrolujte mývalie oči (periorbitálna ekchymóza - neskorý príznak). Skontrolujte krv alebo číru tekutinu z uší (likvorea z ucha) alebo nosa (likvorea z nosa).",
+      "neck": "Citlivosť krčnej chrbtice sa nedá spoľahlivo posúdiť kvôli zmenenému stavu vedomia - PREDPOKLADAJTE zranenie, dodržiavajte plné opatrenia. Žiadna zjavná deformita. Žiadne hmatateľné schodíky.",
+      "neurological": "Hlavové nervy ťažko plne posúdiť kvôli zmenenému stavu vedomia. Zrenice nerovnaké (anizokória): pravá väčšia a spomalená (4mm), ľavá normálna (3mm) - znepokojujúce pre lateralizovaný masový efekt. Motorika: spočiatku pohybuje všetkými 4 končatinami, ale ako sa stav zhoršuje, môže sa vyvinúť hemiparéza (slabosť na jednej strane) alebo dekortikačná/decerebračná poloha. Žiadna zjavná asymetria tváre. Dávivý reflex spočiatku prítomný.",
+      "back": "Nie je úplne odhalený kvôli opatreniam na ochranu krčnej chrbtice, ale prehmatajte chrbticu cez oblečenie - žiadne zjavné schodíky alebo vyvolaná citlivosť (hoci spoľahlivosť pacienta je otázna)",
+      "other_injuries": "Žiadne zjavné poranenia hrudníka, brucha alebo panvy. Možné menšie pomliaždeniny na ramene alebo chrbte z pádu po schodoch - nie sú prioritou vzhľadom na závažnosť poranenia hlavy."
+    }
+  },
+
+  "cushings_triad_teaching": {
+    "definition": "Cushingova triáda je neskorý príznak kriticky zvýšeného intrakraniálneho tlaku, ktorý naznačuje kompresiu mozgového kmeňa a hroziacu herniáciu",
+    "components": [
+      "Hypertenzia (špecificky rozširujúci sa pulzný tlak)",
+      "Bradykardia (paradoxná - očakávali by sme tachykardiu pri šoku, ale ICP spôsobuje vagovú stimuláciu)",
+      "Nepravidelné dýchanie (Cheyne-Stokesov vzor alebo iné abnormálne vzory)"
+    ],
+    "clinical_significance": "NESKORÝ a ZLOVESTNÝ príznak - znamená, že ICP je kriticky vysoký a herniácia mozgu je bezprostredne hroziaca alebo prebieha. Nie všetky tri zložky musia byť prítomné súčasne. Bradykardia s hypertenziou u pacienta s poranením hlavy by mala vyvolať vysokú ostražitosť.",
+    "this_scenario_progression": "Pacient postupuje od TK 165/95 SF 68 k TK 185/98 SF 52 s nepravidelným dýchaním",
+    "key_teaching": "Nečakajte na plnú Cushingovu triádu, aby ste rozpoznali zhoršujúce sa poranenie hlavy. Sledujte trend GCS (najcitlivejšie). Cushingova triáda je NESKORÁ - pacient je už vo vážnych problémoch, keď sa objaví. Kľúčom je rozpoznať SKORŠIE príznaky: zhoršujúce sa GCS, zhoršujúce sa vyšetrenie zreníc, zväčšujúca sa anizokória.",
+    "pathophysiology": "Stúpajúci ICP komprimuje mozgový kmeň, čo vedie k reflexnej hypertenzii (telo sa snaží udržať cerebrálny perfúzny tlak), ktorá spúšťa vagovú stimuláciu spôsobujúcu bradykardiu, a dysfunkcia mozgového kmeňa spôsobuje nepravidelné dýchacie vzory.",
+    "earlier_warning_signs": [
+      "Pokles GCS (najcitlivejší - pokles o 2 alebo viac bodov je významný)",
+      "Zhoršujúca sa anizokória (nerovnaké zrenice)",
+      "Nová alebo zhoršujúca sa bolesť hlavy",
+      "Vracanie",
+      "Progresia zmeneného stavu vedomia"
+    ]
+  },
+
+  "primary_medications": {
+    "oxygen": {
+      "generic_name": "Kyslík",
+      "class": "Medicínsky plyn",
+      "indication": "Prevencia a liečba hypoxie pri TBI (udržiavať SpO2 nad 90 percent)",
+      "mechanism": "Zvyšuje obsah kyslíka v krvi, predchádza hypoxickému sekundárnemu poškodeniu mozgu",
+      
+      "dosing": {
+        "tbi_target": "Titrovať na SpO2 nad 90 percent (ideálne 94-98 percent)",
+        "delivery_method": "2-6 litrov za minútu nosové okuliare ALEBO 15 litrov za minútu maska s rezervoárom, ak je to potrebné",
+        "bvm_if_inadequate": "Ak je GCS 8 alebo menej alebo nedostatočné dychové úsilie, asistovať s BVM"
+      },
+      
+      "pharmacokinetics": {
+        "onset_minutes": 1,
+        "effect": "okamžité zvýšenie SpO2, ak je hypoxický"
+      },
+      
+      "contraindications": {
+        "absolute": [],
+        "relative": "Žiadne v urgentnej starostlivosti o TBI - hypoxia je smrteľná"
+      },
+      
+      "side_effects": [],
+      
+      "warnings": [
+        "Ak je dýchanie pacienta nedostatočné (DF menej ako 10, agonálne, GCS 8 alebo menej), samotný kyslík je nedostatočný - potrebná je asistencia BVM",
+        "Nepretržite monitorujte SpO2 - hypoxia dramaticky zhoršuje výsledky TBI"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": true,
+        "importance": "kritická",
+        "time_to_effect_minutes": 1,
+        "vital_changes": {
+          "SpO2": "Udržiava nad 90 percent (pacient začína na 97 percent, takže spočiatku nemusí potrebovať kyslík, ale majte ho pripravený, ak sa stav zhorší)"
+        },
+        "patient_says": "Pacient je príliš zmätený na to, aby sa spočiatku vyjadril. Neskôr môže povedať 'tá maska je nepohodlná', ale tolerancia sa zlepší.",
+        "clinical_effect": "PREVENCIA sekundárneho poškodenia mozgu. Hypoxia (SpO2 menej ako 90 percent) dramaticky zhoršuje výsledky TBI. Aj jedna epizóda hypoxie zdvojnásobuje mortalitu. Kyslík je nevyhnutný, ak SpO2 klesne alebo sa neurologický stav pacienta zhorší. Ako GCS klesá, dychové centrum môže zlyhať, čo si vyžaduje asistenciu BVM.",
+        "points_if_given_when_needed": 10,
+        "teaching_point": "Pri TBI sa vyhnite dvom veciam: HYPOXII (SpO2 menej ako 90 percent) a HYPOTENZII (sTK menej ako 90). Obe spôsobujú sekundárne poškodenie mozgu a zhoršujú výsledky. Kyslík je váš nástroj na prevenciu hypoxie. Dôkladne monitorujte SpO2. Ak GCS pacienta klesne na 8 alebo menej alebo sa dýchanie stane nedostatočným, môže byť potrebná asistencia BVM. Poranenie mozgu nemôžete opraviť, ale hypoxii môžete zabrániť."
+      }
+    },
+
+    "normal_saline": {
+      "generic_name": "0.9 percentný Chlorid sodný",
+      "brand_names": ["Fyziologický roztok", "0.9 percentný NaCl"],
+      "class": "Kryštaloidný IV roztok",
+      "indication": "Udržiavanie krvného tlaku, prevencia hypotenzie pri TBI, IV prístup pre lieky",
+      "mechanism": "Expanzia objemu, udržiava intravaskulárny objem a krvný tlak, zabezpečuje cerebrálny perfúzny tlak",
+      
+      "dosing": {
+        "tbi_management": "Zabezpečiť IV prístup, udržiavať priechodnú linku, vyhnúť sa hypotenzii (sTK nad 90 mmHg)",
+        "if_hypotensive": "250-500ml bolus na udržanie sTK nad 90",
+        "avoid_overload": "NEPODÁVAJTE agresívne tekutiny, ak je normotenzný - môže zhoršiť cerebrálny edém"
+      },
+      
+      "pharmacokinetics": {
+        "onset_minutes": "okamžitý pre expanziu objemu",
+        "duration_minutes": "30-60"
+      },
+      
+      "contraindications": {
+        "absolute": [],
+        "relative": "Vyhnite sa nadmerným tekutinám pri izolovanom TBI bez hypotenzie - môže zhoršiť cerebrálny edém"
+      },
+      
+      "warnings": [
+        "Cieľ: udržať sTK nad 90, NIE agresívna resuscitácia",
+        "Cerebrálny perfúzny tlak (CPP) sa rovná MAP mínus ICP, takže je potrebný adekvátny krvný tlak",
+        "Ale nadmerné tekutiny môžu zvýšiť cerebrálny edém a ICP"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": false,
+        "importance": "podporná",
+        "vital_changes": {
+          "BP_systolic": "Udržiava adekvátny (žiadna zmena nie je potrebná, ak je už nad 90)"
+        },
+        "clinical_effect": "Zabezpečiť IV prístup pre potenciálne podanie liekov a na udržanie krvného tlaku, ak klesne. VYHNITE sa agresívnym bolusom tekutín, pokiaľ nie je skutočne hypotenzný - nadmerné tekutiny môžu zhoršiť cerebrálny edém. Tento pacient je hypertenzný (165/95), takže nepotrebuje tekutiny na krvný tlak. Ale udržiavajte IV prístup pre prípad, že TK klesne počas transportu alebo so zhoršením stavu.",
+        "points_if_given": 5,
+        "teaching_point": "Pri TBI: ZABRÁŇTE hypotenzii (sTK menej ako 90), ale NEPREHNANE resuscitujte. Podajte tekutiny, ak TK klesne pod 90, ale ak je pacient normotenzný alebo hypertenzný, len udržiavajte IV prístup. Cieľom je cerebrálny perfúzny tlak (CPP), ktorý sa rovná strednému arteriálnemu tlaku (MAP) mínus intrakraniálny tlak (ICP). Potrebujeme adekvátny MAP. Ale nadmerné tekutiny môžu zhoršiť cerebrálny edém. Kľúčová je rovnováha - zabrániť hypotenzii, vyhnúť sa preťaženiu tekutinami."
+      }
+    },
+
+    "glucose_40_percent": {
+      "generic_name": "Glukóza 40 percent",
+      "brand_names": ["Glukóza 40 percent", "Dextróza 40 percent"],
+      "class": "Antihypoglykemikum, sacharid",
+      "indication": "Hypoglykémia (hladina glukózy v krvi menej ako 3.5 mmol/l alebo menej ako 63 mg/dl)",
+      "mechanism": "Rýchlo zvyšuje hladinu glukózy v krvi, koriguje hypoglykémiu, obnovuje prísun glukózy do mozgu",
+      
+      "dosing": {
+        "adult_hypoglycemia": "20-50ml IV push (poskytuje 8-20 gramov glukózy)",
+        "titrate_to_effect": "Podávajte postupne, znova skontrolujte glukózu, v prípade potreby opakujte",
+        "goal": "Hladina glukózy v krvi nad 4.0 mmol/l"
+      },
+      
+      "pharmacokinetics": {
+        "onset_minutes": "1-2",
+        "peak_effect_minutes": "5-10",
+        "duration_minutes": "30-60"
+      },
+      
+      "contraindications": {
+        "absolute": [],
+        "relative": "Intrakraniálne krvácanie NIE JE kontraindikáciou pre glukózu, ak je pacient hypoglykemický"
+      },
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": false,
+        "importance": "podmienečná",
+        "vital_changes": {
+          "glucose": "Korigovalo by, ak by bola nízka, ale v tomto prípade je glukóza normálna"
+        },
+        "clinical_effect": "V tomto scenári je zmenený stav vedomia spôsobený PORANENÍM HLAVY, nie hypoglykémiou. Avšak, je DOBROU PRAXOU a POVINNOSŤOU skontrolovať hladinu glukózy v krvi u každého pacienta so zmeneným stavom vedomia, aj keď to trauma vysvetľuje. Hypoglykémia môže existovať súčasne s traumou. V tomto prípade je glukóza normálna (5.2 mmol/l), takže nie je indikácia na podanie glukózy. Ak by bola glukóza nízka, MUSÍ sa korigovať - hypoglykémia zhoršuje poranenie mozgu.",
+        "teaching_point": "VŽDY skontrolujte glukózu u pacientov so zmeneným stavom vedomia, aj keď to trauma zjavne vysvetľuje. S glukomerom to trvá 10 sekúnd. Hypoglykémia môže existovať súčasne s traumou (diabetik spadol kvôli nízkemu cukru). Hypoglykémia zhoršuje výsledky poranenia mozgu. Ale nepredpokladajte, že zmenený stav vedomia u traumatického pacienta je z hypoglykémie - chráňte krčnú chrbticu a najprv posúďte poranenie hlavy. Skontrolujte glukózu, korigujte, ak je nízka, ale riešte aj traumu. V tomto scenári: glukóza normálna, zmenený stav vedomia z TBI."
+      }
+    }
+  },
+
+  "secondary_medications_by_impact": {
+    
+    "critical_harm": [
+      {
+        "name": "apaurin",
+        "generic_name": "Diazepam",
+        "class": "Benzodiazepín, sedatívum",
+        "primary_indication": "Kŕče, status epilepticus, závažná úzkosť, alkoholový abstinenčný syndróm",
+        "why_dangerous": "Útlm dýchania, sedácia maskuje neurologické zhoršenie, znižuje GCS, znemožňuje sledovanie trendov",
+        "if_given": {
+          "vital_changes": {
+            "GCS": 10,
+            "RR": 14,
+            "SpO2": 91
+          },
+          "patient_response": "Pacient sa stáva sedovaným a ospalým. Jeho už zmenený stav vedomia sa ďalej zhoršuje. 'Cítim sa... ospalo...' Jeho dychová frekvencia klesá. Jeho GCS klesá z 13 na 10 - ale je to zo sedácie alebo zo zhoršujúceho sa poranenia mozgu? Už to nemôžete rozoznať. Benzodiazepín ZAMASKOVAL klinické vyšetrenie, čo znemožňuje zistiť skutočné neurologické zhoršenie.",
+          "clinical_note": "Benzodiazepíny sú KONTRAINDIKOVANÉ pri TBI okrem aktívnych kŕčov. Spôsobujú: (1) Útlm dýchania zhoršujúci hypoxiu, (2) Sedáciu maskujúcu neurologický stav, (3) Znížené GCS znemožňujúce sledovanie trendov. NEMÔŽETE rozlíšiť sedáciu od herniácie, ak podáte sedatíva. Úzkosť pacienta je primeraná - je vážne zranený. Pokojné uistenie, nie chemické obmedzenie. Jediná výnimka: aktívne kŕče.",
+          "points": -20,
+          "state_change": "deteriorating",
+          "aar_flag": "dangerous_medication_masking_neuro_exam"
+        },
+        "teaching_point": "NIKDY nesedujte pacienta s TBI, pokiaľ neliečite aktívne kŕče. Úroveň vedomia pacienta je vaše JEDINÉ okno do toho, čo sa deje v lebke. Sedatíva toto okno zahmlievajú. Ak je pacient agitovaný, pýtajte sa prečo - zhoršujúca sa hypoxia? Stúpajúci ICP? Fyzicky obmedzte, ak je to absolútne nevyhnutné pre bezpečnosť, ale chemická sedácia maskuje zhoršenie. Diazepam má úlohu pri TBI len pri kŕčoch. Pre úzkosť u vedomého pacienta s TBI: pokojný hlas, vysvetlenie, uistenie - nie benzodiazepíny."
+      },
+      
+      {
+        "name": "novalgin",
+        "generic_name": "Metamizol",
+        "class": "Analgetikum, antipyretikum, NSAID",
+        "primary_indication": "Úľava od bolesti, zníženie horúčky",
+        "why_dangerous": "Riziko hypotenzie, riziko anafylaxie, antiagregačný účinok zhoršuje krvácanie, v mnohých krajinách zakázaný kvôli agranulocytóze",
+        "if_given": {
+          "vital_changes": {
+            "BP_systolic": 135,
+            "BP_diastolic": 78,
+            "HR": 76
+          },
+          "patient_response": "Krvný tlak pacienta klesá zo 165/95 na 135/78 - znepokojujúce pri TBI, kde potrebujeme UDRŽIAVAŤ krvný tlak pre cerebrálnu perfúziu. Žiadna úľava od bolesti - bolesť pri traume hlavy nereaguje na metamizol. Riziko alergickej reakcie (anafylaxia, vyrážka). Metamizol má mierny antiagregačný účinok - pacient je už na warfaríne, teraz má DVA lieky ovplyvňujúce koaguláciu pri intrakraniálnom krvácaní.",
+          "clinical_note": "Metamizol je nevhodný pri TBI z viacerých dôvodov: (1) Spôsobuje hypotenziu - potrebujeme sTK nad 90, nie znižovať TK, (2) Antiagregačný účinok zhoršuje intrakraniálne krvácanie, najmä s warfarínom, (3) Riziko závažných alergických reakcií vrátane anafylaxie, (4) Riziko agranulocytózy (zriedkavé, ale závažné), (5) Zakázaný v USA, UK, mnohých krajinách z bezpečnostných dôvodov. Ak je potrebná kontrola bolesti pri TBI, použite opatrné malé dávky morfínu s dôkladným neuro monitorovaním, NIE metamizol.",
+          "points": -18,
+          "state_change": "deteriorating",
+          "aar_flag": "inappropriate_analgesic_causing_hypotension"
+        },
+        "teaching_point": "Metamizol (dipyrón) je zakázaný v Spojených štátoch, Spojenom kráľovstve a mnohých krajinách kvôli riziku agranulocytózy (deštrukcia bielych krviniek). Aj tam, kde je dostupný, je to nesprávna voľba pre bolesť pri TBI. Spôsobuje HYPOTENZIU - presne to, čomu sa snažíme vyhnúť pri TBI (potrebujeme sTK nad 90 pre cerebrálnu perfúziu). Má antiagregačné účinky - zlé u pacienta s intrakraniálnym krvácaním, najmä na warfaríne. Ak je kontrola bolesti absolútne nevyhnutná pri TBI: malé dávky morfínu (2-3mg IV) s veľmi dôkladným neurologickým monitorovaním, pripravení zastaviť, ak sa zmení GCS. Ale často najlepší prístup pri TBI: vysvetliť pacientovi, prečo obmedzujeme lieky proti bolesti (potrebujeme monitorovať funkciu vášho mozgu), poskytnúť polohový komfort a rýchlo sa dostať k definitívnej starostlivosti."
+      },
+      
+      {
+        "name": "clexane",
+        "generic_name": "Enoxaparín",
+        "class": "Nízkomolekulárny heparín, antikoagulans",
+        "primary_indication": "Profylaxia DVT, liečba DVT, pľúcna embólia, akútny koronárny syndróm",
+        "why_dangerous": "ANTIKOAGULÁCIA PRI INTRAKRANIÁLNOM KRVÁCANÍ - katastrofické rozšírenie krvácania",
+        "if_given": {
+          "vital_changes": {
+            "GCS": 8,
+            "BP_systolic": 175,
+            "pupils": "Pravá 7mm, Ľavá 3mm"
+          },
+          "patient_response": "Toto je katastrofická chyba. Podali ste ANTIKOAGULANS pacientovi s INTRAKRANIÁLNYM KRVÁCANÍM, ktorý je UŽ na warfaríne. Hematóm sa rýchlo zväčšuje. GCS pacienta klesá z 13 na 8 v priebehu niekoľkých minút. Pravá zrenica sa rozširuje na 7 mm. Krvný tlak stúpa, ako stúpa ICP. Zmenili ste potenciálne prežiteľné zranenie na pravdepodobne smrteľné. Toto je jeden z najnebezpečnejších liekov, ktoré by ste mohli v tomto scenári podať.",
+          "clinical_note": "ABSOLÚTNA KONTRAINDIKÁCIA. Antikoagulácia pri intrakraniálnom krvácaní je smrteľná. Pacient je už na warfaríne (INR pravdepodobne zvýšené). Pridanie enoxaparínu spôsobuje: (1) Masívne zväčšenie intrakraniálneho hematómu, (2) Nekontrolované krvácanie, (3) Rýchle neurologické zhoršenie, (4) Smrť. Neexistuje ŽIADNA indikácia pre antikoaguláciu pri akútnej traume hlavy. Toto predstavuje zásadné nepochopenie manažmentu TBI. Pacient potrebuje REVERZIU antikoagulácie (warfarínu), nie viac antikoagulancií.",
+          "points": -25,
+          "state_change": "critical",
+          "aar_flag": "critical_error_anticoagulation_in_ich"
+        },
+        "teaching_point": "Toto je KRITICKÁ UDALOSŤ, KTORÁ SA NIKDY NESMIE STAŤ. Antikoagulácia je ABSOLÚTNE KONTRAINDIKOVANÁ pri podozrení alebo potvrdenom intrakraniálnom krvácaní. Pacient je UŽ na warfaríne (koagulopatický). Pridanie ďalšej antikoagulácie spôsobuje katastrofické rozšírenie krvácania. Pacient potrebuje: (1) Urgentné CT vyšetrenie, (2) REVERZIU warfarínu (vitamín K, protrombínový komplexný koncentrát, čerstvá mrazená plazma), (3) Možnú urgentnú neurochirurgiu. Posledná vec, ktorú pacient potrebuje, je VIAC antikoagulácie. Kedykoľvek zvažujete antikoagulanciá, opýtajte sa: mohol by tento pacient niekde krvácať? Pri traume s poranením hlavy je odpoveď vždy ÁNO. Zadržte antikoagulanciá. Nikdy ich nepodávajte."
+      },
+      
+      {
+        "name": "anopyrin",
+        "generic_name": "Aspirín (Kyselina acetylsalicylová)",
+        "class": "Antiagregancium, NSAID",
+        "primary_indication": "Akútny koronárny syndróm, cievna mozgová príhoda, TIA, horúčka, bolesť",
+        "why_dangerous": "ANTIAGREGANCIUM pri intrakraniálnom krvácaní - zhoršuje krvácanie, pacient je už na warfaríne",
+        "if_given": {
+          "vital_changes": {
+            "GCS": 11,
+            "pupils": "Pravá 5mm, Ľavá 3mm"
+          },
+          "patient_response": "Intrakraniálne krvácanie pacienta sa zhoršuje. Aspirín ireverzibilne inhibuje funkciu doštičiek na 7-10 dní (životnosť doštičky). V kombinácii s warfarínom, ktorý už užíva, má pacient teraz narušenú KOAGULÁCIU (warfarín) aj funkciu DOŠTIČIEK (aspirín). Hematóm sa zväčšuje. GCS klesá z 13 na 11. Nerovnosť zreníc sa zhoršuje. Zhoršili ste potenciálne zvládnuteľné krvácanie.",
+          "clinical_note": "Aspirín je KONTRAINDIKOVANÝ pri intrakraniálnom krvácaní. Spôsobuje: (1) Ireverzibilnú inhibíciu doštičiek trvajúcu 7-10 dní, (2) Zhoršenie aktívneho krvácania, (3) Narušenú hemostázu, keď pacient ide na operáciu. Pacient je už na warfaríne - teraz má duálny antikoagulačný účinok. Jediný čas na podanie aspirínu pri traume hlavy je, ak má pacient súčasne STEMI (vtedy prínosy môžu prevážiť riziká, ale je potrebná konzultácia s neurochirurgom). Tento pacient: len poranenie hlavy, žiadna kardiálna udalosť. Nepodávajte aspirín.",
+          "points": -20,
+          "state_change": "deteriorating",
+          "aar_flag": "antiplatelet_in_intracranial_hemorrhage"
+        },
+        "teaching_point": "Aspirín ireverzibilne inhibuje doštičky po celú ich životnosť (7-10 dní). Pri intrakraniálnom krvácaní je to veľmi nebezpečné. Pacient je UŽ na warfaríne (narušený koagulačný systém). Pridanie aspirínu (narušený systém doštičiek) vytvára duálnu antikoaguláciu. Krvácanie sa zhoršuje. Aspirín sa podáva pri AKS, pretože prínosy (prevencia rozšírenia IM) prevyšujú riziká. Pri izolovanej traume hlavy takýto prínos nie je. Aspirín je škodlivý. Ak je pacient doma na aspiríne a príde s traumou hlavy, zdokumentujte to (chirurg to bude chcieť vedieť), ale nepodávajte VIAC. Výnimky: (1) Pacient má súčasne STEMI s traumou hlavy (zriedkavé, potrebný odborný vstup), (2) Menšia trauma hlavy bez poranenia mozgu a jasná indikácia pre aspirín. Tento prípad: závažné TBI, nepodávajte."
+      },
+      
+      {
+        "name": "tensiomin",
+        "generic_name": "Metoprolol",
+        "class": "Betablokátor",
+        "primary_indication": "Hypertenzia, tachykardia, fibrilácia predsiení, AKS (stabilná fáza)",
+        "why_dangerous": "Zhoršuje bradykardiu zo stúpajúceho ICP, znižuje krvný tlak potrebný pre cerebrálnu perfúziu, maskuje tachykardiu z hemoragického šoku",
+        "if_given": {
+          "vital_changes": {
+            "HR": 52,
+            "BP_systolic": 138,
+            "BP_diastolic": 82
+          },
+          "patient_response": "Srdcová frekvencia pacienta klesá zo 68 na 52 - zhoršuje bradykardiu, ktorá je súčasťou Cushingovej triády. Krvný tlak klesá zo 165/95 na 138/82 - znižuje cerebrálny perfúzny tlak v čase, keď mozog potrebuje maximálnu perfúziu. Pacient sa stáva letargickejším. Zhoršili ste obe zložky Cushingovej triády a znížili cerebrálnu perfúziu.",
+          "clinical_note": "Betablokátory sú KONTRAINDIKOVANÉ pri akútnom TBI s relatívnou bradykardiou. Pacient má SF 68 pri veľkej traume (normálne by sa očakávala tachykardia) - táto relatívna bradykardia naznačuje skorý Cushingov reflex zo stúpajúceho ICP. Podanie betablokátora: (1) Zhoršuje bradykardiu, (2) Znižuje krvný tlak (znižuje cerebrálnu perfúziu), (3) Ak sa u pacienta rozvíja hemoragický šok z iných zranení, betablokátor maskuje kompenzačnú tachykardiu. Hypertenzia pri TBI je často kompenzačná (udržiavanie cerebrálneho perfúzneho tlaku) - neliečte ju prednemocnične. Nechajte neurochirurgov manažovať TK v nemocnici po CT vyšetrení.",
+          "points": -18,
+          "aar_flag": "beta_blocker_worsening_cushings_bradycardia"
+        },
+        "teaching_point": "Nikdy nepodávajte betablokátory pri akútnom TBI. Tu je dôvod: (1) Cushingov reflex spôsobuje bradykardiu - betablokátory ju zhoršujú, (2) Hypertenzia pri TBI je často kompenzačná (mozog sa snaží perfundovať sám) - zníženie TK môže zhoršiť ischémiu, (3) Betablokátory maskujú tachykardiu, ak sa u pacienta rozvíja hemoragický šok z iných zranení. Domáci betablokátor pacienta (metoprolol 50mg denne) NIE JE indikáciou na podanie ďalšieho pri akútnej traume. Vitálne funkcie pri TBI by sa mali sledovať, nie liečiť. Výnimky vyžadujúce liečbu TK: Hypertenzná kríza (sTK nad 220, príznaky poškodenia koncových orgánov) - ale to je nemocničný zásah s titrovateľnými liekmi (nikardipín, labetalolová infúzia), nie prednemocničný bolus betablokátora. Prednemocniene: sledujte vitálne funkcie, rozpoznávajte vzory (Cushingova triáda), urgentne transportujte."
+      }
+    ],
+
+    "worsens": [
+      {
+        "name": "furosemid",
+        "generic_name": "Furosemid",
+        "class": "Kľučkové diuretikum",
+        "primary_indication": "Pľúcny edém, zlyhanie srdca, preťaženie objemom",
+        "why_wrong": "Spôsobuje hypovolémiu a hypotenziu, keď pacient potrebuje adekvátny krvný tlak pre cerebrálnu perfúziu",
+        "if_given": {
+          "vital_changes": {
+            "BP_systolic": 142,
+            "BP_diastolic": 84,
+            "HR": 74
+          },
+          "patient_response": "Krvný tlak pacienta klesá zo 165/95 na 142/84, ako nastupuje diuréza. Hoci je stále nad 90 systolický, klesajúci trend je znepokojujúci. Za 20-30 minút s pokračujúcou diurézou môže TK klesnúť pod bezpečnú hranicu. Pacient sa cíti mierne malátny. Manželka sa pýta, prečo ho nútite močiť, keď si udrel hlavu.",
+          "clinical_note": "Furosemid je na PĽÚCNY EDÉM (vrapky, ružový spútum) alebo PREŤAŽENIE OBJEMOM (zvýšená náplň krčných žíl, periférny edém). Tento pacient má ČISTÉ dýchacie zvuky bilaterálne, žiadnu zvýšenú náplň krčných žíl, žiadny edém - NIE JE preťažený objemom. Podanie diuretika spôsobuje: (1) Hypovolémiu, (2) Znížený krvný tlak, (3) Znížený cerebrálny perfúzny tlak v čase, keď mozog potrebuje maximálnu perfúziu. Zlá indikácia, zlý liek, škodlivý účinok. Ak sa u pacienta neskôr rozvinie pľúcny edém z nadmerných IV tekutín, POTOM zvážte furosemid - ale súčasné vyšetrenie neukazuje žiadnu indikáciu.",
+          "points": -12,
+          "aar_flag": "diuretic_causing_hypotension_in_tbi"
+        },
+        "teaching_point": "Princíp manažmentu TBI: udržiavať krvný tlak nad 90 systolický pre cerebrálnu perfúziu. Furosemid ZNIŽUJE krvný tlak. Podávajte diuretiká len pri jasnej indikácii (pľúcny edém s vrapkami). Počúvajte pľúca - tento pacient má ČISTÉ bilaterálne. Žiadne vrapky. Žiadne preťaženie tekutinami. Podanie furosemidu riskuje hypotenziu. Cerebrálny perfúzny tlak (CPP) sa rovná strednému arteriálnemu tlaku (MAP) mínus intrakraniálny tlak (ICP). Nemôžeme znížiť ICP prednemocnične (to je práca neurochirurga s operáciou, sedáciou, manitolom, ventrikulostómiou). Ale MÔŽEME udržať MAP zachovaním krvného tlaku. Furosemid pôsobí proti tomuto cieľu. Nepodávajte ho."
+      },
+      
+      {
+        "name": "dolsin",
+        "generic_name": "Morfín",
+        "class": "Opioidné analgetikum",
+        "primary_indication": "Silná bolesť (trauma, IM, popáleniny)",
+        "why_conditional": "Môže maskovať zhoršenie, spôsobuje útlm dýchania, ale môže byť potrebný pri silnej bolesti, ak je neuro vyšetrenie stabilné",
+        "if_given": {
+          "vital_changes": {
+            "RR": 14,
+            "GCS": 12,
+            "pain_score": 6
+          },
+          "patient_response": "Bolesť pacienta sa zlepšuje z 8 z 10 na 6 z 10 - mierna úľava. Avšak, stáva sa mierne viac sedovaným. Jeho dychová frekvencia klesá z 18 na 14. Jeho GCS klesá z 13 (O3 V4 M6) na 12 (O3 V3 M6) - je to z morfínovej sedácie alebo zo zhoršujúceho sa poranenia mozgu? Teraz je to nejednoznačné. Skomplikovali ste si neuro vyšetrenie. Bolesť je o niečo lepšia, ale za cenu zahmlenia klinického obrazu.",
+          "clinical_note": "Morfín pri TBI je ŤAŽKÉ ROZHODNUTIE vyžadujúce starostlivý úsudok. Argumenty PRE: (1) Pacient má silnú bolesť, (2) Opioidy nezvyšujú ICP, ako niektorí učia (stará dogma), (3) Bolesť a agitácia zvyšujú ICP. Argumenty PROTI: (1) Sedácia maskuje neurologické vyšetrenie, (2) Útlm dýchania zhoršuje hypoxiu, (3) Nemožno rozlíšiť účinok opioidu od zhoršujúceho sa poranenia mozgu, ak GCS klesne. Ak podávate morfín pri TBI: (1) Malé dávky (2-3mg IV), (2) Titrujte opatrne, (3) Sériové GCS pred a po, (4) Majte pripravený naloxón, (5) Dôkladné monitorovanie dýchania, (6) Jasne dokumentujte. Často je lepšie vysvetliť vedomému pacientovi, prečo obmedzujeme analgéziu (potrebujeme monitorovať funkciu mozgu) a poskytnúť polohový komfort. Ak je v bezvedomí (GCS 8 alebo menej), vnímanie bolesti je znížené a riziká morfínu prevyšujú prínosy.",
+          "points": -8,
+          "aar_flag": "conditional_morphine_complicating_assessment"
+        },
+        "teaching_point": "Morfín pri TBI je kontroverzný. Nie je absolútne kontraindikovaný, ale vyžaduje opatrnosť. Kľúčové princípy: (1) Ak je pacient pri vedomí (GCS nad 8) so silnou bolesťou napriek polohovaniu, malá dávka morfínu (2-3mg IV) je prijateľná, ak: nepretržité sledovanie GCS, monitorovanie pulzovej oxymetrie, dostupný naloxón, pripravenosť na asistovanú ventiláciu. (2) Ak sa pacient zhoršuje alebo má GCS 8 alebo menej, riziká morfínu (útlm dýchania, sedácia) prevyšujú prínosy. (3) Vždy dokumentujte GCS pred a po. (4) Morfín NEZVYŠUJE ICP (staré učenie bolo nesprávne), ale sedácia znemožňuje vyšetrenie. (5) Alternatíva: vysvetliť vedomému pacientovi, prečo obmedzujeme analgéziu ('Potrebujem pozorne sledovať funkciu vášho mozgu, lieky proti bolesti to sťažujú'). Najlepší prístup: optimálne polohovanie, pokojné prostredie, rýchly transport k definitívnej starostlivosti, morfín používať striedmo, ak vôbec."
+      },
+      
+      {
+        "name": "adrenalin",
+        "generic_name": "Epinefrín",
+        "class": "Sympatomimetikum, vazopresor",
+        "primary_indication": "Zástava srdca, anafylaxia, závažný bronchospazmus",
+        "why_wrong": "Masívne zvýšenie krvného tlaku zvyšuje intrakraniálny tlak a riziko rozšírenia krvácania",
+        "if_given": {
+          "vital_changes": {
+            "HR": 112,
+            "BP_systolic": 198,
+            "BP_diastolic": 108,
+            "pupils": "Pravá 5mm, Ľavá 3mm"
+          },
+          "patient_response": "Krvný tlak pacienta prudko stúpa zo 165/95 na 198/108, keď epinefrín spôsobuje hlbokú vazokonstrikciu. Srdcová frekvencia sa zvyšuje na 112. Masívne zvýšenie tlaku v intrakraniálnych cievach spôsobuje rozšírenie krvácania. Pravá zrenica sa ďalej rozširuje na 5 mm. GCS sa zhoršuje. Zmenili ste zvládnuteľné krvácanie na chirurgickú pohotovosť akútnym zvýšením ICP.",
+          "clinical_note": "Epinefrín pre ZÁSTAVU SRDCA alebo ANAFYLAXIU, NIE pre vedomého pacienta s TBI. Pri intrakraniálnom krvácaní náhly nárast krvného tlaku z epinefrínu: (1) Akútne zvyšuje intrakraniálny tlak, (2) Rozširuje krvácanie, (3) Môže spôsobiť opätovné krvácanie z roztrhnutých ciev. Pacient je pri vedomí s adekvátnym krvným tlakom - žiadna indikácia pre vazopresor. Ak pacient neskôr zastaví z herniácie, POTOM je epinefrín primeraný počas KPR. Ale u vedomého pacienta: epinefrín je škodlivý.",
+          "points": -15,
+          "aar_flag": "vasopressor_increasing_icp"
+        },
+        "teaching_point": "Epinefrín spôsobuje masívnu vazokonstrikciu a prudký nárast krvného tlaku. Pri traume hlavy s intrakraniálnym krvácaním je to nebezpečné - zvyšuje ICP, rozširuje krvácanie. Epinefrín má dve indikácie: (1) Zástava srdca (vtedy ho použite), (2) Anafylaxia (vtedy ho použite). Tento pacient: pri vedomí, adekvátny TK, žiadna anafylaxia. Žiadna indikácia pre epinefrín. Niektorí študenti si myslia 'krvný tlak by mal byť pri TBI vysoký, aby sa perfundoval mozog' - to je nepochopenie patofyziológie. Áno, vyhnite sa HYPOTENZII (sTK menej ako 90). Ale akútne ZVYŠOVANIE TK vazopresormi zvyšuje krvácanie a ICP. Prirodzená kompenzačná hypertenzia (Cushingov reflex) je pokus tela udržať perfúziu - ale nepridávajte k nej vazopresormi. Cieľ: zabrániť hypotenzii, nie spôsobiť hypertenznú krízu."
+      },
+      
+      {
+        "name": "atropin",
+        "generic_name": "Atropín",
+        "class": "Anticholinergikum, antisialogógum",
+        "primary_indication": "Symptomatická bradykardia, otrava organofosfátmi, zníženie sekrécií",
+        "why_wrong": "Spôsobuje tachykardiu a hypertenziu, zhoršuje ICP, maskuje bradykardiu Cushingovej triády",
+        "if_given": {
+          "vital_changes": {
+            "HR": 98,
+            "BP_systolic": 178
+          },
+          "patient_response": "Srdcová frekvencia sa zvyšuje zo 68 na 98 s atropínom. Krvný tlak stúpa na 178 systolický. Žiadny klinický prínos. Bradykardia pacienta bola RELATÍVNA (SF 68 pri veľkej traume naznačuje skorú Cushingovu odpoveď, nie symptomatickú bradykardiu vyžadujúcu liečbu). Zvýšením srdcovej frekvencie ste zamaskovali dôležitý diagnostický znak. Zvýšením krvného tlaku ste potenciálne zvýšili ICP.",
+          "clinical_note": "Atropín pre SYMPTOMATICKÚ bradykardiu (SF menej ako 50 s hypotenziou, zmeneným stavom vedomia, bolesťou na hrudníku). Tento pacient: SF 68, TK adekvátny, zmeny stavu vedomia z PORANENIA HLAVY, nie z bradykardie. Bradykardia je RELATÍVNA - normálne by sa očakávala tachykardia pri traume a bolesti, ale SF len 68 naznačuje skorý Cushingov reflex (stúpajúci ICP spúšťa vagovú bradykardiu). Atropín: (1) Maskuje túto diagnostickú stopu, (2) Spôsobuje tachykardiu zvyšujúcu spotrebu kyslíka myokardom, (3) Zvyšuje krvný tlak potenciálne zhoršujúci ICP. Neindikovaný, potenciálne škodlivý.",
+          "points": -10,
+          "aar_flag": "atropine_masking_cushings_bradycardia"
+        },
+        "teaching_point": "Atropín je pre SYMPTOMATICKÚ bradykardiu spôsobujúcu hypotenziu alebo hypoperfúziu orgánov. Symptomatická znamená SF menej ako 50 s hypotenziou (sTK menej ako 90) ALEBO zmenený stav vedomia Z bradykardie ALEBO bolesť na hrudníku Z bradykardie. Tento pacient: SF 68, TK 165/95 (hypertenzný), zmenený stav vedomia Z poranenia hlavy, NIE z bradykardie. Žiadna indikácia pre atropín. Relatívna bradykardia (očakávaná tachykardia pri traume, ale len SF 68) je VAROVNÝM ZNAKOM skorej Cushingovej odpovede. Podaním atropínu túto stopu vymažete. Liečte diagnózu (TBI), nie číslo (SF 68). Ak sa u pacienta neskôr rozvinie skutočná symptomatická bradykardia s hypotenziou, potom je atropín primeraný."
+      }
+    ],
+
+    "neutral": [
+      {
+        "name": "hydrocortizon",
+        "generic_name": "Hydrokortizón",
+        "primary_indication": "Adrenálna insuficiencia, závažná astma, anafylaxia",
+        "why_unnecessary": "Steroidy NIE SÚ indikované pri akútnom TBI - žiadny prínos, možné poškodenie",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadny okamžitý klinický účinok. Neurologický stav pacienta nezmenený. Žiadny prínos. Steroidy nepomáhajú pri akútnom TBI.",
+          "points": -5,
+          "aar_flag": "unnecessary_steroids_in_tbi"
+        },
+        "teaching_point": "Štúdia CRASH (2004) skúmala kortikosteroidy pri TBI. Výsledok: steroidy ZVYŠUJÚ mortalitu pri TBI. Mechanizmus neistý - možno zvýšená infekcia, hyperglykémia, gastrointestinálne krvácanie. Záver: nepodávajte steroidy pri akútnej traume hlavy. Výnimka: pacient so ZNÁMOU adrenálnou insuficienciou na chronických steroidoch, ktorý môže potrebovať stresovú dávku pri traume - ale to je iný scenár. Pre akútne TBI: žiadne steroidy. Hydrokortizón si nechajte pre závažnú astmu, anafylaxiu, adrenálnu krízu - stavy, kde pomáha."
+      },
+      
+      {
+        "name": "paracetamol",
+        "generic_name": "Paracetamol (Acetaminofén)",
+        "primary_indication": "Mierna až stredne silná bolesť, horúčka",
+        "why_unnecessary": "Nedostatočný pre silnú bolesť pri traume hlavy, nerieši primárny problém",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Silná bolesť hlavy pacienta (8 z 10) nezmenená paracetamolom. 'Hlava ma stále naozaj bolí.' Žiadny prínos pre silnú bolesť pri traume. Pacient zmätený, prečo mu dávate slabý liek proti bolesti pri vážnom zranení.",
+          "points": -3,
+          "aar_flag": "inadequate_analgesia_for_severity"
+        },
+        "teaching_point": "Paracetamol je na MIERNU bolesť (bolesť hlavy, svalov) alebo HORÚČKU. Toto je ZÁVAŽNÁ bolesť pri traume hlavy (8 z 10, pacient si drží hlavu, mračí sa). Nesúlad veľkosti. Paracetamol sa jej nedotkne. Ak je potrebná kontrola bolesti pri TBI (a je to kontroverzné), možnosti sú: (1) Malá dávka opioidov (morfín 2-3mg) s veľmi dôkladným neuro monitorovaním, alebo (2) Vysvetlenie pacientovi a nefarmakologický komfort. Paracetamol je medzi - príliš slabý na to, aby pomohol, ale vyzerá to, akoby ste riešili bolesť, keď ste to neurobili. Buď použite adekvátnu analgéziu s primeraným monitorovaním, alebo vysvetlite, prečo obmedzujete analgéziu. Nepoužívajte nedostatočný liek."
+      },
+      
+      {
+        "name": "degan",
+        "generic_name": "Metoklopramid",
+        "primary_indication": "Nevoľnosť, vracanie, gastroparéza",
+        "why_unnecessary": "Antiemetikum nie je prioritou pri akútnom TBI, môže spôsobiť dystonické reakcie, vracanie pri TBI môže naznačovať stúpajúci ICP",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Pacient aktívne nevracia, takže metoklopramid nemá okamžitý účinok. Ak pacient neskôr vracia, metoklopramid môže mierne znížiť nevoľnosť, ale nerieši základný problém (stúpajúci ICP). Riziko dystonickej reakcie (svalové kŕče, najmä u mladých pacientov).",
+          "points": -4,
+          "aar_flag": "unnecessary_antiemetic_misses_icp_warning"
+        },
+        "teaching_point": "Vracanie pri TBI je VAROVNÝM ZNAKOM stúpajúceho ICP, nie symptómom na potlačenie. Ak pacient vracia: (1) Polohujte na ochranu dýchacích ciest (zotavovacia poloha, ak nie je poranenie krčnej chrbtice, alebo ľavý bok s opatreniami na ochranu krčnej chrbtice, ak je to potrebné), (2) Odsajte dýchacie cesty, (3) Rozpoznajte vracanie ako znak zhoršenia. Nepodávajte len antiemetikum a ignorujte varovanie. Metoklopramid môže spôsobiť dystonické reakcie (torticollis, okulogyrická kríza), najmä u mladých pacientov, starších alebo pri vysokých dávkach. Tieto napodobňujú neurologické zhoršenie, čo mätie vyšetrenie. Ak pacient neustále vracia A má zabezpečené dýchacie cesty A stabilné neuro vyšetrenie, malá dávka antiemetika je prijateľná pre komfort. Ale vracanie u zhoršujúceho sa pacienta s TBI: chráňte dýchacie cesty, urýchlite transport, nepotláčajte varovný znak."
+      },
+      
+      {
+        "name": "syntophyllin",
+        "generic_name": "Aminofylín",
+        "primary_indication": "Bronchospazmus, závažná astma, exacerbácia CHOCHP",
+        "why_unnecessary": "Pacient nemá respiračné ochorenie, aminofylín znižuje prah pre kŕče u pacientov s poranením mozgu",
+        "if_given": {
+          "vital_changes": {
+            "HR": 82
+          },
+          "patient_response": "Žiadny klinický prínos - pacient nemá bronchospazmus. Srdcová frekvencia sa mierne zvyšuje kvôli kardiostimulačnému účinku aminofylínu. Riziko zníženia prahu pre kŕče u pacienta s poranením mozgu, ktorý je už v riziku posttraumatických kŕčov.",
+          "points": -6,
+          "aar_flag": "bronchodilator_wrong_indication_seizure_risk"
+        },
+        "teaching_point": "Aminofylín je na BRONCHOSPASMUS (piskoty, astma, CHOCHP). Tento pacient: čisté dýchacie zvuky, žiadne piskoty, žiadne respiračné ochorenie. Zlá indikácia. Navyše, aminofylín (teofylín) ZNIŽUJE prah pre kŕče. Pacienti s TBI sú v riziku kŕčov (okamžité, skoré alebo neskoré posttraumatické kŕče). Podávanie liekov, ktoré znižujú prah pre kŕče, je nerozumné. Ak má pacient TBI aj závažnú astmu vyžadujúcu aminofylín, prínosy môžu prevážiť riziká - ale izolované TBI: žiadna indikácia, potenciálne poškodenie."
+      },
+      
+      {
+        "name": "ventolin",
+        "generic_name": "Salbutamol (Albuterol)",
+        "primary_indication": "Bronchospazmus, astma, CHOCHP",
+        "why_unnecessary": "Pacient nemá bronchospazmus ani respiračné ochorenie",
+        "if_given": {
+          "vital_changes": {
+            "HR": 78
+          },
+          "patient_response": "Žiadny prínos - pľúca pacienta sú čisté, žiadne piskoty, žiadny bronchospazmus. Mierna tachykardia z beta-agonistického účinku, ale žiadne klinické zlepšenie. Pacient zmätený, prečo mu dávate inhalátor, keď problémom je poranenie hlavy.",
+          "points": -3,
+          "aar_flag": "bronchodilator_wrong_indication"
+        },
+        "teaching_point": "Salbutamol je na BRONCHOSPASMUS (piskoty, zvieranie na hrudníku, astmatický záchvat). Počúvajte pľúca: tento pacient má ČISTÉ bilaterálne dýchacie zvuky. Žiadne piskoty. Žiadny bronchospazmus. Dychová frekvencia normálna. SpO2 97 percent na izbovom vzduchu. Žiadna indikácia pre bronchodilatátor. Zamerajte sa na primárny problém (TBI), nie na liečbu neexistujúceho respiračného ochorenia. Ak má pacient súčasne astmatický záchvat A traumu hlavy, potom liečte oboje. Ale nepodávajte lieky na stavy, ktoré pacient nemá."
+      },
+      
+      {
+        "name": "magnezium",
+        "generic_name": "Síran horečnatý",
+        "primary_indication": "Eklampsia, torsades de pointes, závažná astma, hypomagneziémia",
+        "why_unnecessary": "Žiadna indikácia pri akútnom TBI",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadny účinok. Magnézium nepomáha pri TBI. Neurologický stav pacienta nezmenený.",
+          "points": -4,
+          "aar_flag": "unnecessary_medication_no_indication"
+        },
+        "teaching_point": "Síran horečnatý má špecifické indikácie: (1) Eklampsia (kŕče v tehotenstve z hypertenzie), (2) Torsades de pointes (polymorfná VT z predĺženého QT), (3) Závažná astma nereagujúca na štandardnú liečbu, (4) Zdokumentovaná hypomagneziémia spôsobujúca problémy. Tento pacient: 72-ročný muž s traumou hlavy. Nie je tehotný. Žiadne torsades. Žiadna astma. Neznáma hladina magnézia (a aj keby bola nízka, nie je to priorita pri akútnej traume). Žiadna indikácia pre magnézium. Poznáte svoje indikácie - nepodávajte lieky v nádeji, že by mohli pomôcť. Podávajte lieky pre špecifické klinické indikácie."
+      },
+      
+      {
+        "name": "naloxone",
+        "generic_name": "Naloxón",
+        "primary_indication": "Predávkovanie opioidmi, opioidmi indukovaný útlm dýchania",
+        "why_unnecessary": "Pacient neužíva opioidy, zmenený stav vedomia z poranenia hlavy, nie z narkotík",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadny účinok - pacient nie je intoxikovaný opioidmi. Zmenený stav vedomia z traumatického poranenia mozgu, nie z opioidov. Naloxón nezvráti poranenie hlavy. Pacient zostáva zmätený.",
+          "points": -3,
+          "aar_flag": "wrong_antidote_wrong_toxidrome"
+        },
+        "teaching_point": "Naloxón zvráti účinok OPIOIDOV (morfín, heroín, fentanyl, atď.). Tento pacient: žiadna anamnéza užívania opioidov, spadol zo schodov s videným mechanizmom, fyzické nálezy (tržná rana, krv) zodpovedajúce traume. Zmenený stav vedomia z PORANENIA HLAVY, nie z opioidov. Ak si nie ste istí príčinou zmeneného stavu vedomia, skontrolujte: (1) Glukózu (vylúčiť hypoglykémiu), (2) Vitálne funkcie (horúčka naznačuje infekciu, hypotenzia naznačuje šok), (3) Anamnézu a mechanizmus. Tento pacient: jasný traumatický mechanizmus, fyzické zranenia, žiadny náznak predávkovania. Naloxón nepomôže. Zamerajte sa na manažment TBI. Výnimka: ak je pacient na chronických opioidoch pre bolesť A je prítomný útlm dýchania A nie je isté, či je to z opioidov alebo TBI, opatrný pokus s malou dávkou naloxónu je prijateľný - ale sledujte abstinenčné príznaky a kŕče."
+      },
+      
+      {
+        "name": "flumazenil",
+        "generic_name": "Flumazenil",
+        "primary_indication": "Zvracanie predávkovania benzodiazepínmi",
+        "why_unnecessary": "Pacient neužíva benzodiazepíny, NEBEZPEČNÉ u pacientov náchylných na kŕče",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadny účinok, ak pacient neužíva benzodiazepíny. Ak by pacient užíval benzodiazepíny, flumazenil by mohol vyvolať KŔČE - veľmi nebezpečné u pacienta s TBI. Flumazenil je nebezpečný, nie nápomocný.",
+          "points": -5,
+          "aar_flag": "dangerous_reversal_agent_seizure_risk"
+        },
+        "teaching_point": "Flumazenil zvráti účinok benzodiazepínov. Ale je to NEBEZPEČNÝ liek s úzkymi indikáciami. Problémy: (1) Môže vyvolať abstinenčné kŕče u chronických užívateľov benzodiazepínov, (2) Môže odhaliť kŕčovú poruchu u pacientov používajúcich benzodiazepíny na kontrolu kŕčov, (3) Môže spôsobiť kŕče pri zmiešaných predávkovaniach (benzodiazepíny + tricykliká). Pacienti s TBI sú už v RIZIKU KŔČOV. Flumazenil toto riziko zvyšuje. Jediná indikácia pre flumazenil: izolované čisté predávkovanie benzodiazepínmi u predtým zdravého pacienta s iatrogénnou presedáciou (ako pri procedurálnej sedácii, ktorá sa pokazila). NIE pre: zmiešané predávkovania, chronických užívateľov, pacientov s kŕčovými poruchami alebo pacientov s TBI. V tomto prípade: žiadne benzodiazepíny na palube, flumazenil je irelevantný a potenciálne škodlivý. Nepodávajte ho."
+      },
+      
+      {
+        "name": "ca_gluconicum",
+        "generic_name": "Glukonát vápenatý",
+        "primary_indication": "Hypokalciémia, kardioprotekcia pri hyperkaliémii, predávkovanie blokátormi kalciových kanálov, popáleniny kyselinou fluorovodíkovou",
+        "why_unnecessary": "Žiadna porucha elektrolytov, žiadna indikácia",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadny účinok. Hladina vápnika pacienta je normálna. Žiadna hyperkaliémia. Neužíva blokátory kalciových kanálov. Glukonát vápenatý je irelevantný.",
+          "points": -3,
+          "aar_flag": "unnecessary_intervention"
+        },
+        "teaching_point": "Glukonát vápenatý má špecifické indikácie: (1) Hypokalciémia spôsobujúca symptómy (tetánia, predĺžené QT, kŕče), (2) Hyperkaliémia so zmenami na EKG (špicaté T vlny, rozšírený QRS) - vápnik chráni srdce, (3) Predávkovanie blokátormi kalciových kanálov, (4) Popáleniny kyselinou fluorovodíkovou - vápnik neutralizuje fluorid. Tento pacient: trauma hlavy, žiadny náznak problémov s vápnikom alebo draslíkom, neužíva blokátory kalciových kanálov. Žiadna indikácia pre vápnik. Nepodávajte lieky 'pre istotu' alebo preto, že ich máte. Podávajte lieky pre špecifické klinické problémy. Glukonát vápenatý nepomáha pri TBI."
+      }
+    ]
+  },
+
+  "challenge_points": [
+    {
+      "challenge_id": "CP1",
+      "challenge": "Rozhodnutie o ochrane krčnej chrbtice pri vysoko rizikovom mechanizme",
+      "scenario_context": "Študent musí rozpoznať vysoko rizikový mechanizmus úrazu (pád > 3 stopy, vek > 65, náraz hlavy, zmenený stav vedomia) a aplikovať okamžité opatrenia na ochranu krčnej chrbtice. Toto je KRITICKÉ bezpečnostné rozhodnutie.",
+      "priority": "kritická",
+      "trigger": {
+        "type": "immediate_assessment",
+        "condition": "posúdenie scény a prvý kontakt s pacientom"
+      },
+      
+      "factors_to_consider": [
+        "Mechanizmus: pád z 12 schodov (približne 3 metre alebo 10 stôp) - VYSOKÉ RIZIKO",
+        "Vek: 72 rokov - nad 65 je kritérium vysokého rizika",
+        "Náraz hlavy: priamy úder do hlavy s tržnou ranou - VYSOKÉ RIZIKO",
+        "Zmenený stav vedomia: GCS 13, zmätený - nemôže klinicky vylúčiť poranenie krčnej chrbtice",
+        "Kanadské pravidlá pre krčnú chrbticu: tento pacient spĺňa kritériá vysokého rizika",
+        "Kritériá NEXUS: samotný zmenený stav vedomia vyžaduje ochranu krčnej chrbtice",
+        "Akýkoľvek JEDEN vysoko rizikový faktor vyžaduje plné opatrenia na ochranu krčnej chrbtice",
+        "Nemožno klinicky vylúčiť poranenie krčnej chrbtice v teréne pri zmenenom stave vedomia",
+        "Aj keď pacient pohybuje všetkými končatinami, poranenie krčnej chrbtice je možné",
+        "Okamžitá manuálna stabilizácia, potom krčný golier a chrbticová doska"
+      ],
+      
+      "optimal_sequence": [
+        "Okamžite rozpoznať vysoko rizikový mechanizmus počas posúdenia scény (viditeľné schody, manželka opisuje pád)",
+        "Priblížiť sa k pacientovi s vedomím rizika poranenia krčnej chrbtice - nenechať ho hýbať sa alebo postaviť sa",
+        "Aplikovať manuálnu stabilizáciu krčnej chrbtice do 30 sekúnd",
+        "Verbalizovať zdôvodnenie: pád > 3 stopy + vek > 65 + poranenie hlavy + zmenený stav vedomia = vysoké riziko poranenia krčnej chrbtice",
+        "Aplikovať správne veľký krčný golier",
+        "Pretočiť pacienta na chrbticovú dosku s udržaním neutrálnej polohy",
+        "Zabezpečiť na chrbticovej doske s hlavovými blokmi a popruhmi",
+        "Udržiavať opatrenia počas celého hodnotenia a transportu"
+      ],
+      
+      "scoring": {
+        "optimal": "Okamžite rozpoznal vysoko rizikový mechanizmus z opisu scény a výpovede manželky. Verbalizoval viacero rizikových faktorov: 'Toto je pád z 12 schodov, takže približne 10 stôp, pacient má nad 65 rokov, má poranenie hlavy so zmeneným stavom vedomia - určite potrebuje ochranu krčnej chrbtice.' Aplikoval manuálnu stabilizáciu do 30 sekúnd od kontaktu s pacientom. Zabránil pacientovi v pokuse postaviť sa. Správne aplikoval krčný golier, vykonal opatrné pretočenie s dostatočným personálom, správne zabezpečil na chrbticovej doske. Udržiaval opatrenia počas celého scenára. Preukázal jasné pochopenie Kanadských pravidiel pre krčnú chrbticu a kritérií vysokého rizika. Skóre: 15 z 15 bodov.",
+        
+        "acceptable": "Aplikoval opatrenia na ochranu krčnej chrbtice primerane do 2 minút od kontaktu s pacientom. Možno neverbalizoval všetky špecifické rizikové faktory, ale rozpoznal potrebu imobilizácie na základe mechanizmu a prezentácie. Správna aplikácia goliera a technika imobilizácie. Niektoré menšie oneskorenia alebo technické nedokonalosti, ale celkovo bezpečný manažment. Skóre: 10 z 15 bodov.",
+        
+        "suboptimal": "Nakoniec aplikoval ochranu krčnej chrbtice, ale s významným oneskorením (viac ako 3 minúty), ALEBO spochybňoval nevyhnutnosť napriek zjavným indikáciám, ALEBO aplikoval opatrenia, ale so zlou technikou (golier príliš voľný, nedostatočná imobilizácia, dovolil pacientovi pohyb pred zabezpečením). Správny konečný výsledok, ale znepokojujúci proces. Skóre: 5 z 15 bodov.",
+        
+        "dangerous": "NEAPLIKOVAL opatrenia na ochranu krčnej chrbtice napriek vysoko rizikovému mechanizmu a zmenenému stavu vedomia, ALEBO dovolil pacientovi postaviť sa alebo sa výrazne hýbať pred imobilizáciou, ALEBO nevhodne odstránil opatrenia na základe schopnosti pacienta hýbať končatinami. Kritické porušenie bezpečnosti, ktoré by mohlo spôsobiť poranenie miechy u pacienta s nestabilnou zlomeninou krčnej chrbtice. Skóre: 0 bodov s -10 penaltou."
+      },
+      
+      "aar_teaching_point": "Ochrana krčnej chrbtice pri traume je kritické bezpečnostné rozhodnutie. Vysoko rizikové kritériá (Kanadské pravidlá pre krčnú chrbticu, NEXUS): (1) Vek nad 65 rokov, (2) Nebezpečný mechanizmus (pád > 3 stopy alebo 5 schodov, vysokorýchlostná nehoda, axiálne zaťaženie), (3) Parestézie končatín, (4) Zmenený stav vedomia. AKÉKOĽVEK JEDNO kritérium vyžaduje plné opatrenia. Tento pacient: 72 rokov (kritérium 1), spadol z 12 schodov (kritérium 2), GCS 13 zmätený (kritérium 4) - TRI vysoko rizikové faktory. Nemožno klinicky vylúčiť poranenie krčnej chrbtice pri zmenenom stave vedomia, aj keď pohybuje končatinami normálne. Správna technika: najprv manuálna stabilizácia (zabraňuje pohybu), potom golier (obmedzuje flexiu-extenziu), potom chrbticová doska (obmedzuje rotáciu). Častá chyba: odkladanie ochrany krčnej chrbtice na dokončenie hodnotenia - nesprávne, stabilizujte NAJPRV. Každá sekunda bez ochrany je sekunda potenciálneho poranenia miechy, ak je prítomná nestabilná zlomenina.",
+      
+      "cognitive_goal": "Automatické rozpoznanie, že pád > 3 stopy + vek > 65 + zmenený stav vedomia = okamžitá ochrana krčnej chrbtice. Vybudovať návyk: počuť mechanizmus, vidieť staršieho pacienta, priložiť ruky na hlavu. Nie je potrebná žiadna úvaha."
+    },
+    
+    {
+      "challenge_id": "CP2",
+      "challenge": "Sériové hodnotenie GCS a sledovanie trendov - Rozpoznanie vzoru zhoršenia",
+      "scenario_context": "Študent musí správne vykonať počiatočné hodnotenie GCS, zdokumentovať ho a opakovať hodnotenia v 5-minútových intervaloch. Musí rozpoznať, že TREND je dôležitejší ako jedna hodnota a že pokles o 2 alebo viac bodov naznačuje kritické zhoršenie.",
+      "priority": "kritická",
+      "trigger": {
+        "type": "ongoing_monitoring",
+        "condition": "počas celej starostlivosti o pacienta"
+      },
+      
+      "factors_to_consider": [
+        "Počiatočné GCS 13 (O3 V4 M6): otvára oči na hlas, zmätená konverzácia, poslúcha príkazy",
+        "GCS je najcitlivejší indikátor neurologického zhoršenia pri TBI",
+        "Musí sa opakovať minimálne každých 5 minút (niektoré protokoly hovoria každé 3 minúty)",
+        "Pokles o 2 alebo viac bodov je významný a znepokojujúci",
+        "Pokles o 4 alebo viac bodov naznačuje závažné zhoršenie",
+        "Sledovanie trendu je dôležitejšie ako jedno meranie",
+        "Pokles GCS môže predchádzať zmenám vitálnych funkcií (Cushingova triáda je neskorá)",
+        "Zdokumentovať každé hodnotenie: GCS 13 o 0 minút, GCS 12 o 5 minút, GCS 9 o 10 minút - ukazuje jasné zhoršenie",
+        "Zhoršujúce sa GCS si vyžaduje eskaláciu: pripravenosť na zabezpečenie dýchacích ciest, kyslík, urýchlený transport",
+        "GCS 8 alebo menej: vysoké riziko straty priechodnosti dýchacích ciest, zvážiť BVM alebo pokročilé dýchacie cesty (ak je vyškolený)"
+      ],
+      
+      "optimal_sequence": [
+        "Vykonať počiatočné GCS okamžite a správne: 'Otvorte oči' (O3 na hlas), 'Ako sa voláte, kde ste?' (V4 zmätený), 'Stisnite mi ruky' (M6 poslúcha). GCS 13. Zdokumentovať čas.",
+        "Nastaviť časovač alebo si poznačiť hodiny: opakovať GCS o 5 minút",
+        "O 5 minút: opakovať GCS. Ak kleslo na 12, verbalizovať obavu: 'GCS kleslo o jeden bod, potrebné dôkladné monitorovanie'",
+        "O 10 minút: opakovať GCS. Ak kleslo na 9, verbalizovať kritické zhoršenie: 'GCS teraz 9, kleslo celkovo o 4 body z 13, toto je významné zhoršenie naznačujúce expandujúci intrakraniálny hematóm alebo stúpajúci ICP. Potrebné pripraviť sa na manažment dýchacích ciest a urýchliť transport'",
+        "Pokračovať v sériových hodnoteniach každých 5 minút",
+        "Porovnať každé s východiskovým stavom: 'GCS klesá, 13 na 12 na 9'",
+        "Rozpoznať vzor, nielen čísla: stabilný pokles v čase sa rovná expandujúcej masovej lézii",
+        "Eskalovať starostlivosť na základe trendu: pripraviť BVM, zabezpečiť kyslík, maximalizovať rýchlosť transportu"
+      ],
+      
+      "scoring": {
+        "optimal": "Vykonal počiatočné GCS správne (O3 V4 M6 sa rovná 13) do prvých 2 minút a zdokumentoval čas. Opakoval GCS o 5, 10 a 15 minút. Správne vypočítal každé skóre GCS. Explicitne porovnal s východiskovým stavom: 'počiatočné GCS 13, teraz 12 o 5 minút - kleslo o jeden bod, dôkladne monitorujem.' Keď GCS dosiahlo 9 o 10 minút, okamžite rozpoznal význam: 'GCS kleslo o 4 body z východiskového stavu, to naznačuje zhoršujúci sa neurologický stav z expandujúceho intrakraniálneho krvácania alebo stúpajúceho ICP. Toto je kritické.' Preukázal pochopenie, že TREND je kľúčový diagnostický indikátor. Primerane eskaloval starostlivosť pri každom poklese. Skóre: 15 z 15 bodov.",
+        
+        "acceptable": "Vykonal hodnotenia GCS v rozumných intervaloch (možno nie presne 5 minút, ale hodnotil aspoň 3-krát počas scenára). Zakaždým správne vypočítal skóre. Rozpoznal pokles, keď nastal, a eskaloval starostlivosť, hoci možno explicitne neverbalizoval porovnanie s východiskovým stavom alebo nediskutoval o sledovaní trendov. Primerané akcie, aj keď nie dokonale artikulované. Skóre: 10 z 15 bodov.",
+        
+        "suboptimal": "Vykonal počiatočné GCS, ale nepravidelne ho opakoval, ALEBO opakoval, ale nesprávne vypočítal, ALEBO nerozpoznal význam poklesu až veľmi neskoro, ALEBO neeskaloval starostlivosť, keď GCS kleslo. Nakoniec rozpoznal problém, ale znepokojujúce oneskorenie alebo nedostatok systematického prístupu. Skóre: 5 z 15 bodov.",
+        
+        "dangerous": "NEVYKONAL hodnotenia GCS (len opísal pacienta ako 'zmäteného' bez skórovania), ALEBO vykonal raz, ale nikdy neopakoval, ALEBO úplne prehliadol zhoršenie. Nepodarilo sa rozpoznať kritickú zmenu v neurologickom stave. Pacient by mohol herniovať bez toho, aby si to poskytovateľ všimol. Skóre: 0 bodov s -10 penaltou."
+      },
+      
+      "aar_teaching_point": "Sledovanie trendu GCS je NAJdôležitejší monitorovací nástroj pri TBI. Jedna hodnota GCS vám povie aktuálny stav. Sériové hodnotenia GCS vám povedia TRAJEKTÓRIU - je pacient stabilný, zlepšuje sa alebo sa zhoršuje? Pri TBI trajektória predpovedá výsledok. Technika: (1) Vykonať počiatočné GCS správne - poznať zložky (Oči 1-4, Verbálne 1-5, Motorické 1-6), (2) Zdokumentovať čas a skóre (GCS 13 o 11:00), (3) Nastaviť interval na opakovanie (minimálne každých 5 minút), (4) Systematicky opakovať, (5) Explicitne porovnať s východiskovým stavom ('bolo 13, teraz 12, kleslo o jeden bod'), (6) Rozpoznať významné zmeny (pokles o 2 body znepokojujúci, pokles o 4 body kritický). GCS 13 na 12 na 9 počas 10 minút sa rovná expandujúcemu intrakraniálnemu hematómu - potrebuje urgentnú neurochirurgiu. Častá chyba študentov: urobiť GCS raz, nazvať pacienta 'zmäteným', nikdy neprehodnotiť. Tým sa prehliadne zhoršenie. Pri TBI: SLEDUJTE TREND GCS. Je to vaše okno do mozgu. GCS 8 alebo menej: pripravte sa na stratu priechodnosti dýchacích ciest.",
+      
+      "cognitive_goal": "Vybudovať automatický návyk: pacient s TBI sa rovná časovaču nastavenému na 5-minútové kontroly GCS. Každá kontrola: vypočítať skóre, porovnať s posledným, zdokumentovať, rozhodnúť, či je potrebná eskalácia. Urobiť sledovanie trendov druhou prirodzenosťou."
+    },
+    
+    {
+      "challenge_id": "CP3",
+      "challenge": "Rozpoznanie Cushingovej triády - Neskorý príznak kriticky stúpajúceho ICP",
+      "scenario_context": "Študent musí rozpoznať vzor vitálnych funkcií (hypertenzia, bradykardia, nepravidelné dýchanie) ako Cushingovu triádu a pochopiť jej význam ako NESKORÝ a ZLOVESTNÝ príznak herniácie. Musí okamžite eskalovať starostlivosť.",
+      "priority": "kritická",
+      "trigger": {
+        "type": "vital_sign_pattern",
+        "condition": "ak sa pacient zhorší do tohto štádia"
+      },
+      
+      "factors_to_consider": [
+        "Zložky Cushingovej triády: (1) Hypertenzia s rozširujúcim sa pulzným tlakom, (2) Bradykardia, (3) Nepravidelné dýchanie",
+        "Toto je NESKORÝ príznak - pacient je už vo vážnych problémoch, keď sa triáda objaví",
+        "Nie všetky tri zložky musia byť prítomné súčasne",
+        "Bradykardia s hypertenziou u pacienta s poranením hlavy sa rovná vysokej obave aj bez nepravidelného dýchania",
+        "V tomto scenári: TK 165/95 SF 68 na začiatku (znepokojujúci vzor) postupuje k TK 185/98 SF 52 s nepravidelným DF (plná triáda)",
+        "Predstavuje kompresiu mozgového kmeňa z kriticky vysokého ICP",
+        "Naznačuje hroziacu alebo prebiehajúcu herniáciu",
+        "Bez zásahu postupuje k agonálnemu dýchaniu a potom k zástave",
+        "Skoršie indikátory sú citlivejšie: pokles GCS, zmeny zreníc",
+        "Cushingova triáda znamená, že ste neskoro v rozpoznaní problému - mali ste konať na základe skorších príznakov",
+        "Ale ak je Cushingova triáda prítomná: vyžaduje sa okamžitá eskalácia na najvyššiu úroveň"
+      ],
+      
+      "optimal_sequence": [
+        "Monitorovať počiatočné vitálne funkcie: TK 165/95, SF 68 - rozpoznať relatívnu bradykardiu (mal by byť tachykardický pri traume a bolesti)",
+        "Verbalizovať obavu: 'SF 68 pri veľkej traume a bolesti je znepokojujúca, očakával by som tachykardiu. Táto relatívna bradykardia môže byť skorou Cushingovou odpoveďou'",
+        "Sledovať trend vitálnych funkcií každých 5 minút spolu s GCS",
+        "O 10 minút: TK 185/98, SF 52, nepravidelné dýchanie - okamžite rozpoznať vzor",
+        "Verbalizovať rozpoznanie: 'Krvný tlak stúpa zo 165 na 185, srdcová frekvencia klesá zo 68 na 52, dýchanie sa stalo nepravidelným - toto je Cushingova triáda. Naznačuje kriticky vysoký intrakraniálny tlak s kompresiou mozgového kmeňa. Pacient herniuje alebo sa chystá herniovať'",
+        "Okamžite eskalovať: pripraviť BVM na hroziace respiračné zlyhanie, zabezpečiť kyslík, skontrolovať vyšetrenie zreníc (očakávať rozšírenú zrenicu), maximálne urýchliť transport, zvážiť zavolanie vopred na aktiváciu neurochirurgie",
+        "Preukázať pochopenie, že toto je NESKORÝ príznak: 'Mali sme konať skôr na základe poklesu GCS, ale teraz sme v krízovom režime'"
+      ],
+      
+      "scoring": {
+        "optimal": "Rozpoznal znepokojujúci vzor vitálnych funkcií od začiatku (relatívna bradykardia s hypertenziou). Sledoval trend vitálnych funkcií každých 5 minút. Keď sa Cushingova triáda plne rozvinula (TK 185/98, SF 52, nepravidelné DF), okamžite ju identifikoval podľa mena: 'Toto je Cushingova triáda - hypertenzia, bradykardia, nepravidelné dýchanie - naznačuje kritický ICP a kompresiu mozgového kmeňa.' Správne vysvetlil patofyziológiu. Eskaloval na maximálnu naliehavosť: pripravil sa na respiračné zlyhanie, urýchlil transport, preukázal pochopenie, že toto je život ohrozujúca pohotovosť. Tiež poznamenal: 'Toto je neskorý príznak, ideálne by sme konali skôr na základe poklesu GCS a zmien zreníc.' Perfektné rozpoznanie a reakcia. Skóre: 15 z 15 bodov.",
+        
+        "acceptable": "Všimol si zmeny vitálnych funkcií (TK stúpa, SF klesá) a rozpoznal, že niečo je vážne zle, aj keď nešpecifikoval 'Cushingovu triádu.' Primerane eskaloval starostlivosť, keď sa vitálne funkcie zhoršili. Možno nemá dokonalé učebnicové znalosti zložiek triády, ale reagoval primerane na klinické zhoršenie. Akcie správne, aj keď terminológia nedokonalá. Skóre: 10 z 15 bodov.",
+        
+        "suboptimal": "Nakoniec rozpoznal zhoršenie pacienta na základe vitálnych funkcií, ale s významným oneskorením, ALEBO nesprávne interpretoval vitálne funkcie (myslel si, že bradykardia potrebuje atropín, myslel si, že hypertenzia potrebuje liečbu namiesto rozpoznania), ALEBO eskaloval starostlivosť, ale bez pochopenia významu vzoru. Znepokojujúce medzery v znalostiach alebo oneskorené rozpoznanie. Skóre: 5 z 15 bodov.",
+        
+        "dangerous": "NEROZPOZNAL vzor vitálnych funkcií ako znepokojujúci, ALEBO aktívne zhoršil situáciu liečbou zložiek namiesto rozpoznania syndrómu (podal atropín pre bradykardiu, podal antihypertenzívum pre zvýšený TK), ALEBO neeskaloval starostlivosť, keď bol pacient v extrémne zlom stave. Zásadné nepochopenie patofyziológie TBI. Skóre: 0 bodov s -10 penaltou."
+      },
+      
+      "aar_teaching_point": "Cushingova triáda je pomenovaná po Harveym Cushingovi, ktorý ju opísal v roku 1901. Je to reflexná odpoveď na kriticky vysoký intrakraniálny tlak. Patofyziológia: (1) ICP stúpa a komprimuje mozgový kmeň, (2) Ischémia mozgového kmeňa spúšťa ischemickú odpoveď CNS - masívny sympatický výboj spôsobujúci hypertenziu (telo sa snaží pretlačiť krv cez komprimované cievy na perfúziu mozgu), (3) Vysoký krvný tlak detekovaný baroreceptormi spúšťa vagovú odpoveď spôsobujúcu bradykardiu (pokus o zníženie TK), (4) Dysfunkcia mozgového kmeňa spôsobuje nepravidelné dýchanie (Cheyne-Stokesove alebo ataxické vzory). Toto je NESKORÝ príznak. Kým je prítomná plná triáda, pacient herniuje. Skoršie príznaky sú užitočnejšie: pokles GCS (najcitlivejší), zmeny zreníc (rozšírená zrenica), bolesť hlavy, vracanie. Ale ak vidíte Cushingovu triádu: (1) Okamžite ju rozpoznajte, (2) Pochopte, že pacient je v extrémne zlom stave, (3) Pripravte sa na respiračné zlyhanie (majte pripravený BVM), (4) Zabezpečte oxygenáciu, (5) Udržiavajte krvný tlak (neliečte hypertenziu - je kompenzačná), (6) Urýchlite transport k neurochirurgii, (7) Zvážte zavolanie vopred na aktiváciu operačnej sály. Neliečte jednotlivé zložky (nepodávajte atropín pre SF, nepodávajte antihypertenzívum pre TK). Rozpoznajte syndróm, manažujte dýchacie cesty a oxygenáciu, rýchlo sa dostaňte k neurochirurgovi. Prognóza je zlá, keď je prítomná Cushingova triáda, ale rýchla chirurgická dekompresia môže niektorých pacientov zachrániť.",
+      
+      "cognitive_goal": "Rozpoznanie vzoru: TK stúpa, SF klesá pri poranení hlavy sa rovná herniácii, kým sa nepreukáže opak. Automatická eskalácia na maximálnu naliehavosť. Žiadne váhanie, žiadne spochybňovanie - konať."
+    },
+    
+    {
+      "challenge_id": "CP4",
+      "challenge": "Prevencia sekundárneho poškodenia mozgu - Vyhýbanie sa hypoxii a hypotenzii",
+      "scenario_context": "Študent musí pochopiť a implementovať dve kľúčové preventabilné príčiny sekundárneho poškodenia mozgu: hypoxiu (SpO2 menej ako 90 percent) a hypotenziu (sTK menej ako 90). Musí aktívne udržiavať oxygenáciu a krvný tlak počas celej starostlivosti.",
+      "priority": "kritická",
+      "trigger": {
+        "type": "ongoing_management",
+        "condition": "počas celého kontaktu s pacientom"
+      },
+      
+      "factors_to_consider": [
+        "Primárne poškodenie mozgu (počiatočná trauma) sa nedá zvrátiť prednemocnične",
+        "Sekundárne poškodenie mozgu (hypoxia, hypotenzia, hypertermia, hypoglykémia, kŕče) SA DÁ predchádzať",
+        "Hypoxia (SpO2 menej ako 90 percent) zdvojnásobuje mortalitu pri TBI",
+        "Hypotenzia (sTK menej ako 90) zdvojnásobuje mortalitu pri TBI",
+        "Obe spolu: katastrofálne výsledky",
+        "Cieľ: SpO2 nad 90 percent (ideálne 94-98 percent)",
+        "Cieľ: sTK nad 90 mmHg (ideálne nad 110)",
+        "Nepretržite monitorovať pulznou oxymetriou a častými kontrolami TK",
+        "Ak SpO2 klesá: zvýšiť kyslík, zvážiť asistovanú ventiláciu",
+        "Ak TK klesá: IV tekutiny (250-500ml bolus), poloha (zdvihnuté nohy), rýchly transport",
+        "Vyhnúť sa hyperventilácii (zhoršuje cerebrálny prietok krvi), pokiaľ nie sú prítomné príznaky herniácie",
+        "Vyhnúť sa nadmerným tekutinám (môže zhoršiť cerebrálny edém), pokiaľ nie je prítomná hypotenzia"
+      ],
+      
+      "optimal_sequence": [
+        "Počiatočné hodnotenie: skontrolovať SpO2 (97 percent) a TK (165/95) - obe sú momentálne adekvátne",
+        "Aplikovať pulznú oxymetriu nepretržite - monitorovať SpO2 počas celého času",
+        "Mať pripravený kyslík, aj keď teraz nie je potrebný (pacient sa môže zhoršiť)",
+        "Opätovne kontrolovať TK minimálne každých 5 minút",
+        "Verbalizovať princíp manažmentu: 'Pri TBI sú našimi cieľmi zabrániť hypoxii pod 90 a zabrániť hypotenzii pod 90. Momentálne sú obe adekvátne. Budem dôkladne monitorovať'",
+        "Ak SpO2 klesne pod 95 percent: okamžite aplikovať kyslík",
+        "Ak GCS klesne na 8 alebo menej alebo je dýchanie nedostatočné: asistovať ventiláciu s BVM",
+        "Ak TK klesne pod 100: začať IV tekutiny a zvážiť príčiny",
+        "Udržiavať oxygenáciu a perfúziu počas transportu",
+        "Sériovo dokumentovať vitálne funkcie ukazujúce udržiavanie týchto cieľov"
+      ],
+      
+      "scoring": {
+        "optimal": "Explicitne uviedol ciele manažmentu: 'Pri TBI musím zabrániť dvom veciam: hypoxii a hypotenzii. Cieľ SpO2 nad 90, cieľ sTK nad 90.' Aplikoval nepretržitú pulznú oxymetriu. Kontroloval TK každých 5 minút. Mal pripravený kyslík, aj keď počiatočné SpO2 bolo adekvátne. Keď sa ho opýtali 'prečo je kyslík pripravený, ak je SpO2 97 percent?' odpovedal: 'Pacient sa môže zhoršiť. Ako GCS klesá, dychové centrum môže zlyhať. Musím byť pripravený okamžite zasiahnuť, ak SpO2 klesne.' Preukázal pochopenie konceptu primárneho vs. sekundárneho poškodenia mozgu: 'Nemôžem opraviť počiatočnú traumu, ale môžem zabrániť hypoxii a hypotenzii, aby ju zhoršili.' Perfektné koncepčné pochopenie a proaktívny manažment. Skóre: 15 z 15 bodov.",
+        
+        "acceptable": "Pravidelne monitoroval SpO2 a TK. Primerane aplikoval kyslík, ak SpO2 kleslo alebo sa pacient zhoršil. Udržiaval adekvátnu perfúziu. Možno explicitne neverbalizoval princíp 'zabrániť sekundárnemu poškodeniu mozgu', ale akcie preukázali pochopenie. Dobrý klinický manažment, aj keď nie dokonale artikulovaný. Skóre: 10 z 15 bodov.",
+        
+        "suboptimal": "Monitoroval vitálne funkcie, ale reaktívne namiesto proaktívne (čakal na problém pred prípravou na zásah), ALEBO nekontroloval dostatočne často a prehliadol zmeny, ALEBO oneskoril kyslík, keď bol indikovaný, ALEBO nedostatočne resuscitoval hypotenziu. Nakoniec adekvátna starostlivosť, ale znepokojujúce oneskorenia alebo medzery v znalostiach. Skóre: 5 z 15 bodov.",
+        
+        "dangerous": "NEMONITOROVAL SpO2 nepretržite, ALEBO dovolil, aby sa hypoxia alebo hypotenzia rozvinuli a pretrvávali bez zásahu, ALEBO podal lieky, ktoré spôsobili hypotenziu (furosemid, nitráty), ALEBO zbytočne hyperventiloval (rutinná hyperventilácia je škodlivá pri TBI). Spôsobil alebo dovolil sekundárne poškodenie mozgu. Skóre: 0 bodov s -10 penaltou."
+      },
+      
+      "aar_teaching_point": "Manažment TBI je zásadne o prevencii sekundárneho poškodenia mozgu. Primárne poškodenie (moment nárazu) sa už stalo - nemôžete ho zvrátiť. Ale sekundárne poškodenia (hypoxia, hypotenzia, hypertermia, kŕče, hypoglykémia) sú PREVENTABILNÉ. Vaša misia: zabrániť sekundárnemu poškodeniu, zachovať zachrániteľné mozgové tkanivo. Dva najdôležitejšie preventabilné faktory: (1) Hypoxia (SpO2 menej ako 90 percent) - zdvojnásobuje mortalitu, poškodzuje penumbru (mozgové tkanivo okolo zranenia, ktoré je poškodené, ale zachrániteľné), a (2) Hypotenzia (sTK menej ako 90) - znižuje cerebrálny perfúzny tlak, spôsobuje ischémiu, zdvojnásobuje mortalitu. Dôkazy: štúdie ukazujú, že aj JEDNA epizóda prednemocničnej hypoxie alebo hypotenzie významne zhoršuje výsledky. Váš manažment: (1) Aplikujte nepretržitú pulznú oxymetriu - nikdy ju neodstraňujte, (2) Titrujte kyslík na udržanie SpO2 nad 90 percent (ideálne 94-98 percent), (3) Ak je dychové úsilie nedostatočné (DF menej ako 10, GCS 8 alebo menej, nedostatočný dychový objem): asistujte s BVM s cieľom normálnej ventilácie (10-12 dychov za minútu, nehyperventilujte), (4) Kontrolujte TK minimálne každých 5 minút, (5) Ak je sTK menej ako 90: podajte 250-500ml bolusy tekutín na obnovenie tlaku, (6) Ale vyhnite sa nadmerným tekutinám, ak je normotenzný (môže zhoršiť cerebrálny edém). Rovnováha: zabrániť hypotenzii, vyhnúť sa preťaženiu tekutinami. Ďalšie preventabilné faktory: kontrolujte kŕče, ak sa vyskytnú (diazepam), skontrolujte a korigujte hypoglykémiu, zabráňte hypertermii (odstráňte prebytočné prikrývky). Ale hypoxia a hypotenzia sú dve hlavné. Udržiavajte ich a urobili ste 80 percent toho, na čom záleží v prednemocničnej starostlivosti o TBI.",
+      
+      "cognitive_goal": "Automatické zameranie na dve čísla u každého pacienta s TBI: SpO2 a sTK. Pozrieť sa na monitor, vidieť obe čísla, zabezpečiť, že obe sú adekvátne. Toto sa stáva reflexom. SpO2 menej ako 90 alebo sTK menej ako 90 spúšťa okamžitý zásah, bez potreby premýšľania."
+    }
+  ],
+
+  "simulation_config": {
+    "allow_deterioration_despite_treatment": true,
+    "rationale": "TBI predstavuje prebiehajúcu patológiu, ktorú dokonalá prednemocničná starostlivosť nemôže vždy zabrániť. Aj pri optimálnom manažmente (ochrana krčnej chrbtice, oxygenácia, podpora TK, sériové GCS) sa niektorí pacienti zhoršujú v dôsledku expandujúceho hematómu, zvyšujúceho sa ICP alebo progresie k herniácii. To učí študentov, že nie každý zlý výsledok je chybou poskytovateľa.",
+    "natural_progression_probability": 0.3,
+    "teaching_goal": "Rozlíšiť medzi preventabilným zhoršením (z hypoxie, hypotenzie, prehliadnutého poranenia krčnej chrbtice, oneskoreného rozpoznania) a nevyhnutnou progresiou (expandujúci epidurálny hematóm, masívne subdurálne krvácanie). Študenti sa učia robiť všetko správne a stále čeliť zlým výsledkom - pripravuje ich to na realitu závažného TBI.",
+    "time_compression_factor": 2,
+    "real_time_equivalent_minutes": 30,
+    "allow_complications": true,
+    "possible_complications": [
+      "Progresia z počiatočného stavu do zhoršujúceho sa napriek liečbe (expandujúci hematóm)",
+      "Vracanie s rizikom aspirácie (vyžaduje okamžité polohovanie a odsávanie)",
+      "Kŕčová aktivita (posttraumatický kŕč vyžadujúci manažment bez presedácie)",
+      "Hypotenzia z okultného krvácania (pacient na warfaríne - môže mať vnútorné krvácanie mimo poranenia hlavy)"
+    ]
+  },
+
+  "aar_teaching_points": {
+    "tbi_pathophysiology": {
+      "primary_injury": "Počiatočná mechanická trauma v momente nárazu - strihové sily, priama kontúzia, zlomenina lebky. Nedá sa zvrátiť ani liečiť prednemocnične. Škoda je urobená.",
+      "secondary_injury": "Následné procesy, ktoré zhoršujú primárne poškodenie: hypoxia, hypotenzia, hyperkapnia (zvýšené CO2), hypoglykémia, hypertermia, kŕče, cerebrálny edém, zvýšený ICP. TIETO sú preventabilné a liečiteľné.",
+      "management_goal": "Minimalizovať sekundárne poškodenie mozgu. Podporovať oxygenáciu, udržiavať perfúziu, chrániť pred ďalšou traumou (krčná chrbtica), monitorovať zhoršenie, rýchly transport k neurochirurgii.",
+      "key_concept": "Nemôžete opraviť to, čo sa stalo pri páde. Môžete zabrániť tomu, aby sa to zhoršilo. Každý zásah si kladie otázku: zabraňuje tento zásah sekundárnemu poškodeniu alebo riskuje jeho spôsobenie?"
+    },
+    
+    "gcs_assessment": {
+      "components": "Otváranie očí (1-4), Verbálna odpoveď (1-5), Motorická odpoveď (1-6). Celkovo 3-15.",
+      "eye": "4 spontánne, 3 na hlas, 2 na bolesť, 1 žiadne",
+      "verbal": "5 orientovaný, 4 zmätený, 3 neprimerané slová, 2 nezrozumiteľné zvuky, 1 žiadne",
+      "motor": "6 poslúcha príkazy, 5 lokalizuje bolesť, 4 uhýba pred bolesťou, 3 abnormálna flexia, 2 abnormálna extenzia, 1 žiadne",
+      "this_patient_initial": "O3 (otvára na hlas) + V4 (zmätený - vie meno, ale nie okolnosti) + M6 (stlačí ruky na príkaz) sa rovná 13",
+      "trending": "Jedna hodnota GCS je snímka. Sériové GCS je film - ukazuje trajektóriu. Pokles o 2 alebo viac bodov je významný. Pokles o 4 alebo viac bodov je kritický.",
+      "frequency": "Minimálne každých 5 minút. Niektoré protokoly každé 3 minúty. Častejšie, ak sa stav zhoršuje.",
+      "gcs_8_rule": "GCS 8 alebo menej: vysoké riziko straty priechodnosti dýchacích ciest, zvážiť asistovanú ventiláciu alebo pokročilé dýchacie cesty (ak je vyškolený a vybavený).",
+      "documentation": "Vždy dokumentujte čas s GCS: 'GCS 13 o 11:00, GCS 12 o 11:05, GCS 9 o 11:10' - ukazuje jasný vzor poklesu."
+    },
+    
+    "cushings_triad_detailed": {
+      "definition": "Reflexná odpoveď na kriticky zvýšený intrakraniálny tlak, pomenovaná po Harveym Cushingovi (1901)",
+      "components_detailed": {
+        "hypertension": "Špecificky rozširujúci sa pulzný tlak (rozdiel medzi systolickým a diastolickým). Príklad: 165/95 (pulzný tlak 70) sa zhoršuje na 185/98 (pulzný tlak 87). Stúpajúci systolický s stabilným alebo stúpajúcim diastolickým.",
+        "bradycardia": "Paradoxná bradykardia napriek šokovému stavu. Príklad: SF 68 na začiatku (relatívna bradykardia pre traumu) sa zhoršuje na SF 52. Normálne by sa očakávala tachykardia pri traume - bradykardia pri poranení hlavy je zlovestná.",
+        "irregular_respirations": "Abnormálne dýchacie vzory: Cheyne-Stokesove (crescendo-decrescendo), ataxické (úplne nepravidelné), Biotove (periódy apnoe) alebo iné vzory. Naznačuje dysfunkciu mozgového kmeňa."
+      },
+      "pathophysiology": "ICP stúpa, komprimuje cerebrálne cievy a mozgový kmeň, čo vedie k ischémii mozgového kmeňa, ktorá spúšťa ischemickú odpoveď CNS (masívny sympatický výboj) spôsobujúcu systémovú hypertenziu (pokus o udržanie cerebrálneho perfúzneho tlaku). Baroreceptory detekujú hypertenziu, čo vedie k vagovej odpovedi spôsobujúcej bradykardiu. Kompresia mozgového kmeňa spôsobuje dysfunkciu dychového centra, čo vedie k nepravidelnému dýchaniu.",
+      "clinical_significance": "NESKORÝ a ZLOVESTNÝ príznak. Naznačuje kriticky vysoký ICP s kompresiou mozgového kmeňa. Herniácia je bezprostredne hroziaca alebo prebieha. Kým je prítomná plná triáda, pacient je v extrémne zlom stave. Prognóza zlá bez okamžitého neurochirurgického zásahu.",
+      "management": "NELIEČTE jednotlivé zložky (nepodávajte atropín pre bradykardiu, nepodávajte antihypertenzíva pre TK). Rozpoznajte syndróm. Pripravte sa na respiračné zlyhanie - majte pripravený BVM. Udržiavajte oxygenáciu. Akceptujte hypertenziu (je kompenzačná). Urýchlite transport. Zvážte hyperventiláciu LEN ako preklenovacie opatrenie, ak sú prítomné príznaky herniácie (10-12 dychov za minútu, nie nadmerne). Zavolajte vopred na aktiváciu neurochirurgie.",
+      "earlier_signs_more_useful": "Nečakajte na Cushingovu triádu. Skoršie indikátory sú citlivejšie a akčnejšie: (1) Pokles GCS (najcitlivejší), (2) Zhoršujúca sa nerovnosť zreníc (anizokória), (3) Nové fokálne neurologické deficity, (4) Zhoršujúca sa bolesť hlavy, (5) Vracanie. Konajte na základe týchto, skôr ako sa rozvinie Cushingova triáda.",
+      "student_error": "Študenti si často myslia, že Cushingova triáda je skorý varovný príznak. NIE JE. Je to neskorý nález naznačujúci krízu. Varovné príznaky sú pokles GCS a zmeny zreníc. Cushingova triáda znamená, že ste neskoro v rozpoznaní problému."
+    },
+    
+    "anticoagulation_issues": {
+      "warfarin_tbi": "Pacient na warfaríne (pre fibriláciu predsiení) má dramaticky zvýšené riziko intrakraniálneho krvácania aj pri menšej traume hlavy. Warfarín narúša syntézu zrážacích faktorov (II, VII, IX, X). Aj malé krvácanie sa stáva nekontrolovaným krvácaním.",
+      "severity": "Antikoagulovaní pacienti s poranením hlavy majú vyššiu mortalitu, väčšie objemy hematómov, rýchlejšiu expanziu, horšie výsledky. Tento pacient potrebuje urgentné CT vyšetrenie a pravdepodobne reverziu warfarínu.",
+      "reversal_agents": "Nemocnica podá: (1) Vitamín K (trvá hodiny, kým zaberie), (2) Protrombínový komplexný koncentrát alebo PCC (okamžitý účinok, preferovaný), (3) Čerstvá mrazená plazma alebo FFP (pomalšia ako PCC, ale účinná). Prednemocnične: žiadne reverzné látky nie sú k dispozícii. Zamerajte sa na rýchly transport.",
+      "communication": "Kritické je povedať prijímajúcej nemocnici: 'Pacient je na warfaríne, posledná dávka dnes ráno, INR neznáme, ale pravdepodobne terapeutické.' Táto informácia mení naliehavosť a alokáciu zdrojov nemocnice.",
+      "prehospital_role": "Urgentne transportujte. Komunikujte stav antikoagulácie. Zabráňte hypoxii a hypotenzii (tieto zhoršujú krvácanie). NEPODÁVAJTE viac antikoagulancií alebo antiagregancií (enoxaparín, aspirín, atď.) - zrejmé, ale študenti to niekedy prehliadnu."
+    },
+    
+    "hyperventilation_controversy": {
+      "old_teaching": "1980-1990: rutinná hyperventilácia u všetkých pacientov s TBI na zníženie ICP prostredníctvom vazokonstrikcie a zníženia cerebrálneho objemu krvi",
+      "problem_discovered": "Hyperventilácia SKUTOČNE znižuje ICP akútne, ale spôsobuje cerebrálnu vazokonstrikciu, ktorá znižuje cerebrálny prietok krvi. V poranenom mozgu potrebujúcom maximálnu perfúziu zníženie prietoku krvi spôsobuje ischémiu. Štúdie ukázali, že hyperventilácia zhoršuje výsledky.",
+      "current_guidelines": "Vyhnite sa rutinnej hyperventilácii. Cieľom je NORMÁLNA ventilácia (10-12 dychov za minútu, normálny dychový objem). NEHYPERVENTILUJTE profylakticky.",
+      "exception": "Aktívna herniácia s rozšírenou zrenicou, agonálnym dýchaním, Cushingovou triádou: použite krátku hyperventiláciu (10-12 dychov za minútu na krátke obdobie) ako dočasný most do nemocnice. Toto je posledná možnosť, keď pacient umiera. Krátka hyperventilácia môže získať minúty do operácie. Ale NIE rutinná prax.",
+      "common_student_error": "Študent sa naučí 'hyperventilovať pacientov s TBI' zo starého učenia alebo nepochopených protokolov. Musí sa to odnaučiť. Cieľom je normálna ventilácia. Hyperventilujte len pri aktívnej herniácii a aj vtedy krátko a mierne (nie agresívna hyperventilácia).",
+      "if_patient_ventilated": "Frekvencia BVM: 10-12 dychov za minútu. Dychový objem: normálny zdvih hrudníka. Monitorovanie ETCO2, ak je dostupné: cieľ 35-40 mmHg (normálne), nie menej ako 30 (hyperventilácia)."
+    },
+    
+    "c_spine_protection_rationale": {
+      "incidence": "5-10 percent pacientov s veľkou traumou má poranenie krčnej chrbtice. Vyššia u starších, pri vysokoenergetických mechanizmoch, poranení hlavy",
+      "consequences": "Nestabilná zlomenina krčnej chrbtice + pohyb sa rovná poraneniu miechy sa rovná trvalej paralýze alebo smrti. Prevencia sekundárneho poškodenia miechy je rovnako dôležitá ako prevencia sekundárneho poškodenia mozgu.",
+      "clinical_clearance_criteria": "Môžete klinicky vylúčiť poranenie krčnej chrbtice LEN ak: (1) Normálny stav vedomia, (2) Žiadna intoxikácia, (3) Žiadne rušivé zranenia, (4) Žiadna bolesť alebo citlivosť krku, (5) Žiadne neurologické deficity. Tento pacient nespĺňa kritérium 1 (zmenený stav vedomia) - nemôžete vylúčiť.",
+      "high_risk_criteria": "Kanadské pravidlá pre krčnú chrbticu: VYSOKÉ RIZIKO ak: vek nad 65, nebezpečný mechanizmus (pád > 3 stopy alebo 5 schodov, vysokorýchlostná nehoda > 100 km/h, axiálne zaťaženie, kolízia na bicykli), parestézie končatín. Tento pacient: vek 72, spadol z 12 schodov - DVA vysoko rizikové faktory.",
+      "technique": "Manuálna stabilizácia (ruky na hlave zabraňujúce pohybu), potom krčný golier (obmedzuje flexiu-extenziu, ale NIE rotáciu), potom chrbticová doska s popruhmi a hlavovými blokmi (obmedzuje rotáciu). Všetky tri zložky sú potrebné. Samotný golier je nedostatočný.",
+      "duration": "Udržiavať až do vylúčenia CT vyšetrením alebo röntgenom v nemocnici. NEODSTRAŇUJTE na základe tolerancie pacienta alebo žiadosti pacienta."
+    },
+    
+    "common_errors": {
+      "sedating_tbi_patient": "Nikdy nepodávajte benzodiazepíny, opioidy vo vysokých dávkach alebo iné sedatíva, pokiaľ neliečite špecifickú indikáciu (kŕče, závažná agitácia vyžadujúca chemické obmedzenie). Sedácia maskuje neurologické zhoršenie. Nemôžete rozlíšiť sedáciu od herniácie, ak GCS pacienta klesá. Udržiavajte schopnosť neurologického hodnotenia.",
+      "treating_compensatory_vitals": "Hypertenzia pri TBI je často kompenzačná (udržiavanie cerebrálneho perfúzneho tlaku proti stúpajúcemu ICP). Bradykardia pri TBI je často Cushingova odpoveď. NELIEČTE ich antihypertenzívami alebo atropínom. Rozpoznajte vzory, neliečte čísla.",
+      "single_gcs_assessment": "GCS raz je zbytočné. GCS sériovo je neoceniteľné. Musíte sledovať trend. Nastavte časovač, prehodnocujte každých 5 minút, porovnávajte s východiskovým stavom, rozpoznávajte zmeny.",
+      "giving_anticoagulants": "Pacient s traumou hlavy krváca do mozgu. Nikdy nepodávajte viac antikoagulancií (enoxaparín) alebo antiagregancií (aspirín). Zrejmé v spätnom pohľade, ale študenti zameraní na iné problémy to niekedy prehliadnu.",
+      "routine_hyperventilation": "Stará dogma. Spôsobuje ischémiu. Vyhnite sa rutinnej hyperventilácii. Cieľom je normálna ventilácia.",
+      "undertreating_hypotension": "sTK menej ako 90 pri TBI zdvojnásobuje mortalitu. Agresívne liečte hypotenziu tekutinami. Ale ak je normotenzný, nepreháňajte resuscitáciu (môže zhoršiť cerebrálny edém). Kľúčová je rovnováha.",
+      "delayed_c_spine_protection": "Študenti chcú dokončiť hodnotenie pred imobilizáciou. Nesprávne. Imobilizujte NAJPRV na základe mechanizmu, potom hodnoťte. Každá sekunda pohybu je sekunda rizika poranenia miechy, ak je prítomná zlomenina."
+    }
+  },
+
+  "cognitive_coach_questions": [
+    {
+      "trigger": "if_student_delays_c_spine_protection",
+      "question": "Predtým, ako pohnete pacientom, povedzte mi: aký je tu mechanizmus úrazu a na základe tohto mechanizmu, aké štruktúry by mohli byť poranené?",
+      "teaching_goal": "Vyzvať študenta, aby rozpoznal vysoko rizikový mechanizmus (pád z 12 schodov) naznačujúci riziko poranenia krčnej chrbtice pred povolením pohybu pacienta"
+    },
+    {
+      "trigger": "after_initial_gcs_assessment",
+      "question": "Zhodnotili ste jeho GCS na 13. Vynikajúce. Teraz mi povedzte: kedy ho skontrolujete znova a prečo je to dôležité?",
+      "teaching_goal": "Posilniť potrebu sériových hodnotení GCS, nie jednorazového merania. Sledovanie trendu je kľúčové."
+    },
+    {
+      "trigger": "if_student_gives_sedative_or_morphine_liberally",
+      "question": "Predtým, ako podáte ten liek, vysvetlite mi: ako budete vedieť, či sa neurologický stav tohto pacienta zhoršuje po podaní sedatívneho lieku?",
+      "teaching_goal": "Vyzvať na rozpoznanie, že sedácia maskuje neurologické vyšetrenie. Vyzvať študenta, aby odôvodnil sedáciu u pacienta s TBI."
+    },
+    {
+      "trigger": "when_vital_signs_show_cushings_pattern",
+      "question": "Vidím, že krvný tlak pacienta stúpa a srdcová frekvencia klesá. U pacienta s poranením hlavy, čo vám tento vzor naznačuje?",
+      "teaching_goal": "Vyzvať študenta, aby rozpoznal vzor Cushingovej triády bez toho, aby mu to prezradil, testovať rozpoznávanie vzorov"
+    },
+    {
+      "trigger": "if_student_considers_treating_hypertension",
+      "question": "Krvný tlak pacienta je 165 na 95. To je zvýšené. Ale predtým, ako to budete liečiť, zamyslite sa: prečo by mozog mohol zvyšovať krvný tlak u pacienta s poranením hlavy?",
+      "teaching_goal": "Vyzvať študenta, aby rozpoznal kompenzačnú hypertenziu (udržiavanie cerebrálneho perfúzneho tlaku), odradiť od jej liečby"
+    },
+    {
+      "trigger": "if_student_gives_or_considers_anticoagulant",
+      "question": "Tento pacient je doma na warfaríne pre fibriláciu predsiení. Vzhľadom na to, že má poranenie hlavy s intrakraniálnym krvácaním, prejdite so mnou vaše myslenie: mali by sme podať viac antikoagulácie, reverzné látky alebo ani jedno prednemocnične?",
+      "teaching_goal": "Testovať pochopenie antikoagulácie pri intrakraniálnom krvácaní. Správna odpoveď: ani jedno prednemocnične (žiadne reverzné látky nie sú k dispozícii), ale nikdy VIAC antikoagulácie"
+    },
+    {
+      "trigger": "if_spo2_drops_or_gcs_drops_to_8",
+      "question": "SpO2 pacienta klesá (alebo GCS je teraz 8). Povedzte mi: čo sa deje s jeho dýchacími cestami a dýchaním a aký je váš ďalší krok?",
+      "teaching_goal": "Vyzvať na rozpoznanie, že zhoršujúci sa pacient s TBI stráca ochranné reflexy dýchacích ciest, potrebuje asistovanú ventiláciu. Testovať rozhodovanie o manažmente dýchacích ciest."
+    },
+    {
+      "trigger": "if_student_asks_about_pain_management",
+      "question": "Pacient sa sťažuje na silnú bolesť hlavy. Ak podáte liek proti bolesti, aké sú riziká oproti prínosom u pacienta s TBI a ako by ste monitorovali komplikácie?",
+      "teaching_goal": "Testovať nuansované pochopenie manažmentu bolesti pri TBI. Žiadna dokonalá odpoveď - vyžaduje úsudok vyvažujúci úľavu od bolesti proti maskovaniu neuro vyšetrenia."
+    }
+  ],
+
+  "critical_actions_checklist": [
+    {
+      "id": "CA1",
+      "action": "Bezpečnosť scény a rozpoznanie mechanizmu",
+      "category": "scene_safety",
+      "time_target_minutes": 1,
+      "points": 5,
+      "importance": "nevyhnutné",
+      "criteria": "Rozpozná bezpečnú scénu, identifikuje vysoko rizikový mechanizmus (pád z 12 schodov s nárazom hlavy), predvída zranenia"
+    },
+    {
+      "id": "CA2",
+      "action": "Okamžitá aplikácia ochrany krčnej chrbtice",
+      "category": "treatment",
+      "time_target_minutes": 1,
+      "points": 15,
+      "importance": "kritické",
+      "criteria": "Manuálna stabilizácia krčnej chrbtice do prvej minúty, zabráni pohybu pacienta, primerane aplikuje golier a chrbticovú dosku"
+    },
+    {
+      "id": "CA3",
+      "action": "Správne vykonané počiatočné hodnotenie GCS",
+      "category": "assessment",
+      "time_target_minutes": 2,
+      "points": 10,
+      "importance": "kritické",
+      "criteria": "Správne vypočíta GCS (O3 V4 M6 sa rovná 13), zdokumentuje čas, stanoví východiskový stav"
+    },
+    {
+      "id": "CA4",
+      "action": "Rozpoznať a komunikovať riziko antikoagulácie",
+      "category": "assessment",
+      "time_target_minutes": 5,
+      "points": 5,
+      "importance": "dôležité",
+      "criteria": "Identifikuje, že pacient je na warfaríne, rozpozná, že to zvyšuje riziko, komunikuje naliehavosť prijímajúcej nemocnici"
+    },
+    {
+      "id": "CA5",
+      "action": "Kontrola vonkajšieho krvácania",
+      "category": "treatment",
+      "time_target_minutes": 3,
+      "points": 5,
+      "importance": "dôležité",
+      "criteria": "Aplikuje priamy tlak na tržnú ranu na čele, primerane kontroluje krvácanie"
+    },
+    {
+      "id": "CA6",
+      "action": "Podanie kyslíka (ak SpO2 menej ako 90 percent alebo GCS 8 alebo menej)",
+      "category": "treatment",
+      "time_target_minutes": 3,
+      "points": 10,
+      "importance": "kritické",
+      "criteria": "Poskytuje kyslík na udržanie SpO2 nad 90 percent (PREVENCIA HYPOXIE sa rovná prevencii sekundárneho poškodenia mozgu)"
+    },
+    {
+      "id": "CA7",
+      "action": "Primerané polohovanie pacienta (spinálne opatrenia plus zdvihnutie hlavy o 30 stupňov, ak nie sú kontraindikácie)",
+      "category": "treatment",
+      "time_target_minutes": 5,
+      "points": 10,
+      "importance": "dôležité",
+      "criteria": "Plná spinálna imobilizácia, potom zdvihnutie hlavy chrbticovej dosky o 30 stupňov, ak je TK adekvátny (pomáha znižovať ICP)"
+    },
+    {
+      "id": "CA8",
+      "action": "Sériové hodnotenia GCS (minimálne každých 5 minút)",
+      "category": "monitoring",
+      "time_target_minutes": "ongoing",
+      "points": 15,
+      "importance": "kritické",
+      "criteria": "Opakuje GCS o 5 minút, 10 minút, 15 minút - demonštruje SLEDOVANIE TRENDOV na zistenie zhoršenia"
+    },
+    {
+      "id": "CA9",
+      "action": "Rozpoznať zhoršenie a primerane eskalovať starostlivosť",
+      "category": "clinical_reasoning",
+      "time_target_minutes": "when_occurs",
+      "points": 15,
+      "importance": "kritické",
+      "criteria": "Ak GCS klesne o 2 alebo viac bodov alebo sa zhoršia zrenice, rozpozná kritické zhoršenie, pripraví sa na asistovanú ventiláciu, zabezpečí urgentný transport"
+    },
+    {
+      "id": "CA10",
+      "action": "Vyhnúť sa škodlivým zásahom (sedácia, antikoagulanciá, nevhodné lieky)",
+      "category": "clinical_reasoning",
+      "time_target_minutes": "ongoing",
+      "points": 10,
+      "importance": "kritické",
+      "criteria": "NEPODÁVA benzodiazepíny, morfín vo vysokých dávkach, antikoagulanciá alebo iné škodlivé lieky bez jasnej indikácie a primeraného monitorovania"
+    }
+  ],
+
+  "common_errors": [
+    {
+      "error": "Oneskorenie alebo vynechanie ochrany krčnej chrbtice",
+      "consequence": "Riziko premeny stabilnej zlomeniny krčnej chrbtice na nestabilnú s poranením miechy, ak sa pacient pohne",
+      "points": -15,
+      "aar_flag": "critical_c_spine_omission",
+      "teaching_point": "Vysoko rizikový mechanizmus (pád > 3 stopy, vek > 65, poranenie hlavy, zmenený stav vedomia) VYŽADUJE okamžitú ochranu krčnej chrbtice. Žiadna úvaha nie je potrebná - mechanizmus plus zmenený stav vedomia sa rovná automatickým opatreniam na ochranu krčnej chrbtice. Imobilizujte NAJPRV, hodnoťte POTOM."
+    },
+    {
+      "error": "Jedno hodnotenie GCS bez sledovania trendov",
+      "consequence": "Prehliadne vzor zhoršenia, nepodarí sa rozpoznať expandujúci hematóm alebo stúpajúci ICP, kým nenastane katastrofická herniácia",
+      "points": -10,
+      "aar_flag": "failed_neuro_trending",
+      "teaching_point": "GCS raz je snímka. GCS sériovo je film ukazujúci trajektóriu. Zhoršujúci sa pacient s TBI ukazuje stabilný pokles GCS: 13 na 12 na 9. Bez sledovania trendov to prehliadnete. Nastavte časovač, prehodnocujte každých 5 minút, porovnávajte s východiskovým stavom, rozpoznávajte zmeny. Sledovanie trendu GCS je NAJdôležitejší monitorovací nástroj pri TBI."
+    },
+    {
+      "error": "Podáva benzodiazepíny alebo nadmerné opioidy",
+      "consequence": "Sedácia maskuje neurologické vyšetrenie, znemožňuje zistiť herniáciu, spôsobuje útlm dýchania zhoršujúci hypoxiu",
+      "points": -15,
+      "aar_flag": "inappropriate_sedation",
+      "teaching_point": "Nikdy nesedujte pacienta s TBI, pokiaľ neliečite špecifickú indikáciu (aktívny kŕč). Úroveň vedomia pacienta je vaše jediné okno do toho, čo sa deje v mozgu. Sedatíva toto okno zahmlievajú. Ak GCS klesá, nemôžete povedať, či je to zo sedácie alebo herniácie. Udržiavajte schopnosť neurologického hodnotenia. Pre úzkosť: pokojný hlas a vysvetlenie, nie benzodiazepíny."
+    },
+    {
+      "error": "Lieči kompenzačnú hypertenziu antihypertenzívami",
+      "consequence": "Znižuje krvný tlak pod úroveň potrebnú na udržanie cerebrálneho perfúzneho tlaku, zhoršuje ischémiu mozgu",
+      "points": -12,
+      "aar_flag": "treating_compensatory_vitals",
+      "teaching_point": "Hypertenzia pri TBI je často kompenzačná - mozog sa snaží udržať perfúziu proti stúpajúcemu ICP. Zníženie TK znižuje cerebrálny perfúzny tlak (CPP sa rovná MAP mínus ICP), zhoršuje ischémiu. NELIEČTE zvýšený TK prednemocnične pri TBI, pokiaľ nejde o hypertenznú krízu (sTK > 220 s poškodením koncových orgánov). Akceptujte kompenzačnú hypertenziu. Nechajte neurochirurga manažovať TK v nemocnici po CT."
+    },
+    {
+      "error": "Podáva atropín pre Cushingovu bradykardiu",
+      "consequence": "Maskuje diagnostický znak, ďalej zvyšuje krvný tlak (zhoršuje ICP), nevidí les pre stromy",
+      "points": -10,
+      "aar_flag": "treating_cushings_components",
+      "teaching_point": "Bradykardia u pacienta s TBI s hypertenziou je Cushingova odpoveď na stúpajúci ICP, nie symptomatická bradykardia vyžadujúca liečbu. Atropín zvýši srdcovú frekvenciu, ale nevyrieši základný problém (vysoký ICP). Rozpoznajte syndróm (Cushingova triáda), neliečte jednotlivé zložky. Eskalujte starostlivosť pre herniáciu, nepodávajte atropín."
+    },
+    {
+      "error": "Dovolí alebo spôsobí hypoxiu (SpO2 menej ako 90 percent)",
+      "consequence": "Sekundárne poškodenie mozgu, zdvojnásobuje mortalitu pri TBI, poškodzuje penumbru zóny zachrániteľného tkaniva",
+      "points": -20,
+      "aar_flag": "critical_hypoxia",
+      "teaching_point": "Hypoxia (SpO2 menej ako 90 percent) je jednou z dvoch najviac preventabilných príčin zlých výsledkov TBI (druhou je hypotenzia). Aj JEDNA epizóda prednemocničnej hypoxie významne zhoršuje výsledky. Aplikujte nepretržitú pulznú oxymetriu, titrujte kyslík, asistujte ventiláciu, ak je nedostatočná. Toto je nezjednateľný základný štandard starostlivosti."
+    },
+    {
+      "error": "Dovolí alebo spôsobí hypotenziu (sTK menej ako 90)",
+      "consequence": "Sekundárne poškodenie mozgu, znižuje cerebrálny perfúzny tlak, zdvojnásobuje mortalitu pri TBI",
+      "points": -20,
+      "aar_flag": "critical_hypotension",
+      "teaching_point": "Hypotenzia (sTK menej ako 90) zdvojnásobuje mortalitu pri TBI. Kontrolujte TK každých 5 minút. Ak klesne pod 90: podajte bolusy tekutín (250-500ml), vyšetrite príčinu (hemoragický šok z iných zranení?), udržiavajte tlak. Cerebrálny perfúzny tlak sa rovná MAP mínus ICP. Ak MAP klesne, mozog sa neperfunduje. Agresívne zabráňte hypotenzii."
+    },
+    {
+      "error": "Podáva antikoagulanciá alebo antiagreganciá",
+      "consequence": "Katastrofické rozšírenie intrakraniálneho krvácania, mení prežiteľné zranenie na smrteľné",
+      "points": -25,
+      "aar_flag": "critical_error_anticoagulation",
+      "teaching_point": "NIKDY SA NESMIE STAŤ: podanie antikoagulancií (enoxaparín, heparín) alebo antiagregancií (aspirín, klopidogrel) pacientovi s intrakraniálnym krvácaním je katastrofická chyba. Pacient už krváca do mozgu. Tieto lieky dramaticky zhoršujú krvácanie. Pacient na warfaríne doma potrebuje REVERZIU, nie viac antikoagulácie. Absolútna kontraindikácia."
+    },
+    {
+      "error": "Rutinná agresívna hyperventilácia",
+      "consequence": "Cerebrálna vazokonstrikcia znižuje cerebrálny prietok krvi, spôsobuje ischémiu v už poranenom mozgu, zhoršuje výsledky",
+      "points": -10,
+      "aar_flag": "inappropriate_hyperventilation",
+      "teaching_point": "Stará dogma z 1980-1990. Hyperventilácia znižuje ICP akútne, ale za cenu zníženého cerebrálneho prietoku krvi. Súčasné usmernenia: cieľom je NORMÁLNA ventilácia (10-12 dychov za minútu). Hyperventilujte krátko len pri aktívnych príznakoch herniácie (rozšírená zrenica, agonálne dýchanie) ako most do nemocnice. Nie rutinná prax."
+    }
+  ]
+}
