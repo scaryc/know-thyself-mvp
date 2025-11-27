@@ -69,6 +69,8 @@ model Session {
   currentState          String?
   stateHistory          String @default("[]")  // JSON array as string
   currentVitals         String?  // JSON object as string
+  measuredVitals        String @default("{}")  // JSON object: vitals measured by student
+  patientNotes          String @default("[]")  // JSON array: clinical notes revealed during scenario
 
   // Scenario Context
   scenarioData          String?  // JSON: Full scenario blueprint (Layer 2)

@@ -4,7 +4,7 @@ services:
     name: know-thyself-backend
     runtime: node
     buildCommand: npm install && npx prisma generate
-    startCommand: npm run server
+    startCommand: npx prisma db push --accept-data-loss --skip-generate && npm run server
     envVars:
       - key: DATABASE_URL
         sync: false

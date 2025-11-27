@@ -106,6 +106,8 @@ class DatabaseService {
           currentState: null,
           stateHistory: JSON.stringify([]),
           currentVitals: null,
+          measuredVitals: JSON.stringify({}),
+          patientNotes: JSON.stringify([]),
 
           // Scenario data
           scenarioData: null,

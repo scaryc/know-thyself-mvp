@@ -55,7 +55,8 @@ export function dbToRuntimeSession(dbSession) {
     // Runtime-only fields (not in database)
     engine: null,  // Will be reconstructed when needed
     scenario: parseJSON(dbSession.scenarioData, null),  // Alias for scenarioData
-    measuredVitals: null,  // Will be reconstructed
+    measuredVitals: parseJSON(dbSession.measuredVitals, {}),  // Restore from database
+    patientNotes: parseJSON(dbSession.patientNotes, []),  // Restore from database
     vitals: parseJSON(dbSession.currentVitals, null),  // Alias for currentVitals
 
     // Cognitive coach state
@@ -127,6 +128,10 @@ export function runtimeToDbSession(session) {
     currentState: session.currentState || null,
     stateHistory: toJSON(session.stateHistory || []),
     currentVitals: toJSON(session.vitals || session.currentVitals),
+
+    // Measured vitals and patient notes (core agent runtime data)
+    measuredVitals: toJSON(session.measuredVitals || {}),
+    patientNotes: toJSON(session.patientNotes || []),
 
     // Scenario data (store full blueprint if available)
     scenarioData: toJSON(session.scenario || session.scenarioData),
