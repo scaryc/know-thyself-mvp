@@ -1,0 +1,140 @@
+# Koyeb Environment Variables Template
+# Add these in Koyeb dashboard → Service → Settings → Environment Variables
+
+# ============================================
+# REQUIRED VARIABLES (MUST SET ALL 5)
+# ============================================
+
+# 1. Database Connection (Get from Supabase.com)
+Key: DATABASE_URL
+Value: postgresql://postgres.barxdvlwfyvhnxodwnmh:[YOUR_PASSWORD]@aws-1-eu-north-1.pooler.supabase.com:6543/postgres?pgbouncer=true
+Secret: ✅ YES (mark as secret)
+
+# 2. Anthropic API Key (Get from console.anthropic.com or server/.env.backup)
+Key: ANTHROPIC_API_KEY
+Value: sk-ant-api03-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Secret: ✅ YES (mark as secret)
+
+# 3. Environment
+Key: NODE_ENV
+Value: production
+Secret: ❌ NO
+
+# 4. Port (Koyeb uses 8000)
+Key: PORT
+Value: 8000
+Secret: ❌ NO
+
+# 5. Frontend URL (Your Render frontend URL)
+Key: FRONTEND_URL
+Value: https://know-thyself-frontend.onrender.com
+Secret: ❌ NO
+
+
+# ============================================
+# OPTIONAL VARIABLES (Use defaults if not set)
+# ============================================
+
+# Claude Model Configuration (optional - uses defaults if not set)
+Key: COGNITIVE_COACH_MODEL
+Value: claude-3-5-haiku-20241022
+
+Key: CORE_AGENT_MODEL
+Value: claude-sonnet-4-20250514
+
+Key: AAR_AGENT_MODEL
+Value: claude-3-5-haiku-20241022
+
+# Caching (optional)
+Key: ENABLE_CACHING
+Value: true
+
+Key: CACHE_TTL_MINUTES
+Value: 5
+
+# Logging (optional)
+Key: LOG_LEVEL
+Value: info
+
+
+# ============================================
+# HOW TO GET THESE VALUES
+# ============================================
+
+## DATABASE_URL (Supabase)
+1. Login to https://supabase.com
+2. Select your project
+3. Left sidebar → Settings → Database
+4. Scroll to "Connection Pooling"
+5. Copy the connection string (URI format)
+6. Port should be 6543 (connection pooler)
+7. Should include: ?pgbouncer=true
+
+## ANTHROPIC_API_KEY
+1. Check your server/.env.backup file
+   OR
+2. Login to https://console.anthropic.com
+3. Settings → API Keys
+4. Create new key or copy existing
+5. Starts with: sk-ant-api03-
+
+## FRONTEND_URL
+1. Login to https://render.com
+2. Find your frontend service
+3. Copy the URL (should be: https://know-thyself-frontend.onrender.com)
+
+
+# ============================================
+# HOW TO ADD IN KOYEB
+# ============================================
+
+1. Go to https://app.koyeb.com
+2. Select your service: know-thyself-backend
+3. Click "Settings" tab
+4. Scroll to "Environment Variables"
+5. Click "Add Variable"
+6. Enter Key and Value from above
+7. For sensitive values (DATABASE_URL, ANTHROPIC_API_KEY):
+   - Click the eye icon to mark as "Secret"
+8. Click "Update"
+9. Repeat for all 5 required variables
+10. Koyeb will automatically redeploy
+
+
+# ============================================
+# VERIFICATION
+# ============================================
+
+After adding all variables:
+1. Go to Settings → Environment Variables
+2. You should see 5 variables listed:
+   - DATABASE_URL (secret, hidden)
+   - ANTHROPIC_API_KEY (secret, hidden)
+   - NODE_ENV
+   - PORT
+   - FRONTEND_URL
+3. Service should automatically redeploy
+4. Wait for status to show "Healthy"
+5. Test: https://your-app.koyeb.app/api/health
+
+
+# ============================================
+# TROUBLESHOOTING
+# ============================================
+
+## Variable not working?
+- Check for typos in Key name
+- Verify Value is correct (no extra spaces)
+- Sensitive vars must be marked as Secret
+- Service must redeploy after changes
+
+## Database connection fails?
+- Check DATABASE_URL uses port 6543 (pooler)
+- Verify password is correct
+- Ensure ?pgbouncer=true is included
+- Check Supabase database is not paused
+
+## AI not working?
+- Verify ANTHROPIC_API_KEY is valid
+- Check you have credits at console.anthropic.com
+- Look at logs for error messages

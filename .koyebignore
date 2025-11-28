@@ -1,0 +1,66 @@
+# Koyeb ignore file - exclude unnecessary files from deployment
+
+# Frontend (not needed on backend)
+know-thyself-frontend/
+
+# Development
+node_modules/
+.env
+.env.local
+.env.development
+.env.test
+
+# Git
+.git/
+.github/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+.claude/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Testing
+coverage/
+.nyc_output/
+*.test.js
+*.spec.js
+test/
+tests/
+
+# Build
+dist/
+build/
+.cache/
+
+# Documentation (optional, keep README)
+docs/
+*.md
+!README.md
+
+# Misc
+.tmp/
+.temp/
+tmp/
+temp/
+
+# Railway and Fly.io configs (no longer needed)
+railway.json
+fly.toml
+.railwayignore
