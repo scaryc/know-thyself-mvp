@@ -1,0 +1,41 @@
+# Railway ignore file - exclude unnecessary files from deployment
+
+# Frontend (not needed on backend)
+know-thyself-frontend/
+
+# Development
+node_modules/
+.env.local
+.env.development
+
+# Git
+.git/
+.github/
+
+# IDE
+.vscode/
+.idea/
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+logs/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Documentation (optional)
+docs/
+*.md
+!README.md
+
+# Misc
+.cache/
+dist/
+build/

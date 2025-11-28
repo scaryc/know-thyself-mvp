@@ -1,0 +1,70 @@
+# Railway.app Environment Variables
+# Copy these to Railway dashboard → Variables tab
+
+# ============================================
+# REQUIRED VARIABLES (MUST SET)
+# ============================================
+
+# Database Connection (Get from Supabase.com)
+DATABASE_URL=postgresql://postgres.barxdvlwfyvhnxodwnmh:[YOUR_PASSWORD]@aws-1-eu-north-1.pooler.supabase.com:6543/postgres?pgbouncer=true
+
+# Anthropic API Key (Get from console.anthropic.com)
+ANTHROPIC_API_KEY=sk-ant-api03-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# Environment
+NODE_ENV=production
+
+# Port (Railway auto-provides, but good to set)
+PORT=3001
+
+
+# ============================================
+# RECOMMENDED VARIABLES (SET AFTER DEPLOYMENT)
+# ============================================
+
+# Frontend URL (Your Render.com frontend URL)
+FRONTEND_URL=https://know-thyself-frontend.onrender.com
+
+
+# ============================================
+# OPTIONAL VARIABLES (Use defaults if not set)
+# ============================================
+
+# Claude Model Configuration
+COGNITIVE_COACH_MODEL=claude-3-5-haiku-20241022
+CORE_AGENT_MODEL=claude-sonnet-4-20250514
+AAR_AGENT_MODEL=claude-3-5-haiku-20241022
+
+# Caching
+ENABLE_CACHING=true
+CACHE_TTL_MINUTES=5
+
+# Logging
+LOG_LEVEL=info
+
+
+# ============================================
+# INSTRUCTIONS
+# ============================================
+
+1. Get DATABASE_URL:
+   - Login to Supabase.com
+   - Project Settings → Database
+   - Copy "Connection pooling" string (port 6543)
+
+2. Get ANTHROPIC_API_KEY:
+   - Login to console.anthropic.com
+   - API Keys → Create new key
+   - Or use existing key from .env file
+
+3. Add to Railway:
+   - Railway project → Variables tab
+   - Click "New Variable"
+   - Paste key and value
+   - Click "Add"
+   - Repeat for each variable
+
+4. After deployment:
+   - Copy your Railway URL
+   - Add FRONTEND_URL variable
+   - Update Render frontend with Railway backend URL
