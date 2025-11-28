@@ -47,6 +47,11 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
 // Session cache (backed by database)
 const sessionCache = new Map();
 const CACHE_TTL = 20 * 60 * 1000; // 20 minutes (increased to match session lifetime)
