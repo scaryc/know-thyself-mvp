@@ -2978,26 +2978,48 @@ if (needsSecondCall) {
         { role: 'assistant', content: firstResponse.content },
         { role: 'user', content: [
           ...toolResults,
-          { type: 'text', text: 'Now respond as the patient. Describe what the student observes using QUALITATIVE descriptions (rapid, slow, weak, strong, labored, etc). DO NOT include numeric vital sign values in your text - those are already displayed in the vitals monitor.' }
+          { type: 'text', text: `Tool updates completed successfully.
+
+Now respond to the student's action/question in character as the patient. This response is REQUIRED - you must provide it.
+
+Student said: "${message}"
+
+Your response must:
+1. Start with physical observation in THIRD PERSON (*The patient...* / *She/he...*)
+2. Include patient dialogue in FIRST PERSON (spoken words in "quotes")
+3. Be appropriate to what the student just did/said and the current patient state
+4. Use qualitative descriptions (rapid/slow/labored/etc.) - never numeric values
+
+Respond now as the patient:` }
         ]}
       ]
     })
   );
   
   console.log('Second response content types:', secondResponse.content.map(block => block.type));
-  
+
+  // Log full response for debugging
+  if (secondResponse.content.length === 0) {
+    console.error('❌ Second response has NO content blocks at all!');
+  } else if (!secondResponse.content.some(block => block.type === 'text')) {
+    console.error('❌ Second response has content but NO text blocks!');
+    console.error('Content:', JSON.stringify(secondResponse.content, null, 2));
+  }
+
   finalResponse = '';
   for (const block of secondResponse.content) {
     if (block.type === 'text') {
       finalResponse += block.text;
     }
   }
-  
+
   console.log('✅ Final response:', finalResponse);
 }
 
 if (!finalResponse) {
-  console.warn('⚠️ No text response generated');
+  console.error('⚠️ No text response generated - using fallback');
+  console.error('First response content types:', firstResponse.content.map(b => b.type));
+  console.error('needsSecondCall:', needsSecondCall);
   finalResponse = 'I am examining the patient...';
 }
 
