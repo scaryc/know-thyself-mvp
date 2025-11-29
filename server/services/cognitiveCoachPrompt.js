@@ -1,24 +1,19 @@
 // Cognitive Coach Prompt Builder (ES Module Version)
 // Builds complete system prompt for Cognitive Coach Agent with dynamic context
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { loadPrompt } from '../utils/languageLoader.js';
 import cognitiveCoachService from './cognitiveCoachService.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Cache prompts by language
+const promptCache = new Map();
 
-// Load base prompt template once at startup
-let basePromptTemplate = null;
-
-function loadBasePrompt() {
-  if (!basePromptTemplate) {
-    const promptPath = path.join(__dirname, '../prompts/cognitiveCoachAgent.txt');
-    basePromptTemplate = fs.readFileSync(promptPath, 'utf8');
-    console.log('✅ Loaded Cognitive Coach base prompt');
+function loadBasePrompt(language = 'en') {
+  if (!promptCache.has(language)) {
+    const basePromptTemplate = loadPrompt('cognitiveCoachAgent', language);
+    promptCache.set(language, basePromptTemplate);
+    console.log(`✅ Loaded Cognitive Coach base prompt (${language})`);
   }
-  return basePromptTemplate;
+  return promptCache.get(language);
 }
 
 /**
@@ -27,17 +22,18 @@ function loadBasePrompt() {
  * @returns {string} Complete system prompt with dynamic context
  */
 export function buildCognitiveCoachPrompt(session) {
-  const basePrompt = loadBasePrompt();
+  const language = session.language || 'en';
+  const basePrompt = loadBasePrompt(language);
   const { cognitiveCoach } = session;
   const { selectedQuestions, currentQuestionIndex } = cognitiveCoach;
-  
+
   // Get selected question details
-  const questions = selectedQuestions.map(qID => 
-    cognitiveCoachService.getQuestionByID(qID)
+  const questions = selectedQuestions.map(qID =>
+    cognitiveCoachService.getQuestionByID(qID, language)
   );
-  
+
   // Get all questions for reference
-  const allQuestions = cognitiveCoachService.getAllQuestions();
+  const allQuestions = cognitiveCoachService.getAllQuestions(language);
   
   // Calculate progress
   const questionsRemaining = selectedQuestions.length - currentQuestionIndex;
