@@ -513,7 +513,7 @@ app.post('/api/sessions/start', async (req, res) => {
     console.log('Challenge Points:', challengePointsEnabled ? 'ENABLED' : 'DISABLED');
 
     // Select random questions for Cognitive Coach
-    const selectedQuestions = cognitiveCoachService.selectRandomQuestions(3);
+    const selectedQuestions = cognitiveCoachService.selectRandomQuestions(3, language);
     console.log('Selected questions:', selectedQuestions.map(q => q.questionID));
 
     // Generate session ID
