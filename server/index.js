@@ -2362,6 +2362,93 @@ function summarizeChallenges(session) {
 }
 
 /**
+ * Parse student message to detect compound actions
+ * Returns object with detected action types
+ */
+function parseStudentMessage(message) {
+  const lowerMsg = message.toLowerCase();
+  const detected = {
+    hasVitals: false,
+    hasQuestion: false,
+    hasTreatment: false,
+    questions: []
+  };
+
+  // Detect vitals measurement
+  const vitalsKeywords = ['vital', 'vs', 'pulse', 'bp', 'blood pressure', 'heart rate', 'hr', 'respiratory rate', 'rr', 'spo2', 'oxygen', 'saturation', 'temperature', 'temp', 'gcs', 'avpu', 'check her', 'check him', 'measure', 'assess'];
+  detected.hasVitals = vitalsKeywords.some(keyword => lowerMsg.includes(keyword));
+
+  // Detect questions (common question patterns)
+  const questionPatterns = [
+    /when (did|does)/i,
+    /what (is|are|was|were)/i,
+    /how (long|often|do|does|did)/i,
+    /do you (have|take|feel)/i,
+    /any (allergies|medications|history|pain)/i,
+    /tell me about/i,
+    /can you (tell|describe)/i,
+    /are you/i
+  ];
+
+  detected.hasQuestion = questionPatterns.some(pattern => pattern.test(message)) || message.includes('?');
+
+  // Extract specific question topics
+  if (lowerMsg.includes('allerg')) detected.questions.push('allergies');
+  if (lowerMsg.includes('medic') || lowerMsg.includes('drug')) detected.questions.push('medications');
+  if (lowerMsg.includes('history') || lowerMsg.includes('past')) detected.questions.push('history');
+  if (lowerMsg.includes('when') || lowerMsg.includes('start') || lowerMsg.includes('began')) detected.questions.push('onset');
+  if (lowerMsg.includes('pain')) detected.questions.push('pain');
+  if (lowerMsg.includes('feel')) detected.questions.push('feelings');
+
+  // Detect treatments
+  const treatmentKeywords = ['give', 'administer', 'apply', 'provide', 'oxygen', 'o2', 'nebulizer', 'medication', 'drug', 'inject', 'iv'];
+  detected.hasTreatment = treatmentKeywords.some(keyword => lowerMsg.includes(keyword));
+
+  return detected;
+}
+
+/**
+ * Build enhanced second call instruction based on detected actions
+ */
+function buildEnhancedInstruction(message, detected, toolResults) {
+  let instruction = `Tool updates completed successfully.\n\n`;
+
+  // Build action breakdown
+  const actions = [];
+  if (detected.hasVitals) actions.push('Measured vital signs → vitals updated');
+  if (detected.hasQuestion && detected.questions.length > 0) {
+    detected.questions.forEach(q => {
+      actions.push(`Asked about ${q} → requires patient response`);
+    });
+  } else if (detected.hasQuestion) {
+    actions.push('Asked a question → requires patient response');
+  }
+  if (detected.hasTreatment) actions.push('Administered treatment → show patient reaction');
+
+  if (actions.length > 1) {
+    instruction += `Student performed multiple actions:\n`;
+    actions.forEach((action, i) => {
+      instruction += `${i + 1}. ${action}\n`;
+    });
+    instruction += `\nRespond to ALL actions:\n`;
+  } else if (actions.length === 1) {
+    instruction += `Student action: ${actions[0]}\n\n`;
+  } else {
+    instruction += `Student said: "${message}"\n\n`;
+  }
+
+  instruction += `Now you MUST provide your complete role-play response. This is REQUIRED.\n\n`;
+  instruction += `Your response must:\n`;
+  instruction += `1. Start with physical observation in THIRD PERSON (*The patient...* / *She/he...*)\n`;
+  instruction += `2. Include patient dialogue in FIRST PERSON (spoken words in "quotes")\n`;
+  instruction += `3. Address ALL parts of what the student did/asked\n`;
+  instruction += `4. Use qualitative descriptions (rapid/slow/labored/etc.) - never numeric values\n\n`;
+  instruction += `Respond now as the patient:`;
+
+  return instruction;
+}
+
+/**
  * POST /api/sessions/:id/message
  * Send message to AI patient
  */
@@ -2966,6 +3053,14 @@ for (const block of firstResponse.content) {
 if (needsSecondCall) {
   console.log('=== SECOND CLAUDE CALL (with tool_result) ===');
 
+  // Parse student message to detect compound actions
+  const detectedActions = parseStudentMessage(message);
+  console.log('🔍 Detected actions:', detectedActions);
+
+  // Build enhanced instruction based on detected actions
+  const enhancedInstruction = buildEnhancedInstruction(message, detectedActions, toolResults);
+  console.log('📝 Enhanced instruction length:', enhancedInstruction.length);
+
   const secondResponse = await callAnthropicWithTimeout(
     anthropic.messages.create({
       model: CORE_AGENT_MODEL,
@@ -2978,19 +3073,7 @@ if (needsSecondCall) {
         { role: 'assistant', content: firstResponse.content },
         { role: 'user', content: [
           ...toolResults,
-          { type: 'text', text: `Tool updates completed successfully.
-
-Now respond to the student's action/question in character as the patient. This response is REQUIRED - you must provide it.
-
-Student said: "${message}"
-
-Your response must:
-1. Start with physical observation in THIRD PERSON (*The patient...* / *She/he...*)
-2. Include patient dialogue in FIRST PERSON (spoken words in "quotes")
-3. Be appropriate to what the student just did/said and the current patient state
-4. Use qualitative descriptions (rapid/slow/labored/etc.) - never numeric values
-
-Respond now as the patient:` }
+          { type: 'text', text: enhancedInstruction }
         ]}
       ]
     })
