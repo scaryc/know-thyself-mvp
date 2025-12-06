@@ -592,6 +592,7 @@ app.post('/api/sessions/start', async (req, res) => {
     }
 
     console.log('✅ Session created (Cognitive Coach mode):', sessionId);
+    console.log('🌍 Session language set to:', language);  // ✅ DEBUG: Confirm language at creation
 
     // ✅ NEW: Generate initial Cognitive Coach greeting
     try {
@@ -3314,7 +3315,8 @@ app.post('/api/sessions/:id/begin-scenario', async (req, res) => {
       patientInfo: patientInfo,
       initialSceneDescription: initialSceneDescription,
       initialVitals: initialContext.current_vitals,
-      scenario: session.engine.getScenarioMetadata()
+      scenario: session.engine.getScenarioMetadata(),
+      debug_sessionLanguage: session.language  // ✅ DEBUG: Show what language was used
     };
 
     console.log('📤 FULL HTTP RESPONSE PAYLOAD:', JSON.stringify(responsePayload, null, 2));

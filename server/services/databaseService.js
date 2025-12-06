@@ -64,6 +64,7 @@ class DatabaseService {
           studentName: sessionData.studentName,
           studentEmail: sessionData.studentEmail,
           group: sessionData.group,
+          language: sessionData.language || 'en',  // ✅ FIX: Save language preference
 
           // Session metadata
           scenarioId: sessionData.scenarioId,

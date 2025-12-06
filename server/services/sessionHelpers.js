@@ -87,6 +87,7 @@ export function runtimeToDbSession(session) {
     studentName: session.studentName || null,
     studentEmail: session.studentEmail || null,
     group: session.group || null,
+    language: session.language || 'en',  // ✅ FIX: Include language preference in updates
 
     // Session metadata
     scenarioId: session.scenarioId || null,
