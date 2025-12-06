@@ -459,6 +459,7 @@ app.get('/api/sessions/:sessionId/check', async (req, res) => {
       studentId: session.studentId,
       studentName: session.studentName,
       group: session.group,
+      language: session.language || 'en',  // ✅ Include language preference for session resume
       dispatchInfo: session.dispatchInfo || null,
       patientInfo: session.patientInfo || null,
       patientNotes: session.patientNotes || []  // ✅ Include patientNotes for session resume
@@ -2472,7 +2473,8 @@ app.post('/api/sessions/:id/message', async (req, res) => {
 
         if (session.currentAgent === 'cognitive_coach') {
       console.log('🎓 Routing to Cognitive Coach Agent');
-      
+      console.log('🌍 Session language (Cognitive Coach):', session.language);  // ✅ DEBUG: Check language
+
       try {
         // Build Cognitive Coach prompt with current session context
         const systemPrompt = cognitiveCoachPromptBuilder.buildCognitiveCoachPrompt(session);
@@ -2857,6 +2859,7 @@ Describe this change in your response - the patient's condition is actively chan
     }
 
     const runtimeContext = session.engine.getRuntimeContext();
+    console.log('🌍 Session language (Core Agent message):', session.language);  // ✅ DEBUG: Check language
     const coreAgentPrompt = loadSystemPrompt(session.language || 'en');
 
     // Build rich patient context (for all Core Agent messages)
@@ -3217,6 +3220,7 @@ app.post('/api/sessions/:id/begin-scenario', async (req, res) => {
     console.log('📍 Current scenario index:', session.currentScenarioIndex);
     console.log('📍 Scenario queue:', session.scenarioQueue);
     console.log('📍 Session scenarioId:', session.scenarioId);
+    console.log('🌍 Session language:', session.language);  // ✅ DEBUG: Check language
 
     // Transition to Core Agent
     session.currentAgent = 'core';
@@ -3225,7 +3229,7 @@ app.post('/api/sessions/:id/begin-scenario', async (req, res) => {
     // LOAD SCENARIO FOR THE FIRST TIME
     // ═══════════════════════════════════════════════════════════
 
-    console.log('📋 Loading scenario:', session.scenarioId);
+    console.log('📋 Loading scenario:', session.scenarioId, 'in language:', session.language || 'en');
 
     // Load scenario and create engine (with language support)
     const scenarioData = loadScenario(session.scenarioId, session.language || 'en');
@@ -3858,9 +3862,8 @@ app.post('/api/sessions/:sessionId/aar/start', async (req, res) => {
     // Initialize AAR session with ALL scenario performance data
     const aarSession = aarService.initializeAAR(sessionId, performanceHistoryArray);
 
-    // Load AAR prompt
-    const aarPromptPath = path.join(__dirname, './prompts/aarAgent.txt');
-    const aarPrompt = fs.readFileSync(aarPromptPath, 'utf-8');
+    // Load AAR prompt using language loader
+    const aarPrompt = loadPrompt('aarAgent', session.language || 'en');
 
     // Build performance context
     const context = aarService.buildAARContext(sessionId);
@@ -3907,14 +3910,19 @@ app.post('/api/sessions/:sessionId/aar/message', async (req, res) => {
       return res.status(404).json({ error: 'AAR session not found' });
     }
 
+    // Load session to get language preference
+    const session = await getSession(sessionId);
+    if (!session) {
+      return res.status(404).json({ error: 'Session not found' });
+    }
+
     console.log('💬 AAR message received:', userMessage.substring(0, 50) + '...');
 
     // Add user message to history
     aarService.addMessage(sessionId, 'user', userMessage);
 
-    // Load AAR prompt
-    const aarPromptPath = path.join(__dirname, './prompts/aarAgent.txt');
-    const aarPrompt = fs.readFileSync(aarPromptPath, 'utf-8');
+    // Load AAR prompt using language loader
+    const aarPrompt = loadPrompt('aarAgent', session.language || 'en');
 
     // Build performance context
     const context = aarService.buildAARContext(sessionId);
