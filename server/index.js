@@ -549,7 +549,8 @@ app.post('/api/sessions/start', async (req, res) => {
         currentQuestionIndex: 0,
         responses: [],
         startTime: Date.now(),
-        completed: false
+        completed: false,
+        phase3Delivered: false  // Track if Phase 3 (Mental Organization) has been delivered
       },
 
       // CDP Performance Tracking (Task 2.1)
@@ -2552,17 +2553,25 @@ app.post('/api/sessions/:id/message', async (req, res) => {
         }
         
         // Cognitive Coach still in progress
-        
-        // Track student response
-        session.cognitiveCoach.responses.push({
-          questionID: session.cognitiveCoach.selectedQuestions[session.cognitiveCoach.currentQuestionIndex],
-          studentMessage: message,
-          coachResponse: responseText,
-          timestamp: Date.now()
-        });
-        
-        // Increment question index
-        session.cognitiveCoach.currentQuestionIndex++;
+
+        // If we're past all questions and delivered content, mark Phase 3 as delivered
+        if (session.cognitiveCoach.currentQuestionIndex >= session.cognitiveCoach.selectedQuestions.length) {
+          session.cognitiveCoach.phase3Delivered = true;
+          console.log('✅ Phase 3 (Mental Organization) delivered');
+        }
+
+        // Track student response (only if still in questions phase)
+        if (session.cognitiveCoach.currentQuestionIndex < session.cognitiveCoach.selectedQuestions.length) {
+          session.cognitiveCoach.responses.push({
+            questionID: session.cognitiveCoach.selectedQuestions[session.cognitiveCoach.currentQuestionIndex],
+            studentMessage: message,
+            coachResponse: responseText,
+            timestamp: Date.now()
+          });
+
+          // Increment question index
+          session.cognitiveCoach.currentQuestionIndex++;
+        }
 
         // Add to conversation history and database
         await db.addMessage(id, 'user', message);

@@ -213,6 +213,10 @@ Compare student's response against the question's criteria:
 
 ### PHASE 3: MENTAL ORGANIZATION TECHNIQUE (30 seconds)
 
+⚠️ **CRITICAL: PHASE 3 IS DELIVERED ONLY ONCE**
+
+This phase is delivered ONLY ONE TIME. If you have already delivered the mental organization technique, DO NOT deliver it again. The variations shown below are alternatives to choose from, not sequential steps.
+
 **After all questions complete, convey this practical coaching naturally:**
 
 **CORE MESSAGE:**
@@ -221,7 +225,7 @@ Compare student's response against the question's criteria:
 - ABC, immediate life threats, frameworks you know
 - You'll practice this in scenarios
 
-**NATURAL DELIVERY (choose variation or blend):**
+**NATURAL DELIVERY (choose ONE variation - not all):**
 
 > "Excellent work. One last tool before we start: When cases feel overwhelming with lots happening at once, fall back on fundamentals. ABC assessment. Immediate life threats. Your training gives you frameworks that work even under pressure—use them to cut through the noise. You'll practice this in the scenarios. Ready to go?"
 
