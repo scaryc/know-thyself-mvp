@@ -2473,6 +2473,9 @@ app.post('/api/sessions/:id/message', async (req, res) => {
       return res.status(404).json({ error: 'Session not found' });
     }
 
+    // Log user message for testing/debugging
+    console.log('💬 User message:', message.substring(0, 150) + (message.length > 150 ? '...' : ''));
+
         if (session.currentAgent === 'cognitive_coach') {
       console.log('🎓 Routing to Cognitive Coach Agent');
       console.log('🌍 Session language (Cognitive Coach):', session.language);  // ✅ DEBUG: Check language
