@@ -293,19 +293,19 @@ function App() {
     // Hide the button
     setShowAARButton(false);
 
-    // Set AAR mode
-    setIsAARMode(true);
-
-    // Initialize AAR Agent
+    // Initialize AAR Agent FIRST (to get the initial message)
     if (sessionId) {
       const aarResponse = await api.startAAR(sessionId);
 
-      // Store AAR introduction message for ConversationPanel
+      // Store AAR introduction message for ConversationPanel BEFORE setting isAARMode
       sessionStorage.setItem('aarIntroduction', aarResponse.message);
+      console.log('💾 Stored AAR introduction message');
 
       console.log('AAR mode activated:', aarResponse);
     }
-  };
+
+    // Set AAR mode AFTER storing the message (triggers ConversationPanel remount)
+    setIsAARMode(true);
 
   // ✅ NEW: Handle AAR completion
   const handleAARComplete = () => {

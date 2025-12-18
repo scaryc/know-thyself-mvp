@@ -109,8 +109,19 @@ function ConversationPanel({
 
   // ✅ NEW: Add AAR introduction message when entering AAR mode
   useEffect(() => {
+    console.log('🔍 ConversationPanel useEffect - AAR check:', {
+      isAARMode,
+      messagesLength: messages.length,
+      refCurrent: aarIntroAddedRef.current
+    });
+
     if (isAARMode && messages.length === 0 && !aarIntroAddedRef.current) {
       const aarIntroduction = sessionStorage.getItem('aarIntroduction');
+      console.log('🔍 Checking sessionStorage for AAR message:', {
+        hasMessage: !!aarIntroduction,
+        messagePreview: aarIntroduction ? aarIntroduction.substring(0, 100) + '...' : 'null'
+      });
+
       if (aarIntroduction) {
         console.log('📊 Adding AAR introduction to chat');
         setMessages([{
@@ -119,10 +130,16 @@ function ConversationPanel({
           timestamp: Date.now()
         }]);
         aarIntroAddedRef.current = true;
+        // Clean up after using it
+        console.log('🗑️ Removing AAR message from sessionStorage after adding to chat');
+        sessionStorage.removeItem('aarIntroduction');
+      } else {
+        console.warn('⚠️ No AAR introduction message found in sessionStorage!');
       }
     }
     // Reset flag when switching away from AAR mode
     if (!isAARMode) {
+      console.log('🔄 Resetting aarIntroAddedRef because AAR mode ended');
       aarIntroAddedRef.current = false;
     }
   }, [isAARMode, messages.length]);

@@ -602,6 +602,10 @@ app.post('/api/sessions/start', async (req, res) => {
       // Build Cognitive Coach prompt with current session context
       const systemPrompt = cognitiveCoachPromptBuilder.buildCognitiveCoachPrompt(session);
 
+      // Get localized start signal
+      const startSignal = getTranslation('cognitiveCoach.sessionStart', language, 'api');
+      console.log('🌍 Using start signal:', startSignal);
+
       // Call Claude API to get initial greeting
       const response = await anthropic.messages.create({
         model: COGNITIVE_COACH_MODEL,
@@ -610,7 +614,7 @@ app.post('/api/sessions/start', async (req, res) => {
         messages: [
           {
             role: 'user',
-            content: 'Hello, I\'m ready to begin the cognitive warm-up.'
+            content: startSignal
           }
         ]
       });
@@ -619,11 +623,11 @@ app.post('/api/sessions/start', async (req, res) => {
       console.log('✅ Initial message generated:', initialMessage.substring(0, 100) + '...');
 
       // Add to session messages and database
-      await db.addMessage(sessionId, 'user', 'Hello, I\'m ready to begin the cognitive warm-up.');
+      await db.addMessage(sessionId, 'user', startSignal);
       await db.addMessage(sessionId, 'assistant', initialMessage);
 
       session.messages.push(
-        { role: 'user', content: 'Hello, I\'m ready to begin the cognitive warm-up.', timestamp: Date.now() },
+        { role: 'user', content: startSignal, timestamp: Date.now() },
         { role: 'assistant', content: initialMessage, timestamp: Date.now() }
       );
 
@@ -1095,6 +1099,9 @@ function evaluateStateProgression(session) {
   session.vitals = newVitals;
   session.lastDeteriorationCheck = Date.now();
 
+  // ✅ STRATEGY B: Track state change in memory
+  addMemoryStateChange(session, newState, `auto_deterioration`);
+
   return newState;
 }
 
@@ -1212,6 +1219,11 @@ function updatePatientState(session) {
   session.currentState = newState;
   session.vitals = newVitals;
   session.lastDeteriorationCheck = Date.now();
+
+  // ✅ STRATEGY B: Track state change in memory
+  const reason = newState === 'improving' ? 'treatment_response' :
+                 newState === 'deteriorating' ? 'no_treatment' : 'state_transition';
+  addMemoryStateChange(session, newState, reason);
 
   return session;
 }
@@ -2364,6 +2376,349 @@ function summarizeChallenges(session) {
   };
 }
 
+// ============================================================================
+// STRATEGY B: STRUCTURED MEMORY & PROMPT CACHING
+// ============================================================================
+
+/**
+ * Initialize structured memory for a session
+ */
+function initializeStructuredMemory() {
+  return {
+    criticalActions: [],
+    vitalsMeasurements: [],
+    patientDisclosures: [],
+    stateHistory: [],
+    keyQuotes: [],
+    sceneEvents: [],
+    assessments: [],
+    errors: [],
+    compoundActions: []
+  };
+}
+
+/**
+ * Add action to structured memory
+ */
+function addMemoryAction(session, action) {
+  if (!session.structuredMemory) {
+    session.structuredMemory = initializeStructuredMemory();
+  }
+
+  const elapsedMinutes = session.scenarioStartTime
+    ? Math.floor((Date.now() - session.scenarioStartTime) / 60000)
+    : 0;
+
+  session.structuredMemory.criticalActions.push({
+    time: elapsedMinutes,
+    ...action
+  });
+}
+
+/**
+ * Add vitals measurement to memory
+ */
+function addMemoryVitals(session, vitals) {
+  if (!session.structuredMemory) {
+    session.structuredMemory = initializeStructuredMemory();
+  }
+
+  const elapsedMinutes = session.scenarioStartTime
+    ? Math.floor((Date.now() - session.scenarioStartTime) / 60000)
+    : 0;
+
+  session.structuredMemory.vitalsMeasurements.push({
+    time: elapsedMinutes,
+    ...vitals
+  });
+}
+
+/**
+ * Add patient disclosure to memory
+ */
+function addMemoryDisclosure(session, category, info) {
+  if (!session.structuredMemory) {
+    session.structuredMemory = initializeStructuredMemory();
+  }
+
+  const elapsedMinutes = session.scenarioStartTime
+    ? Math.floor((Date.now() - session.scenarioStartTime) / 60000)
+    : 0;
+
+  session.structuredMemory.patientDisclosures.push({
+    time: elapsedMinutes,
+    category,
+    info
+  });
+}
+
+/**
+ * Add state change to memory
+ */
+function addMemoryStateChange(session, newState, reason) {
+  if (!session.structuredMemory) {
+    session.structuredMemory = initializeStructuredMemory();
+  }
+
+  const elapsedMinutes = session.scenarioStartTime
+    ? Math.floor((Date.now() - session.scenarioStartTime) / 60000)
+    : 0;
+
+  session.structuredMemory.stateHistory.push({
+    time: elapsedMinutes,
+    state: newState,
+    reason
+  });
+}
+
+/**
+ * Selective Recall Engine - Intelligently select relevant memory
+ * Safety-first: NEVER filter critical safety information
+ */
+function selectRelevantMemory(session, detectedActions, userMessage) {
+  const memory = session.structuredMemory || initializeStructuredMemory();
+  const elapsedMinutes = session.scenarioStartTime
+    ? Math.floor((Date.now() - session.scenarioStartTime) / 60000)
+    : 0;
+
+  const selected = {
+    // ALWAYS include (never filter)
+    currentVitals: memory.vitalsMeasurements.length > 0
+      ? memory.vitalsMeasurements[memory.vitalsMeasurements.length - 1]
+      : null,
+    currentState: memory.stateHistory.length > 0
+      ? memory.stateHistory[memory.stateHistory.length - 1]
+      : null,
+    recentActions: memory.criticalActions.slice(-3),
+  };
+
+  // SAFETY-FIRST RULE: If treatment action, ALWAYS include ALL safety info
+  if (detectedActions.hasTreatment) {
+    // NEVER filter by time for safety-critical information
+    selected.allDisclosures = memory.patientDisclosures;
+    selected.allergies = memory.patientDisclosures.filter(d =>
+      d.category === 'allergies' ||
+      d.category === 'contraindications' ||
+      d.category === 'adverse_reactions'
+    );
+    selected.currentMedications = memory.patientDisclosures.filter(d =>
+      d.category === 'medications'
+    );
+    selected.recentActions = memory.criticalActions.slice(-5);  // More context
+  }
+  // For questions, can filter by relevance and time
+  else if (detectedActions.hasQuestion && detectedActions.questions.length > 0) {
+    const relevantCategories = [];
+
+    if (detectedActions.questions.includes('medications')) relevantCategories.push('medications');
+    if (detectedActions.questions.includes('allergies')) relevantCategories.push('allergies');
+    if (detectedActions.questions.includes('history')) relevantCategories.push('history');
+    if (detectedActions.questions.includes('pain')) relevantCategories.push('pain');
+
+    if (relevantCategories.length > 0) {
+      selected.relevantDisclosures = memory.patientDisclosures.filter(d =>
+        relevantCategories.includes(d.category)
+      );
+    } else {
+      // General question - include recent disclosures
+      selected.relevantDisclosures = memory.patientDisclosures.filter(d =>
+        elapsedMinutes - d.time < 10  // Last 10 minutes
+      );
+    }
+  }
+
+  // Vitals context
+  if (detectedActions.hasVitals) {
+    selected.vitalsTrend = memory.vitalsMeasurements.slice(-3);
+  }
+
+  // Emotional context (always recent only)
+  selected.recentQuotes = memory.keyQuotes.slice(-2);
+
+  // Scene events (last 5 minutes)
+  selected.recentSceneEvents = memory.sceneEvents.filter(e =>
+    elapsedMinutes - e.time < 5
+  );
+
+  // Time-based strategy
+  if (elapsedMinutes < 10) {
+    // Early scenario: include more context (memory is small anyway)
+    selected.allDisclosures = selected.allDisclosures || memory.patientDisclosures;
+    selected.allActions = memory.criticalActions;
+  }
+
+  return selected;
+}
+
+/**
+ * Convert structured memory to prompt text
+ */
+function formatMemoryForPrompt(selectedMemory) {
+  let memoryText = '\n=== SCENARIO MEMORY (Key Events) ===\n';
+
+  // Current state
+  if (selectedMemory.currentState) {
+    memoryText += `\nCurrent State: ${selectedMemory.currentState.state} (${selectedMemory.currentState.reason})`;
+  }
+
+  // Recent actions
+  if (selectedMemory.recentActions && selectedMemory.recentActions.length > 0) {
+    memoryText += '\n\nRecent Actions:';
+    selectedMemory.recentActions.forEach(action => {
+      memoryText += `\n- T+${action.time}min: ${action.action}`;
+      if (action.result) memoryText += ` → ${action.result}`;
+    });
+  }
+
+  // All actions (if early scenario)
+  if (selectedMemory.allActions && selectedMemory.allActions.length > 0 && selectedMemory.allActions.length > (selectedMemory.recentActions?.length || 0)) {
+    memoryText += '\n\nAll Actions Timeline:';
+    selectedMemory.allActions.forEach(action => {
+      memoryText += `\n- T+${action.time}min: ${action.action}`;
+      if (action.result) memoryText += ` → ${action.result}`;
+    });
+  }
+
+  // Vitals trend
+  if (selectedMemory.vitalsTrend && selectedMemory.vitalsTrend.length > 1) {
+    memoryText += '\n\nVitals Trend:';
+    selectedMemory.vitalsTrend.forEach(v => {
+      memoryText += `\n- T+${v.time}min: HR ${v.HR || '?'}, RR ${v.RR || '?'}, SpO2 ${v.SpO2 || '?'}%`;
+      if (v.BP) memoryText += `, BP ${v.BP}`;
+    });
+  } else if (selectedMemory.currentVitals) {
+    memoryText += `\n\nCurrent Vitals: HR ${selectedMemory.currentVitals.HR || '?'}, RR ${selectedMemory.currentVitals.RR || '?'}, SpO2 ${selectedMemory.currentVitals.SpO2 || '?'}%`;
+  }
+
+  // Patient disclosures (safety-critical)
+  if (selectedMemory.allDisclosures && selectedMemory.allDisclosures.length > 0) {
+    memoryText += '\n\nPatient Medical Information:';
+
+    // Group by category
+    const byCategory = {};
+    selectedMemory.allDisclosures.forEach(d => {
+      if (!byCategory[d.category]) byCategory[d.category] = [];
+      byCategory[d.category].push(d.info);
+    });
+
+    Object.keys(byCategory).forEach(category => {
+      memoryText += `\n- ${category}: ${byCategory[category].join('; ')}`;
+    });
+  } else if (selectedMemory.relevantDisclosures && selectedMemory.relevantDisclosures.length > 0) {
+    memoryText += '\n\nRelevant Patient Information:';
+    selectedMemory.relevantDisclosures.forEach(d => {
+      memoryText += `\n- ${d.category}: ${d.info}`;
+    });
+  }
+
+  // Recent emotional context
+  if (selectedMemory.recentQuotes && selectedMemory.recentQuotes.length > 0) {
+    memoryText += '\n\nRecent Patient Emotions:';
+    selectedMemory.recentQuotes.forEach(q => {
+      memoryText += `\n- T+${q.time}min: "${q.quote}" (${q.emotion})`;
+    });
+  }
+
+  // Recent scene events
+  if (selectedMemory.recentSceneEvents && selectedMemory.recentSceneEvents.length > 0) {
+    memoryText += '\n\nRecent Scene Events:';
+    selectedMemory.recentSceneEvents.forEach(e => {
+      memoryText += `\n- T+${e.time}min: ${e.description}`;
+    });
+  }
+
+  memoryText += '\n';
+  return memoryText;
+}
+
+/**
+ * Build cache-enabled system prompt structure
+ * Caches static content, keeps dynamic content fresh
+ */
+function buildCachedSystemPrompt(session, coreAgentPrompt, runtimeContext, dynamicContexts) {
+  const { challengeContext, challengeFeedbackContext, patientContext, treatmentResponse,
+          cdpContext, medicationSafetyContext, stateChangeNotice, treatmentContext } = dynamicContexts;
+
+  // Get scenario baseline (static - can be cached)
+  const scenarioBaseline = session.scenario ? {
+    title: session.scenario.metadata?.title || session.scenario.title,
+    patient_name: session.scenario.patient_profile?.name,
+    patient_age: session.scenario.patient_profile?.age,
+    dispatch_info: session.scenario.dispatch_info,
+    scene_description: session.scenario.scene_description
+  } : null;
+
+  const systemPromptArray = [
+    // PART 1: Static Core Prompt (CACHED)
+    {
+      type: 'text',
+      text: coreAgentPrompt,
+      cache_control: { type: 'ephemeral' }
+    }
+  ];
+
+  // PART 2: Static Scenario Baseline (CACHED)
+  if (scenarioBaseline) {
+    systemPromptArray.push({
+      type: 'text',
+      text: `\n=== SCENARIO BASELINE (Static) ===
+Title: ${scenarioBaseline.title}
+Patient: ${scenarioBaseline.patient_name}, age ${scenarioBaseline.patient_age}
+
+Dispatch Information:
+${JSON.stringify(scenarioBaseline.dispatch_info, null, 2)}
+
+Scene Description:
+${JSON.stringify(scenarioBaseline.scene_description, null, 2)}
+`,
+      cache_control: { type: 'ephemeral' }
+    });
+  }
+
+  // PART 3: Dynamic Context (NOT CACHED)
+  const dynamicText = `${challengeContext}${challengeFeedbackContext}${patientContext}${treatmentResponse}${cdpContext}${medicationSafetyContext}${stateChangeNotice}
+
+=== CURRENT SCENARIO STATE (Dynamic) ===
+${JSON.stringify(runtimeContext, null, 2)}${treatmentContext}`;
+
+  systemPromptArray.push({
+    type: 'text',
+    text: dynamicText
+  });
+
+  return systemPromptArray;
+}
+
+/**
+ * Get appropriate message count based on elapsed time
+ * 4 exchanges (8 messages) normally, 5 exchanges (10 messages) after 10 minutes
+ */
+function getRecentMessageCount(session) {
+  const elapsedMinutes = session.scenarioStartTime
+    ? Math.floor((Date.now() - session.scenarioStartTime) / 60000)
+    : 0;
+
+  if (elapsedMinutes >= 10) {
+    return 10;  // 5 exchanges
+  }
+  return 8;  // 4 exchanges (default)
+}
+
+/**
+ * Get recent messages for conversation context
+ * Returns last N messages where N depends on scenario duration
+ */
+function getRecentMessages(session) {
+  const messageCount = getRecentMessageCount(session);
+  const messages = session.messages || [];
+
+  if (messages.length <= messageCount) {
+    return messages;
+  }
+
+  return messages.slice(-messageCount);
+}
+
 /**
  * Parse student message to detect compound actions
  * Returns object with detected action types
@@ -2374,12 +2729,15 @@ function parseStudentMessage(message) {
     hasVitals: false,
     hasQuestion: false,
     hasTreatment: false,
-    questions: []
+    questions: [],
+    actionCount: 0,
+    isCompoundAction: false
   };
 
   // Detect vitals measurement
   const vitalsKeywords = ['vital', 'vs', 'pulse', 'bp', 'blood pressure', 'heart rate', 'hr', 'respiratory rate', 'rr', 'spo2', 'oxygen', 'saturation', 'temperature', 'temp', 'gcs', 'avpu', 'check her', 'check him', 'measure', 'assess'];
   detected.hasVitals = vitalsKeywords.some(keyword => lowerMsg.includes(keyword));
+  if (detected.hasVitals) detected.actionCount++;
 
   // Detect questions (common question patterns)
   const questionPatterns = [
@@ -2403,9 +2761,17 @@ function parseStudentMessage(message) {
   if (lowerMsg.includes('pain')) detected.questions.push('pain');
   if (lowerMsg.includes('feel')) detected.questions.push('feelings');
 
+  // Count questions (each "?" is potentially a separate question)
+  const questionCount = (message.match(/\?/g) || []).length;
+  detected.actionCount += questionCount;
+
   // Detect treatments
   const treatmentKeywords = ['give', 'administer', 'apply', 'provide', 'oxygen', 'o2', 'nebulizer', 'medication', 'drug', 'inject', 'iv'];
   detected.hasTreatment = treatmentKeywords.some(keyword => lowerMsg.includes(keyword));
+  if (detected.hasTreatment) detected.actionCount++;
+
+  // Mark as compound if 3+ actions
+  detected.isCompoundAction = detected.actionCount >= 3;
 
   return detected;
 }
@@ -2428,7 +2794,30 @@ function buildEnhancedInstruction(message, detected, toolResults) {
   }
   if (detected.hasTreatment) actions.push('Administered treatment → show patient reaction');
 
-  if (actions.length > 1) {
+  // ✅ COMPOUND ACTION HANDLING
+  if (detected.isCompoundAction) {
+    instruction += `⚠️ CRITICAL: Student performed ${detected.actionCount} actions/questions simultaneously.\n`;
+    instruction += `You MUST address EVERY SINGLE ONE in your response.\n\n`;
+    instruction += `Checklist:\n`;
+
+    if (detected.hasVitals) {
+      instruction += `✓ Show vitals measurement results (tool was called)\n`;
+    }
+    if (detected.hasTreatment) {
+      instruction += `✓ Show patient's physical reaction to treatment\n`;
+    }
+    if (detected.questions.length > 0) {
+      detected.questions.forEach(q => {
+        instruction += `✓ Have patient answer question about: ${q}\n`;
+      });
+    } else if (detected.hasQuestion) {
+      instruction += `✓ Have patient answer the question(s) asked\n`;
+    }
+
+    instruction += `\n`;
+  }
+  // Regular action handling
+  else if (actions.length > 1) {
     instruction += `Student performed multiple actions:\n`;
     actions.forEach((action, i) => {
       instruction += `${i + 1}. ${action}\n`;
@@ -2945,25 +3334,33 @@ CURRENT VITALS: HR ${session.vitals.HR || '?'}, RR ${session.vitals.RR || '?'}, 
     // Challenge feedback context already declared earlier in function
     // No need to redeclare - just use the existing variable
 
-    // Build system prompt with CHALLENGE CONTEXT as HIGHEST PRIORITY
-    // When a challenge is active, AI must ask the question BEFORE continuing scenario
-    // When challenge evaluated, AI must provide feedback BEFORE continuing scenario
-    // Order: Challenge → Challenge Feedback → Patient Context → Treatment → CDP → Medication Safety → State Changes
-    const systemPrompt = `${challengeContext}${challengeFeedbackContext}${patientContext}${treatmentResponse}${cdpContext}${medicationSafetyContext}${stateChangeNotice}
+    // ✅ STRATEGY B: Build cache-enabled system prompt with structured memory
+    const dynamicContexts = {
+      challengeContext,
+      challengeFeedbackContext,
+      patientContext,
+      treatmentResponse,
+      cdpContext,
+      medicationSafetyContext,
+      stateChangeNotice,
+      treatmentContext
+    };
 
-${coreAgentPrompt}${stateContext}
+    // Build cached system prompt
+    const systemPrompt = buildCachedSystemPrompt(session, coreAgentPrompt, runtimeContext, dynamicContexts);
 
-CURRENT SCENARIO CONTEXT:
-${JSON.stringify(runtimeContext, null, 2)}${treatmentContext}`;
+    // ✅ STRATEGY B: Get recent messages based on elapsed time (4 or 5 exchanges)
+    const recentMessages = getRecentMessages(session);
 
     console.log('=== FIRST CLAUDE CALL ===');
+    console.log(`📊 Using ${recentMessages.length} recent messages (${recentMessages.length / 2} exchanges)`);
     const firstResponse = await callAnthropicWithTimeout(
       anthropic.messages.create({
         model: CORE_AGENT_MODEL,
         max_tokens: 1000,
         temperature: 0.7,
         system: systemPrompt,
-        messages: [...messages, { role: 'user', content: message }],
+        messages: [...recentMessages, { role: 'user', content: message }],
         tools: [{
     name: 'update_vitals',
     description: 'Update patient vital signs when measured',
@@ -3001,7 +3398,10 @@ ${JSON.stringify(runtimeContext, null, 2)}${treatmentContext}`;
       })
     );
 
- console.log('Response content types:', firstResponse.content.map(block => block.type));
+  // ✅ DIAGNOSTIC LOGGING - First call metrics
+  console.log('First response stop_reason:', firstResponse.stop_reason);
+  console.log('First response usage:', JSON.stringify(firstResponse.usage, null, 2));
+  console.log('Response content types:', firstResponse.content.map(block => block.type));
 
 let finalResponse = '';
 let vitalsUpdated = false;
@@ -3029,14 +3429,25 @@ for (const block of firstResponse.content) {
     if (input.temperature) session.measuredVitals.Temp = input.temperature;
     if (input.GCS) session.measuredVitals.GCS = input.GCS;
     if (input.Glycemia) session.measuredVitals.Glycemia = input.Glycemia;
-    
+
     // Update engine vitals
     const currentVitals = session.engine.getCurrentVitals();
     session.engine.vitalsSimulator.vitals = {
       ...currentVitals,
       ...session.measuredVitals
     };
-    
+
+    // ✅ STRATEGY B: Add vitals to structured memory
+    addMemoryVitals(session, {
+      HR: input.HR,
+      RR: input.RR,
+      SpO2: input.SpO2,
+      BP: session.measuredVitals.BP,
+      Temp: input.Temp || input.temperature,
+      GCS: input.GCS,
+      Glycemia: input.Glycemia
+    });
+
     vitalsUpdated = true;
     console.log('✅ Measured vitals updated to:', session.measuredVitals);
     
@@ -3073,18 +3484,42 @@ if (needsSecondCall) {
   const detectedActions = parseStudentMessage(message);
   console.log('🔍 Detected actions:', detectedActions);
 
+  // ✅ STRATEGY B: Selective recall - get relevant memory
+  const selectedMemory = selectRelevantMemory(session, detectedActions, message);
+  const memoryContext = formatMemoryForPrompt(selectedMemory);
+  console.log('🧠 Selective memory tokens (est):', Math.floor(memoryContext.length / 4));
+
   // Build enhanced instruction based on detected actions
   const enhancedInstruction = buildEnhancedInstruction(message, detectedActions, toolResults);
   console.log('📝 Enhanced instruction length:', enhancedInstruction.length);
 
+  // ✅ STRATEGY B: Dynamic max_tokens based on compound actions
+  let maxTokens = 2000;  // Default
+  if (detectedActions.isCompoundAction) {
+    if (detectedActions.actionCount >= 5) {
+      maxTokens = 4000;  // Very complex compound action
+    } else if (detectedActions.actionCount >= 3) {
+      maxTokens = 3000;  // Compound action
+    }
+    console.log(`📊 Compound action detected (${detectedActions.actionCount} actions) - using ${maxTokens} max_tokens`);
+  }
+
+  // ✅ STRATEGY B: Build system prompt with memory context
+  const secondCallSystemPrompt = buildCachedSystemPrompt(
+    session,
+    coreAgentPrompt + memoryContext,  // Add memory to base prompt
+    runtimeContext,
+    dynamicContexts
+  );
+
   const secondResponse = await callAnthropicWithTimeout(
     anthropic.messages.create({
       model: CORE_AGENT_MODEL,
-      max_tokens: 1000,
+      max_tokens: maxTokens,
       temperature: 0.7,
-      system: systemPrompt,
+      system: secondCallSystemPrompt,
       messages: [
-        ...messages,
+        ...recentMessages,  // ✅ Use recent messages, not all messages
         { role: 'user', content: message },
         { role: 'assistant', content: firstResponse.content },
         { role: 'user', content: [
@@ -3094,7 +3529,10 @@ if (needsSecondCall) {
       ]
     })
   );
-  
+
+  // ✅ DIAGNOSTIC LOGGING - Understanding API response behavior
+  console.log('Second response stop_reason:', secondResponse.stop_reason);
+  console.log('Second response usage:', JSON.stringify(secondResponse.usage, null, 2));
   console.log('Second response content types:', secondResponse.content.map(block => block.type));
 
   // Log full response for debugging
@@ -3157,6 +3595,19 @@ if (session.challengeContext) {
 // Clear challenge feedback context after use (one-time feedback delivery)
 if (session.challengeFeedbackContext) {
   session.challengeFeedbackContext = '';
+}
+
+// ✅ DIAGNOSTIC - Token usage summary for this exchange
+if (firstResponse.usage) {
+  const totalInput = firstResponse.usage.input_tokens + (secondResponse?.usage?.input_tokens || 0);
+  const totalOutput = firstResponse.usage.output_tokens + (secondResponse?.usage?.output_tokens || 0);
+  console.log('📊 TOKEN USAGE SUMMARY:');
+  console.log(`   Total Input: ${totalInput} tokens`);
+  console.log(`   Total Output: ${totalOutput} tokens`);
+  console.log(`   Conversation history length: ${session.messages.length} messages`);
+  if (totalInput > 150000) {
+    console.warn(`   ⚠️  WARNING: Input approaching context limit (${totalInput}/200000)`);
+  }
 }
 
 console.log('=== RESPONSE SENT TO FRONTEND ===');
@@ -3274,6 +3725,12 @@ app.post('/api/sessions/:id/begin-scenario', async (req, res) => {
       salbutamol: false,
       steroids: false
     };
+
+    // ✅ STRATEGY B: Initialize structured memory
+    session.structuredMemory = initializeStructuredMemory();
+
+    // Add initial state to memory
+    addMemoryStateChange(session, 'initial', 'scenario_start');
     session.dangerousMedicationsGiven = [];
     session.lastDeteriorationCheck = Date.now();
     session.vitals = scenarioData.initial_vitals; // Initialize vitals
@@ -3505,6 +3962,10 @@ app.post('/api/sessions/:id/next-scenario', async (req, res) => {
         salbutamol: false,
         steroids: false
       };
+
+      // ✅ STRATEGY B: Initialize structured memory for new scenario
+      session.structuredMemory = initializeStructuredMemory();
+      addMemoryStateChange(session, 'initial', 'scenario_start');
       session.dangerousMedicationsGiven = [];
       session.lastDeteriorationCheck = Date.now();
       session.stateHistory = [{

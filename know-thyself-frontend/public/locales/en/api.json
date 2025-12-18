@@ -10,6 +10,9 @@
     "alreadyCompleted": "Session already completed",
     "invalidId": "Invalid session ID"
   },
+  "cognitiveCoach": {
+    "sessionStart": "I'm ready to begin."
+  },
   "medication": {
     "dangerousDetected": "DANGEROUS MEDICATION DETECTED",
     "contraindicated": "This medication is contraindicated",

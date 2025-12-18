@@ -10,6 +10,9 @@
     "alreadyCompleted": "Relácia už bola dokončená",
     "invalidId": "Neplatné ID relácie"
   },
+  "cognitiveCoach": {
+    "sessionStart": "Som pripravený začať."
+  },
   "medication": {
     "dangerousDetected": "DETEKOVANÝ NEBEZPEČNÝ LIEK",
     "contraindicated": "Tento liek je kontraindikovaný",
