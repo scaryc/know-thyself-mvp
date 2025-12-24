@@ -45,8 +45,8 @@ export function buildCognitiveCoachPrompt(session) {
     currentPhase = 'PHASE_1_INTRODUCTION';
   } else if (currentQuestionIndex < selectedQuestions.length) {
     currentPhase = 'PHASE_2_QUESTIONS';
-  } else if (!cognitiveCoach.phase3Delivered) {
-    currentPhase = 'PHASE_3_MENTAL_ORGANIZATION';
+  } else if (!cognitiveCoach.communicationAnalysis?.phase3Completed) {
+    currentPhase = 'PHASE_3_COMMUNICATION_GUIDANCE';
   } else {
     currentPhase = 'PHASE_3_AWAITING_TRANSITION';
   }
@@ -141,17 +141,22 @@ You are in PHASE 2: CHALLENGE QUESTIONS
 ${questionsRemaining === 1 ? '→ This is the LAST question - after this, move to Phase 3' : ''}
 ` : ''}
 
-${currentPhase === 'PHASE_3_MENTAL_ORGANIZATION' ? `
-You are at PHASE 3: MENTAL ORGANIZATION TECHNIQUE
+${currentPhase === 'PHASE_3_COMMUNICATION_GUIDANCE' ? `
+You are at PHASE 3: COMMUNICATION GUIDANCE
 → All questions have been completed
-→ Deliver the "Simplify and Focus" technique script as defined in your system prompt (ONE TIME ONLY)
-→ Wait for student confirmation
-→ After student confirms, execute transition markers: [COGNITIVE_COACH_COMPLETE] [TRANSITION_TO_CORE_AGENT]
+→ Follow the 5-step process defined in your system prompt:
+  1. Analyze communication patterns (internal)
+  2. Deliver universal tips (all students)
+  3. Add personalized nudge if applicable
+  4. Offer Q&A opportunity
+  5. Execute transition when student ready
+→ This is delivered ONE TIME ONLY
+→ After student confirms ready, execute transition markers: [COGNITIVE_COACH_COMPLETE] [TRANSITION_TO_CORE_AGENT]
 ` : ''}
 
 ${currentPhase === 'PHASE_3_AWAITING_TRANSITION' ? `
 You are AWAITING TRANSITION after Phase 3
-→ Phase 3 (Mental Organization Technique) has ALREADY been delivered
+→ Phase 3 (Communication Guidance) has ALREADY been delivered
 → DO NOT repeat Phase 3 content
 → Student has confirmed readiness or is responding after Phase 3
 → Give a brief acknowledgment (1-2 sentences maximum)

@@ -65,7 +65,29 @@ export function dbToRuntimeSession(dbSession) {
       currentQuestionIndex: 0,
       responses: [],
       startTime: Date.now(),
-      completed: false
+      completed: false,
+      communicationAnalysis: {
+        patternsDetected: {
+          sequentialThinking: 'none',
+          thoroughness: 'medium',
+          conciseness: 'medium',
+          actionBundling: false,
+          verbose: false
+        },
+        metrics: {
+          averageWordCount: 0,
+          sequentialLanguageCount: 0,
+          actionBundlingInstances: 0,
+          responseStructureQuality: 'clear'
+        },
+        personalizedNudge: {
+          type: 'none',
+          content: ''
+        },
+        studentQuestions: [],
+        phase3Completed: false,
+        phase3Duration: 0
+      }
     })
   };
 }

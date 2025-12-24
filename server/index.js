@@ -550,7 +550,28 @@ app.post('/api/sessions/start', async (req, res) => {
         responses: [],
         startTime: Date.now(),
         completed: false,
-        phase3Delivered: false  // Track if Phase 3 (Mental Organization) has been delivered
+        communicationAnalysis: {
+          patternsDetected: {
+            sequentialThinking: 'none',
+            thoroughness: 'medium',
+            conciseness: 'medium',
+            actionBundling: false,
+            verbose: false
+          },
+          metrics: {
+            averageWordCount: 0,
+            sequentialLanguageCount: 0,
+            actionBundlingInstances: 0,
+            responseStructureQuality: 'clear'
+          },
+          personalizedNudge: {
+            type: 'none',
+            content: ''
+          },
+          studentQuestions: [],
+          phase3Completed: false,
+          phase3Duration: 0
+        }
       },
 
       // CDP Performance Tracking (Task 2.1)
@@ -2946,10 +2967,10 @@ app.post('/api/sessions/:id/message', async (req, res) => {
         
         // Cognitive Coach still in progress
 
-        // If we're past all questions and delivered content, mark Phase 3 as delivered
+        // If we're past all questions and delivered content, mark Phase 3 as completed
         if (session.cognitiveCoach.currentQuestionIndex >= session.cognitiveCoach.selectedQuestions.length) {
-          session.cognitiveCoach.phase3Delivered = true;
-          console.log('✅ Phase 3 (Mental Organization) delivered');
+          session.cognitiveCoach.communicationAnalysis.phase3Completed = true;
+          console.log('✅ Phase 3 (Communication Guidance) delivered');
         }
 
         // Track student response (only if still in questions phase)
