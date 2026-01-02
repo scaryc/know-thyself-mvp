@@ -176,7 +176,7 @@ Session Complete
 **Purpose**: Practice clinical skills in realistic emergencies
 
 **What Happens**:
-- 3 scenarios randomly selected from pool of 4
+- 2 scenarios randomly selected from pool of 4
 - Each scenario: different patient, emergency, clinical presentation
 - Students assess, treat, monitor patient
 - Timer starts at 00:00, min completion 10:00, auto-complete at 20:00

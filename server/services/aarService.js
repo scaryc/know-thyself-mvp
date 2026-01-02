@@ -13,11 +13,11 @@ class AARService {
   /**
    * Initialize AAR session with performance data
    * @param {string} sessionId - Session identifier
-   * @param {Array} allScenariosPerformanceData - Array of performance data from all 3 scenarios
+   * @param {Array} allScenariosPerformanceData - Array of performance data from both scenarios
    * @returns {Object} - AAR session object
    */
   initializeAAR(sessionId, allScenariosPerformanceData) {
-    // Calculate patterns from all 3 scenarios
+    // Calculate patterns from both scenarios
     const patterns = patternAnalysisService.analyzePerformancePatterns(
       allScenariosPerformanceData
     );
@@ -86,10 +86,10 @@ class AARService {
 
     // Build comprehensive context including all scenarios and patterns
     let context = `
-# STUDENT PERFORMANCE DATA - ALL 3 SCENARIOS
+# STUDENT PERFORMANCE DATA - BOTH SCENARIOS
 
 ## Overall Session Summary
-- Total Scenarios: 3
+- Total Scenarios: 2
 - Total Session Time: ${this.calculateTotalTime(aar.performanceData)}
 - Overall Score: ${this.calculateOverallScore(aar.performanceData)}
 - Total Errors: ${this.countTotalErrors(aar.performanceData)}
@@ -195,7 +195,7 @@ class AARService {
 
 ## Phase 3: Pattern Analysis - PRIMARY USE OF PATTERNS
 
-When you reach Phase 3 (Pattern Analysis) after reviewing all 3 scenarios individually:
+When you reach Phase 3 (Pattern Analysis) after reviewing both scenarios individually:
 
 1. **Select 2-4 most significant patterns** from the data above
 2. **Reference patterns BY NAME** when discussing cross-scenario performance
@@ -223,7 +223,7 @@ When you reach Phase 3 (Pattern Analysis) after reviewing all 3 scenarios indivi
 
 ## Example Pattern Usage in Phase 3:
 
-"Looking across all three scenarios, I see [PATTERN NAME]. [Use AAR Talking Point]. For example, in the asthma scenario [specific example], and in the cardiac scenario [specific example]. Does this pattern match what you experienced?"
+"Looking across both scenarios, I see [PATTERN NAME]. [Use AAR Talking Point]. For example, in the first scenario [specific example], and in the second scenario [specific example]. Does this pattern match what you experienced?"
 
 ## What NOT to do:
 - ❌ Don't list all patterns mechanically
@@ -232,7 +232,7 @@ When you reach Phase 3 (Pattern Analysis) after reviewing all 3 scenarios indivi
 - ❌ Don't discuss patterns without connecting to specific scenario examples
 
 ## Current AAR Phase: ${aar.phase}
-${aar.phase === 'scenario_review' ? `Currently reviewing scenario ${aar.currentScenarioIndex + 1} of 3` : ''}
+${aar.phase === 'scenario_review' ? `Currently reviewing scenario ${aar.currentScenarioIndex + 1} of 2` : ''}
 
 Focus on individual scenario feedback until Phase 3, then shift to pattern-based analysis.
 `;
@@ -268,7 +268,7 @@ Focus on individual scenario feedback until Phase 3, then shift to pattern-based
   /**
    * Build scenario summary for AAR context
    * @param {Object} scenarioData - Scenario data object
-   * @param {number} scenarioNumber - Scenario number (1, 2, or 3)
+   * @param {number} scenarioNumber - Scenario number (1 or 2)
    * @returns {string} - Formatted scenario summary
    */
   buildScenarioSummary(scenarioData, scenarioNumber) {

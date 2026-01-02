@@ -4345,13 +4345,13 @@ app.post('/api/sessions/:sessionId/aar/start', async (req, res) => {
 
     console.log(`📊 Performance history contains ${performanceHistoryArray.length} scenarios`);
 
-    // Validate we have all 3 scenarios
-    if (performanceHistoryArray.length < 3) {
-      console.error(`❌ AAR Error: Expected 3 scenarios, found ${performanceHistoryArray.length}`);
+    // Validate we have all 2 scenarios
+    if (performanceHistoryArray.length < 2) {
+      console.error(`❌ AAR Error: Expected 2 scenarios, found ${performanceHistoryArray.length}`);
       return res.status(400).json({
         error: 'Cannot start AAR - incomplete performance data',
         scenariosCompleted: performanceHistoryArray.length,
-        scenariosRequired: 3
+        scenariosRequired: 2
       });
     }
 

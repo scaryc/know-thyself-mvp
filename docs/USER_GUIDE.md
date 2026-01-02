@@ -29,7 +29,7 @@ Click the blue **"Start Training Session"** button on the home screen.
 Your training session consists of **4 phases**:
 
 1. **Cognitive Warm-Up** (2-5 minutes)
-2. **Emergency Scenarios** (3 scenarios, 10-20 minutes each)
+2. **Emergency Scenarios** (2 scenarios, 10-20 minutes each)
 3. **After Action Review** (10-15 minutes)
 4. **Session Complete**
 
@@ -215,14 +215,14 @@ After 10 minutes, a green **"Complete Scenario"** button appears.
 - Timer resets
 - New patient, new emergency
 
-After completing all 3 scenarios, you'll automatically move to Phase 3: After Action Review.
+After completing both scenarios, you'll automatically move to Phase 3: After Action Review.
 
 ---
 
 ## Phase 3: After Action Review (AAR)
 
 ### Purpose
-Receive personalized feedback on your performance across all 3 scenarios.
+Receive personalized feedback on your performance across both scenarios.
 
 ### What to Expect
 
@@ -390,7 +390,7 @@ Your overall score is based on:
 ### Q: Can I skip the Cognitive Warm-Up?
 **A**: No, it's designed to prepare you for the scenarios.
 
-### Q: What happens after I complete all 3 scenarios?
+### Q: What happens after I complete both scenarios?
 **A**: You automatically move to AAR for performance feedback.
 
 ### Q: Can I see my previous sessions?
@@ -413,7 +413,7 @@ Your overall score is based on:
 **Solution**: Wait until 10 minutes. Button appears at 10:00.
 
 ### Problem: AAR isn't starting
-**Solution**: Ensure all 3 scenarios completed. If issue persists, contact instructor.
+**Solution**: Ensure both scenarios completed. If issue persists, contact instructor.
 
 ---
 

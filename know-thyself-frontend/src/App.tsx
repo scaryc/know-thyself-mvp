@@ -150,7 +150,7 @@ function App() {
       'tbi_patient_v2_0_final'
     ];
     const shuffled = [...allScenarios].sort(() => Math.random() - 0.5);
-    const selectedScenarios = shuffled.slice(0, 3); // Pick 3 random scenarios
+    const selectedScenarios = shuffled.slice(0, 2); // Pick 2 random scenarios
 
     setScenarioQueue(selectedScenarios);
     setCurrentScenarioIndex(0);

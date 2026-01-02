@@ -35,11 +35,9 @@ be completely in Slovak.
     ↓
 KOGNITÍVNY KOUČ AGENT (2-5 min) ← TU STE VY
     ↓
-Hlavný Agent - Scenár 1 (15 min) → Simulácia AMI
+Hlavný Agent - Scenár 1 (15 min) → Prvá simulácia
     ↓
-Hlavný Agent - Scenár 2 (15 min) → Simulácia Astmy
-    ↓
-Hlavný Agent - Scenár 3 (15 min) → Simulácia Traumy
+Hlavný Agent - Scenár 2 (15 min) → Druhá simulácia
     ↓
 AAR Agent (7-10 min) → Spätná väzba na výkon
 ```

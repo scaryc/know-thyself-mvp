@@ -1,5 +1,5 @@
 /**
- * Pattern Analysis Service - Analyzes performance across 3 scenarios
+ * Pattern Analysis Service - Analyzes performance across 2 scenarios
  * Identifies recurring patterns in student clinical performance
  */
 
@@ -11,15 +11,15 @@ export class PatternAnalysisService {
 
   /**
    * Main entry point - analyzes all patterns
-   * @param {Array} allScenariosData - Array of 3 scenario performance objects
+   * @param {Array} allScenariosData - Array of 2 scenario performance objects
    * @returns {Object} - Comprehensive pattern analysis results
    */
   analyzePerformancePatterns(allScenariosData) {
-    // allScenariosData = array of 3 scenario performance objects
+    // allScenariosData = array of 2 scenario performance objects
     // Each contains: criticalActionsLog, cdpEvaluations, stateHistory, etc.
 
-    if (!allScenariosData || allScenariosData.length !== 3) {
-      console.error('Pattern analysis requires exactly 3 completed scenarios');
+    if (!allScenariosData || allScenariosData.length !== 2) {
+      console.error('Pattern analysis requires exactly 2 completed scenarios');
       return this.getEmptyPatternSet();
     }
 
@@ -291,7 +291,7 @@ ${pattern.educationalFocus || 'N/A'}
         ? "Student recognizes problems but hesitates to act - confidence gap vs. knowledge gap"
         : "Student acts promptly after recognition - good clinical decisiveness",
       aarTalkingPoint: isSignificant
-        ? `Looking across all three scenarios, I notice a pattern: you consistently identified critical findings quickly, but there was an average ${Math.round(avgGap/60)}-minute delay before starting treatment. In the ${gaps[0].scenarioId}, you recognized the problem at ${Math.round(gaps[0].assessmentTime/60)} minutes but didn't treat until ${Math.round(gaps[0].treatmentTime/60)} minutes. Let's discuss what was happening in those gaps—was it uncertainty, gathering more information, or protocol checking?`
+        ? `Looking across both scenarios, I notice a pattern: you consistently identified critical findings quickly, but there was an average ${Math.round(avgGap/60)}-minute delay before starting treatment. In the ${gaps[0].scenarioId}, you recognized the problem at ${Math.round(gaps[0].assessmentTime/60)} minutes but didn't treat until ${Math.round(gaps[0].treatmentTime/60)} minutes. Let's discuss what was happening in those gaps—was it uncertainty, gathering more information, or protocol checking?`
         : `Excellent decisiveness—you consistently acted quickly after identifying problems, with an average gap of only ${Math.round(avgGap/60)} minutes between recognition and treatment. That's exactly what we want to see.`
     };
   }
@@ -361,7 +361,7 @@ ${pattern.educationalFocus || 'N/A'}
         allStrengths: strengths
       },
       educationalFocus: `Consistent excellence in ${primaryStrength.category} - reliable foundation to build on`,
-      aarTalkingPoint: `Looking across all three scenarios, I see a consistent strength: your ${primaryStrength.category} was systematically excellent. You earned Optimal ratings in ${primaryStrength.optimalCount} out of ${primaryStrength.totalCount} ${primaryStrength.category} decisions—that's ${primaryStrength.rate}% optimal. That foundation is rock-solid and exactly what we want to see.`
+      aarTalkingPoint: `Looking across both scenarios, I see a consistent strength: your ${primaryStrength.category} was systematically excellent. You earned Optimal ratings in ${primaryStrength.optimalCount} out of ${primaryStrength.totalCount} ${primaryStrength.category} decisions—that's ${primaryStrength.rate}% optimal. That foundation is rock-solid and exactly what we want to see.`
     };
   }
 
@@ -489,16 +489,16 @@ ${pattern.educationalFocus || 'N/A'}
       priority: systematicCount >= 2 ? "P1" : "P1",
       data: {
         systematicScenarios: systematicCount,
-        chaoticScenarios: 3 - systematicCount,
-        consistency: `${systematicCount}/3`,
+        chaoticScenarios: 2 - systematicCount,
+        consistency: `${systematicCount}/2`,
         sequences: assessmentSequences
       },
       educationalFocus: systematicCount >= 2
         ? "Strong systematic assessment approach - reliable ABC foundation"
         : "Assessment approach inconsistent - needs structured framework practice",
       aarTalkingPoint: systematicCount >= 2
-        ? `Your systematic assessment approach was excellent—you followed an ABC structure in ${systematicCount} out of 3 scenarios. That disciplined approach is exactly what makes a reliable paramedic. Even under pressure, you maintained that systematic framework.`
-        : `I notice your assessment approach varied significantly. In ${assessmentSequences.find(s => s.systematic)?.scenario || 'one scenario'}, you followed ABC systematically, but in the other scenarios, the sequence was more chaotic. A consistent systematic approach—checking Airway, then Breathing, then Circulation every time—would serve you better and help you avoid missing critical findings.`
+        ? `Your systematic assessment approach was excellent—you followed an ABC structure in both scenarios. That disciplined approach is exactly what makes a reliable paramedic. Even under pressure, you maintained that systematic framework.`
+        : `I notice your assessment approach varied significantly. In ${assessmentSequences.find(s => s.systematic)?.scenario || 'one scenario'}, you followed ABC systematically, but in the other scenario, the sequence was more chaotic. A consistent systematic approach—checking Airway, then Breathing, then Circulation every time—would serve you better and help you avoid missing critical findings.`
     };
   }
 
@@ -635,8 +635,8 @@ ${pattern.educationalFocus || 'N/A'}
         ? "Excellent proactive care - consistently prevented patient deterioration"
         : "Reactive care pattern - patients frequently reached critical state before stabilization",
       aarTalkingPoint: criticalCount >= 2
-        ? `I see a pattern in patient outcomes: in ${criticalCount} out of 3 scenarios, the patient reached critical state. Our goal is to prevent that deterioration through early, aggressive treatment. ${outcomes.filter(o => o.reachedCritical).map(o => `In the ${o.scenario}, the patient reached critical state`).join(', ')}. Let's discuss how earlier intervention could have prevented these outcomes.`
-        : `Excellent work preventing deterioration—in ${preventedCount} scenarios, you kept the patient stable or improving without reaching critical state. That proactive approach is exactly what we're looking for.`
+        ? `I see a pattern in patient outcomes: in both scenarios, the patient reached critical state. Our goal is to prevent that deterioration through early, aggressive treatment. ${outcomes.filter(o => o.reachedCritical).map(o => `In the ${o.scenario}, the patient reached critical state`).join(', ')}. Let's discuss how earlier intervention could have prevented these outcomes.`
+        : `Excellent work preventing deterioration—in ${preventedCount} scenario${preventedCount > 1 ? 's' : ''}, you kept the patient stable or improving without reaching critical state. That proactive approach is exactly what we're looking for.`
     };
   }
 

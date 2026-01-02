@@ -320,7 +320,7 @@ May trigger Socratic questioning if:
 
 **Endpoint**: `POST /api/sessions/:sessionId/aar/start`
 
-**Description**: Initializes After Action Review session after completing 3 scenarios. Generates performance analysis and starts AAR Agent conversation.
+**Description**: Initializes After Action Review session after completing 2 scenarios. Generates performance analysis and starts AAR Agent conversation.
 
 **URL Parameters**:
 | Parameter | Type | Required | Description |
@@ -332,7 +332,7 @@ May trigger Socratic questioning if:
 **Response** (200 OK):
 ```json
 {
-  "message": "Congratulations on completing your training session! You worked through three challenging emergency scenarios. Before we dive into the review, how do you feel about your performance overall?",
+  "message": "Congratulations on completing your training session! You worked through two challenging emergency scenarios. Before we dive into the review, how do you feel about your performance overall?",
   "phase": "opening",
   "aarActive": true
 }

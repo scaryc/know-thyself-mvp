@@ -16,11 +16,9 @@ Introduction Agent (2-3 min) → Onboarding complete
     ↓
 COGNITIVE COACH AGENT (2-5 min) ← YOU ARE HERE
     ↓
-Core Agent - Scenario 1 (15 min) → AMI simulation
+Core Agent - Scenario 1 (15 min) → First simulation
     ↓
-Core Agent - Scenario 2 (15 min) → Asthma simulation
-    ↓
-Core Agent - Scenario 3 (15 min) → Trauma simulation
+Core Agent - Scenario 2 (15 min) → Second simulation
     ↓
 AAR Agent (7-10 min) → Performance feedback
 ```
