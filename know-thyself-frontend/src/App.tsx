@@ -12,7 +12,6 @@ function App() {
   const [isRegistered, setIsRegistered] = useState(false);
   const [studentId, setStudentId] = useState<string | null>(null);
   const [studentName, setStudentName] = useState<string | null>(null);
-  const [group, setGroup] = useState<string | null>(null);
 
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [isActive, setIsActive] = useState(false);
@@ -51,19 +50,17 @@ function App() {
       // Check for existing registration
       const savedStudentId = localStorage.getItem('kt_studentId');
       const savedStudentName = localStorage.getItem('kt_studentName');
-      const savedGroup = localStorage.getItem('kt_group');
       const savedSessionId = localStorage.getItem('kt_sessionId');
 
-      if (!savedStudentId || !savedStudentName || !savedGroup) {
+      if (!savedStudentId || !savedStudentName) {
         // No registration - will show registration screen
         return;
       }
 
       // Registration exists
-      console.log(`👤 Existing student found: ${savedStudentName} (Group ${savedGroup})`);
+      console.log(`👤 Existing student found: ${savedStudentName}`);
       setStudentId(savedStudentId);
       setStudentName(savedStudentName);
-      setGroup(savedGroup);
       setIsRegistered(true);
 
       // Check if there's an active session to resume
@@ -132,11 +129,10 @@ function App() {
   }, []);
 
   // Layer 3: Handle registration completion
-  const handleRegistrationComplete = (newStudentId: string, newGroup: string, newStudentName: string) => {
-    console.log(`✅ Registration complete: ${newStudentName} (${newStudentId}, Group ${newGroup})`);
+  const handleRegistrationComplete = (newStudentId: string, newStudentName: string) => {
+    console.log(`✅ Registration complete: ${newStudentName} (${newStudentId})`);
     setStudentId(newStudentId);
     setStudentName(newStudentName);
-    setGroup(newGroup);
     setIsRegistered(true);
   };
 
@@ -427,7 +423,7 @@ function App() {
           <div className="text-center">
             <h2 className="text-3xl font-bold mb-4">Emergency Medical Training</h2>
             <p className="text-gray-400 mb-8 max-w-lg mx-auto">
-              Welcome, {studentName}! You're in Group {group}.<br />
+              Welcome, {studentName}!<br />
               Practice your paramedic skills in a safe environment.
             </p>
             <button

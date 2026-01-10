@@ -80,8 +80,7 @@ async function testSessionCreation() {
   // Test 1.1: Start session
   console.log('Test 1.1: Start new session with Cognitive Coach');
   const { response: startRes, data: sessionData } = await apiCall('POST', '/sessions/start', {
-    scenarioId: 'ASTHMA_MVP_001',
-    challengePointsEnabled: true
+    scenarioId: 'ASTHMA_MVP_001'
   });
 
   assert(startRes.ok, 'Session start returns 200');
@@ -273,11 +272,10 @@ async function testChallengePoints(sessionId) {
   console.log('TEST SUITE 4: CHALLENGE POINTS');
   console.log('═══════════════════════════════════════════════\n');
 
-  // Create a NEW session with challenges enabled
-  console.log('Test 4.1: Starting new session with challenges enabled');
+  // Create a NEW session
+  console.log('Test 4.1: Starting new session');
   const { data: newSession } = await apiCall('POST', '/sessions/start', {
-    scenarioId: 'ASTHMA_MVP_001',
-    challengePointsEnabled: true
+    scenarioId: 'ASTHMA_MVP_001'
   });
 
   const newSessionId = newSession.sessionId;
@@ -382,8 +380,7 @@ async function testConcurrentSessions() {
 
   const sessionPromises = Array(5).fill(0).map((_, i) =>
     apiCall('POST', '/sessions/start', {
-      scenarioId: 'ASTHMA_MVP_001',
-      challengePointsEnabled: i % 2 === 0 // Alternate A/B testing
+      scenarioId: 'ASTHMA_MVP_001'
     })
   );
 

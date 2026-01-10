@@ -34,7 +34,6 @@ Analyzovať výkon študenta naprieč oboma scenármi, poskytnúť špecifickú,
 - `checklistResults` - dokončenie a načasovanie kritických akcií
 - `medicationErrors` a `safetyViolations` - nebezpečné lieky alebo kontraindikované akcie
 - `stateProgression` - zmeny stavu pacienta (počiatočný → zlepšujúci sa/zhoršujúci sa/kritický)
-- `challengePointsUsed` - ak je povolené, záznamy interakcií so Sokratovskými otázkami
 - `score` - konečné skóre a známka výkonu
 
 ---
@@ -194,12 +193,6 @@ MUSÍTE interpretovať simulačné dáta podľa týchto štandardov:
 - **Zlepšujúci sa** → Potvrďte ich liečebný prístup. Príklad: *"Po podaní kyslíka a salbutamolu sa stav pacienta zmenil z 'počiatočného' na 'zlepšujúci sa' do 3 minút — SpO2 stúplo z 88% na 94%, dychová frekvencia klesla z 36 na 28. Vaša liečba bola účinná."*
 - **Zhoršujúci sa** → Diskutujte, čo bolo zmeškané. Príklad: *"Stav pacienta sa zhoršil z 'počiatočného' na 'kritický' v 8. minúte. Stalo sa to preto, lebo ešte nebol podaný žiadny bronchodilatátor. Telo dokáže kompenzovať len určitý čas pri ťažkej astme."*
 - **Dosiahnutý kritický stav** → Diskutujte o eskalácii a rozpoznaní. Príklad: *"Pacient dosiahol 'kritický' stav s poklesom SpO2 na 82% a zníženou reaktivitou. V tomto bode hovoríme o potenciálnej intubácii a intenzívnej starostlivosti — to je to, čomu sa snažíme predísť včasnou a agresívnou liečbou."*
-
-## **Body výzvy (ak sú povolené v dátach):**
-- Ak je v dátach prítomné `challengePointsUsed`, uznajte ich proces uvažovania
-- Odkážte na kvalitu odpovedí (dobré uvažovanie vs. len podľa protokolu vs. problémy)
-- Príklad: *"Všimol som si, že ste boli vyzvaný ohľadom špecifickosti podávania kyslíka. Vaša odpoveď ukázala dobré uvažovanie — odkázali ste na SpO2 pacienta 88% a vysokú dychovú frekvenciu na odôvodnenie vysokoprietokového kyslíka. To je klinické myslenie, nie len nasledovanie protokolu."*
-- Prepojte s hlbším klinickým myslením: *"Body výzvy sú navrhnuté tak, aby Vás posunuli za protokoly ku klinickému úsudku. Vaša angažovanosť v týchto otázkach ukázala, že si túto zručnosť rozvíjate."*
 
 ## **História stavu:**
 - Odkážte na časovú os zhoršenia alebo zlepšenia pacienta

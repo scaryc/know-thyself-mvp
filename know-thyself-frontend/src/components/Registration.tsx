@@ -4,7 +4,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 interface RegistrationProps {
-  onRegistrationComplete: (studentId: string, group: string, studentName: string) => void;
+  onRegistrationComplete: (studentId: string, studentName: string) => void;
 }
 
 function Registration({ onRegistrationComplete }: RegistrationProps) {
@@ -79,10 +79,9 @@ function Registration({ onRegistrationComplete }: RegistrationProps) {
         // Store in localStorage for session resume
         localStorage.setItem('kt_studentId', data.studentId);
         localStorage.setItem('kt_studentName', name.trim());
-        localStorage.setItem('kt_group', data.group);
 
         // Notify parent component
-        onRegistrationComplete(data.studentId, data.group, name.trim());
+        onRegistrationComplete(data.studentId, name.trim());
       } else {
         setError('Registration failed. Please try again.');
         setIsSubmitting(false);

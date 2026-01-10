@@ -86,8 +86,7 @@ async function testSessionCreation() {
   // Test 1.1: Start session
   console.log('Test 1.1: Create session with proper data structure');
   const { response: startRes, data: sessionData } = await apiCall('POST', '/sessions/start', {
-    scenarioId: 'ASTHMA_MVP_001',
-    challengePointsEnabled: true
+    scenarioId: 'ASTHMA_MVP_001'
   });
 
   assert(startRes.ok, 'Session creation returns 200');
@@ -100,28 +99,6 @@ async function testSessionCreation() {
   console.log(`   ✅ Questions: ${sessionData.questionCount}`);
 
   return sessionData.sessionId;
-}
-
-async function testSessionABTesting() {
-  console.log('\nTest 1.2: A/B Testing - Challenge Points toggle');
-
-  // Group A: Challenges enabled
-  const { data: sessionA } = await apiCall('POST', '/sessions/start', {
-    scenarioId: 'ASTHMA_MVP_001',
-    challengePointsEnabled: true
-  });
-
-  // Group B: Challenges disabled
-  const { data: sessionB } = await apiCall('POST', '/sessions/start', {
-    scenarioId: 'ASTHMA_MVP_001',
-    challengePointsEnabled: false
-  });
-
-  assert(sessionA.sessionId !== sessionB.sessionId, 'Different session IDs created');
-  console.log(`   ✅ Group A (challenges ON): ${sessionA.sessionId.substring(0, 20)}...`);
-  console.log(`   ✅ Group B (challenges OFF): ${sessionB.sessionId.substring(0, 20)}...`);
-
-  return { sessionA: sessionA.sessionId, sessionB: sessionB.sessionId };
 }
 
 async function testConcurrentSessions() {
@@ -305,7 +282,6 @@ async function runAllTests() {
   try {
     // Suite 1: Session Creation & Data Structures
     const sessionId = await testSessionCreation();
-    await testSessionABTesting();
     const sessionIds = await testConcurrentSessions();
 
     // Suite 2: State Management (skipped - needs API)

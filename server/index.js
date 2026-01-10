@@ -25,6 +25,13 @@ import { dbToRuntimeSession, runtimeToDbSession } from './services/sessionHelper
 // Language loader
 import { loadPrompt, loadScenario as loadScenarioWithLang, loadQuestions, getTranslation } from './utils/languageLoader.js';
 
+// ✅ Phase 1: AAR context builder and blueprint loader
+import { buildFullAARContext, formatAARContextForPrompt } from './services/aarContextBuilder.js';
+import { loadBlueprint } from './utils/blueprintLoader.js';
+
+// ✅ Phase 2: Checklist matcher
+import { findChecklistMatch, shouldExcludeAction, calculatePoints } from './utils/checklistMatcher.js';
+
 // Initialize
 const app = express();
 const anthropic = new Anthropic({
@@ -158,9 +165,6 @@ function loadSystemPrompt(language = 'en') {
 // STUDENT REGISTRATION (Layer 3 - MVP Testing)
 // ============================================================================
 
-// Track A/B group counts for automatic balancing
-let groupCounts = { A: 0, B: 0 };
-
 /**
  * Generate unique student ID from name
  * Format: {name_part}_{timestamp}{random}
@@ -181,58 +185,6 @@ function generateStudentId(name) {
 
   return `${namePart}_${timestamp}${random}`;
 }
-
-/**
- * Assign A/B group with automatic 50/50 balancing
- * Strategy: If groups equal, random. Otherwise, assign to smaller group.
- */
-function assignGroup() {
-  // If equal, randomly assign
-  if (groupCounts.A === groupCounts.B) {
-    const group = Math.random() < 0.5 ? 'A' : 'B';
-    groupCounts[group]++;
-    return group;
-  }
-
-  // If unbalanced, assign to smaller group to maintain balance
-  const group = groupCounts.A < groupCounts.B ? 'A' : 'B';
-  groupCounts[group]++;
-  return group;
-}
-
-/**
- * Initialize group counts from existing student files on server start
- */
-function initializeGroupCounts() {
-  try {
-    const studentsDir = path.join(__dirname, '../data/students');
-    if (!fs.existsSync(studentsDir)) {
-      fs.mkdirSync(studentsDir, { recursive: true });
-      return;
-    }
-
-    const files = fs.readdirSync(studentsDir);
-    groupCounts = { A: 0, B: 0 };
-
-    files.forEach(file => {
-      if (file.endsWith('.json')) {
-        const filePath = path.join(studentsDir, file);
-        const studentData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        if (studentData.group === 'A' || studentData.group === 'B') {
-          groupCounts[studentData.group]++;
-        }
-      }
-    });
-
-    console.log('📊 Initialized group counts:', groupCounts);
-  } catch (error) {
-    console.error('Error initializing group counts:', error);
-    groupCounts = { A: 0, B: 0 };
-  }
-}
-
-// Initialize on server start
-initializeGroupCounts();
 
 // ============================================================================
 // LAYER 3: FEATURE 3 - AUTO-SAVE ON COMPLETION
@@ -297,12 +249,10 @@ async function saveStudentData(session) {
       performance: calculatePerformanceScore(session),
       scenarios: generateScenarioSummaries(session),
       criticalActions: session.criticalActionsLog || [],
-      challengePoints: session.challengePointsUsed || [],
       aarTranscript: aarService.getConversationHistory(session.sessionId),
 
       metadata: {
         version: 'Layer3_MVP',
-        challengePointsEnabled: session.challengePointsEnabled,
         scenariosCompleted: (session.completedScenarios || []).length,
         totalMessages: (session.messages || []).length,
         sessionComplete: true
@@ -387,16 +337,14 @@ app.post('/api/student/register', async (req, res) => {
       });
     }
 
-    // Generate student ID and assign group
+    // Generate student ID
     const studentId = generateStudentId(name);
-    const group = assignGroup();
 
     // Create student data
     const studentData = {
       studentId,
       studentName: name.trim(),
       studentEmail: email?.trim() || null,
-      group,
       language: language || 'en', // Store language preference
       registeredAt: new Date().toISOString(),
       sessionId: null,
@@ -412,14 +360,12 @@ app.post('/api/student/register', async (req, res) => {
     const studentFilePath = path.join(studentsDir, `${studentId}.json`);
     fs.writeFileSync(studentFilePath, JSON.stringify(studentData, null, 2));
 
-    console.log(`✅ Student registered: ${studentId} (Group ${group})`);
-    console.log(`📊 Current group counts: A=${groupCounts.A}, B=${groupCounts.B}`);
+    console.log(`✅ Student registered: ${studentId}`);
 
     res.json({
       success: true,
       studentId,
-      group,
-      message: `Welcome, ${name.trim()}! You've been assigned to Group ${group}.`
+      message: `Welcome, ${name.trim()}! You are registered for training.`
     });
 
   } catch (error) {
@@ -474,7 +420,7 @@ app.get('/api/sessions/:sessionId/check', async (req, res) => {
 /**
  * POST /api/sessions/start
  * Start a new training session
- * Modified for Layer 3: Accepts studentId and auto-configures based on A/B group
+ * Modified for Layer 3: Accepts studentId
  */
 app.post('/api/sessions/start', async (req, res) => {
   try {
@@ -482,7 +428,6 @@ app.post('/api/sessions/start', async (req, res) => {
 
     // Layer 3: Load student data if provided
     let studentData = null;
-    let challengePointsEnabled = true; // Default
     let language = 'en'; // Default language
 
     if (studentId) {
@@ -490,12 +435,8 @@ app.post('/api/sessions/start', async (req, res) => {
         const studentFilePath = path.join(__dirname, '../data/students', `${studentId}.json`);
         if (fs.existsSync(studentFilePath)) {
           studentData = JSON.parse(fs.readFileSync(studentFilePath, 'utf8'));
-          // Auto-configure based on A/B group
-          // Group A = Challenge Points ENABLED
-          // Group B = Challenge Points DISABLED
-          challengePointsEnabled = studentData.group === 'A';
           language = studentData.language || 'en'; // Get language preference
-          console.log(`👤 Student: ${studentData.studentName} (Group ${studentData.group}, Language: ${language})`);
+          console.log(`👤 Student: ${studentData.studentName} (Language: ${language})`);
         } else {
           console.warn(`⚠️ Student file not found: ${studentId}`);
         }
@@ -503,15 +444,10 @@ app.post('/api/sessions/start', async (req, res) => {
         console.error('Error loading student data:', error);
       }
     } else {
-      // Fallback: Allow manual A/B testing configuration (backward compatibility)
-      challengePointsEnabled = req.body.challengePointsEnabled !== undefined
-        ? req.body.challengePointsEnabled
-        : true;
       language = req.body.language || 'en'; // Allow language override
     }
 
     console.log('🎓 Starting new session with Cognitive Coach');
-    console.log('Challenge Points:', challengePointsEnabled ? 'ENABLED' : 'DISABLED');
 
     // Select random questions for Cognitive Coach
     const selectedQuestions = cognitiveCoachService.selectRandomQuestions(3, language);
@@ -530,7 +466,6 @@ app.post('/api/sessions/start', async (req, res) => {
       studentId: studentData?.studentId || null,
       studentName: studentData?.studentName || null,
       studentEmail: studentData?.studentEmail || null,
-      group: studentData?.group || null,
       language: language, // Store language preference for session
 
       // Layer 3: Session tracking (Feature 2 - Session Resume)
@@ -587,14 +522,15 @@ app.post('/api/sessions/start', async (req, res) => {
       medicationWarnings: [],
       safetyViolations: 0,
 
-      // Challenge Points System (Task 3.1)
-      challengePointsEnabled: challengePointsEnabled,  // Use configured value
-      challengePointsUsed: [],
-      activeChallenge: null,
-
       // Empty arrays for now (will populate at transition)
       messages: [],
-      startTime: Date.now()
+      startTime: Date.now(),
+
+      // ✅ Phase 1: Full transcript storage (survives Strategy B pruning)
+      fullTranscript: [],
+
+      // ✅ Phase 2: Checklist results tracking
+      checklistResults: []
       // NO engine, NO measuredVitals, NO patientNotes yet
     };
 
@@ -1955,6 +1891,70 @@ function analyzeTreatmentTiming(session) {
 }
 
 /**
+ * Generate comprehensive checklist summary at scenario end (Phase 2)
+ * Includes completed items, missed items, and scoring
+ *
+ * @param {object} session - Current session
+ * @returns {object} Checklist summary
+ */
+function generateChecklistSummary(session) {
+  const checklist = session.scenario?.critical_actions_checklist || [];
+  const completed = session.checklistResults || [];
+
+  // Identify missed items (in checklist but not in completed)
+  const missed = checklist
+    .filter(item => !completed.find(c => c.id === item.id))
+    .map(item => ({
+      id: item.id,
+      action: item.action,
+      category: item.category || 'general',
+      completed: false,
+      target: item.time_target_minutes,
+      importance: item.importance,
+      points: 0,
+      maxPoints: item.points || 0
+    }));
+
+  // Calculate totals
+  const totalPoints = completed.reduce((sum, c) => sum + (c.points || 0), 0);
+  const maxPoints = checklist.reduce((sum, c) => sum + (c.points || 0), 0);
+  const onTimeCount = completed.filter(c => c.onTime).length;
+  const lateCount = completed.filter(c => !c.onTime).length;
+
+  // Identify critical misses
+  const criticalMissed = missed.filter(m => m.importance === 'critical');
+  const essentialMissed = missed.filter(m => m.importance === 'essential');
+
+  return {
+    // Item lists
+    completed: completed.sort((a, b) => a.time - b.time),
+    missed: missed,
+
+    // Counts
+    totalItems: checklist.length,
+    completedCount: completed.length,
+    missedCount: missed.length,
+    onTimeCount,
+    lateCount,
+
+    // Scoring
+    totalPoints,
+    maxPoints,
+    percentageScore: maxPoints > 0 ? Math.round((totalPoints / maxPoints) * 100) : 0,
+
+    // Critical analysis
+    criticalMissed: criticalMissed.map(m => m.action),
+    essentialMissed: essentialMissed.map(m => m.action),
+    hasCriticalMisses: criticalMissed.length > 0,
+
+    // Timing analysis
+    averageDelay: lateCount > 0
+      ? Math.round(completed.filter(c => !c.onTime).reduce((sum, c) => sum + c.minutesLate, 0) / lateCount * 10) / 10
+      : 0
+  };
+}
+
+/**
  * Generate comprehensive scenario summary for AAR
  * Creates a complete end-of-scenario report with all key metrics
  * @param {Object} session - Current session object
@@ -2011,392 +2011,6 @@ function generateScenarioSummary(session) {
   };
 }
 
-/**
- * Detect if a challenge point should trigger (Task 3.1)
- * Evaluates whether student actions/context warrant a challenge
- * @param {Object} session - Current session object
- * @param {string} userMessage - Student's message/action
- * @param {Array} detectedTreatments - Array of detected treatment types
- * @returns {Object|null} - Challenge point object or null
- */
-function detectChallengePoint(session, userMessage, detectedTreatments) {
-  // Only trigger if Challenge Points enabled (A/B testing)
-  if (!session.challengePointsEnabled) return null;
-
-  // Check if already in active challenge
-  if (session.activeChallenge) return null;
-
-  // Limit to 2 challenges per scenario
-  const challengeCount = session.challengePointsUsed?.length || 0;
-  if (challengeCount >= 2) return null;
-
-  const scenario = session.scenario;
-  const challengePoints = scenario.challenge_points || [];
-
-  if (challengePoints.length === 0) return null;
-
-  const lowerMessage = userMessage.toLowerCase();
-  const elapsedMinutes = (Date.now() - session.scenarioStartTime) / 60000;
-
-  // Find applicable challenge points
-  for (const cp of challengePoints) {
-    // Check if already used
-    const alreadyUsed = session.challengePointsUsed?.some(
-      used => used.challenge_id === cp.challenge_id
-    );
-    if (alreadyUsed) continue;
-
-    // Check time window
-    const [minTime, maxTime] = cp.time_window;
-    if (elapsedMinutes < minTime || elapsedMinutes > maxTime) continue;
-
-    // Check if trigger condition met
-    let triggered = false;
-
-    // Treatment trigger
-    if (cp.trigger_on_treatment && detectedTreatments.length > 0) {
-      triggered = detectedTreatments.some(treatment =>
-        cp.trigger_on_treatment.includes(treatment)
-      );
-    }
-
-    // Keyword trigger
-    if (cp.trigger_keywords && !triggered) {
-      triggered = cp.trigger_keywords.some(keyword =>
-        lowerMessage.includes(keyword.toLowerCase())
-      );
-    }
-
-    // State trigger
-    if (cp.trigger_on_state && !triggered) {
-      triggered = session.currentState === cp.trigger_on_state;
-    }
-
-    if (triggered) {
-      return cp;
-    }
-  }
-
-  return null;
-}
-
-/**
- * Activate a challenge point (Task 3.1)
- * Sets up challenge state and logs activation for AAR
- * @param {Object} session - Current session object
- * @param {Object} challengePoint - Challenge point definition from scenario
- * @returns {Object} - Active challenge object
- */
-function activateChallenge(session, challengePoint) {
-  const challenge = {
-    challenge_id: challengePoint.challenge_id,
-    question: challengePoint.question,
-    context: challengePoint.context || '',
-    expectedElements: challengePoint.expected_reasoning_elements || [],
-    activatedAt: Date.now(),
-    elapsedTime: (Date.now() - session.scenarioStartTime) / 60000,
-    studentResponse: null,
-    evaluation: null
-  };
-
-  // Set as active challenge
-  session.activeChallenge = challenge;
-
-  // Log activation
-  session.criticalActionsLog.push({
-    action: 'challenge_point_triggered',
-    challenge_id: challenge.challenge_id,
-    question: challenge.question,
-    timestamp: Date.now(),
-    elapsedTime: challenge.elapsedTime
-  });
-
-  console.log('🧠 Challenge Point Activated:', challenge.challenge_id);
-  console.log('❓ Question:', challenge.question);
-
-  return challenge;
-}
-
-/**
- * Build challenge point context for AI prompt (Task 3.1)
- * Instructs the AI how to naturally pose the challenge question to the student
- * @param {Object} activeChallenge - Current active challenge object
- * @returns {string} - Formatted challenge context for AI system prompt
- */
-function buildChallengeContext(activeChallenge) {
-  if (!activeChallenge) return '';
-
-  let context = '\n=== 🧠 CHALLENGE POINT ACTIVATED ===\n';
-  context += '\nYou must now transition into a teaching moment. Ask the student the following question:\n';
-  context += '\nQUESTION: "' + activeChallenge.question + '"\n';
-
-  if (activeChallenge.context) {
-    context += '\nCONTEXT FOR QUESTION: ' + activeChallenge.context + '\n';
-  }
-
-  context += '\nINSTRUCTIONS:\n';
-  context += '- Stay in character as the patient, but pause the scenario\n';
-  context += '- Ask this question conversationally and naturally\n';
-  context += '- Wait for the student to explain their reasoning\n';
-  context += '- Do NOT answer the question yourself\n';
-  context += '- Do NOT continue with treatment responses until they answer\n';
-  context += '- Frame it as wanting to understand their thought process\n';
-  context += '\nExample: "Before we continue... can you walk me through your thinking? ' + activeChallenge.question + '"\n';
-  context += '\n=== END CHALLENGE POINT ===\n';
-
-  return context;
-}
-
-/**
- * Detect if user message is a response to active challenge (Task 3.2)
- * Identifies reasoning-based explanations from the student
- * @param {Object} session - Current session object
- * @param {string} userMessage - Student's message
- * @returns {boolean} - True if message is a challenge response
- */
-function detectChallengeResponse(session, userMessage) {
-  // Only if there's an active challenge and no response yet
-  if (!session.activeChallenge || session.activeChallenge.studentResponse) {
-    return false;
-  }
-
-  const lowerMessage = userMessage.toLowerCase();
-
-  // Also detect skip/deflection attempts
-  const skipPhrases = [
-    'don\'t know', 'not sure', 'unsure', 'skip',
-    'can we continue', 'move on', 'let\'s proceed'
-  ];
-
-  const isSkipping = skipPhrases.some(phrase =>
-    lowerMessage.includes(phrase)
-  );
-
-  if (isSkipping) {
-    session.activeChallenge.studentResponse = userMessage;
-    session.activeChallenge.skipped = true;
-    session.activeChallenge.respondedAt = Date.now();
-
-    console.log('⏭️ Challenge Skipped');
-    return true;
-  }
-
-  // Check if message contains reasoning indicators
-  const reasoningIndicators = [
-    'because', 'since', 'due to', 'considering',
-    'based on', 'given that', 'indicates', 'suggests',
-    'assessment', 'finding', 'priority', 'risk',
-    'protocol', 'guidelines', 'treatment', 'management'
-  ];
-
-  const hasReasoning = reasoningIndicators.some(indicator =>
-    lowerMessage.includes(indicator)
-  );
-
-  // Check if message is long enough (more than 20 words suggests explanation)
-  const wordCount = userMessage.trim().split(/\s+/).length;
-  const isSubstantial = wordCount >= 20;
-
-  // If it looks like an explanation, consider it a response
-  if (hasReasoning || isSubstantial) {
-    session.activeChallenge.studentResponse = userMessage;
-    session.activeChallenge.respondedAt = Date.now();
-    session.activeChallenge.responseTime = (Date.now() - session.activeChallenge.activatedAt) / 1000;
-
-    console.log('💭 Challenge Response Received:', wordCount, 'words');
-    return true;
-  }
-
-  return false;
-}
-
-/**
- * Evaluate challenge response quality (Task 3.2)
- * Analyzes student's clinical reasoning against expected elements
- * @param {Object} session - Current session object
- * @returns {Object|null} - Evaluation object or null
- */
-function evaluateChallengeResponse(session) {
-  const challenge = session.activeChallenge;
-
-  if (!challenge || !challenge.studentResponse) return null;
-
-  const response = challenge.studentResponse.toLowerCase();
-  const expectedElements = challenge.expectedElements || [];
-
-  // Count how many expected reasoning elements are present
-  let elementsFound = 0;
-  const foundElements = [];
-  const missingElements = [];
-
-  for (const element of expectedElements) {
-    const keywords = element.keywords || [];
-    const found = keywords.some(keyword =>
-      response.includes(keyword.toLowerCase())
-    );
-
-    if (found) {
-      elementsFound++;
-      foundElements.push(element.concept);
-    } else {
-      missingElements.push(element.concept);
-    }
-  }
-
-  // Calculate quality score
-  const totalElements = expectedElements.length;
-  const percentageFound = totalElements > 0 ? (elementsFound / totalElements) * 100 : 0;
-
-  // Determine rating
-  let rating = '';
-  let feedback = '';
-
-  if (challenge.skipped) {
-    rating = 'skipped';
-    feedback = 'Challenge question skipped - missed learning opportunity';
-  } else if (percentageFound >= 75) {
-    rating = 'excellent';
-    feedback = 'Excellent clinical reasoning demonstrated';
-  } else if (percentageFound >= 50) {
-    rating = 'good';
-    feedback = 'Good reasoning with some key concepts identified';
-  } else if (percentageFound >= 25) {
-    rating = 'basic';
-    feedback = 'Basic understanding shown but missing critical reasoning elements';
-  } else {
-    rating = 'poor';
-    feedback = 'Insufficient clinical reasoning - protocol-based response only';
-  }
-
-  const evaluation = {
-    challenge_id: challenge.challenge_id,
-    rating: rating,
-    percentageFound: Math.round(percentageFound),
-    elementsFound: elementsFound,
-    totalElements: totalElements,
-    foundConcepts: foundElements,
-    missingConcepts: missingElements,
-    feedback: feedback,
-    studentResponse: challenge.studentResponse,
-    responseTime: challenge.responseTime,
-    evaluatedAt: Date.now()
-  };
-
-  // Store evaluation in challenge
-  challenge.evaluation = evaluation;
-
-  // Log to critical actions
-  session.criticalActionsLog.push({
-    action: 'challenge_evaluated',
-    category: 'challenge',
-    ...evaluation
-  });
-
-  // Add to used challenges
-  if (!session.challengePointsUsed) {
-    session.challengePointsUsed = [];
-  }
-  session.challengePointsUsed.push(challenge);
-
-  // Clear active challenge
-  session.activeChallenge = null;
-
-  console.log('🎓 Challenge Evaluated:', rating.toUpperCase(), '-', percentageFound + '% concepts found');
-
-  return evaluation;
-}
-
-/**
- * Build challenge feedback context for AI prompt (Task 3.2)
- * Instructs the AI how to deliver evaluation feedback to the student
- * @param {Object} evaluation - Challenge evaluation object
- * @returns {string} - Formatted feedback context for AI system prompt
- */
-function buildChallengeFeedbackContext(evaluation) {
-  if (!evaluation) return '';
-
-  let context = '\n=== 🎓 CHALLENGE EVALUATION COMPLETE ===\n';
-  context += '\nStudent Response Quality: ' + evaluation.rating.toUpperCase() + '\n';
-  context += 'Clinical Reasoning Score: ' + evaluation.percentageFound + '%\n';
-
-  if (evaluation.foundConcepts.length > 0) {
-    context += '\nStrengths identified: ' + evaluation.foundConcepts.join(', ') + '\n';
-  }
-
-  if (evaluation.missingConcepts.length > 0) {
-    context += 'Concepts to reinforce: ' + evaluation.missingConcepts.join(', ') + '\n';
-  }
-
-  context += '\nFEEDBACK TO PROVIDE:\n';
-  context += evaluation.feedback + '\n';
-
-  context += '\nINSTRUCTIONS:\n';
-  context += '- Acknowledge their response briefly and positively\n';
-  context += '- If excellent/good: Reinforce their reasoning\n';
-  context += '- If basic/poor: Gently guide them to missing concepts\n';
-  context += '- Stay in character as patient but provide teaching moment\n';
-  context += '- After feedback, resume the scenario naturally\n';
-
-  if (evaluation.rating === 'excellent') {
-    context += '\nExample: "That\'s exactly right - you\'ve identified the key issues. Now let\'s see how I respond to your treatment..."\n';
-  } else if (evaluation.rating === 'good') {
-    context += '\nExample: "Good thinking. You might also consider [missing concept]. Now let\'s continue..."\n';
-  } else {
-    context += '\nExample: "I see you\'re thinking about [found concept], which is good. Also important to consider [missing concept]. Let\'s proceed..."\n';
-  }
-
-  context += '\n=== END CHALLENGE FEEDBACK ===\n';
-
-  return context;
-}
-
-/**
- * Summarize challenge point performance for AAR (Task 3.3)
- * Provides statistics and details on student's challenge responses
- * @param {Object} session - Current session object
- * @returns {Object} - Challenge performance summary
- */
-function summarizeChallenges(session) {
-  const challenges = session.challengePointsUsed || [];
-
-  if (challenges.length === 0) {
-    return {
-      challengesTriggered: 0,
-      challengesCompleted: 0,
-      averageReasoning: 0,
-      summary: 'No challenges triggered (Challenge Points may be disabled)'
-    };
-  }
-
-  const completed = challenges.filter(c => c.evaluation).length;
-  const skipped = challenges.filter(c => c.skipped).length;
-
-  // Calculate average reasoning quality
-  const ratings = { excellent: 4, good: 3, basic: 2, poor: 1, skipped: 0 };
-  const scores = challenges
-    .filter(c => c.evaluation)
-    .map(c => ratings[c.evaluation.rating] || 0);
-
-  const averageScore = scores.length > 0
-    ? scores.reduce((a, b) => a + b, 0) / scores.length
-    : 0;
-
-  const averagePercentage = Math.round(averageScore * 25); // Convert 0-4 to 0-100
-
-  return {
-    challengesTriggered: challenges.length,
-    challengesCompleted: completed,
-    challengesSkipped: skipped,
-    averageReasoning: averagePercentage,
-    details: challenges.map(c => ({
-      question: c.question,
-      rating: c.evaluation?.rating || 'not_evaluated',
-      conceptsFound: c.evaluation?.percentageFound || 0,
-      responseTime: c.responseTime
-    }))
-  };
-}
-
 // ============================================================================
 // STRATEGY B: STRUCTURED MEMORY & PROMPT CACHING
 // ============================================================================
@@ -2419,21 +2033,80 @@ function initializeStructuredMemory() {
 }
 
 /**
- * Add action to structured memory
+ * Get elapsed time since scenario start in minutes
+ * @param {object} session - Session object
+ * @returns {number} Elapsed minutes with one decimal place
+ */
+function getElapsedMinutes(session) {
+  if (!session.scenarioStartTime) return 0;
+  return Math.round((Date.now() - session.scenarioStartTime) / 60000 * 10) / 10;
+}
+
+/**
+ * Add action to structured memory (Phase 2: Enhanced with checklist matching)
  */
 function addMemoryAction(session, action) {
   if (!session.structuredMemory) {
     session.structuredMemory = initializeStructuredMemory();
   }
 
-  const elapsedMinutes = session.scenarioStartTime
-    ? Math.floor((Date.now() - session.scenarioStartTime) / 60000)
-    : 0;
+  const elapsedMinutes = getElapsedMinutes(session);
+  const checklist = session.scenario?.critical_actions_checklist || [];
 
-  session.structuredMemory.criticalActions.push({
+  // Phase 2: Match action to checklist item
+  const match = findChecklistMatch(action.action || action.type, checklist);
+
+  // Phase 2: Check for exclusion (negations like "don't give oxygen")
+  const isExcluded = match ? shouldExcludeAction(action.action || '', match) : false;
+
+  // Build enriched action object
+  const enrichedAction = {
     time: elapsedMinutes,
-    ...action
-  });
+    timestamp: Date.now(),
+    ...action,
+
+    // Phase 2: Checklist mapping metadata
+    checklistId: (!isExcluded && match) ? match.id : null,
+    checklistAction: (!isExcluded && match) ? match.action : null,
+    targetTime: match?.time_target_minutes || null,
+    onTime: (!isExcluded && match) ? (elapsedMinutes <= match.time_target_minutes) : null,
+    importance: match?.importance || null,
+    matchConfidence: match?.matchConfidence || null
+  };
+
+  // Add to structured memory
+  session.structuredMemory.criticalActions.push(enrichedAction);
+
+  // Phase 2: Track in checklistResults for easy AAR access
+  if (match && !isExcluded) {
+    // Only add if not already tracked (avoid duplicates)
+    const alreadyTracked = session.checklistResults?.find(r => r.id === match.id);
+
+    if (!alreadyTracked) {
+      // Initialize checklistResults if needed
+      if (!session.checklistResults) {
+        session.checklistResults = [];
+      }
+
+      session.checklistResults.push({
+        id: match.id,
+        action: match.action,
+        category: match.category || 'general',
+        completed: true,
+        time: elapsedMinutes,
+        target: match.time_target_minutes,
+        onTime: elapsedMinutes <= match.time_target_minutes,
+        minutesLate: Math.max(0, elapsedMinutes - match.time_target_minutes),
+        points: calculatePoints(match, elapsedMinutes),
+        maxPoints: match.points || 0,
+        importance: match.importance,
+        matchedAction: action.action || action.type,
+        matchConfidence: match.matchConfidence
+      });
+
+      console.log(`✅ Checklist matched: ${match.id} - ${match.action} (${elapsedMinutes.toFixed(1)} min)`);
+    }
+  }
 }
 
 /**
@@ -2657,7 +2330,7 @@ function formatMemoryForPrompt(selectedMemory) {
  * Caches static content, keeps dynamic content fresh
  */
 function buildCachedSystemPrompt(session, coreAgentPrompt, runtimeContext, dynamicContexts) {
-  const { challengeContext, challengeFeedbackContext, patientContext, treatmentResponse,
+  const { patientContext, treatmentResponse,
           cdpContext, medicationSafetyContext, stateChangeNotice, treatmentContext } = dynamicContexts;
 
   // Get scenario baseline (static - can be cached)
@@ -2697,7 +2370,7 @@ ${JSON.stringify(scenarioBaseline.scene_description, null, 2)}
   }
 
   // PART 3: Dynamic Context (NOT CACHED)
-  const dynamicText = `${challengeContext}${challengeFeedbackContext}${patientContext}${treatmentResponse}${cdpContext}${medicationSafetyContext}${stateChangeNotice}
+  const dynamicText = `${patientContext}${treatmentResponse}${cdpContext}${medicationSafetyContext}${stateChangeNotice}
 
 === CURRENT SCENARIO STATE (Dynamic) ===
 ${JSON.stringify(runtimeContext, null, 2)}${treatmentContext}`;
@@ -3010,29 +2683,6 @@ app.post('/api/sessions/:id/message', async (req, res) => {
     }
 
     // ═══════════════════════════════════════════════════════════
-    // CHALLENGE RESPONSE DETECTION - Task 3.2 (HIGHEST PRIORITY)
-    // ═══════════════════════════════════════════════════════════
-
-    // Check if student is responding to an active challenge
-    if (session.activeChallenge && !session.activeChallenge.studentResponse) {
-      const isResponse = detectChallengeResponse(session, message);
-      if (isResponse) {
-        console.log('✅ Challenge response captured, proceeding to evaluation');
-      }
-    }
-
-    // Evaluate challenge response if one was just given
-    let challengeEvaluation = null;
-    if (session.activeChallenge && session.activeChallenge.studentResponse && !session.activeChallenge.evaluation) {
-      challengeEvaluation = evaluateChallengeResponse(session);
-      console.log('✅ Challenge evaluation complete:', challengeEvaluation.rating);
-    }
-
-    // Build challenge feedback context
-    const challengeFeedbackContext = buildChallengeFeedbackContext(challengeEvaluation);
-    session.challengeFeedbackContext = challengeFeedbackContext;
-
-    // ═══════════════════════════════════════════════════════════
     // CORE AGENT PROCESSING - Detect treatments (Task 1.2)
     // ═══════════════════════════════════════════════════════════
 
@@ -3140,25 +2790,6 @@ app.post('/api/sessions/:id/message', async (req, res) => {
           });
         }
       }
-
-      // ═══════════════════════════════════════════════════════════
-      // CHALLENGE POINT DETECTION - Task 3.1
-      // ═══════════════════════════════════════════════════════════
-
-      // Check for challenge points (if enabled and not already active)
-      if (!session.activeChallenge) {
-        const detectedTreatmentTypes = detectedTreatments
-          .filter(t => t.type !== 'dangerous_medication')
-          .map(t => t.type);
-
-        const challengePoint = detectChallengePoint(session, message, detectedTreatmentTypes);
-        if (challengePoint) {
-          activateChallenge(session, challengePoint);
-        }
-      }
-
-      // Build challenge context if active and store in session
-      session.challengeContext = buildChallengeContext(session.activeChallenge);
 
       // ═══════════════════════════════════════════════════════════
       // EVALUATE STATE PROGRESSION - Task 1.3
@@ -3349,16 +2980,8 @@ CURRENT VITALS: HR ${session.vitals.HR || '?'}, RR ${session.vitals.RR || '?'}, 
     // Get medication safety context if available
     const medicationSafetyContext = session.medicationSafetyContext || '';
 
-    // Get challenge context if available
-    const challengeContext = session.challengeContext || '';
-
-    // Challenge feedback context already declared earlier in function
-    // No need to redeclare - just use the existing variable
-
     // ✅ STRATEGY B: Build cache-enabled system prompt with structured memory
     const dynamicContexts = {
-      challengeContext,
-      challengeFeedbackContext,
       patientContext,
       treatmentResponse,
       cdpContext,
@@ -3590,6 +3213,26 @@ session.messages.push(
   { role: 'assistant', content: finalResponse }
 );
 
+// ✅ Phase 1: Append to fullTranscript (survives Strategy B pruning)
+const elapsedMinutes = getElapsedMinutes(session);
+if (!session.fullTranscript) {
+  session.fullTranscript = [];
+}
+session.fullTranscript.push(
+  {
+    role: 'user',
+    content: message,
+    timestamp: Date.now(),
+    scenarioTime: elapsedMinutes
+  },
+  {
+    role: 'assistant',
+    content: finalResponse,
+    timestamp: Date.now(),
+    scenarioTime: elapsedMinutes
+  }
+);
+
 // Save session updates
 await saveSession(session);
 
@@ -3606,16 +3249,6 @@ if (session.cdpContext) {
 // Clear medication safety context after use (so it doesn't persist to next message)
 if (session.medicationSafetyContext) {
   session.medicationSafetyContext = '';
-}
-
-// Clear challenge context after use (will be rebuilt if challenge still active)
-if (session.challengeContext) {
-  session.challengeContext = '';
-}
-
-// Clear challenge feedback context after use (one-time feedback delivery)
-if (session.challengeFeedbackContext) {
-  session.challengeFeedbackContext = '';
 }
 
 // ✅ DIAGNOSTIC - Token usage summary for this exchange
@@ -3652,9 +3285,7 @@ res.json({
   vitals: formattedVitals,
   infoUpdated: infoUpdated,
   patientNotes: session.patientNotes || [],  // ✅ Ensure we always send an array
-  currentAgent: 'core',  // ✅ NEW: Include current agent
-  isChallenge: session.activeChallenge && !session.activeChallenge.evaluation ? true : false,  // ✅ NEW: Challenge active?
-  challengeResolved: session.activeChallenge && session.activeChallenge.evaluation ? true : false  // ✅ NEW: Challenge resolved?
+  currentAgent: 'core'  // ✅ NEW: Include current agent
 });
 
   } catch (error) {
@@ -3885,9 +3516,14 @@ app.post('/api/sessions/:id/next-scenario', async (req, res) => {
       const treatmentTiming = analyzeTreatmentTiming(session);
       const scenarioSummary = generateScenarioSummary(session);
 
+      // ✅ Phase 2: Generate checklist summary
+      const checklistSummary = generateChecklistSummary(session);
+      console.log(`📋 Checklist: ${checklistSummary.completedCount}/${checklistSummary.totalItems} completed (${checklistSummary.percentageScore}%)`);
+
       // Create comprehensive performance snapshot
       const performanceSnapshot = {
         scenarioId: session.scenario?.scenario_id || session.scenarioId,
+        scenarioName: session.scenario?.metadata?.scenario_name || 'Unknown',
         scenarioIndex: session.currentScenarioIndex,
         totalTime: session.scenarioStartTime ? (Date.now() - session.scenarioStartTime) / 1000 : 0,
         finalState: session.currentState,
@@ -3910,8 +3546,21 @@ app.post('/api/sessions/:id/next-scenario', async (req, res) => {
         treatmentTiming: treatmentTiming,
         scenarioSummary: scenarioSummary,
 
-        // Checklist results
+        // ✅ Phase 2: Checklist results and summary
         checklistResults: session.checklistResults || [],
+        checklistSummary: checklistSummary,
+
+        // ✅ Phase 1: Full conversation transcript
+        fullTranscript: [...(session.fullTranscript || [])],
+
+        // ✅ Phase 1: Blueprint reference for AAR
+        blueprintId: session.scenario?.scenario_id || session.scenarioId,
+        blueprintPath: session.scenario?._filePath || null,
+
+        // Timing metadata
+        startTime: session.scenarioStartTime,
+        endTime: Date.now(),
+        durationMinutes: Math.round((Date.now() - session.scenarioStartTime) / 60000 * 10) / 10,
 
         // Timestamp
         completedAt: new Date().toISOString()
@@ -3947,6 +3596,10 @@ app.post('/api/sessions/:id/next-scenario', async (req, res) => {
       session.measuredVitals = {};
       session.patientNotes = [];
       session.messages = []; // Clear chat history
+
+      // ✅ Phase 1 & 2: Clear transcript and checklist for next scenario
+      session.fullTranscript = [];
+      session.checklistResults = [];
 
       // ═══════════════════════════════════════════════════════════
       // LOAD NEXT SCENARIO IMMEDIATELY (like begin-scenario does)
@@ -4340,51 +3993,64 @@ app.post('/api/sessions/:sessionId/aar/start', async (req, res) => {
 
     console.log('📊 Starting AAR for session:', sessionId);
 
-    // ✅ NEW: Use scenarioPerformanceHistory array instead of current session
-    const performanceHistoryArray = session.scenarioPerformanceHistory || [];
-
-    console.log(`📊 Performance history contains ${performanceHistoryArray.length} scenarios`);
-
-    // Validate we have all 2 scenarios
-    if (performanceHistoryArray.length < 2) {
-      console.error(`❌ AAR Error: Expected 2 scenarios, found ${performanceHistoryArray.length}`);
+    // ✅ Check if we have completed scenarios
+    if (!session.scenarioPerformanceHistory || session.scenarioPerformanceHistory.length === 0) {
       return res.status(400).json({
-        error: 'Cannot start AAR - incomplete performance data',
-        scenariosCompleted: performanceHistoryArray.length,
-        scenariosRequired: 2
+        error: 'No completed scenarios to review',
+        scenariosCompleted: 0
       });
     }
 
-    // Initialize AAR session with ALL scenario performance data
-    const aarSession = aarService.initializeAAR(sessionId, performanceHistoryArray);
+    console.log(`📊 Performance history contains ${session.scenarioPerformanceHistory.length} scenarios`);
+
+    // ✅ Phase 1: Build full AAR context with blueprints and transcripts
+    const aarContext = buildFullAARContext(session);
+
+    if (aarContext.error) {
+      return res.status(400).json({ error: aarContext.error });
+    }
+
+    const formattedContext = formatAARContextForPrompt(aarContext);
 
     // Load AAR prompt using language loader
     const aarPrompt = loadPrompt('aarAgent', session.language || 'en');
 
-    // Build performance context
-    const context = aarService.buildAARContext(sessionId);
+    // Combine system prompt with full context
+    const fullSystemPrompt = `${aarPrompt}\n\n${formattedContext}`;
+
+    // Initialize AAR conversation in session
+    session.aarMode = true;
+    session.aarMessages = [];
+    session.aarContext = aarContext; // Store for potential follow-up queries
 
     // Get opening message from Claude
     const response = await anthropic.messages.create({
       model: AAR_AGENT_MODEL,
       max_tokens: 2048,
-      system: aarPrompt + '\n\n' + context,
+      system: fullSystemPrompt,
       messages: [
-        { role: 'user', content: 'Start the AAR session. Begin with a warm greeting and ask the student for their initial reflection.' }
+        { role: 'user', content: 'Begin the AAR session. Start with Phase 1: Opening.' }
       ]
     });
 
     const aarMessage = response.content[0].text;
 
-    // Add to conversation history
-    aarService.addMessage(sessionId, 'assistant', aarMessage);
+    // Store in AAR message history
+    session.aarMessages.push(
+      { role: 'user', content: 'Begin the AAR session.' },
+      { role: 'assistant', content: aarMessage }
+    );
+
+    // Save session updates
+    await saveSession(session);
 
     console.log('✅ AAR session started successfully');
 
     res.json({
+      success: true,
       message: aarMessage,
-      phase: aarSession.phase,
-      aarActive: true
+      scenariosReviewed: aarContext.totalScenarios,
+      aarComplete: aarMessage.includes('[AAR_COMPLETE]')
     });
   } catch (error) {
     console.error('❌ Error starting AAR:', error);
@@ -4401,80 +4067,70 @@ app.post('/api/sessions/:sessionId/aar/message', async (req, res) => {
     const { sessionId } = req.params;
     const { message: userMessage } = req.body;
 
-    const aarSession = aarService.getAAR(sessionId);
-    if (!aarSession) {
-      return res.status(404).json({ error: 'AAR session not found' });
-    }
-
-    // Load session to get language preference
     const session = await getSession(sessionId);
     if (!session) {
       return res.status(404).json({ error: 'Session not found' });
     }
 
+    if (!session.aarMode) {
+      return res.status(400).json({ error: 'AAR session not started' });
+    }
+
     console.log('💬 AAR message received:', userMessage.substring(0, 50) + '...');
 
     // Add user message to history
-    aarService.addMessage(sessionId, 'user', userMessage);
+    session.aarMessages.push({ role: 'user', content: userMessage });
 
-    // Load AAR prompt using language loader
+    // ✅ Phase 1: Rebuild context (in case we need it fresh)
+    const formattedContext = formatAARContextForPrompt(session.aarContext);
     const aarPrompt = loadPrompt('aarAgent', session.language || 'en');
+    const fullSystemPrompt = `${aarPrompt}\n\n${formattedContext}`;
 
-    // Build performance context
-    const context = aarService.buildAARContext(sessionId);
-
-    // Get conversation history
-    const conversationHistory = aarService.getConversationHistory(sessionId);
-
-    // Get Claude response (with timeout protection)
+    // Send to Claude with full conversation history
     const response = await callAnthropicWithTimeout(
       anthropic.messages.create({
         model: AAR_AGENT_MODEL,
         max_tokens: 2048,
-        system: aarPrompt + '\n\n' + context,
-        messages: conversationHistory
+        system: fullSystemPrompt,
+        messages: session.aarMessages
       })
     );
 
-    let aarMessage = response.content[0].text;
+    let aarResponse = response.content[0].text;
 
-    // Check for completion marker
-    const isComplete = aarMessage.includes('[AAR_COMPLETE]');
-    if (isComplete) {
-      aarMessage = aarMessage.replace('[AAR_COMPLETE]', '').trim();
-      aarService.updatePhase(sessionId, 'complete');
+    // Check for completion
+    const aarComplete = aarResponse.includes('[AAR_COMPLETE]');
+    if (aarComplete) {
+      aarResponse = aarResponse.replace('[AAR_COMPLETE]', '').trim();
 
-      // Layer 3: Feature 3 - Mark session as complete and auto-save
-      const session = await getSession(sessionId);
-      if (session) {
-        session.sessionComplete = true;
-        session.completedAt = new Date().toISOString();
+      // Mark session as complete and auto-save
+      session.sessionComplete = true;
+      session.completedAt = new Date().toISOString();
 
-        // AUTO-SAVE to disk (if student is registered)
-        if (session.studentId) {
-          try {
-            await saveStudentData(session);
-            console.log('✅ AAR session completed and data saved:', session.studentId);
-          } catch (error) {
-            console.error('❌ Error saving student data:', error);
-            // Don't fail the request if save fails - student data is still in memory
-          }
-        } else {
-          console.log('✅ AAR session completed (no student ID - data not saved)');
+      // AUTO-SAVE to disk (if student is registered)
+      if (session.studentId) {
+        try {
+          await saveStudentData(session);
+          console.log('✅ AAR session completed and data saved:', session.studentId);
+        } catch (error) {
+          console.error('❌ Error saving student data:', error);
+          // Don't fail the request if save fails - student data is still in memory
         }
-
-        // Save session updates to database
-        await saveSession(session);
+      } else {
+        console.log('✅ AAR session completed (no student ID - data not saved)');
       }
     }
 
-    // Add response to history
-    aarService.addMessage(sessionId, 'assistant', aarMessage);
+    // Store assistant response
+    session.aarMessages.push({ role: 'assistant', content: aarResponse });
+
+    // Save session updates
+    await saveSession(session);
 
     res.json({
-      message: aarMessage,
-      phase: aarSession.phase,
-      aarComplete: isComplete
+      success: true,
+      message: aarResponse,
+      aarComplete
     });
   } catch (error) {
     console.error('❌ Error in AAR conversation:', error);

@@ -21,7 +21,6 @@ model Session {
   studentId     String?
   studentName   String?
   studentEmail  String?
-  group         String?        // "A" or "B" for A/B testing
   language      String         @default("en")  // "en" or "sk" - Language preference for session
 
   // Session Metadata
@@ -56,11 +55,6 @@ model Session {
   medicationWarnings    String @default("[]")  // JSON array as string
   safetyViolations      Int    @default(0)
 
-  // Challenge Points System (A/B Testing - CRITICAL)
-  challengePointsEnabled Boolean @default(false)
-  challengePointsUsed    String @default("[]")  // JSON array as string
-  activeChallenge        String?  // JSON object as string
-
   // Critical Actions Tracking
   criticalActionsLog     String @default("[]")  // JSON array as string
   criticalTreatmentsGiven String @default("{}")  // JSON object as string
@@ -90,7 +84,6 @@ model Session {
 
   @@index([studentId])
   @@index([status])
-  @@index([group])
   @@index([startedAt])
 }
 
@@ -172,9 +165,6 @@ model PerformanceData {
   medicationWarningCount  Int
   safetyScore             Float
 
-  // A/B Testing metrics
-  challengePointsCount    Int     // How many challenge points used
-
   // Analysis results (from pattern analysis)
   patternAnalysisResults  String?   // JSON: Full pattern analysis from AAR
 
@@ -192,9 +182,7 @@ model Student {
   studentId     String   @unique  // Generated ID
   name          String
   email         String?
-  group         String   // "A" or "B"
   registeredAt  DateTime @default(now())
 
   @@index([studentId])
-  @@index([group])
 }

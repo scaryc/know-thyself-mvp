@@ -35,7 +35,6 @@ export function dbToRuntimeSession(dbSession) {
     cdpEvaluations: parseJSON(dbSession.cdpEvaluations, []),
     medicationErrors: parseJSON(dbSession.medicationErrors, []),
     medicationWarnings: parseJSON(dbSession.medicationWarnings, []),
-    challengePointsUsed: parseJSON(dbSession.challengePointsUsed, []),
     criticalActionsLog: parseJSON(dbSession.criticalActionsLog, []),
     criticalTreatmentsGiven: parseJSON(dbSession.criticalTreatmentsGiven, {}),
     stateHistory: parseJSON(dbSession.stateHistory, []),
@@ -43,7 +42,6 @@ export function dbToRuntimeSession(dbSession) {
     scenarioData: parseJSON(dbSession.scenarioData, null),
     dispatchInfo: parseJSON(dbSession.dispatchInfo, null),
     patientInfo: parseJSON(dbSession.patientInfo, null),
-    activeChallenge: parseJSON(dbSession.activeChallenge, null),
 
     // Convert messages array to proper format
     messages: (dbSession.messages || []).map(m => ({
@@ -108,7 +106,6 @@ export function runtimeToDbSession(session) {
     studentId: session.studentId || null,
     studentName: session.studentName || null,
     studentEmail: session.studentEmail || null,
-    group: session.group || null,
     language: session.language || 'en',  // ✅ FIX: Include language preference in updates
 
     // Session metadata
@@ -137,11 +134,6 @@ export function runtimeToDbSession(session) {
     medicationErrors: toJSON(session.medicationErrors || []),
     medicationWarnings: toJSON(session.medicationWarnings || []),
     safetyViolations: session.safetyViolations || 0,
-
-    // Challenge Points
-    challengePointsEnabled: session.challengePointsEnabled || false,
-    challengePointsUsed: toJSON(session.challengePointsUsed || []),
-    activeChallenge: toJSON(session.activeChallenge),
 
     // Critical actions
     criticalActionsLog: toJSON(session.criticalActionsLog || []),

@@ -43,8 +43,7 @@ export class PatternAnalysisService {
         errorRecovery: this.analyzeErrorRecovery(allScenariosData)
       },
       cognitiveLoad: {
-        informationOrganization: this.analyzeInformationOrganization(allScenariosData),
-        challengePointQuality: this.analyzeChallengePointQuality(allScenariosData)
+        informationOrganization: this.analyzeInformationOrganization(allScenariosData)
       },
       patientAwareness: {
         stateTransitionRecognition: this.analyzeStateTransitionRecognition(allScenariosData),
@@ -586,10 +585,6 @@ ${pattern.educationalFocus || 'N/A'}
 
   analyzeInformationOrganization(data) {
     return { patternName: "Information Organization", detected: false };
-  }
-
-  analyzeChallengePointQuality(data) {
-    return { patternName: "Challenge Point Reasoning Quality", detected: false };
   }
 
   analyzeStateTransitionRecognition(data) {

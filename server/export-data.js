@@ -54,7 +54,7 @@ async function exportToCSV() {
 
     // Generate CSV header
     const header = [
-      'StudentID', 'StudentName', 'Email', 'Group',
+      'StudentID', 'StudentName', 'Email',
       'RegisteredAt', 'SessionStarted', 'SessionCompleted',
       'TotalTimeMinutes',
       'FinalScore', 'Grade',
@@ -62,7 +62,6 @@ async function exportToCSV() {
       'Scenario1State', 'Scenario1Time',
       'Scenario2State', 'Scenario2Time',
       'Scenario3State', 'Scenario3Time',
-      'ChallengesTriggered', 'AverageReasoningScore',
       'OxygenTimingSeconds', 'SalbutamolTimingSeconds', 'SteroidsTimingSeconds',
       'MedicationErrors', 'SafetyViolations',
       'TotalActions', 'SessionComplete'
@@ -78,7 +77,6 @@ async function exportToCSV() {
         escapeCSV(student.studentId),
         escapeCSV(student.studentName),
         escapeCSV(student.studentEmail || ''),
-        student.group,
         student.timestamps?.registered || '',
         student.timestamps?.sessionStarted || '',
         student.timestamps?.sessionCompleted || '',
@@ -96,8 +94,6 @@ async function exportToCSV() {
         extractDuration(scenarios[1]?.duration),
         scenarios[2]?.finalState || '',
         extractDuration(scenarios[2]?.duration),
-        student.challengePoints?.length || 0,
-        student.group === 'A' ? calculateAverageReasoning(student.challengePoints) : 'N/A',
         extractTreatmentTiming(student, 'oxygen'),
         extractTreatmentTiming(student, 'salbutamol'),
         extractTreatmentTiming(student, 'steroids'),
@@ -119,8 +115,6 @@ async function exportToCSV() {
     console.log(`📄 File: ${outputPath}`);
     console.log(`\n📊 Summary:`);
     console.log(`   Total students: ${students.length}`);
-    console.log(`   Group A: ${students.filter(s => s.group === 'A').length}`);
-    console.log(`   Group B: ${students.filter(s => s.group === 'B').length}`);
 
     // Calculate basic stats
     const completedSessions = students.filter(s => s.metadata?.sessionComplete);
