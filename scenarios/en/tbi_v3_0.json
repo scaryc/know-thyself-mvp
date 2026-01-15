@@ -1,0 +1,591 @@
+{
+  "scenario_id": "TBI_MVP_V3_001",
+  "metadata": {
+    "title": "Traumatic Brain Injury - Fall with Head Trauma",
+    "version": "3.0_Enhanced",
+    "difficulty": "high",
+    "estimated_duration_minutes": 20,
+    "scenario_type": "trauma_neurological",
+    "learning_objectives": [
+      "Recognize high-risk mechanism for TBI",
+      "Perform systematic GCS assessment and trending",
+      "Identify signs of rising intracranial pressure",
+      "Implement appropriate C-spine precautions",
+      "Prevent secondary brain injury (maintain SpO2 >90%, SBP >90)",
+      "Recognize significance of anticoagulation in head injury",
+      "Demonstrate serial neurological monitoring"
+    ],
+    "target_student_level": "second_year_paramedic_student",
+    "changelog": {
+      "v3.0_enhanced": "Blueprint Structure Enhancement v2 applied: matching config, clinical anchors, consequence templates, ECG standardization. Deterioration timing 5/9/13 min. Duration 20 minutes. Removed challenge_points."
+    }
+  },
+
+  "dispatch_info": {
+    "call_type": "Fall injury",
+    "age": "72",
+    "sex": "Male",
+    "location": "Residential home, found at bottom of stairs",
+    "caller": "Wife",
+    "additional_info": "Fell down stairs, hit head, confused, bleeding from head"
+  },
+
+  "scene_description": {
+    "location": "Inside home, patient at bottom of staircase (12 steps visible)",
+    "safety": "Scene safe, no ongoing hazards, stairs visible showing mechanism",
+    "access": "Ground floor, good access for stretcher",
+    "bystanders": "Wife present, very distressed, heard fall from other room"
+  },
+
+  "patient_profile": {
+    "name": "Ján",
+    "age": 72,
+    "weight_kg": 78,
+    "personality": "Initially confused, minimizing injuries ('I'm fine'), becomes less responsive as time progresses"
+  },
+
+  "initial_vitals": {
+    "HR": 68,
+    "RR": 18,
+    "SpO2": 97,
+    "BP_systolic": 165,
+    "BP_diastolic": 95,
+    "temperature": 36.8,
+    "GCS": 13,
+    "GCS_breakdown": "E4 V4 M5",
+    "pupils": "Right 4mm sluggish, Left 3mm reactive",
+    "glucose": 5.8
+  },
+
+  "state_descriptions": {
+    "initial": {
+      "student_sees": "You arrive to find an elderly man sitting propped against the wall at the bottom of a staircase. There's a visible laceration on his right forehead, bleeding steadily and matting his gray hair. Blood has dripped onto his shirt. He's looking around confusedly, touching his head repeatedly. 'What... what happened?' he asks, seeming disoriented. His wife is kneeling beside him, holding a blood-soaked towel to his head. 'He was carrying laundry down the stairs and I heard a terrible crash. I think he missed a step and fell all the way down - it's 12 steps! He hit his head hard on the floor. That was maybe 10 minutes ago.' When you speak to him, he looks at you but seems confused. 'My head hurts,' he says slowly. You notice his right pupil looks slightly larger than the left.",
+      "appearance": "Elderly male, confused, bleeding forehead laceration, sitting position, disoriented to events, right pupil slightly larger and sluggish",
+      "clinical_note": "HIGH-RISK MECHANISM: Fall down 12 stairs with direct head impact. GCS 13 (E4V4M5) with unequal pupils - concerning for intracranial bleeding. ON WARFARIN - anticoagulated patient with head injury is CRITICAL. Early hypertension (165/95) and relative bradycardia (HR 68) may be early Cushing's response. IMMEDIATE C-spine precautions required. Serial GCS monitoring essential.",
+      "urgency_level": "critical"
+    },
+    "improving": {
+      "student_sees": "With your interventions, the patient appears more stable. His GCS has improved slightly - he's now answering questions more appropriately, though still confused about the fall itself. 'I'm Ján... I live here... what day is it?' He's lying supine on a backboard with C-collar, oxygen in place. The bleeding is controlled. His pupils remain unequal but stable. He's complaining of headache. His wife looks somewhat reassured.",
+      "appearance": "More alert than initially, GCS 14, C-spine protected, bleeding controlled, still in pain, vital signs stable",
+      "clinical_note": "Patient showing slight improvement with supportive care. GCS 13→14. Still concerning features (unequal pupils, amnesia, anticoagulated). Key is PREVENTION OF SECONDARY BRAIN INJURY - maintain SpO2 >90%, SBP >90. Continue serial monitoring during rapid transport to trauma center.",
+      "urgency_level": "high"
+    },
+    "deteriorating": {
+      "student_sees": "The patient's condition is worsening. He's no longer opening his eyes spontaneously - you have to call his name loudly to get a response. When he does respond, it's with incomprehensible sounds. His right pupil is now obviously dilated - 6mm and barely reacting to light, while the left is 3mm and reactive. His blood pressure has increased to 185/105 and his heart rate has dropped to 58. His breathing has become slightly irregular. 'Ján! Open your eyes!' you call. He groans but doesn't open them. His wife is crying.",
+      "appearance": "Decreased responsiveness, GCS 9 (E2V2M5), right pupil 6mm fixed, left 3mm reactive, Cushing's triad developing",
+      "clinical_note": "CRITICAL DETERIORATION - classic signs of herniation syndrome. Cushing's triad (hypertension, bradycardia, irregular breathing) indicates severely elevated ICP. Right pupil dilation indicates uncal herniation with CN III compression. This is a neurosurgical emergency. Hyperventilate briefly only if herniation signs present. Rapid transport critical.",
+      "urgency_level": "critical"
+    },
+    "critical": {
+      "student_sees": "CRITICAL: The patient is now unresponsive. His right pupil is fully dilated (8mm) and fixed - no reaction to light at all. His left pupil is also becoming sluggish (4mm). He's not opening his eyes, not making sounds, and only withdrawing weakly to pain. His breathing has become irregular and slow. Blood pressure is 195/110, heart rate 50. This is herniation. His wife is screaming for you to help him.",
+      "appearance": "Unresponsive, GCS 5-6 (E1V1M3-4), bilateral pupil abnormalities, Cushing's triad, decerebrate posturing beginning",
+      "clinical_note": "Uncal herniation in progress. This patient is dying from brain compression. Without immediate neurosurgical intervention, death is imminent. Brief controlled hyperventilation (target ETCO2 30-35) may temporarily reduce ICP. This is the pre-arrest state for TBI.",
+      "urgency_level": "life-threatening"
+    }
+  },
+
+  "assessment_findings": {
+    "airway": {
+      "initial": "Patent, patient talking (confused)",
+      "deteriorating": "At risk - decreased consciousness",
+      "critical": "Requires protection - GCS ≤8"
+    },
+    "breathing": {
+      "initial": "RR 18, regular, adequate depth, clear bilateral breath sounds",
+      "deteriorating": "RR becoming irregular, Cheyne-Stokes pattern may develop",
+      "critical": "Irregular, may require assisted ventilation"
+    },
+    "circulation": {
+      "initial": "HR 68 (relative bradycardia for trauma), BP 165/95 (hypertension), CRT <2sec",
+      "deteriorating": "HR 58, BP 185/105 - Cushing's reflex",
+      "critical": "HR 50, BP 195/110 - severe Cushing's triad"
+    },
+    "disability": {
+      "initial": {
+        "GCS": 13,
+        "breakdown": "E4 V4 M5",
+        "pupils": "Right 4mm sluggish, Left 3mm reactive (anisocoria)",
+        "motor": "Moving all extremities",
+        "notes": "Confused, amnestic to event"
+      },
+      "deteriorating": {
+        "GCS": 9,
+        "breakdown": "E2 V2 M5",
+        "pupils": "Right 6mm fixed, Left 3mm reactive",
+        "motor": "Localizes to pain"
+      },
+      "critical": {
+        "GCS": 5,
+        "breakdown": "E1 V1 M3",
+        "pupils": "Right 8mm fixed, Left 4mm sluggish",
+        "motor": "Decerebrate posturing"
+      }
+    },
+    "exposure": {
+      "head": "5cm laceration right forehead actively bleeding, palpable step-off concerning for skull fracture, scalp swelling",
+      "neck": "C-spine precautions - cannot clear due to altered mental status",
+      "other": "No obvious chest/abdominal/pelvic injuries"
+    },
+    
+    "sample_history": {
+      "symptoms": "Head pain, confusion, amnesia for event",
+      "allergies": "No known drug allergies",
+      "medications": [
+        "WARFARIN 5mg daily (CRITICAL - anticoagulated)",
+        "Metoprolol 50mg daily (hypertension)",
+        "Atorvastatin 20mg daily"
+      ],
+      "past_history": "Atrial fibrillation (on warfarin), Hypertension, Prior minor stroke 3 years ago",
+      "last_intake": "Breakfast 8 AM - toast and coffee",
+      "events": "Wife: 'He was carrying laundry down, I heard crash, found him at bottom. 12 stairs. Direct head impact on floor. Maybe 10 minutes before you arrived.'"
+    },
+
+    "focused_exam": {
+      "head": "5cm laceration right forehead, active bleeding, possible skull depression palpable, blood in hair",
+      "neurological": "Anisocoria (pupils unequal), GCS 13, confused, moving all extremities"
+    }
+  },
+
+  "ecg_findings": {
+    "available": true,
+    "requires_equipment": "12-lead ECG monitor",
+    "acquisition_time_seconds": 10,
+
+    "findings_structured": {
+      "rhythm_and_rate": {
+        "rhythm": "Atrial fibrillation",
+        "regularity": "irregularly irregular",
+        "rate_bpm": 68
+      },
+
+      "st_segment_changes": [],
+
+      "other_findings": [
+        "Atrial fibrillation (patient's baseline)",
+        "No acute ischemic changes",
+        "Left ventricular hypertrophy pattern (from chronic hypertension)"
+      ]
+    },
+
+    "interpretation": {
+      "diagnosis": "Atrial fibrillation - controlled rate, patient's known baseline",
+      "mechanism": "Pre-existing AF, explains anticoagulation with warfarin",
+      "territory": "N/A",
+      "severity": "Rate-controlled, not acute finding",
+      "note": "FOR AGENT REFERENCE ONLY"
+    },
+
+    "teaching_point": "ECG is NOT indicated as primary assessment in TBI. Focus on neurological assessment. The AF explains why patient is on warfarin - this anticoagulation makes head injury much more dangerous. ECG confirms no cardiac cause for fall.",
+    "teaching_point_note": "FOR AAR AGENT USE",
+
+    "presentation_mode": "structured_text"
+  },
+
+  "critical_treatments": ["c_spine_protection", "prevent_secondary_injury"],
+
+  "primary_medications": {
+    "oxygen": {
+      "indication": "Prevent secondary brain injury - maintain SpO2 >94%",
+      "target": "SpO2 94-98%",
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "importance": "important",
+        "clinical_effect": "Prevents hypoxic secondary brain injury",
+        "points_if_given": 5,
+        "teaching_point": "In TBI, hypoxia (SpO2 <90%) doubles mortality. Apply oxygen if SpO2 drops below 94%."
+      }
+    },
+
+    "iv_fluids": {
+      "indication": "Maintain cerebral perfusion if hypotensive",
+      "dosing": "Crystalloid bolus if SBP <90",
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": "conditional",
+        "importance": "if_hypotensive",
+        "clinical_effect": "This patient is hypertensive (165/95) so does NOT need fluids. Only give if SBP drops below 90.",
+        "points_if_appropriate": 5,
+        "points_if_unnecessary": -3,
+        "teaching_point": "Goal in TBI: prevent hypotension (SBP <90). This patient is HYPERtensive - do NOT fluid overload. Maintain IV access but restrict fluids unless BP drops."
+      }
+    },
+
+    "glucose_40_percent": {
+      "indication": "Hypoglycemia (if documented)",
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": false,
+        "reason": "Glucose is normal (5.8 mmol/L)",
+        "if_given": {
+          "clinical_effect": "No effect - glucose is normal. Time wasted.",
+          "points": -3
+        },
+        "teaching_point": "ALWAYS check glucose in altered mental status, but this patient's confusion is from HEAD INJURY, not hypoglycemia. Glucose 5.8 is normal."
+      }
+    }
+  },
+
+  "no_treatment_progression": {
+    "5min": {
+      "vitals": {
+        "HR": 62,
+        "RR": 16,
+        "SpO2": 96,
+        "BP_systolic": 175,
+        "BP_diastolic": 100,
+        "GCS": 11
+      },
+      "pupils": "Right 5mm sluggish, Left 3mm reactive",
+      "state": "deteriorating",
+      "description": "GCS dropping, confusion worsening, pupil asymmetry increasing, Cushing's reflex developing"
+    },
+    "9min": {
+      "vitals": {
+        "HR": 55,
+        "RR": 14,
+        "SpO2": 94,
+        "BP_systolic": 190,
+        "BP_diastolic": 110,
+        "GCS": 8
+      },
+      "pupils": "Right 6mm fixed, Left 3mm reactive",
+      "state": "deteriorating",
+      "description": "GCS 8 - airway protection needed, herniation signs developing, right pupil blown"
+    },
+    "13min": {
+      "vitals": {
+        "HR": 48,
+        "RR": 8,
+        "SpO2": 88,
+        "BP_systolic": 200,
+        "BP_diastolic": 115,
+        "GCS": 4
+      },
+      "pupils": "Right 8mm fixed, Left 5mm sluggish",
+      "state": "critical",
+      "description": "Active herniation, bilateral pupil involvement, respiratory failure imminent, near-arrest state"
+    }
+  },
+
+  "secondary_medications_by_impact": {
+    "critical_harm": [
+      {
+        "name": "sedatives",
+        "generic_name": "Diazepam/Midazolam",
+        "why_dangerous": "Masks neurological deterioration, makes GCS trending impossible",
+        "if_given": {
+          "vital_changes": {
+            "GCS": 9,
+            "RR": 14
+          },
+          "patient_response": "Patient becomes sedated. GCS drops but is this from sedation or herniation? You can no longer tell.",
+          "points": -20,
+          "state_change": "deteriorating",
+          "aar_flag": "dangerous_masking_neuro_exam"
+        },
+        "teaching_point": "NEVER sedate a TBI patient unless treating seizures. The GCS is your ONLY window into what's happening inside the skull. Sedatives fog that window."
+      }
+    ],
+
+    "worsens": [
+      {
+        "name": "morphine",
+        "generic_name": "Morphine",
+        "why_wrong": "Respiratory depression, masks neuro exam, causes miosis affecting pupil assessment",
+        "if_given": {
+          "vital_changes": {
+            "RR": 12,
+            "GCS": 11,
+            "pupils": "Both 2mm - now miotic"
+          },
+          "patient_response": "Patient drowsy, breathing slow, pupils constricted (miotic) - can no longer assess for herniation.",
+          "points": -15,
+          "aar_flag": "opioid_masks_assessment"
+        },
+        "teaching_point": "Opioids mask neuro assessment in TWO ways: sedation masks GCS, and miosis masks pupil signs of herniation."
+      }
+    ],
+
+    "neutral": [
+      {
+        "name": "mannitol",
+        "generic_name": "Mannitol",
+        "indication": "Raised ICP (hospital setting)",
+        "why_prehospital_caution": "May be appropriate for herniation but requires medical direction",
+        "if_given": {
+          "clinical_effect": "May transiently reduce ICP. Appropriate ONLY if herniation signs present.",
+          "points": 0,
+          "aar_flag": "advanced_therapy_requires_medical_direction"
+        },
+        "teaching_point": "Mannitol can reduce ICP in herniation but is typically hospital therapy. Follow local protocols."
+      }
+    ]
+  },
+
+  "critical_actions_checklist": [
+    {
+      "id": "CA1",
+      "action": "Scene safety and mechanism recognition",
+      "category": "scene_safety",
+      "time_target_minutes": 1,
+      "points": 5,
+      "importance": "essential",
+      "criteria": "Identifies fall from height, high-risk mechanism",
+      "matching": {
+        "keywords": ["scene", "safety", "mechanism"],
+        "synonyms": ["moi", "fall", "stairs", "height"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA2",
+      "action": "C-spine immobilization",
+      "category": "treatment",
+      "time_target_minutes": 3,
+      "points": 15,
+      "importance": "critical",
+      "criteria": "Manual stabilization then collar, cannot clear C-spine with altered mental status",
+      "matching": {
+        "keywords": ["c-spine", "cervical", "collar"],
+        "synonyms": ["spine", "immobilization", "stabilization", "manual inline", "c collar", "neck"],
+        "tool_mappings": ["apply_collar", "immobilize_spine"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA3",
+      "action": "Perform GCS assessment",
+      "category": "assessment",
+      "time_target_minutes": 3,
+      "points": 15,
+      "importance": "critical",
+      "criteria": "Complete GCS with E/V/M breakdown",
+      "matching": {
+        "keywords": ["gcs", "glasgow"],
+        "synonyms": ["coma scale", "eye opening", "verbal response", "motor response", "level of consciousness", "avpu"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA4",
+      "action": "Pupil assessment",
+      "category": "assessment",
+      "time_target_minutes": 3,
+      "points": 10,
+      "importance": "critical",
+      "criteria": "Check size, reactivity, symmetry both pupils",
+      "matching": {
+        "keywords": ["pupil", "pupils"],
+        "synonyms": ["eyes", "perrla", "reactive", "light reflex", "anisocoria"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA5",
+      "action": "Identify anticoagulation status",
+      "category": "assessment",
+      "time_target_minutes": 5,
+      "points": 10,
+      "importance": "critical",
+      "criteria": "Asks about medications, identifies warfarin use",
+      "matching": {
+        "keywords": ["medications", "warfarin", "anticoagulant"],
+        "synonyms": ["blood thinner", "coumadin", "meds", "what tablets", "taking anything"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA6",
+      "action": "Prevent secondary brain injury",
+      "category": "treatment",
+      "time_target_minutes": 5,
+      "points": 10,
+      "importance": "critical",
+      "criteria": "Maintains SpO2 >90%, avoids hypotension",
+      "matching": {
+        "keywords": ["oxygen", "secondary injury", "prevent"],
+        "synonyms": ["spo2", "saturation", "hypoxia", "blood pressure", "perfusion"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA7",
+      "action": "Serial GCS monitoring",
+      "category": "monitoring",
+      "time_target_minutes": 10,
+      "points": 10,
+      "importance": "important",
+      "criteria": "Repeats GCS, documents trend",
+      "matching": {
+        "keywords": ["recheck", "repeat", "serial"],
+        "synonyms": ["again", "trending", "reassess", "another gcs", "change in gcs"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA8",
+      "action": "Rapid transport decision",
+      "category": "disposition",
+      "time_target_minutes": 10,
+      "points": 5,
+      "importance": "important",
+      "criteria": "Recognizes need for trauma center with neurosurgery",
+      "matching": {
+        "keywords": ["transport", "hospital", "trauma center"],
+        "synonyms": ["neurosurgery", "ct scan", "transfer", "load and go"],
+        "exclusion_keywords": []
+      }
+    }
+  ],
+
+  "common_errors": [
+    {
+      "error_id": "E1",
+      "error": "No C-spine precautions",
+      "teaching_point": "High-risk mechanism + altered mental status = cannot clear C-spine",
+      "clinical_anchor": "Fall from height plus confusion equals collar. Period. You can't examine what you can't trust."
+    },
+    {
+      "error_id": "E2",
+      "error": "Single GCS without trending",
+      "teaching_point": "Serial GCS is essential - it's the trend that matters, not single value",
+      "clinical_anchor": "A GCS of 13 is information. A GCS dropping from 13 to 9 is an emergency. Trend tells the story."
+    },
+    {
+      "error_id": "E3",
+      "error": "Missed pupil asymmetry",
+      "teaching_point": "Anisocoria in TBI indicates lateralized mass effect - surgical emergency",
+      "clinical_anchor": "Unequal pupils in head injury means bleeding is pushing brain to one side. That's neurosurgery NOW."
+    },
+    {
+      "error_id": "E4",
+      "error": "Didn't identify warfarin use",
+      "teaching_point": "Anticoagulated patients have much higher bleeding risk - catastrophic in TBI",
+      "clinical_anchor": "Warfarin turns a bad head injury into a fatal one. Always ask about blood thinners."
+    },
+    {
+      "error_id": "E5",
+      "error": "Gave sedatives masking neurological exam",
+      "teaching_point": "Sedation makes GCS trending impossible - you lose your only window",
+      "clinical_anchor": "Sedate a TBI patient and you're flying blind. The GCS is your only instrument."
+    },
+    {
+      "error_id": "E6",
+      "error": "Excessive IV fluids in hypertensive patient",
+      "teaching_point": "Avoid over-resuscitation - can worsen cerebral edema",
+      "clinical_anchor": "This patient is hypertensive. More fluid means more edema means more brain swelling."
+    },
+    {
+      "error_id": "E7",
+      "error": "Didn't recognize Cushing's triad",
+      "teaching_point": "Hypertension + bradycardia + irregular breathing = critically elevated ICP",
+      "clinical_anchor": "High BP, slow pulse, irregular breathing - that's the brain screaming for help."
+    }
+  ],
+
+  "consequence_templates": [
+    {
+      "gap_trigger": "CA2_missed",
+      "checklist_item_id": "CA2",
+      "gap_type": "missed_action",
+      "template": "C-spine precautions were never applied. {patient_name} had a high-risk fall mechanism with altered mental status - you CANNOT clear the C-spine in this patient. Any movement could have caused or worsened spinal cord injury, resulting in paralysis.",
+      "severity": "critical",
+      "medical_basis": "Fall from height + altered mental status = high risk for cervical spine injury. Standard of care requires immobilization."
+    },
+    {
+      "gap_trigger": "CA3_late",
+      "checklist_item_id": "CA3",
+      "gap_type": "delayed_action",
+      "template": "Initial GCS was assessed at {actual_time} minutes. Earlier GCS assessment would have established a baseline for trending. Without early baseline, you cannot detect deterioration patterns that indicate rising intracranial pressure.",
+      "severity": "moderate",
+      "medical_basis": "GCS trending is more important than single values. Early baseline enables detection of deterioration."
+    },
+    {
+      "gap_trigger": "CA5_missed",
+      "checklist_item_id": "CA5",
+      "gap_type": "missed_action",
+      "template": "{patient_name}'s warfarin use was never identified. Anticoagulated patients with head injury have dramatically higher mortality - the bleeding doesn't stop. This information affects treatment urgency and hospital notification.",
+      "severity": "high",
+      "medical_basis": "Warfarin-associated intracranial hemorrhage has mortality >50%. Early identification triggers reversal protocols."
+    }
+  ],
+
+  "critical_decision_points": [
+    {
+      "id": "CDP1",
+      "decision": "c_spine_decision",
+      "description": "Appropriate C-spine management in head injury",
+      
+      "scoring": {
+        "optimal": "Immediate manual stabilization, applied collar early, maintained precautions throughout, verbalized cannot clear C-spine due to altered mental status.",
+        "acceptable": "Applied C-spine precautions, even if slightly delayed.",
+        "suboptimal": "Partial precautions or delayed application.",
+        "dangerous": "No C-spine precautions applied, or cleared spine despite altered mental status."
+      },
+      
+      "clinical_anchor": "Can't clear the C-spine if you can't trust the exam. Altered mental status means automatic precautions.",
+      
+      "aar_teaching_point": "C-spine clearance requires a reliable exam - patient must be alert, oriented, not intoxicated, no distracting injuries. This patient is confused with amnesia - you CANNOT clear the C-spine clinically. Maintain precautions."
+    },
+    {
+      "id": "CDP2",
+      "decision": "gcs_trending",
+      "description": "Serial neurological assessment",
+      
+      "scoring": {
+        "optimal": "Documented GCS at arrival with full breakdown, repeated at least once, identified any change in trend.",
+        "acceptable": "Performed initial and follow-up GCS assessment.",
+        "suboptimal": "Single GCS only, no trending.",
+        "dangerous": "No formal GCS assessment or gave sedatives making assessment impossible."
+      },
+      
+      "clinical_anchor": "One GCS is a snapshot. Serial GCS is a movie. The movie shows you if the brain is bleeding.",
+      
+      "aar_teaching_point": "GCS trending is THE key assessment in TBI. A stable GCS 13 is concerning but manageable. A GCS dropping from 13 to 9 over 10 minutes is catastrophic. Always document baseline and reassess frequently."
+    },
+    {
+      "id": "CDP3",
+      "decision": "secondary_injury_prevention",
+      "description": "Preventing hypoxia and hypotension",
+      
+      "scoring": {
+        "optimal": "Verbalized targets (SpO2 >90%, SBP >90), monitored continuously, had oxygen ready, recognized patient is currently HYPERtensive so doesn't need fluids.",
+        "acceptable": "Maintained adequate oxygenation and perfusion.",
+        "suboptimal": "Allowed periods of hypoxia or didn't monitor.",
+        "dangerous": "Significant hypoxia or hypotension occurred without intervention, or over-resuscitated hypertensive patient."
+      },
+      
+      "clinical_anchor": "In TBI, hypoxia and hypotension each double mortality. Both together? Catastrophic. Prevent them.",
+      
+      "aar_teaching_point": "Primary brain injury happened at impact - you can't fix that. Secondary brain injury (hypoxia, hypotension) is PREVENTABLE. Goals: SpO2 >90% (ideally 94-98%), SBP >90mmHg (ideally >110). This patient is hypertensive - don't over-resuscitate."
+    }
+  ],
+
+  "aar_teaching_points": {
+    "key_concepts": [
+      "GCS trending more important than single values",
+      "Anisocoria = lateralized mass effect = surgical emergency",
+      "Cushing's triad = critically elevated ICP",
+      "Anticoagulation dramatically worsens prognosis",
+      "Prevent secondary injury: SpO2 >90%, SBP >90"
+    ],
+    "clinical_pearls": [
+      "Cannot clear C-spine with altered mental status",
+      "Relative bradycardia in trauma patient is concerning (should be tachycardic)",
+      "Warfarin patient with head injury needs urgent CT and possible reversal",
+      "Never sedate TBI patient unless treating seizures"
+    ]
+  },
+
+  "simulation_config": {
+    "real_time_progression": true,
+    "auto_deterioration_if_no_treatment": true,
+    "max_duration_minutes": 20,
+    "deterioration_timing_minutes": [5, 9, 13],
+    "layer_two_enabled": true,
+    "challenge_points_active": false,
+    "critical_decision_points_active": true,
+    "max_cdp_evaluations": 3
+  }
+}

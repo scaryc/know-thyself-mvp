@@ -1,0 +1,652 @@
+{
+  "scenario_id": "OPIOIDOVE_PREDAVKOVANIE_MVP_V3_001_SK",
+  "metadata": {
+    "title": "Opioidové predávkovanie",
+    "version": "3.0_Enhanced_SK",
+    "difficulty": "stredná",
+    "estimated_duration_minutes": 20,
+    "scenario_type": "toxikologické_respiračné",
+    "learning_objectives": [
+      "Rozpoznať opioidový toxidróm (respiračná depresia, mióza, znížené vedomie)",
+      "Uprednostniť ventiláciu PRED naloxónom",
+      "Podať naloxón s vhodnou titráciou",
+      "Pochopiť cieľ naloxónu: adekvátne dýchanie, NIE plné vedomie",
+      "Vyhnúť sa precipitácii akútneho abstinenčného syndrómu",
+      "Rozpoznať riziko resedácie",
+      "Preukázať prístup harm reduction"
+    ],
+    "target_student_level": "študent_druhého_ročníka_záchranár",
+    "language": "slovenčina",
+    "changelog": {
+      "v3.0_enhanced_sk": "Slovenská verzia. Nový scenár s Blueprint Structure Enhancement v2. Časovanie deteriorácie 5/9/13 min. Trvanie 20 minút."
+    }
+  },
+
+  "dispatch_info": {
+    "call_type": "Osoba v bezvedomí",
+    "age": "24",
+    "sex": "Muž",
+    "location": "Verejný park, toaleta",
+    "caller": "Strážnik parku",
+    "additional_info": "Nájdený v bezvedomí v kabínke toalety, slabo dýcha"
+  },
+
+  "scene_description": {
+    "location": "Verejná toaleta v parku, pacient zosunený na záchode v uzamknutej kabínke",
+    "safety": "Strážnik otvoril dvere, miesto bezpečné, ihla viditeľná na podlahe",
+    "access": "Prízemie, úzka toaleta, bude potrebné posunúť pacienta pre prístup s nosidlami",
+    "bystanders": "Strážnik prítomný, žiadni svedkovia užívania drogy"
+  },
+
+  "patient_profile": {
+    "name": "Tomáš",
+    "age": 24,
+    "weight_kg": 72,
+    "personality": "Spočiatku nereagujúci. Po naloxóne: môže byť zmätený, podráždený, úzkostlivý, prípadne agresívny ak je predávkovaný"
+  },
+
+  "initial_vitals": {
+    "HR": 52,
+    "RR": 4,
+    "SpO2": 78,
+    "BP_systolic": 88,
+    "BP_diastolic": 52,
+    "temperature": 36.2,
+    "GCS": 3,
+    "GCS_breakdown": "E1 V1 M1",
+    "pupils": "1mm bilaterálne, minimálne reaktívne (miotické)"
+  },
+
+  "state_descriptions": {
+    "initial": {
+      "student_sees": "Nachádzate mladého muža zosunného na záchode v kabínke toalety. Je kompletne nereagujúci - hlava mu visí dopredu, ruky sú bez napätia po bokoch. Jeho koža je bledá so šedo-modrastým nádychom, najmä okolo pier a konečkov prstov. Sotva vidíte pohyb jeho hrudníka - možno 4 veľmi plytké nádychy za minútu. Keď mu zdvihnete viečko, jeho zrenice sú maličké špendlíkové hlavičky, sotva viditeľné. Na podlahe pri jeho nohe je striekačka a vidíte čerstvé vpichové značky na ľavom predlaktí. Strážnik hovorí: 'Kontrolujem tieto toalety každú hodinu. Nebol tu pred hodinou.' Pacient nereaguje na hlas ani bolestivý podnet.",
+      "appearance": "Mladý muž, nereagujúci, cyanotický, agonálne dýchanie, miotické zrenice, ihla/striekačka viditeľná, stopy po vpichoch na ruke",
+      "clinical_note": "OPIOIDOVÉ PREDÁVKOVANIE - klasický toxidróm: respiračná depresia (DF 4), depresia CNS (GCS 3), mióza (špendlíkové zrenice). KRITICKÁ HYPOXIA (SpO2 78%). VENTILUJTE NAJPRV - naloxón nefunguje na mŕtvych pacientoch. Po oxygenácii podajte naloxón titrovaný na respiračné úsilie, NIE na plné vedomie.",
+      "urgency_level": "kritická"
+    },
+    "improving": {
+      "student_sees": "Po vašich intervenciách pacient dýcha lepšie. Jeho dychová frekvencia sa zvýšila a jeho farba sa zlepšuje - menej modrý okolo pier. Očami pomrkáva a začína sa mierne hýbať. Zastoná, keď zavoláte jeho meno. Nie je úplne bdelý - ospanlivý a zmätený - ale DÝCHA adekvátne. 'Čo... kde som?' zamumle a rozzerá sa zmätene. Nezdá sa, že si pamätá čo sa stalo.",
+      "appearance": "Ospanlivý ale zobuditeľný, dýcha adekvátne (DF 12-16), farba sa zlepšuje, zmätený ale reagujúci",
+      "clinical_note": "CIEĽ DOSIAHNUTÝ: Pacient dýcha adekvátne. Nemusí byť úplne pri vedomí - len dýchať. Plná reverzia riskuje akútny abstinenčný syndróm (vracanie, agitáciu, agresivitu) a pacient môže odísť na vlastné riziko a znovu užiť. Ospanlivý ale dýchajúci je optimálny cieľ.",
+      "urgency_level": "stredná"
+    },
+    "deteriorating": {
+      "student_sees": "Stav pacienta sa zhoršuje - alebo naloxón odznieva. Jeho dýchanie sa opäť spomaľuje, stáva sa plytké a nepravidelné. Jeho farba sa zhoršuje - viac cyanotický. Je menej reagujúci ako predtým. Mohla by to byť resedácia keď naloxón odznieva (kratšie trvanie ako mnohé opioidy) alebo nedostatočná počiatočná reverzia.",
+      "appearance": "Resedácia prebieha, dýchanie sa spomaľuje, stáva sa menej reagujúcim, cyanóza sa vracia",
+      "clinical_note": "RESEDÁCIA - trvanie naloxónu (30-90 min) často kratšie ako trvanie opioidu (hodiny). Môže byť potrebný opakovaný naloxón. Pokračujte v pozornom sledovaní. Ak je zapojený fentanyl, môžu byť potrebné oveľa vyššie dávky naloxónu.",
+      "urgency_level": "vysoká"
+    },
+    "critical": {
+      "student_sees": "KRITICKÉ: Pacient nedýcha. Jeho hrudník je v pokoji. Jeho pery sú modro-šedé. Je kompletne nereagujúci. Pulz na zápästí nehmatný. Toto je respiračná zástava progredujúca do srdcovej zástavy ak nie je okamžite zvrátená.",
+      "appearance": "Apnoický, bez pulzu alebo sotva hmatný pulz, hlboká cyanóza, bezprostredná srdcová zástava",
+      "clinical_note": "Respiračná zástava z opioidom indukovanej respiračnej depresie. Bez okamžitej BVM ventilácie a naloxónu bude progredovať do srdcovej zástavy z hypoxie. KPR môže byť potrebná.",
+      "urgency_level": "život-ohrozujúca"
+    }
+  },
+
+  "assessment_findings": {
+    "airway": {
+      "initial": "Priechodné ale ohrozené - pacient nechráni, poloha hlavy obštruuje, môže vyžadovať repolohovanie",
+      "improving": "Priechodné, pacient chráni vlastné dýchacie cesty",
+      "critical": "Vyžaduje aktívny manažment"
+    },
+    "breathing": {
+      "initial": "DF 4, plytké, sotva viditeľný pohyb hrudníka, neadekvátny dychový objem, cyanóza",
+      "improving": "DF 12-16, adekvátna hĺbka, SpO2 sa zlepšuje",
+      "deteriorating": "DF opäť klesá ako naloxón odznieva",
+      "critical": "Apnoický alebo agonálny"
+    },
+    "circulation": {
+      "initial": "TF 52 (bradykardia z hypoxie), TK 88/52, slabý pulz, studené periférie, kapilárny návrat 4 sekundy",
+      "improving": "TF 72, TK 105/68, silnejší pulz, otepľuje sa",
+      "critical": "Bradykardia progreduje, môže stratiť pulz"
+    },
+    "disability": {
+      "initial": "GCS 3 (E1V1M1), nereagujúci na akúkoľvek stimuláciu, zrenice 1mm bilaterálne (miotické - klasický opioidový znak)",
+      "improving": "GCS 10-12, ospanlivý ale zobuditeľný, plní príkazy, zrenice 3mm reaktívne",
+      "note": "Zrenice sa dilatujú smerom k normálu ako opioid ustupuje"
+    },
+    "exposure": {
+      "needle_marks": "Čerstvé vpichové miesto v ľavej kubitálnej jamke, staršie stopy po vpichoch na oboch predlaktiach",
+      "paraphernalia": "Striekačka na podlahe, možný turniket nablízku",
+      "no_trauma": "Žiadne známky poranenia"
+    },
+    
+    "sample_history": {
+      "symptoms": "Nájdený nereagujúci s respiračnou depresiou",
+      "allergies": "Neznáme",
+      "medications": "Neznáme - pravdepodobne porucha z užívania opioidov, neisté či je v metadónovom/buprenorfínovom programe",
+      "past_history": "Neznáma - stopy po vpichoch naznačujú chronické IV užívanie drog",
+      "last_intake": "Neznáme",
+      "events": "Strážnik: 'Našiel som ho asi pred 5 minútami keď som robil obchôdzku. Nebol tu pred hodinou. Vidím veľa predávkovaní v tomto parku.'"
+    },
+
+    "opioid_toxidrome": {
+      "classic_triad": [
+        "Respiračná depresia (DF 4)",
+        "Depresia CNS (GCS 3)",
+        "Mióza (špendlíkové zrenice 1mm)"
+      ],
+      "additional_signs": [
+        "Bradykardia (z hypoxie)",
+        "Hypotenzia",
+        "Hypotermia (mierna)",
+        "Znížené črevné šelesty"
+      ],
+      "differential": "Zvážte: iné predávkovanie sedatívami, úraz hlavy, hypoglykémia, mŕtvica - ale klasická triáda s vpichovými značkami = opioidové predávkovanie"
+    }
+  },
+
+  "ecg_findings": {
+    "available": true,
+    "requires_equipment": "12-zvodový EKG monitor",
+    "acquisition_time_seconds": 10,
+
+    "findings_structured": {
+      "rhythm_and_rate": {
+        "rhythm": "Sínusová bradykardia",
+        "regularity": "pravidelný",
+        "rate_bpm": 52
+      },
+
+      "st_segment_changes": [],
+
+      "other_findings": [
+        "Bradykardia (hypoxiou indukovaná)",
+        "Žiadne akútne ischemické zmeny",
+        "Možný prolongovaný QTc (zváženie metadónu)"
+      ]
+    },
+
+    "interpretation": {
+      "diagnosis": "Sínusová bradykardia sekundárna k hypoxii",
+      "mechanism": "Hypoxia spôsobuje bradykardiu (na rozdiel od väčšiny iných príčin ktoré spôsobujú tachykardiu)",
+      "territory": "N/A",
+      "severity": "Zlepší sa s oxygenáciou",
+      "note": "LEN PRE REFERENCIU AGENTA"
+    },
+
+    "teaching_point": "Bradykardia pri predávkovaní je zvyčajne z HYPOXIE, nie z priameho účinku opioidu. Liečte hypoxiu (ventilujte!) a tepová frekvencia sa zlepší. EKG užitočné na kontrolu prolongovaného QTc ak je zapojený metadón. Neoneskorujte ventiláciu kvôli EKG.",
+    "teaching_point_note": "PRE POUŽITIE AAR AGENTOM",
+
+    "presentation_mode": "structured_text"
+  },
+
+  "critical_treatments": ["ventilácia", "naloxón"],
+
+  "primary_medications": {
+    "naloxon": {
+      "generic_name": "Naloxón",
+      "brand_names": ["Narcan", "Nyxoid"],
+      "class": "Opioidový antagonista",
+      "indication": "Opioidové predávkovanie s respiračnou depresiou",
+      "mechanism": "Kompetitívne blokuje opioidové receptory, zvracia respiračnú depresiu",
+      
+      "dosing": {
+        "initial_iv_im": "0,4mg IV/IM",
+        "intranasal": "2mg IN (jeden vstrek do každej nosovej dierky) ak nie je IV",
+        "repeat": "Každé 2-3 minúty ak nie je odpoveď",
+        "titration_goal": "Adekvátne respiračné úsilie (DF >12), NIE plné vedomie",
+        "max_typical": "2mg celkovo, ale fentanyl môže vyžadovať 10mg+"
+      },
+      
+      "pharmacokinetics": {
+        "onset_iv_minutes": "1-2",
+        "onset_im_minutes": "3-5",
+        "onset_in_minutes": "3-5",
+        "duration_minutes": "30-90",
+        "note": "Trvanie často KRATŠIE ako opioid - resedácia častá"
+      },
+      
+      "contraindications": {
+        "absolute": [],
+        "caution": "Pacienti závislí na opioidoch - môže precipitovať abstinenčný syndróm"
+      },
+      
+      "side_effects": [
+        "Akútny opioidový abstinenčný syndróm (ak závislý): nauzea, vracanie, hnačka, agitácia, tachykardia, hypertenzia",
+        "Pľúcny edém (zriedkavý)",
+        "Kŕče (zriedkavé)"
+      ],
+      
+      "warnings": [
+        "VENTILUJTE NAJPRV - naloxón nefunguje na mŕtvych pacientoch",
+        "Titrujte na dýchanie, nie na vedomie",
+        "Predávkovanie spôsobuje abstinenčný syndróm, vracanie (riziko aspirácie), agresivitu, odchod pacienta na vlastné riziko",
+        "Resedácia častá - sledujte minimálne 2 hodiny",
+        "Fentanyl môže vyžadovať oveľa vyššie dávky"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": true,
+        "must_ventilate_first": true,
+        "time_to_effect_minutes": 2,
+        "vital_changes": {
+          "RR": 14,
+          "SpO2": 96,
+          "HR": 72,
+          "GCS": 11,
+          "pupils": "3mm reaktívne"
+        },
+        "patient_response_titrated": "Pacient začína lepšie dýchať. Stáva sa ospanlivým ale zobuditeľným. Otvára oči na hlas. Zmätený: 'Kde som? Čo sa stalo?' Môže byť podráždený alebo úzkostlivý.",
+        "patient_response_over_reversed": "Pacient náhle úplne bdelý, agitovaný, možno agresívny. 'Nechaj ma!' Môže vracať (riziko aspirácie). Môže sa pokúsiť odísť. Môže sa stať nepriateľským.",
+        "clinical_effect": "Zvracia opioidové účinky na receptorovej úrovni. Cieľ: adekvátne dýchanie, pacient môže chrániť dýchacie cesty.",
+        "points_if_titrated_correctly": 25,
+        "points_if_over_reversed": 10,
+        "teaching_point": "Titrujte na DÝCHANIE, nie na vedomie. Ospanlivý pacient ktorý dýcha je bezpečnejší ako úplne bdelý pacient ktorý utečie a znovu užije."
+      }
+    },
+
+    "bag_valve_mask": {
+      "indication": "Respiračná podpora pred a počas nástupu účinku naloxónu",
+      
+      "scenario_specific_response": {
+        "critical_treatment": true,
+        "must_do_before_naloxone": true,
+        "vital_changes": {
+          "SpO2": 92
+        },
+        "clinical_effect": "Poskytuje kyslík a ventiláciu počas čakania na nástup naloxónu",
+        "points_if_used_first": 20,
+        "points_if_skipped_for_naloxone": -10,
+        "teaching_point": "VENTILUJTE NAJPRV. Naloxón potrebuje 1-2 minúty na účinok. Pacient potrebuje kyslík TERAZ. BVM preklenuje túto medzeru."
+      }
+    },
+
+    "oxygen": {
+      "indication": "Hypoxia",
+      
+      "scenario_specific_response": {
+        "importance": "kritický_adjuvans",
+        "clinical_effect": "Vysokoprietokový kyslík podporuje oxygenáciu",
+        "points_if_given": 5,
+        "note": "Samotný kyslík nedostačuje - pacient nedýcha adekvátne, potrebuje BVM"
+      }
+    }
+  },
+
+  "treatment_responses": {
+    "bvm_then_naloxone": {
+      "sequence": "BVM ventilácia → SpO2 sa zlepšuje → Naloxón → Pacient začína spontánne dýchať",
+      "vital_changes": {
+        "SpO2": "78 → 92 (BVM) → 97 (naloxón + spontánne dýchanie)",
+        "RR": "4 → asistované → 14 spontánne",
+        "GCS": "3 → 11"
+      },
+      "clinical_effect": "Optimálna sekvencia - pacient oxygenovaný počas celej doby, plynulá reverzia"
+    },
+    "naloxone_without_bvm": {
+      "vital_changes": {
+        "SpO2": "Môže ďalej klesať počas 1-2 min čakania na nástup naloxónu",
+        "risk": "Srdcová zástava z prolongovanej hypoxie"
+      },
+      "clinical_effect": "Nebezpečné - pacient hypoxický počas doby nástupu naloxónu"
+    },
+    "over_reversal": {
+      "vital_changes": {
+        "HR": 115,
+        "BP_systolic": 165,
+        "RR": 22,
+        "GCS": 15
+      },
+      "patient_response": "Úplne bdelý, agitovaný, vracia, pokúša sa odísť, možno agresívny",
+      "clinical_effect": "Akútny abstinenčný syndróm precipitovaný - pacient nepohodlný, riziko aspirácie, môže odísť na vlastné riziko a znovu užiť"
+    }
+  },
+
+  "no_treatment_progression": {
+    "5min": {
+      "vitals": {
+        "HR": 45,
+        "RR": 2,
+        "SpO2": 65,
+        "BP_systolic": 78,
+        "GCS": 3
+      },
+      "state": "deteriorating",
+      "description": "Takmer apnoický, hlboká hypoxia, bradykardia sa zhoršuje, bezprostredná zástava"
+    },
+    "9min": {
+      "vitals": {
+        "HR": 35,
+        "RR": 0,
+        "SpO2": 50,
+        "BP_systolic": 60,
+        "GCS": 3
+      },
+      "state": "critical",
+      "description": "Respiračná zástava, ťažká bradykardia, hypotenzný, zástava do minút"
+    },
+    "13min": {
+      "vitals": {
+        "HR": 0,
+        "RR": 0,
+        "SpO2": "nezaznamenateľná",
+        "BP_systolic": "nezmerateľný",
+        "GCS": 3
+      },
+      "state": "cardiac_arrest",
+      "description": "Srdcová zástava z hypoxie - vyžaduje KPR"
+    }
+  },
+
+  "secondary_medications_by_impact": {
+    "critical_harm": [
+      {
+        "name": "nadmerný_naloxón",
+        "description": "Veľký bolus (2mg+) podaný rýchlo",
+        "why_problematic": "Precipituje ťažký akútny abstinenčný syndróm",
+        "if_given": {
+          "vital_changes": {
+            "HR": 125,
+            "BP_systolic": 175,
+            "RR": 24
+          },
+          "patient_response": "Pacient náhle úplne bdelý, agitovaný, vracia, potí sa, tachykardický. 'Čo ste mi dali?! Choďte odo mňa!' Môže sa stať agresívnym. Vysoké riziko vracania a aspirácie.",
+          "clinical_effect": "Akútny opioidový abstinenčný syndróm precipitovaný. Pacient nepohodlný, riziko aspirácie, pravdepodobne odmietne transport, môže okamžite znovu užiť.",
+          "points": -15,
+          "aar_flag": "predávkovanie_reverzie"
+        },
+        "teaching_point": "Titrujte naloxón na DÝCHANIE, nie na vedomie. 0,4mg, počkajte 2 minúty, opakujte ak treba. Cieľ DF >12, nie GCS 15."
+      }
+    ],
+
+    "worsens": [
+      {
+        "name": "flumazenil",
+        "generic_name": "Flumazenil",
+        "why_wrong": "Toto je opioidové predávkovanie, nie benzodiazepínové. A flumazenil môže spôsobiť kŕče.",
+        "if_given": {
+          "clinical_effect": "Žiadny účinok - flumazenil zvracia benzodiazepíny, nie opioidy. Ak pacient tiež užil benzodiazepíny, flumazenil môže spôsobiť kŕče.",
+          "points": -10,
+          "aar_flag": "nesprávne_antidotum"
+        },
+        "teaching_point": "Naloxón zvracia OPIOIDY. Flumazenil zvracia BENZODIAZEPÍNY. Rôzne receptory, rôzne antidotá. Tiež flumazenil spôsobuje kŕče u benzodiazepín-závislých pacientov."
+      }
+    ],
+
+    "neutral": [
+      {
+        "name": "glukóza",
+        "generic_name": "Glukóza 40%",
+        "indication": "Hypoglykémia",
+        "why_check": "Rozumné skontrolovať glykémiu u každého nereagujúceho pacienta",
+        "if_given": {
+          "clinical_effect": "Žiadny účinok ak je glykémia normálna. Ale kontrola glykémie pri zmenenom vedomí je správna prax.",
+          "points": 0,
+          "aar_flag": "vhodné_diferenciálne_zváženie"
+        },
+        "teaching_point": "Kontrola glykémie u nereagujúceho pacienta je dobrá prax. Ale táto prezentácia (špendlíkové zrenice, vpichové značky, DF 4) je klasické opioidové predávkovanie."
+      }
+    ]
+  },
+
+  "critical_actions_checklist": [
+    {
+      "id": "CA1",
+      "action": "Zhodnotenie bezpečnosti miesta",
+      "category": "bezpečnosť_miesta",
+      "time_target_minutes": 1,
+      "points": 5,
+      "importance": "nevyhnutné",
+      "criteria": "Bezpečnosť ihiel, BSI, žiadne iné nebezpečenstvá",
+      "matching": {
+        "keywords": ["miesto", "bezpečnosť", "bezpečné"],
+        "synonyms": ["ihla", "ostré predmety", "bsi", "rukavice", "nebezpečenstvo"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA2",
+      "action": "Rozpoznať opioidový toxidróm",
+      "category": "vyšetrenie",
+      "time_target_minutes": 2,
+      "points": 10,
+      "importance": "kritické",
+      "criteria": "Identifikuje triádu: respiračná depresia + depresia CNS + mióza",
+      "matching": {
+        "keywords": ["opioid", "predávkovanie", "toxidróm"],
+        "synonyms": ["heroín", "fentanyl", "špendlíkové", "mióza", "respiračná depresia", "narkotiká"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA3",
+      "action": "Uvoľniť dýchacie cesty a polohovať pacienta",
+      "category": "liečba",
+      "time_target_minutes": 2,
+      "points": 5,
+      "importance": "kritické",
+      "matching": {
+        "keywords": ["dýchacie cesty", "poloha"],
+        "synonyms": ["záklon hlavy", "predsunutie čeľuste", "stabilná poloha"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA4",
+      "action": "Poskytnúť BVM ventiláciu",
+      "category": "liečba",
+      "time_target_minutes": 3,
+      "points": 20,
+      "importance": "kritické",
+      "criteria": "MUSÍ ventilovať PRED alebo POČAS podania naloxónu",
+      "matching": {
+        "keywords": ["bvm", "ventilovať", "vak-maska"],
+        "synonyms": ["ambu", "asistovaná ventilácia", "dýchať za", "ventilácia"],
+        "tool_mappings": ["použiť_bvm", "ventilovať_pacienta"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA5",
+      "action": "Podať naloxón",
+      "category": "liečba",
+      "time_target_minutes": 4,
+      "points": 20,
+      "importance": "kritické",
+      "criteria": "0,4mg IV/IM titrovaný na respiračné úsilie",
+      "matching": {
+        "keywords": ["naloxón", "narcan"],
+        "synonyms": ["0.4mg", "0,4mg", "opioidový antagonista", "reverzia"],
+        "tool_mappings": ["podať_naloxón", "dať_narcan"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA6",
+      "action": "Titrovať na dýchanie NIE na vedomie",
+      "category": "liečba",
+      "time_target_minutes": 6,
+      "points": 10,
+      "importance": "kritické",
+      "criteria": "Cieľ DF >12, pacient dýcha adekvátne, NIE nutne úplne bdelý",
+      "matching": {
+        "keywords": ["titrovať", "dýchanie"],
+        "synonyms": ["dychová frekvencia", "adekvátne dýchanie", "nie plná reverzia", "parciálna reverzia"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA7",
+      "action": "Sledovať resedáciu",
+      "category": "monitoring",
+      "time_target_minutes": 10,
+      "points": 5,
+      "importance": "dôležité",
+      "criteria": "Rozpoznáva, že naloxón môže odznieť pred opioidom",
+      "matching": {
+        "keywords": ["sledovať", "resedácia", "odznieva"],
+        "synonyms": ["pozorovať", "prekontrolovať", "trvanie naloxónu", "môže potrebovať viac"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA8",
+      "action": "Rozhodnutie o transporte s harm reduction prístupom",
+      "category": "dispozícia",
+      "time_target_minutes": 12,
+      "points": 5,
+      "importance": "dôležité",
+      "matching": {
+        "keywords": ["transport", "nemocnica"],
+        "synonyms": ["harm reduction", "sledovanie", "observácia"],
+        "exclusion_keywords": []
+      }
+    }
+  ],
+
+  "common_errors": [
+    {
+      "error_id": "E1",
+      "error": "Naloxón pred ventiláciou",
+      "teaching_point": "VENTILUJTE NAJPRV - naloxón potrebuje 1-2 minúty na účinok, pacient potrebuje kyslík TERAZ",
+      "clinical_anchor": "Naloxón nefunguje na mŕtvych pacientoch. Ventilujte najprv, naloxón druhý."
+    },
+    {
+      "error_id": "E2",
+      "error": "Predávkovanie reverzie veľkou dávkou naloxónu",
+      "teaching_point": "Titrujte na dýchanie (DF >12), nie na vedomie",
+      "clinical_anchor": "Ospanlivý pacient ktorý dýcha je bezpečnejší ako bdelý pacient ktorý vracia, bojuje a odchádza znovu užiť."
+    },
+    {
+      "error_id": "E3",
+      "error": "Nerozpoznal riziko resedácie",
+      "teaching_point": "Naloxón trvá 30-90 minút, opioidy trvajú hodiny - resedácia častá",
+      "clinical_anchor": "Naloxón odznieva. Opioid nie. Počítajte s druhým kolom."
+    },
+    {
+      "error_id": "E4",
+      "error": "Jedna dávka naloxónu považovaná za dostatočnú",
+      "teaching_point": "Môžu byť potrebné opakované dávky, najmä pri fentanyle",
+      "clinical_anchor": "Jedna dávka nemusí stačiť. Fentanyl sa môže naloxónu 0,4mg vysmievať."
+    },
+    {
+      "error_id": "E5",
+      "error": "Neuprednostnil vyšetrenie dýchacích ciest/dýchania",
+      "teaching_point": "ABC vždy platí - opioidové predávkovanie je primárne respiračná emergentnosť",
+      "clinical_anchor": "Toto je najprv problém s dýchaním, drogový problém druhý. Liečte A a B."
+    },
+    {
+      "error_id": "E6",
+      "error": "Odsudzujúci prístup k pacientovi",
+      "teaching_point": "Harm reduction prístup zlepšuje výsledky - liečte s dôstojnosťou",
+      "clinical_anchor": "Závislosť je choroba. Odsudzovanie nezachraňuje životy, naloxón áno."
+    }
+  ],
+
+  "consequence_templates": [
+    {
+      "gap_trigger": "CA4_missed",
+      "checklist_item_id": "CA4",
+      "gap_type": "vynechaná_akcia",
+      "template": "BVM ventilácia nebola nikdy poskytnutá. {patient_name} mal dychovú frekvenciu 4 a SpO2 78%. Počas čakania na účinok naloxónu (1-2 minúty) jeho mozog bol ťažko hypoxický. Naloxón zvracia opioidové účinky, ale nemôže zvrátiť mozgové poškodenie z prolongovanej hypoxie.",
+      "severity": "kritická",
+      "medical_basis": "Úmrtia na opioidové predávkovanie sú z respiračnej depresie a hypoxie. Ventilácia poskytuje okamžitú oxygenáciu počas čakania na nástup naloxónu."
+    },
+    {
+      "gap_trigger": "CA5_late",
+      "checklist_item_id": "CA5",
+      "gap_type": "oneskorená_akcia",
+      "template": "Naloxón bol podaný v {actual_time} minúte. Zatiaľ čo ventilácia mohla podporiť oxygenáciu, oneskorený naloxón predĺžil obdobie respiračnej depresie a vyžadoval pokračujúcu manuálnu ventiláciu.",
+      "severity": "stredná",
+      "medical_basis": "Rýchle podanie naloxónu obnovuje spontánne dýchanie, znižuje potrebu prolongovanej asistovanej ventilácie."
+    },
+    {
+      "gap_trigger": "CA4_after_CA5",
+      "checklist_item_id": "CA4",
+      "gap_type": "chyba_v_sekvencii",
+      "template": "Naloxón bol podaný PRED zabezpečením ventilácie. Počas 1-2 minút kým naloxón začal účinkovať, SpO2 {patient_name} 78% pokračovalo v poklese. Sekvencia by mala byť: VENTILUJTE → naloxón → pokračujte v podpore kým dýchanie nie je adekvátne.",
+      "severity": "vysoká",
+      "medical_basis": "Nástup naloxónu je 1-2 minúty IV. Počas tohto času apnoický pacient zostáva hypoxický. BVM ventilácia preklenuje túto medzeru."
+    }
+  ],
+
+  "critical_decision_points": [
+    {
+      "id": "CDP1",
+      "decision": "ventilácia_pred_naloxónom",
+      "description": "Uprednostnenie oxygenácie pred antidotom",
+      
+      "optimal_sequence": [
+        "Uvoľniť dýchacie cesty (záklon hlavy, predsunutie čeľuste)",
+        "Zhodnotiť dýchanie - DF 4, neadekvátne",
+        "Začať BVM ventiláciu s vysokoprietokovým kyslíkom",
+        "Vidieť zlepšenie SpO2 s ventiláciou",
+        "POTOM podať naloxón počas pokračovania ventilačnej podpory"
+      ],
+      
+      "scoring": {
+        "optimal": "Okamžite uvoľnil dýchacie cesty, inicioval BVM ventiláciu, podal naloxón počas ventilácie, verbalizoval: 'Treba najprv oxygenáciu - naloxón potrebuje minútu na účinok.'",
+        "acceptable": "Poskytol ventiláciu a naloxón takmer súčasne.",
+        "suboptimal": "Podal naloxón najprv, potom začal ventiláciu po krátkom oneskorení.",
+        "dangerous": "Podal naloxón bez ventilácie vôbec, alebo významné oneskorenie oxygenácie."
+      },
+      
+      "clinical_anchor": "Naloxón nefunguje na mŕtvych pacientoch. Ventilujte najprv, zvrátite druhé.",
+      
+      "aar_teaching_point": "Opioidové predávkovanie zabíja zastavením dýchania. Naloxón je antidotum, ale potrebuje 1-2 minúty na účinok. Počas toho času pacient potrebuje kyslík. BVM ventilácia JE okamžitá život zachraňujúca intervencia. Naloxón je druhý."
+    },
+    {
+      "id": "CDP2",
+      "decision": "titrácia_naloxónu",
+      "description": "Vhodné dávkovanie naloxónu na vyhnutie sa predávkovaniu reverzie",
+      
+      "scoring": {
+        "optimal": "Začal s 0,4mg, zhodnotil odpoveď, opakoval postupne, zastavil keď DF >12 aj keď pacient stále ospanlivý. Verbalizoval: 'Cieľ je dýchanie, nie plné prebudenie.'",
+        "acceptable": "Podal vhodné dávky, dosiahol adekvátne dýchanie.",
+        "suboptimal": "Podal väčšiu počiatočnú dávku, pacient nepohodlný ale nie ťažko predávkovaný.",
+        "dangerous": "Veľký bolus (2mg+) spôsobujúci ťažký abstinenčný syndróm, vracanie, agresivitu."
+      },
+      
+      "clinical_anchor": "Titrujte na dýchanie, nie na vedomie. Ospanlivý a dýchajúci porazí bdelého a vraciaceho.",
+      
+      "aar_teaching_point": "Cieľ naloxónu: DF >12, pacient chráni dýchacie cesty. NIE GCS 15. Predávkovanie reverzie spôsobuje akútny abstinenčný syndróm (vracanie, agitácia, tachykardia, hypertenzia), riziko aspirácie, odchod pacienta na vlastné riziko a okamžité znovu užitie. Ospanlivý pacient ktorý adekvátne dýcha je optimálny koncový bod."
+    },
+    {
+      "id": "CDP3",
+      "decision": "povedomie_o_resedácii",
+      "description": "Rozpoznanie a plánovanie odznievania naloxónu",
+      
+      "scoring": {
+        "optimal": "Verbalizoval povedomie, že naloxón môže odznieť pred opioidom, plánoval sledovanie, pripravený na opakované dávkovanie.",
+        "acceptable": "Sledoval pacienta, rozpoznal keď začala resedácia, opakoval naloxón.",
+        "suboptimal": "Predpokladal, že jedna dávka stačí, aktívne nesledoval.",
+        "dangerous": "Opustil pacienta po počiatočnej reverzii, žiadny plán sledovania."
+      },
+      
+      "clinical_anchor": "Naloxón odznieva za 30-90 minút. Fentanyl trvá hodiny. Plánujte druhé kolo.",
+      
+      "aar_teaching_point": "Trvanie naloxónu: 30-90 minút. Mnohé opioidy (najmä fentanyl): 4-24 hodín. Resedácia je ČASTÁ a OČAKÁVANÁ. Všetci pacienti s opioidovým predávkovaním potrebujú minimálne 2 hodiny sledovania. Transport je nevyhnutný aj keď pacient spočiatku odmieta."
+    }
+  ],
+
+  "aar_teaching_points": {
+    "key_concepts": [
+      "VENTILUJTE NAJPRV - naloxón nefunguje na mŕtvych pacientoch",
+      "Titrujte na DÝCHANIE (DF >12), nie na VEDOMIE",
+      "Opioidový toxidróm: respiračná depresia + depresia CNS + mióza (špendlíkové zrenice)",
+      "Resedácia je častá - naloxón odznieva pred opioidom",
+      "Harm reduction prístup: liečte s dôstojnosťou, neodsudzujte"
+    ],
+    "clinical_pearls": [
+      "Bradykardia pri predávkovaní je z HYPOXIE - zlepší sa s oxygenáciou",
+      "Fentanyl môže vyžadovať oveľa vyššie dávky naloxónu (10mg+)",
+      "Špendlíkové zrenice pomáhajú odlíšiť opioidové predávkovanie od iných príčin bezvedomia",
+      "Predávkovanie reverzie spôsobuje vracanie (riziko aspirácie) a odchod pacienta na vlastné riziko",
+      "0,4mg IV, počkajte 2-3 minúty, opakujte - nie veľké bolusové dávky"
+    ]
+  },
+
+  "simulation_config": {
+    "real_time_progression": true,
+    "auto_deterioration_if_no_treatment": true,
+    "max_duration_minutes": 20,
+    "deterioration_timing_minutes": [5, 9, 13],
+    "layer_two_enabled": true,
+    "challenge_points_active": false,
+    "critical_decision_points_active": true,
+    "max_cdp_evaluations": 3
+  }
+}

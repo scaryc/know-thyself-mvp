@@ -1,0 +1,686 @@
+{
+  "scenario_id": "STATUS_EPILEPTICUS_MVP_V3_001",
+  "metadata": {
+    "title": "Status Epilepticus with Hypoglycemia",
+    "version": "3.0_Enhanced",
+    "difficulty": "high",
+    "estimated_duration_minutes": 20,
+    "scenario_type": "neurological_metabolic",
+    "learning_objectives": [
+      "Recognize status epilepticus (seizure >5 minutes)",
+      "ALWAYS check glucose in seizure patients",
+      "Identify hypoglycemia as treatable cause of seizures",
+      "Understand glucose before benzodiazepine sequence",
+      "Administer benzodiazepines with appropriate titration",
+      "Manage airway during active seizure safely",
+      "Demonstrate critical thinking: treat causes not just symptoms"
+    ],
+    "target_student_level": "second_year_paramedic_student",
+    "changelog": {
+      "v3.0_enhanced": "Blueprint Structure Enhancement v2 applied: matching config, clinical anchors, consequence templates, ECG standardization. Deterioration timing 5/9/13 min. Duration 20 minutes. Removed challenge_points."
+    }
+  },
+
+  "dispatch_info": {
+    "call_type": "Seizure",
+    "age": "34",
+    "sex": "Female",
+    "location": "Residential apartment, 2nd floor",
+    "caller": "Boyfriend",
+    "additional_info": "Shaking all over, been going on for several minutes, can't wake her up"
+  },
+
+  "scene_description": {
+    "location": "Bedroom, patient on floor next to bed",
+    "safety": "Scene safe, boyfriend moved furniture away from patient",
+    "access": "2nd floor, narrow staircase, boyfriend can help with carry",
+    "bystanders": "Boyfriend present, very distressed but trying to help, knows patient's history"
+  },
+
+  "patient_profile": {
+    "name": "Andrea",
+    "age": 34,
+    "weight_kg": 68,
+    "personality": "During seizure: unresponsive. Post-ictal: confused, gradually recovers, anxious about what happened"
+  },
+
+  "initial_vitals": {
+    "HR": 135,
+    "RR": "irregular 18-24",
+    "SpO2": 88,
+    "BP_systolic": 155,
+    "BP_diastolic": 92,
+    "temperature": 37.2,
+    "GCS": 3,
+    "glucose": 1.8
+  },
+
+  "state_descriptions": {
+    "initial": {
+      "student_sees": "You arrive to find a young woman lying on her side on the bedroom floor, actively seizing. Her whole body is rigid, then shaking rhythmically - arms and legs jerking violently. Her eyes are rolled back, jaw clenched tight. You can hear a gurgling sound from her airway and see saliva pooling at the corner of her mouth. Her lips have a bluish tinge. The boyfriend is kneeling beside her, crying. 'She's been like this for at least 6 or 7 minutes now! I called as soon as it started. She has epilepsy but her seizures usually stop after a minute or two. This one won't stop!' You can smell urine - she's incontinent. On the nightstand you notice an insulin pen and a glucose meter.",
+      "appearance": "Young female, actively seizing (tonic-clonic), cyanotic lips, incontinent, jaw clenched, secretions pooling",
+      "clinical_note": "STATUS EPILEPTICUS (seizure >5 minutes). CRITICAL FINDING: Patient is Type 1 diabetic (insulin pen visible). Boyfriend mentions she didn't eat yesterday. HIGH PROBABILITY OF HYPOGLYCEMIA as CAUSE of seizure. Must check glucose IMMEDIATELY. Hypoglycemic seizure responds to GLUCOSE, not benzodiazepine. Check glucose before giving diazepam.",
+      "urgency_level": "critical"
+    },
+    "improving": {
+      "student_sees": "The seizure has stopped. The patient is lying still now, breathing more regularly though still fast. She's not yet responsive to your voice - when you call her name, she just groans. Her color is improving - lips less blue. She's in the postictal phase. After a few more minutes, her eyes flutter open. 'Wha... what happened? Where am I?' she asks in a confused, slurred voice. The boyfriend is crying with relief. 'Oh thank God, Andrea, you're okay!'",
+      "appearance": "Postictal - confused, groaning, slowly becoming more alert, color improving",
+      "clinical_note": "Seizure terminated (either from glucose correcting hypoglycemia, or from benzodiazepine). Postictal phase is normal - patient will gradually become more alert over 10-20 minutes. Continue monitoring glucose, watch for recurrence, supportive care.",
+      "urgency_level": "moderate"
+    },
+    "deteriorating": {
+      "student_sees": "The seizure continues despite your interventions - or has restarted after briefly stopping. She's seizing violently, and her oxygen level keeps dropping. Her lips and fingertips are now deeply blue. The seizure activity is becoming less organized - more twitching than rhythmic shaking - but she's still not responsive. Her breathing between the convulsions is shallow and inadequate.",
+      "appearance": "Ongoing or recurrent seizure, severe hypoxia, cyanotic, secretions, inadequate breathing",
+      "clinical_note": "Ongoing status epilepticus with respiratory compromise. If glucose not corrected, seizure will continue. If benzodiazepine given without glucose, may have some effect but underlying cause not treated. Prepare for respiratory support with BVM.",
+      "urgency_level": "critical"
+    },
+    "critical": {
+      "student_sees": "CRITICAL: The patient's seizure has stopped but not because she's better - because she's exhausted. She's now unresponsive and barely breathing. Her lips are blue-gray. Her breathing is slow and shallow - maybe 6 breaths per minute. She doesn't respond to anything. This is respiratory failure from prolonged seizure and/or medication-induced respiratory depression.",
+      "appearance": "Unresponsive, agonal breathing, cyanotic, no seizure activity (exhaustion or suppression)",
+      "clinical_note": "Respiratory failure - either from seizure exhaustion or benzodiazepine-induced respiratory depression. Requires immediate BVM ventilation. If glucose still low, ongoing hypoglycemic brain injury. This is pre-arrest state.",
+      "urgency_level": "life-threatening"
+    }
+  },
+
+  "assessment_findings": {
+    "airway": {
+      "during_seizure": "AT RISK - jaw clenched, secretions pooling, cannot insert OPA during active seizure",
+      "post_ictal": "May need OPA if not protecting airway",
+      "critical": "Requires BVM support"
+    },
+    "breathing": {
+      "during_seizure": "Irregular, often breath-holding during tonic phase, rapid during clonic phase, SpO2 falling",
+      "post_ictal": "Regular but may be depressed, especially if benzodiazepine given",
+      "critical": "Inadequate, requires assisted ventilation"
+    },
+    "circulation": {
+      "during_seizure": "HR 135, BP 155/92 (elevated from seizure activity), peripheral perfusion adequate",
+      "post_ictal": "HR 100-110, BP normalizing",
+      "critical": "May be compromised from hypoxia"
+    },
+    "disability": {
+      "during_seizure": "GCS 3 (E1V1M1) - but this is during convulsion, not true baseline",
+      "post_ictal": "GCS 6-8 initially, gradually improving to 10-12, then 14-15 over 20 minutes",
+      "glucose": "1.8 mmol/L - CRITICALLY LOW (normal 4-7)"
+    },
+    "exposure": {
+      "during_seizure": "Incontinent of urine (common), check for tongue bite (common), check for injuries from fall",
+      "environment": "Bedroom - insulin pen and glucose meter on nightstand - CRITICAL CLUE"
+    },
+    
+    "sample_history": {
+      "symptoms": "Generalized tonic-clonic seizure ongoing 6-7 minutes when EMS arrived",
+      "allergies": "No known drug allergies",
+      "medications": [
+        "Phenytoin 300mg daily for epilepsy",
+        "Insulin: Novorapid (rapid) with meals, Lantus (long-acting) at bedtime",
+        "CRITICAL INFO from boyfriend: 'She had stomach bug yesterday, didn't eat much, but I think she still took her insulin last night'"
+      ],
+      "past_history": "Epilepsy for 5 years (usually controlled), Type 1 Diabetes for 12 years",
+      "last_intake": "Boyfriend: 'She barely ate yesterday because she was sick. Just some crackers.'",
+      "events": "Woke up this morning feeling 'shaky and weak' (HYPOGLYCEMIA WARNING SIGNS). Then started seizing about 7-8 minutes ago."
+    },
+
+    "critical_clues": {
+      "diabetes_type_1": "Insulin-dependent diabetic",
+      "reduced_food_intake": "Didn't eat yesterday due to illness",
+      "insulin_taken": "Probably still took her insulin despite not eating",
+      "morning_symptoms": "'Shaky and weak' this morning = hypoglycemia prodrome",
+      "glucose_meter_visible": "On nightstand - patient monitors her glucose regularly",
+      "conclusion": "HYPOGLYCEMIA is causing the seizure"
+    }
+  },
+
+  "ecg_findings": {
+    "available": true,
+    "requires_equipment": "12-lead ECG monitor",
+    "acquisition_time_seconds": 10,
+
+    "findings_structured": {
+      "rhythm_and_rate": {
+        "rhythm": "Sinus tachycardia",
+        "regularity": "regular",
+        "rate_bpm": 135
+      },
+
+      "st_segment_changes": [],
+
+      "other_findings": [
+        "Motion artifact during seizure (expected)",
+        "No acute ischemic changes post-seizure"
+      ]
+    },
+
+    "interpretation": {
+      "diagnosis": "Sinus tachycardia - catecholamine response to seizure",
+      "mechanism": "Sympathetic surge from seizure activity and hypoglycemia",
+      "territory": "N/A",
+      "severity": "Expected for clinical state",
+      "note": "FOR AGENT REFERENCE ONLY"
+    },
+
+    "teaching_point": "ECG during seizure will have artifact. Tachycardia is expected (catecholamine surge). ECG is NOT a priority - glucose check and seizure termination are priorities. Post-seizure ECG useful to rule out arrhythmia as seizure cause (cardiac syncope misdiagnosed as seizure).",
+    "teaching_point_note": "FOR AAR AGENT USE",
+
+    "presentation_mode": "structured_text"
+  },
+
+  "critical_treatments": ["glucose", "airway_protection"],
+
+  "primary_medications": {
+    "glucose_40_percent": {
+      "generic_name": "Glucose 40%",
+      "class": "Antihypoglycemic",
+      "indication": "Hypoglycemia (glucose <3.5 mmol/L)",
+      "mechanism": "Directly provides glucose for brain metabolism",
+      
+      "dosing": {
+        "adult": "40-50ml IV (provides 16-20g glucose)",
+        "administration": "Slow IV push, flush with saline after",
+        "repeat": "Recheck glucose in 5 minutes, repeat if <4.0"
+      },
+      
+      "pharmacokinetics": {
+        "onset_minutes": "1-2",
+        "peak_effect_minutes": "5-10",
+        "duration_minutes": "30-60"
+      },
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": true,
+        "life_saving": true,
+        "treats_cause": true,
+        "time_to_effect_minutes": 2,
+        "vital_changes": {
+          "glucose": 6.2,
+          "seizure_activity": "STOPS within 2-4 minutes",
+          "GCS": "Improves to 8-10 then gradually to 14-15",
+          "HR": 100,
+          "SpO2": 96
+        },
+        "patient_response": "Seizure terminates. Patient enters postictal phase, gradually wakes up over 10-15 minutes. 'What happened? Did I have a seizure?'",
+        "clinical_effect": "TREATS THE CAUSE. Glucose corrects hypoglycemia which was causing seizure. Seizure stops because brain metabolism is restored.",
+        "points_if_given_first": 35,
+        "points_if_given_after_benzo": 25,
+        "teaching_point": "GLUCOSE TREATS THE CAUSE. Benzodiazepine suppresses the symptom. Always check glucose in seizures and give glucose if low BEFORE benzodiazepine."
+      }
+    },
+
+    "diazepam": {
+      "generic_name": "Diazepam",
+      "brand_names": ["Apaurin", "Valium"],
+      "class": "Benzodiazepine anticonvulsant",
+      "indication": "Status epilepticus, prolonged seizures (>5 min)",
+      "mechanism": "Enhances GABA inhibition, raises seizure threshold",
+      
+      "dosing": {
+        "adult": "10mg IV slowly over 2-3 minutes",
+        "repeat": "May repeat 10mg after 5-10 minutes if seizure continues (max 20mg prehospital)",
+        "rectal": "10-20mg PR if no IV access"
+      },
+      
+      "pharmacokinetics": {
+        "onset_iv_minutes": "1-3",
+        "peak_effect_minutes": "5",
+        "duration_hours": "15-60 minutes for anticonvulsant effect"
+      },
+      
+      "contraindications": {
+        "absolute": [],
+        "caution": "Respiratory depression risk"
+      },
+      
+      "side_effects": ["respiratory depression", "sedation", "hypotension"],
+      
+      "warnings": [
+        "Monitor respiratory rate - have BVM ready",
+        "In hypoglycemic seizure, benzo may stop seizure but doesn't fix cause - seizure may recur",
+        "Max 20mg prehospital to avoid respiratory depression"
+      ],
+      
+      "scenario_specific_response": {
+        "without_glucose_first": {
+          "vital_changes": {
+            "seizure_activity": "May stop temporarily",
+            "RR": 12,
+            "SpO2": 90,
+            "GCS": 6
+          },
+          "patient_response": "Seizure may stop but patient remains deeply unconscious (hypoglycemia + sedation). May re-seize when benzo wears off because glucose still low.",
+          "clinical_effect": "Suppresses seizure but doesn't treat cause. Patient at high risk of re-seizure and respiratory depression.",
+          "points": 10,
+          "aar_flag": "benzo_without_glucose_check"
+        },
+        "with_glucose_first": {
+          "clinical_effect": "If glucose given first and seizure stopped, benzo may not be needed. If seizure continues despite glucose correction, benzo is appropriate backup.",
+          "points": 15,
+          "teaching_point": "Benzodiazepine is backup, not first-line, in hypoglycemic seizure."
+        }
+      }
+    },
+
+    "oxygen": {
+      "indication": "Hypoxia during seizure",
+      
+      "scenario_specific_response": {
+        "importance": "supportive",
+        "clinical_effect": "Helps maintain oxygenation during seizure",
+        "points_if_given": 5,
+        "teaching_point": "Apply oxygen during seizure. Patient is hypoxic from breath-holding and secretions. Oxygen helps but doesn't stop seizure."
+      }
+    },
+
+    "glucagon": {
+      "generic_name": "Glucagon",
+      "indication": "Hypoglycemia when no IV access",
+      "dosing": "1mg IM",
+      
+      "pharmacokinetics": {
+        "onset_minutes": "10-15",
+        "note": "Much slower than IV glucose"
+      },
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": "if_no_iv_access",
+        "clinical_effect": "Will eventually raise glucose but much slower than IV glucose",
+        "points": 10,
+        "teaching_point": "Glucagon is backup for hypoglycemia when IV access impossible. Works by mobilizing liver glycogen - slower than IV glucose."
+      }
+    }
+  },
+
+  "treatment_responses": {
+    "glucose": {
+      "time_to_effect_minutes": 2,
+      "vital_changes": {
+        "glucose": 6.2,
+        "seizure": "stops",
+        "GCS": "improves over 10-15 minutes",
+        "SpO2": 96
+      },
+      "patient_says": "Initially nothing (postictal). Then gradually: 'What... what happened?'",
+      "clinical_effect": "Seizure terminates because CAUSE (hypoglycemia) is treated"
+    },
+    "diazepam_alone": {
+      "time_to_effect_minutes": 3,
+      "vital_changes": {
+        "seizure": "may stop temporarily",
+        "RR": 12,
+        "glucose": "still 1.8 - unchanged"
+      },
+      "clinical_effect": "Suppresses seizure but underlying hypoglycemia persists - high risk of recurrence"
+    }
+  },
+
+  "no_treatment_progression": {
+    "5min": {
+      "vitals": {
+        "HR": 142,
+        "RR": "irregular",
+        "SpO2": 82,
+        "BP_systolic": 165,
+        "GCS": 3,
+        "glucose": 1.5
+      },
+      "state": "deteriorating",
+      "description": "Ongoing seizure, hypoxia worsening, glucose dropping further, secretions accumulating"
+    },
+    "9min": {
+      "vitals": {
+        "HR": 148,
+        "RR": 20,
+        "SpO2": 75,
+        "GCS": 3,
+        "glucose": 1.2
+      },
+      "state": "deteriorating",
+      "description": "Status epilepticus continues, severe hypoxia, profound hypoglycemia, brain damage accumulating"
+    },
+    "13min": {
+      "vitals": {
+        "HR": 55,
+        "RR": 6,
+        "SpO2": 68,
+        "GCS": 3,
+        "glucose": 0.9
+      },
+      "state": "critical",
+      "description": "Seizure may be stopping from exhaustion, respiratory failure, bradycardia from hypoxia, near-arrest"
+    }
+  },
+
+  "secondary_medications_by_impact": {
+    "critical_harm": [
+      {
+        "name": "insulin",
+        "generic_name": "Insulin (any type)",
+        "why_dangerous": "Patient is HYPO-glycemic - insulin would be catastrophic",
+        "if_given": {
+          "vital_changes": {
+            "glucose": 0.6,
+            "seizure": "worsens",
+            "GCS": 3
+          },
+          "patient_response": "CRITICAL ERROR: Patient is hypoglycemic, you've given insulin which drops glucose further. Seizure intensifies, patient at severe risk of death.",
+          "points": -40,
+          "state_change": "critical",
+          "aar_flag": "catastrophic_error"
+        },
+        "teaching_point": "ALWAYS check glucose before giving insulin. Diabetics can be HYPER or HYPO glycemic - they are opposite conditions requiring opposite treatments."
+      },
+      {
+        "name": "excessive_benzodiazepine",
+        "description": ">20mg diazepam without respiratory support",
+        "why_dangerous": "Causes respiratory arrest",
+        "if_given": {
+          "vital_changes": {
+            "RR": 4,
+            "SpO2": 72,
+            "GCS": 3
+          },
+          "patient_response": "Patient stops breathing. Seizure stops too - but from respiratory depression, not from successful treatment.",
+          "points": -25,
+          "state_change": "critical",
+          "aar_flag": "oversedation"
+        },
+        "teaching_point": "Max 20mg diazepam prehospital. More = respiratory arrest. Have BVM ready with any benzodiazepine use."
+      }
+    ],
+
+    "worsens": [
+      {
+        "name": "oral_airway_during_seizure",
+        "description": "Forcing OPA into clenched mouth",
+        "why_wrong": "Causes injury - teeth break, jaw injury, finger injury",
+        "if_attempted": {
+          "clinical_effect": "Cannot insert - jaw clenched with tremendous force. Risk of broken teeth, injury to provider.",
+          "points": -10,
+          "aar_flag": "dangerous_airway_attempt"
+        },
+        "teaching_point": "NEVER force anything into a seizing patient's mouth. Wait until seizure stops. Position on side, suction accessible secretions, apply oxygen near face."
+      }
+    ],
+
+    "neutral": [
+      {
+        "name": "phenytoin",
+        "generic_name": "Phenytoin",
+        "indication": "Second-line anticonvulsant",
+        "if_given": {
+          "clinical_effect": "Appropriate second-line if benzodiazepine fails and underlying cause treated. Takes 20+ minutes to work.",
+          "points": 0,
+          "aar_flag": "advanced_therapy"
+        },
+        "teaching_point": "Phenytoin is second-line for status epilepticus. Requires slow IV infusion, cardiac monitoring. Usually hospital therapy."
+      }
+    ]
+  },
+
+  "critical_actions_checklist": [
+    {
+      "id": "CA1",
+      "action": "Scene safety assessment",
+      "category": "scene_safety",
+      "time_target_minutes": 1,
+      "points": 5,
+      "importance": "essential",
+      "matching": {
+        "keywords": ["scene", "safety"],
+        "synonyms": ["safe", "hazard", "secure"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA2",
+      "action": "Position patient and protect airway",
+      "category": "treatment",
+      "time_target_minutes": 2,
+      "points": 10,
+      "importance": "critical",
+      "criteria": "Recovery position, clear secretions, do NOT force OPA",
+      "matching": {
+        "keywords": ["position", "airway", "recovery"],
+        "synonyms": ["on side", "suction", "secretions", "protect"],
+        "exclusion_keywords": ["opa", "oral airway", "bite block"]
+      }
+    },
+    {
+      "id": "CA3",
+      "action": "Apply oxygen",
+      "category": "treatment",
+      "time_target_minutes": 2,
+      "points": 5,
+      "importance": "important",
+      "matching": {
+        "keywords": ["oxygen", "o2"],
+        "synonyms": ["mask", "high flow"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA4",
+      "action": "CHECK BLOOD GLUCOSE",
+      "category": "assessment",
+      "time_target_minutes": 3,
+      "points": 20,
+      "importance": "critical",
+      "criteria": "MUST check glucose in ALL seizure patients, especially known diabetics",
+      "matching": {
+        "keywords": ["glucose", "sugar", "blood glucose"],
+        "synonyms": ["bsl", "blood sugar", "glucometer", "finger prick", "dextrose check", "hypoglycemia"],
+        "tool_mappings": ["check_glucose", "measure_bsl"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA5",
+      "action": "Administer glucose for hypoglycemia",
+      "category": "treatment",
+      "time_target_minutes": 4,
+      "points": 25,
+      "importance": "critical",
+      "criteria": "Give glucose 40% 40-50ml IV if glucose <3.5",
+      "matching": {
+        "keywords": ["glucose", "dextrose"],
+        "synonyms": ["40%", "d50", "hypostop", "40ml", "50ml", "iv glucose"],
+        "tool_mappings": ["administer_glucose", "give_dextrose"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA6",
+      "action": "Administer benzodiazepine if seizure continues",
+      "category": "treatment",
+      "time_target_minutes": 6,
+      "points": 10,
+      "importance": "important",
+      "criteria": "10mg diazepam IV if seizure continues AFTER glucose given",
+      "matching": {
+        "keywords": ["diazepam", "benzodiazepine"],
+        "synonyms": ["apaurin", "valium", "midazolam", "10mg"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA7",
+      "action": "Monitor respiratory status",
+      "category": "monitoring",
+      "time_target_minutes": 8,
+      "points": 5,
+      "importance": "important",
+      "criteria": "Especially after benzodiazepine, have BVM ready",
+      "matching": {
+        "keywords": ["breathing", "respiratory", "monitor"],
+        "synonyms": ["rr", "bvm ready", "respirations"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA8",
+      "action": "Reassess glucose and recheck",
+      "category": "monitoring",
+      "time_target_minutes": 10,
+      "points": 5,
+      "importance": "important",
+      "matching": {
+        "keywords": ["recheck", "reassess", "glucose again"],
+        "synonyms": ["repeat glucose", "another bsl"],
+        "exclusion_keywords": []
+      }
+    }
+  ],
+
+  "common_errors": [
+    {
+      "error_id": "E1",
+      "error": "Gave benzodiazepine without checking glucose",
+      "teaching_point": "ALWAYS check glucose in seizure patients - hypoglycemia is reversible cause",
+      "clinical_anchor": "Check glucose, treat the cause. Benzodiazepine suppresses symptoms, glucose fixes the problem."
+    },
+    {
+      "error_id": "E2",
+      "error": "Forced oral airway during active seizure",
+      "teaching_point": "NEVER force anything into seizing patient's mouth - risk of injury",
+      "clinical_anchor": "Jaw is clenched with superhuman force during seizure. You will break teeth, not help."
+    },
+    {
+      "error_id": "E3",
+      "error": "Inadequate benzodiazepine dose (5mg)",
+      "teaching_point": "Standard adult dose for status epilepticus is 10mg diazepam IV",
+      "clinical_anchor": "5mg is a half-dose. Status epilepticus needs full treatment - 10mg first, repeat if needed."
+    },
+    {
+      "error_id": "E4",
+      "error": "Excessive benzodiazepine causing respiratory depression",
+      "teaching_point": "Max 20mg diazepam prehospital - have BVM ready",
+      "clinical_anchor": "Too much benzo and she stops seizing AND stops breathing. Know your limits."
+    },
+    {
+      "error_id": "E5",
+      "error": "Didn't recognize history clues pointing to hypoglycemia",
+      "teaching_point": "Diabetic + didn't eat + took insulin = hypoglycemia setup",
+      "clinical_anchor": "The boyfriend told you everything: diabetic, sick, didn't eat, took insulin. That's hypoglycemia."
+    },
+    {
+      "error_id": "E6",
+      "error": "Didn't reassess after treatment",
+      "teaching_point": "Recheck glucose and monitor for recurrence",
+      "clinical_anchor": "Glucose can drop again. One dose may not be enough. Monitor and repeat."
+    }
+  ],
+
+  "consequence_templates": [
+    {
+      "gap_trigger": "CA4_missed",
+      "checklist_item_id": "CA4",
+      "gap_type": "missed_action",
+      "template": "Blood glucose was NEVER checked. {patient_name} was a Type 1 diabetic who hadn't eaten and took insulin - the classic hypoglycemia setup. Her seizure was caused by glucose of 1.8 mmol/L. Without checking glucose, you treated the symptom (seizure) but not the cause (hypoglycemia). She remained at risk of ongoing brain damage and recurrent seizures.",
+      "severity": "critical",
+      "medical_basis": "Hypoglycemia is a reversible cause of seizures. Failure to check glucose in a known diabetic with seizures is a critical omission. Brain damage from prolonged hypoglycemia is preventable."
+    },
+    {
+      "gap_trigger": "CA5_missed",
+      "checklist_item_id": "CA5",
+      "gap_type": "missed_action",
+      "template": "Glucose was never given despite documented hypoglycemia (1.8 mmol/L). {patient_name}'s brain was starving for fuel throughout your care. Benzodiazepine may have suppressed the seizure temporarily, but without glucose correction, she remained in metabolic crisis with ongoing neuronal injury.",
+      "severity": "critical",
+      "medical_basis": "Hypoglycemic seizures require glucose correction. Benzodiazepine alone is insufficient - the seizure will recur and brain damage continues."
+    },
+    {
+      "gap_trigger": "CA4_late",
+      "checklist_item_id": "CA4",
+      "gap_type": "delayed_action",
+      "template": "Glucose check was delayed until {actual_time} minutes. {patient_name}'s hypoglycemia (1.8 mmol/L) went undetected during those {delay_minutes} minutes. Each minute of unrecognized hypoglycemia during seizure causes cumulative brain injury.",
+      "severity": "high",
+      "medical_basis": "Delayed glucose check delays definitive treatment. In hypoglycemic seizure, time to glucose administration directly impacts neurological outcome."
+    }
+  ],
+
+  "critical_decision_points": [
+    {
+      "id": "CDP1",
+      "decision": "glucose_before_benzodiazepine",
+      "description": "Checking and treating glucose before giving benzodiazepine",
+      
+      "optimal_sequence": [
+        "Position patient safely, apply oxygen",
+        "Check glucose within 60 seconds",
+        "Recognize 1.8 mmol/L as critically low",
+        "Give glucose 40% IV as PRIMARY treatment",
+        "Hold benzodiazepine initially - see if glucose alone stops seizure",
+        "Give benzodiazepine only if seizure continues AFTER glucose"
+      ],
+      
+      "scoring": {
+        "optimal": "Checked glucose within first minute, recognized hypoglycemia, gave glucose BEFORE benzodiazepine, verbalized reasoning: 'Diabetic who didn't eat - need to check glucose first.'",
+        "acceptable": "Checked glucose within 3 minutes, gave glucose, may have given benzodiazepine simultaneously.",
+        "suboptimal": "Gave benzodiazepine first, checked glucose later, eventually gave glucose.",
+        "dangerous": "Never checked glucose, or gave benzodiazepine repeatedly without ever checking glucose."
+      },
+      
+      "clinical_anchor": "Check glucose, treat the cause. Benzodiazepine is backup, glucose is the answer.",
+      
+      "aar_teaching_point": "ALWAYS check glucose in seizure patients. The boyfriend gave you the diagnosis: Type 1 diabetic who didn't eat but took insulin = hypoglycemia. Glucose TREATS the cause. Benzodiazepine only SUPPRESSES the symptom. In hypoglycemic seizure, glucose stops seizure faster and safer than benzodiazepine."
+    },
+    {
+      "id": "CDP2",
+      "decision": "benzodiazepine_dosing",
+      "description": "Appropriate benzodiazepine dose and monitoring",
+      
+      "scoring": {
+        "optimal": "10mg diazepam IV slowly, waited 5 minutes to assess, had BVM ready, monitored respiratory rate, prepared to repeat if needed.",
+        "acceptable": "Gave 10mg appropriately, monitored vital signs.",
+        "suboptimal": "Underdosed (5mg) or didn't monitor after giving.",
+        "dangerous": "Overdosed (>20mg) causing respiratory depression, or gave without having BVM ready."
+      },
+      
+      "clinical_anchor": "10mg, wait 5 minutes, watch the breathing, repeat once if needed. No more than 20mg.",
+      
+      "aar_teaching_point": "Benzodiazepine dosing: 10mg diazepam IV is standard for status epilepticus. Can repeat once after 5-10 minutes (max 20mg prehospital). ALWAYS monitor RR after giving - respiratory depression is the main risk. Have BVM ready before giving any benzodiazepine."
+    },
+    {
+      "id": "CDP3",
+      "decision": "airway_management_during_seizure",
+      "description": "Safe airway management during active seizure",
+      
+      "scoring": {
+        "optimal": "Positioned on side, suctioned accessible secretions, applied oxygen near face, did NOT attempt to insert OPA during active seizure.",
+        "acceptable": "Safe positioning and oxygen support.",
+        "suboptimal": "Attempted OPA insertion during seizure but stopped when unsuccessful.",
+        "dangerous": "Forced objects into mouth, caused injury."
+      },
+      
+      "clinical_anchor": "Position, suction what you can reach, oxygen nearby. Never force anything into that clenched jaw.",
+      
+      "aar_teaching_point": "Airway management during seizure: Recovery position protects airway and allows secretions to drain. Suction only what you can access without forcing mouth open. Apply oxygen near face. NEVER insert OPA or bite block during active seizure - jaw is clenched with tremendous force. Wait until seizure stops."
+    }
+  ],
+
+  "aar_teaching_points": {
+    "key_concepts": [
+      "ALWAYS check glucose in seizure patients - especially diabetics",
+      "Hypoglycemia is reversible cause - glucose treats cause, benzodiazepine treats symptom",
+      "Diabetic + didn't eat + took insulin = hypoglycemia until proven otherwise",
+      "NEVER force anything into seizing patient's mouth",
+      "Benzodiazepine max 20mg prehospital - have BVM ready"
+    ],
+    "clinical_pearls": [
+      "Postictal confusion is normal - patient will gradually improve over 10-20 minutes",
+      "10mg diazepam is standard dose - 5mg is usually inadequate for status epilepticus",
+      "If seizure stops with glucose alone, benzodiazepine wasn't needed",
+      "Recheck glucose after treatment - may need repeat dosing"
+    ]
+  },
+
+  "simulation_config": {
+    "real_time_progression": true,
+    "auto_deterioration_if_no_treatment": true,
+    "max_duration_minutes": 20,
+    "deterioration_timing_minutes": [5, 9, 13],
+    "layer_two_enabled": true,
+    "challenge_points_active": false,
+    "critical_decision_points_active": true,
+    "max_cdp_evaluations": 3
+  }
+}

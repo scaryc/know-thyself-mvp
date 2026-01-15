@@ -1,0 +1,584 @@
+{
+  "scenario_id": "HEMORAGICKY_SOK_MVP_V3_001_SK",
+  "metadata": {
+    "title": "Hemoragický šok - Trauma panvy",
+    "version": "3.0_Enhanced_SK",
+    "difficulty": "vysoká",
+    "estimated_duration_minutes": 20,
+    "scenario_type": "trauma_hemoragická",
+    "learning_objectives": [
+      "Rozpoznať hemoragický šok (tachykardia, hypotenzia, zmenené vedomie)",
+      "Identifikovať fraktúru panvy ako zdroj okultného krvácania",
+      "Správne aplikovať panvový pás",
+      "Pochopiť koncept permisívnej hypotenzie",
+      "Vyhnúť sa nadmernej tekutinovej resuscitácii",
+      "Uprednostniť rýchly transport pred intervenciami na mieste",
+      "Preukázať princípy damage control resuscitácie"
+    ],
+    "target_student_level": "študent_druhého_ročníka_záchranár",
+    "language": "slovenčina",
+    "changelog": {
+      "v3.0_enhanced_sk": "Slovenská verzia. Nový scenár s Blueprint Structure Enhancement v2. Časovanie deteriorácie 5/9/13 min. Trvanie 20 minút."
+    }
+  },
+
+  "dispatch_info": {
+    "call_type": "Dopravná nehoda - zrazený chodec",
+    "age": "32",
+    "sex": "Žena",
+    "location": "Mestská ulica, priechod pre chodcov",
+    "caller": "Okoloidúci",
+    "additional_info": "Žena zrazená autom, pri vedomí ale zmätená, leží na zemi"
+  },
+
+  "scene_description": {
+    "location": "Mestská ulica pri priechode pre chodcov, pacientka leží na asfalte, vozidlo zastavené v blízkosti",
+    "safety": "Miesto zabezpečené políciou, doprava odklonená, úlomky skla na ceste",
+    "access": "Úroveň ulice, dobrý prístup pre nosidlá",
+    "bystanders": "Vodič rozrušený ale nezranený, niekoľko svedkov, polícia na mieste"
+  },
+
+  "patient_profile": {
+    "name": "Marta",
+    "age": 32,
+    "weight_kg": 68,
+    "personality": "Spočiatku zmätená a agitovaná, sťažuje sa na bolesť, stáva sa tichšou ako šok postupuje"
+  },
+
+  "initial_vitals": {
+    "HR": 128,
+    "RR": 24,
+    "SpO2": 96,
+    "BP_systolic": 92,
+    "BP_diastolic": 68,
+    "temperature": 36.5,
+    "GCS": 14,
+    "GCS_breakdown": "E4 V4 M6",
+    "capillary_refill": 4,
+    "glucose": 6.8
+  },
+
+  "state_descriptions": {
+    "initial": {
+      "student_sees": "Prichádzate k mladej žene ležiacej na chrbte na asfalte vedľa priechodu pre chodcov. Je bledá a spotená napriek chladnému počasiu. Jej oči sú otvorené, ale vyzerá zmätene a vystrašene. 'Bolí to... moje boky... prosím, pomôžte mi,' hovorí slabo. Vidíte odreninu na jej ľavom boku cez roztrhané oblečenie. Jej nohy sú mierne von rotované. Svedok vám hovorí: 'Auto odbočovalo doprava a zrazilo ju - možno 30 km/h. Odletela asi 2 metre a dopadla na chrbát. Celý čas bola pri vedomí, ale je čoraz viac zmätená.' Všimnete si, že jej oblečenie v oblasti rozkroku je mokré - môže to byť moč alebo krv. Vodič stojí neďaleko a trasie sa: 'Nevidel som ju, prisahám, nevidel som ju.'",
+      "appearance": "Mladá žena, bledá, spotená, zmätená, nohy v zovňajšej rotácii, odrenina na ľavom boku, ležiaca na chrbte",
+      "clinical_note": "HEMORAGICKÝ ŠOK trieda II-III. Mechanizmus: chodec zrazený vozidlom s laterálnym nárazom do panvy. Tachykardia (128), hypotenzia (92/68), oneskorený kapilárny návrat (4 sek) a zmätenosť indikujú signifikantný úbytok krvi. Fraktúra panvy môže skrývať 2-4 litre krvi v retroperitoneálnom priestore. NEOPAKUJTE testovanie stability panvy. Aplikujte panvový pás a rýchlo transportujte.",
+      "urgency_level": "kritická"
+    },
+    "improving": {
+      "student_sees": "Po vašich intervenciách sa pacientka javí mierne stabilnejšia. Jej farba je stále bledá, ale je bdelejšia. 'Čo sa stalo? Zrazilo ma auto?' Panvový pás je na mieste. Stále sa sťažuje na bolesť bedier, ale odpovedá na otázky primeranejšie. Jej pulz sa zdá trochu silnejší. 'Budem v poriadku?' pýta sa.",
+      "appearance": "Panvový pás na mieste, bdelejšia, stále bledá ale stabilná, primerané odpovede",
+      "clinical_note": "Panvový pás aplikovaný - pomáha tamponáde krvácania. Šok NIE JE zvrátený, ale stabilizovaný. Kľúčové teraz je RÝCHLY TRANSPORT do traumacentra s krvnými produktami. Neoneskorujte pre IV ak to oneskoruje transport. Cieľ permisívnej hypotenzie: sTK 80-90.",
+      "urgency_level": "vysoká"
+    },
+    "deteriorating": {
+      "student_sees": "Stav pacientky sa zhoršuje. Stala sa omnoho tichšou a už neodpovedá na otázky - len slabo stoná. Jej koža je teraz sivá a škvrnitá, obzvlášť na kolenách a lakťoch. Jej pulz je veľmi rýchly a nitkovitý - ťažko sa nachádza na zápästí. 'Zostaň s nami, Marta!' hovoríte. Jej oči trepotajú, ale koherentne nereaguje. Všimnete si, že mokrá oblasť v rozkroku sa rozšírila.",
+      "appearance": "Nereaguje na verbálne, škvrnitá koža, nitkovitý pulz, zvyšujúce sa krvácanie pri panve",
+      "clinical_note": "Hemoragický šok triedy III-IV. Dekompenzácia - úbytok krvi prekračuje kompenzáciu. Táto pacientka vnútorne vykrváca. Agresívny transport potrebný TERAZ. Krvné produkty sú liečba, nie kryštaloidy.",
+      "urgency_level": "kritická"
+    },
+    "critical": {
+      "student_sees": "KRITICKÉ: Pacientka je teraz nereagujúca. Jej koža je sivá, studená a škvrnitá. Nemôžete nahmatať radiálny pulz - len slabý, rýchly karotický pulz. Jej dýchanie je plytké a rýchle. Nereaguje na nič. Toto je hemoragický šok triedy IV - zomiera na stratu krvi.",
+      "appearance": "Nereagujúca, sivá škvrnitá koža, žiadny radiálny pulz, agonálny stav",
+      "clinical_note": "Hemoragický šok triedy IV - >40% objemu krvi stratené. Bez okamžitej transfúzie krvi a chirurgickej intervencie je smrť bezprostredná. Kryštaloidy nemôžu zachrániť túto pacientku - potrebuje krvné produkty a operáciu.",
+      "urgency_level": "život-ohrozujúca"
+    }
+  },
+
+  "assessment_findings": {
+    "airway": {
+      "initial": "Priechodné, pacientka hovorí",
+      "critical": "Ohrozené s klesajúcim vedomím"
+    },
+    "breathing": {
+      "initial": "DF 24, mierne namáhavé, čisté bilaterálne",
+      "deteriorating": "DF 30, plytké, kompenzačné",
+      "critical": "DF 36-40, plytké, lapanie po dychu"
+    },
+    "circulation": {
+      "initial": "TF 128, TK 92/68, pulz slabý a rýchly, kapilárny návrat 4 sekundy, bledá, spotená, studené periférie OKREM teplej oblasti pri panve (vnútorné krvácanie)",
+      "improving": "TF 115, TK 88/62 (stabilný - permisívna hypotenzia akceptovateľná)",
+      "deteriorating": "TF 140, TK 72/50, nitkovitý pulz, škvrnitá koža",
+      "critical": "TF 150, TK nezmerateľný, žiadny radiálny pulz, ťažká škvrnitosť"
+    },
+    "disability": {
+      "initial": "GCS 14 (E4V4M6), zmätená ale plní príkazy",
+      "deteriorating": "GCS 10, reaguje len na bolesť",
+      "critical": "GCS 6, nereagujúca"
+    },
+    "exposure": {
+      "left_hip": "Veľká odrenina a vyvíjajúci sa hematóm nad iliakálnym hrebeňom",
+      "pelvis": "Nohy v zovňajšej rotácii naznačujú narušenie panvového kruhu. NEOPAKUJTE testovanie stability panvy - jedno jemné vyšetrenie, ak je pozitívne PRESTAŇTE a aplikujte pás.",
+      "perineum": "Krv viditeľná pri vaginálnej oblasti - znepokojujúce pre otvorenú fraktúru panvy",
+      "other": "Žiadne zjavné fraktúry dlhých kostí, brucho mäkké ale vzdiate"
+    },
+    
+    "sample_history": {
+      "symptoms": "Silná bolesť bedier/panvy, závraty, smäd, zmätenosť",
+      "allergies": "Žiadne známe liekové alergie",
+      "medications": "Len perorálna antikoncepcia",
+      "past_history": "Zdravá, žiadna významná anamnéza",
+      "last_intake": "Káva pred 1 hodinou",
+      "events": "Svedok: 'Prechádzala na zelenú. Auto odbočujúce doprava ju zrazilo pri asi 30 km/h. Priamy náraz do jej ľavej strany. Odhodená asi 2 metre, dopadla na chrbát. Nevideli sme náraz hlavy. Celý čas pri vedomí, ale čoraz viac zmätená.'"
+    },
+
+    "pelvic_assessment": {
+      "inspection": "Zovňajšia rotácia nôh, odrenina nad ľavým iliakálnym hrebeňom, krv v perineu",
+      "palpation": "JEDNO jemné vyšetrenie - ak je cítiť nestabilitu, PRESTAŇTE. NEKOLÍSAJTE opakovane panvou.",
+      "finding": "Nestabilná panva s krepitom pri jemnej laterálnej kompresii",
+      "action_required": "Okamžite aplikovať panvový pás"
+    }
+  },
+
+  "ecg_findings": {
+    "available": true,
+    "requires_equipment": "12-zvodový EKG monitor",
+    "acquisition_time_seconds": 10,
+
+    "findings_structured": {
+      "rhythm_and_rate": {
+        "rhythm": "Sínusová tachykardia",
+        "regularity": "pravidelný",
+        "rate_bpm": 128
+      },
+
+      "st_segment_changes": [],
+
+      "other_findings": [
+        "Nízka voltáž QRS (hypovolémia)",
+        "Žiadne akútne ischemické zmeny"
+      ]
+    },
+
+    "interpretation": {
+      "diagnosis": "Sínusová tachykardia - kompenzačná pre hypovolémiu",
+      "mechanism": "Kompenzačná odpoveď na stratu krvi a šok",
+      "territory": "N/A",
+      "severity": "Adekvátna pre hemoragický šok",
+      "note": "LEN PRE REFERENCIU AGENTA"
+    },
+
+    "teaching_point": "EKG NIE je prioritou pri hemoragickom šoku. Tachykardia je kompenzačná - NELIEČTE ju. Nízka voltáž odráža hypovolémiu. Sústreďte sa na kontrolu krvácania (panvový pás) a rýchly transport.",
+    "teaching_point_note": "PRE POUŽITIE AAR AGENTOM",
+
+    "presentation_mode": "structured_text"
+  },
+
+  "critical_treatments": ["panvovy_pas", "rychly_transport"],
+
+  "primary_interventions": {
+    "pelvic_binder": {
+      "device": "Komerčný panvový pás alebo improvizovaný obväz z plachty",
+      "application": "Na úrovni veľkých trochanterov, tesne ale nie drvivo",
+      "mechanism": "Redukuje objem panvy, umožňuje tamponádu venózneho krvácania",
+      
+      "scenario_specific_response": {
+        "critical_treatment": true,
+        "life_saving": true,
+        "time_to_effect_minutes": 2,
+        "vital_changes": {
+          "HR": 120,
+          "BP_systolic": 88
+        },
+        "clinical_effect": "Objem panvy znížený, krvácanie tamponované, predchádza ďalšej strate krvi ale NENAHRADÍ stratenú krv",
+        "points_if_applied": 30,
+        "timing_critical": "Musí byť aplikovaný do 5 minút"
+      }
+    },
+
+    "iv_access": {
+      "indication": "Vaskulárny vstup pre podanie tekutín/krvi",
+      "approach": "Dva širokoprierezy (16-18G) ak je to možné bez oneskorenia transportu",
+      
+      "scenario_specific_response": {
+        "importance": "dôležité_ale_transport_priorita",
+        "clinical_effect": "Umožňuje podanie tekutín",
+        "points_if_achieved": 5,
+        "teaching_point": "IV vstup je dôležitý, ale NEONESKORUJTE transport na jeho zabezpečenie. Môže byť urobený počas transportu."
+      }
+    },
+
+    "iv_fluids": {
+      "indication": "Hypotenzia pri hemoragickom šoku",
+      "dosing": "250ml kryštaloidné bolusy",
+      "target": "sTK 80-90mmHg (permisívna hypotenzia)",
+      
+      "scenario_specific_response": {
+        "appropriate_dose": "250ml bolusy na cieľový sTK 80-90",
+        "excessive_dose": ">1000ml bez prehodnotenia",
+        "vital_changes_per_bolus": {
+          "BP_systolic": "+8-10"
+        },
+        "if_appropriate": {
+          "points": 5,
+          "clinical_effect": "Prechodné zlepšenie TK"
+        },
+        "if_excessive": {
+          "points": -10,
+          "clinical_effect": "Dilučná koagulopatia, hypotermia, zvýšené krvácanie",
+          "aar_flag": "nadmerná_resuscitácia"
+        },
+        "teaching_point": "Kryštaloidy nenesú kyslík ani nezrážajú. Nadmerná resuscitácia riedi zrážacie faktory a zvyšuje krvácanie. Cieľ sTK 80-90 do chirurgickej kontroly."
+      }
+    },
+
+    "oxygen": {
+      "indication": "Podpora dodávky kyslíka pri šoku",
+      
+      "scenario_specific_response": {
+        "importance": "podporná",
+        "clinical_effect": "Podporuje to málo hemoglobínu, čo zostáva",
+        "points_if_given": 3
+      }
+    }
+  },
+
+  "no_treatment_progression": {
+    "5min": {
+      "vitals": {
+        "HR": 138,
+        "RR": 28,
+        "SpO2": 94,
+        "BP_systolic": 82,
+        "BP_diastolic": 55,
+        "GCS": 13
+      },
+      "state": "deteriorating",
+      "description": "Šok postupuje, stáva sa viac zmätenou, objavuje sa škvrnitosť kože, pulz ťažšie hmatateľný"
+    },
+    "9min": {
+      "vitals": {
+        "HR": 148,
+        "RR": 32,
+        "SpO2": 92,
+        "BP_systolic": 68,
+        "BP_diastolic": 45,
+        "GCS": 10
+      },
+      "state": "deteriorating",
+      "description": "Dekompenzácia, reaguje len na bolesť, ťažká škvrnitosť, radiálny pulz nehmatateľný"
+    },
+    "13min": {
+      "vitals": {
+        "HR": 160,
+        "RR": 8,
+        "SpO2": 85,
+        "BP_systolic": "nezmerateľný",
+        "GCS": 5
+      },
+      "state": "critical",
+      "description": "Šok triedy IV, takmer-arrest, nereagujúca, agonálne dýchanie, bezprostredná srdcová zástava"
+    }
+  },
+
+  "secondary_medications_by_impact": {
+    "critical_harm": [
+      {
+        "name": "nadmerne_tekutiny",
+        "description": "Viac ako 2L kryštaloidov bez krvných produktov",
+        "why_dangerous": "Riedi zrážacie faktory, spôsobuje hypotermiu, zvyšuje krvácanie",
+        "if_given": {
+          "vital_changes": {
+            "BP_systolic": 78,
+            "note": "Prechodné zlepšenie potom horšie krvácanie"
+          },
+          "clinical_effect": "Najprv sa TK zlepší, potom pacientka krváca viac ako sú zrazeniny narušené",
+          "points": -15,
+          "aar_flag": "nadmerná_resuscitácia"
+        },
+        "teaching_point": "Kryštaloidy nenesú kyslík ani nezrážajú. Nemôžete 'naplniť nádrž' rýchlejšie ako tečie. Liečba je chirurgická kontrola a krvné produkty, nie fyziologický roztok."
+      }
+    ],
+
+    "worsens": [
+      {
+        "name": "opakované_panvové_vyšetrenie",
+        "description": "Viacnásobné vyšetrenia stability panvy",
+        "why_wrong": "Narušuje akúkoľvek tvorbu zrazeniny, zvyšuje krvácanie",
+        "if_done": {
+          "vital_changes": {
+            "BP_systolic": -10,
+            "note": "Každé vyšetrenie zhoršuje krvácanie"
+          },
+          "points": -10,
+          "aar_flag": "iatrogénne_poškodenie"
+        },
+        "teaching_point": "Vyšetrite panvu RAZ. Ak je nestabilná, aplikujte pás a PRESTAŇTE vyšetrovať. Každá manipulácia narušuje zrazeniny a zvyšuje krvácanie."
+      }
+    ],
+
+    "neutral": [
+      {
+        "name": "kyselina_tranexamová",
+        "generic_name": "Kyselina tranexamová (TXA)",
+        "indication": "Hemoragický šok do 3 hodín od poranenia",
+        "if_given": {
+          "clinical_effect": "Antifibrinolytikum - pomáha udržiavať zrazeniny. Vhodné ak je dostupné a v časovom okne.",
+          "points": 5,
+          "aar_flag": "vhodné_adjuvans"
+        },
+        "teaching_point": "TXA znižuje mortalitu pri hemoragickom šoku ak je podaná do 3 hodín. Dávka: 1g IV počas 10 minút. Dodržiavajte lokálne protokoly."
+      }
+    ]
+  },
+
+  "critical_actions_checklist": [
+    {
+      "id": "CA1",
+      "action": "Bezpečnosť miesta a zhodnotenie mechanizmu",
+      "category": "bezpečnosť_miesta",
+      "time_target_minutes": 1,
+      "points": 5,
+      "importance": "nevyhnutné",
+      "matching": {
+        "keywords": ["miesto", "bezpečnosť", "mechanizmus"],
+        "synonyms": ["moi", "zrazená", "náraz"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA2",
+      "action": "Rozpoznať hemoragický šok",
+      "category": "vyšetrenie",
+      "time_target_minutes": 3,
+      "points": 15,
+      "importance": "kritické",
+      "criteria": "Identifikuje tachykardia + hypotenzia + zmenené vedomie = šok",
+      "matching": {
+        "keywords": ["šok", "hemoragický", "krvácanie"],
+        "synonyms": ["hypovolemický", "strata krvi", "hypotenzia", "tachykardia", "dekompenzácia"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA3",
+      "action": "Identifikovať poranenie panvy",
+      "category": "vyšetrenie",
+      "time_target_minutes": 3,
+      "points": 10,
+      "importance": "kritické",
+      "criteria": "JEDNO jemné panvové vyšetrenie, identifikuje nestabilitu",
+      "matching": {
+        "keywords": ["panva", "panvová"],
+        "synonyms": ["bok", "iliakálny", "nestabilná panva", "krepit"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA4",
+      "action": "Aplikovať panvový pás",
+      "category": "liečba",
+      "time_target_minutes": 5,
+      "points": 30,
+      "importance": "kritické",
+      "criteria": "Aplikovaný na úrovni veľkých trochanterov",
+      "matching": {
+        "keywords": ["panvový pás", "pás"],
+        "synonyms": ["obväz plachtou", "panvový obväz", "sam sling", "stabilizovať panvu"],
+        "tool_mappings": ["aplikovať_panvový_pás"],
+        "exclusion_keywords": ["nie", "mám"]
+      }
+    },
+    {
+      "id": "CA5",
+      "action": "Zabezpečiť IV vstup",
+      "category": "liečba",
+      "time_target_minutes": 7,
+      "points": 5,
+      "importance": "dôležité",
+      "criteria": "Širokoprierezy IV, ideálne dve linky, ale NEONESKORUJÚC transport",
+      "matching": {
+        "keywords": ["iv", "vstup"],
+        "synonyms": ["linka", "kanyla", "venflon", "16 gauge", "18 gauge"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA6",
+      "action": "Uvážlivá tekutinová resuscitácia",
+      "category": "liečba",
+      "time_target_minutes": 10,
+      "points": 5,
+      "importance": "dôležité",
+      "criteria": "250ml bolusy cielené na sTK 80-90 (permisívna hypotenzia)",
+      "matching": {
+        "keywords": ["tekutiny", "bolus"],
+        "synonyms": ["fyziologický", "kryštaloid", "250ml", "permisívna hypotenzia"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA7",
+      "action": "Predchádzať hypotermii",
+      "category": "liečba",
+      "time_target_minutes": 8,
+      "points": 5,
+      "importance": "dôležité",
+      "criteria": "Zakryť pacientku, teplé tekutiny ak sú dostupné",
+      "matching": {
+        "keywords": ["teplé", "deka", "hypotermia"],
+        "synonyms": ["zakryť", "teplota", "udržať v teple", "termálne"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA8",
+      "action": "Rozhodnutie o rýchlom transporte",
+      "category": "dispozícia",
+      "time_target_minutes": 5,
+      "points": 10,
+      "importance": "kritické",
+      "criteria": "Load and go mentalita - traumacentrum s krvnými produktami",
+      "matching": {
+        "keywords": ["transport", "nemocnica", "traumacentrum"],
+        "synonyms": ["load and go", "rýchly transport", "presun", "krvné produkty", "operácia"],
+        "exclusion_keywords": []
+      }
+    }
+  ],
+
+  "common_errors": [
+    {
+      "error_id": "E1",
+      "error": "Žiadny panvový pás aplikovaný",
+      "teaching_point": "Panvový pás redukuje objem panvy a umožňuje tamponádu venózneho krvácania",
+      "clinical_anchor": "Panva je vedro, ktoré môže držať 4 litre krvi. Pás robí vedro menším."
+    },
+    {
+      "error_id": "E2",
+      "error": "Opakované panvové vyšetrenia",
+      "teaching_point": "Každé vyšetrenie narušuje zrazeniny a zvyšuje krvácanie",
+      "clinical_anchor": "Skontrolujte panvu RAZ. Potom už len miešate krvácanie."
+    },
+    {
+      "error_id": "E3",
+      "error": "Nadmerná tekutinová resuscitácia",
+      "teaching_point": "Kryštaloidy nezrážajú ani nenesú kyslík - nadmerná resuscitácia zhoršuje koagulopatiu",
+      "clinical_anchor": "Nemôžete naplniť nádrž rýchlejšie ako tečie. Fyziologický roztok nezráža a nenesie kyslík."
+    },
+    {
+      "error_id": "E4",
+      "error": "Oneskorený transport pre intervencie na mieste",
+      "teaching_point": "Definitívna liečba je operácia a krvné produkty - nie sú dostupné prehospitálne",
+      "clinical_anchor": "Každá minúta na mieste je minúta krvácania. Operácia zastavuje krvácanie, nie obväzy."
+    },
+    {
+      "error_id": "E5",
+      "error": "Cielenie na normálny krvný tlak",
+      "teaching_point": "Permisívna hypotenzia (sTK 80-90) redukuje krvácanie do chirurgickej kontroly",
+      "clinical_anchor": "Normálny TK pri hemoragii znamená viac krvácania. Cieľ 80-90 kým chirurg nezíska kontrolu."
+    },
+    {
+      "error_id": "E6",
+      "error": "Nerozpoznal závažnosť šoku",
+      "teaching_point": "Tachykardia + hypotenzia + zmätenosť = signifikantný šok",
+      "clinical_anchor": "Rýchle srdce, nízky tlak, zahmlený mozog—stratila minimálne 30% krvi."
+    }
+  ],
+
+  "consequence_templates": [
+    {
+      "gap_trigger": "CA4_missed",
+      "checklist_item_id": "CA4",
+      "gap_type": "vynechaná_akcia",
+      "template": "Panvový pás NEBOL NIKDY aplikovaný. {patient_name} mala nestabilnú fraktúru panvy - poranenie, ktoré môže krvácať 2-4 litre do retroperitonea. Bez pásu na redukciu objemu panvy a tamponádu krvácania pokračovala v hemoragii počas celej vašej starostlivosti.",
+      "severity": "kritická",
+      "medical_basis": "Panvové pásy znižujú mortalitu pri fraktúrach panvy umožnením tamponády venózneho krvácania. Bez neho panva funguje ako expandujúci rezervoár pre krv."
+    },
+    {
+      "gap_trigger": "CA4_late",
+      "checklist_item_id": "CA4",
+      "gap_type": "oneskorená_akcia",
+      "template": "Panvový pás bol aplikovaný v {actual_time} minúte (cieľ: {target_time} minút). Počas tých {delay_minutes} minút panva {patient_name} zostala nepodporovaná a krvácanie pokračovalo nekontrolovane. Krvácanie z fraktúry panvy je RÝCHLE - každá minúta oneskorenia predstavuje signifikantný dodatočný úbytok krvi.",
+      "severity": "vysoká",
+      "medical_basis": "Krvácanie z fraktúry panvy môže prekročiť 500ml za minútu pri ťažkých prípadoch. Skorá aplikácia pásu je kritická."
+    },
+    {
+      "gap_trigger": "CA8_late",
+      "checklist_item_id": "CA8",
+      "gap_type": "oneskorená_akcia",
+      "template": "Transport bol oneskorený do {actual_time} minúty. Jediná liečba, ktorá môže zachrániť {patient_name} sú krvné produkty a operácia - ani jedno nie je dostupné na mieste. Každá minúta na mieste bola minútou pokračujúceho krvácania.",
+      "severity": "vysoká",
+      "medical_basis": "Hemoragický šok vyžaduje resuscitáciu krvnými produktami a chirurgickú hemostázu. Čas na mieste priamo koreluje s mortalitou."
+    }
+  ],
+
+  "critical_decision_points": [
+    {
+      "id": "CDP1",
+      "decision": "rozpoznanie_šoku",
+      "description": "Identifikácia triedy a závažnosti hemoragického šoku",
+      
+      "scoring": {
+        "optimal": "Okamžite rozpoznal šok triedy II-III z vitálnych funkcií (tachykardia, hypotenzia, oneskorený kapilárny návrat, zmätenosť). Verbalizoval obavu zo signifikantnej straty krvi.",
+        "acceptable": "Rozpoznal pacientku v šoku, inicioval vhodnú liečbu.",
+        "suboptimal": "Oneskorené rozpoznanie závažnosti šoku.",
+        "dangerous": "Nerozpoznal šok, liečil ako ľahké poranenie."
+      },
+      
+      "clinical_anchor": "Rýchle srdce, nízky tlak, pomalý kapilárny návrat, zahmlený mozog—to je 30% objemu krvi preč.",
+      
+      "aar_teaching_point": "Triedy hemoragického šoku: Trieda I (<15%) - normálne vitálne; Trieda II (15-30%) - tachykardia, zúžený pulzový tlak; Trieda III (30-40%) - hypotenzia, zmätenosť, oligúria; Trieda IV (>40%) - takmer smrť. Táto pacientka: Trieda II-III prechodná."
+    },
+    {
+      "id": "CDP2",
+      "decision": "panvový_manažment",
+      "description": "Vhodné vyšetrenie a manažment fraktúry panvy",
+      
+      "scoring": {
+        "optimal": "Jedno jemné panvové vyšetrenie, okamžite rozpoznal nestabilitu, aplikoval pás bez opakovaných vyšetrení.",
+        "acceptable": "Aplikoval panvový pás vhodne.",
+        "suboptimal": "Viacnásobné panvové vyšetrenia pred aplikáciou pásu.",
+        "dangerous": "Žiadny pás aplikovaný, alebo nadmerná panvová manipulácia."
+      },
+      
+      "clinical_anchor": "Jedno vyšetrenie, jedna šanca. Potom už len spôsobujete väčšie krvácanie.",
+      
+      "aar_teaching_point": "Fraktúry panvy môžu skrývať masívnu hemoragiu. Vyšetrite RAZ - ak je nestabilná, okamžite aplikujte pás na úrovni veľkých trochanterov. NEOPAKUJTE kolísanie alebo kompresiu panvy - každá manipulácia narušuje zrazeniny."
+    },
+    {
+      "id": "CDP3",
+      "decision": "resuscitačná_stratégia",
+      "description": "Vhodná tekutinová resuscitácia a permisívna hypotenzia",
+      
+      "scoring": {
+        "optimal": "Malé bolusy (250ml) cielené na sTK 80-90, verbalizoval koncept permisívnej hypotenzie, uprednostnil transport pred IV tekutinami.",
+        "acceptable": "Uvážlivé použitie tekutín, nepreresuscitoval.",
+        "suboptimal": "Pokúšal sa normalizovať krvný tlak veľkými objemami tekutín.",
+        "dangerous": "Masívna kryštaloidná resuscitácia (>2L) alebo oneskorený transport pre podávanie tekutín."
+      },
+      
+      "clinical_anchor": "Cieľ sTK 80-90. Normálny TK pri hemoragii len znamená, že vytláčate zrazeniny rýchlejšie.",
+      
+      "aar_teaching_point": "Permisívna hypotenzia: Pri nekontrolovanej hemoragii cieľ sTK 80-90. Vyšší TK = vyššia rýchlosť krvácania. Kryštaloidy nezrážajú ani nenesú kyslík. Nadmerná resuscitácia spôsobuje dilučnú koagulopatiu, hypotermiu a zvýšené krvácanie."
+    }
+  ],
+
+  "aar_teaching_points": {
+    "key_concepts": [
+      "Fraktúry panvy môžu skrývať 2-4 litre krvi",
+      "Panvový pás zachraňuje život - redukuje objem panvy pre tamponádu",
+      "Permisívna hypotenzia: cieľ sTK 80-90 do chirurgickej kontroly",
+      "Kryštaloidy nezrážajú ani nenesú kyslík - nepreresuscitujte",
+      "Definitívna liečba je operácia a krvné produkty"
+    ],
+    "clinical_pearls": [
+      "Vyšetrite panvu RAZ - každá manipulácia narušuje zrazeniny",
+      "Zovňajšia rotácia nôh naznačuje narušenie panvového kruhu",
+      "Krv v perineu = otvorená fraktúra panvy = omnoho vyššia mortalita",
+      "Čas na mieste koreluje s mortalitou - load and go",
+      "Teplé tekutiny ak sú dostupné - hypotermia zhoršuje koagulopatiu"
+    ]
+  },
+
+  "simulation_config": {
+    "real_time_progression": true,
+    "auto_deterioration_if_no_treatment": true,
+    "max_duration_minutes": 20,
+    "deterioration_timing_minutes": [5, 9, 13],
+    "layer_two_enabled": true,
+    "challenge_points_active": false,
+    "critical_decision_points_active": true,
+    "max_cdp_evaluations": 3
+  }
+}

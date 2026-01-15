@@ -1,0 +1,651 @@
+{
+  "scenario_id": "OPIOID_OVERDOSE_MVP_V3_001",
+  "metadata": {
+    "title": "Opioid Overdose",
+    "version": "3.0_Enhanced",
+    "difficulty": "moderate",
+    "estimated_duration_minutes": 20,
+    "scenario_type": "toxicological_respiratory",
+    "learning_objectives": [
+      "Recognize opioid toxidrome (respiratory depression, miosis, decreased LOC)",
+      "Prioritize ventilation BEFORE naloxone",
+      "Administer naloxone with appropriate titration",
+      "Understand naloxone goal: adequate breathing, NOT full consciousness",
+      "Avoid precipitating acute withdrawal",
+      "Recognize re-sedation risk",
+      "Demonstrate harm reduction approach"
+    ],
+    "target_student_level": "second_year_paramedic_student",
+    "changelog": {
+      "v3.0_enhanced": "New scenario with Blueprint Structure Enhancement v2: matching config, clinical anchors, consequence templates, ECG standardization. Deterioration timing 5/9/13 min. 20-minute duration."
+    }
+  },
+
+  "dispatch_info": {
+    "call_type": "Unconscious person",
+    "age": "24",
+    "sex": "Male",
+    "location": "Public park bathroom",
+    "caller": "Security guard",
+    "additional_info": "Found unresponsive in bathroom stall, not breathing well"
+  },
+
+  "scene_description": {
+    "location": "Public park bathroom, patient slumped on toilet in locked stall",
+    "safety": "Security guard opened door, scene safe, needle visible on floor",
+    "access": "Ground level, narrow bathroom, will need to move patient for stretcher access",
+    "bystanders": "Security guard present, no witnesses to drug use"
+  },
+
+  "patient_profile": {
+    "name": "Tomáš",
+    "age": 24,
+    "weight_kg": 72,
+    "personality": "Unresponsive initially. After naloxone: may be confused, irritable, anxious, possibly combative if over-reversed"
+  },
+
+  "initial_vitals": {
+    "HR": 52,
+    "RR": 4,
+    "SpO2": 78,
+    "BP_systolic": 88,
+    "BP_diastolic": 52,
+    "temperature": 36.2,
+    "GCS": 3,
+    "GCS_breakdown": "E1 V1 M1",
+    "pupils": "1mm bilateral, minimally reactive (pinpoint)"
+  },
+
+  "state_descriptions": {
+    "initial": {
+      "student_sees": "You find a young man slumped on a toilet in a bathroom stall. He's completely unresponsive - his head is hanging forward, arms limp at his sides. His skin is pale with a grayish-blue tinge, especially around his lips and fingertips. You can barely see his chest moving - maybe 4 very shallow breaths per minute. When you lift his eyelid, his pupils are tiny pinpoints, barely visible. There's a syringe on the floor near his foot, and you can see fresh needle marks on his left forearm. The security guard says: 'I check these bathrooms every hour. He wasn't here an hour ago.' The patient doesn't respond to voice or sternal rub.",
+      "appearance": "Young male, unresponsive, cyanotic, agonal breathing, pinpoint pupils, needle/syringe visible, track marks on arm",
+      "clinical_note": "OPIOID OVERDOSE - classic toxidrome: respiratory depression (RR 4), CNS depression (GCS 3), miosis (pinpoint pupils). CRITICAL HYPOXIA (SpO2 78%). VENTILATE FIRST - naloxone doesn't work on dead patients. After oxygenating, give naloxone titrated to respiratory effort, NOT to full consciousness.",
+      "urgency_level": "critical"
+    },
+    "improving": {
+      "student_sees": "After your interventions, the patient is breathing better. His respiratory rate has increased and his color is improving - less blue around the lips. His eyes are flickering, and he's starting to move slightly. He groans when you call his name. He's not fully awake - drowsy and confused - but he's BREATHING adequately. That's the goal. 'Wha... where am I?' he mumbles, looking around confused. He doesn't seem to remember what happened.",
+      "appearance": "Drowsy but rousable, breathing adequately (RR 12-16), color improving, confused but responsive",
+      "clinical_note": "GOAL ACHIEVED: Patient breathing adequately. He doesn't need to be fully awake - just breathing. Full reversal risks acute withdrawal (vomiting, agitation, combativeness) and patient may leave AMA and re-use. Drowsy but breathing is the target.",
+      "urgency_level": "moderate"
+    },
+    "deteriorating": {
+      "student_sees": "The patient's condition is worsening - or the naloxone is wearing off. His breathing is slowing down again, becoming shallow and irregular. His color is deteriorating - more cyanotic. He's less responsive than before. This could be re-sedation as naloxone wears off (shorter duration than many opioids) or inadequate initial reversal.",
+      "appearance": "Re-sedation occurring, breathing slowing, becoming less responsive, cyanosis returning",
+      "clinical_note": "RE-SEDATION - naloxone duration (30-90 min) often shorter than opioid duration (hours). May need repeat naloxone. Continue to monitor closely. If fentanyl involved, may need much higher naloxone doses.",
+      "urgency_level": "high"
+    },
+    "critical": {
+      "student_sees": "CRITICAL: The patient is not breathing. His chest is still. His lips are blue-gray. He's completely unresponsive. No pulse palpable at the wrist. This is respiratory arrest progressing to cardiac arrest if not immediately reversed.",
+      "appearance": "Apneic, pulseless or barely palpable pulse, profound cyanosis, imminent cardiac arrest",
+      "clinical_note": "Respiratory arrest from opioid-induced respiratory depression. Without immediate BVM ventilation and naloxone, will progress to cardiac arrest from hypoxia. CPR may be needed.",
+      "urgency_level": "life-threatening"
+    }
+  },
+
+  "assessment_findings": {
+    "airway": {
+      "initial": "Patent but at risk - patient not protecting, head position obstructing, may need repositioning",
+      "improving": "Patent, patient protecting own airway",
+      "critical": "Requires active management"
+    },
+    "breathing": {
+      "initial": "RR 4, shallow, barely visible chest movement, inadequate tidal volume, cyanosis",
+      "improving": "RR 12-16, adequate depth, SpO2 improving",
+      "deteriorating": "RR declining again as naloxone wears off",
+      "critical": "Apneic or agonal"
+    },
+    "circulation": {
+      "initial": "HR 52 (bradycardia from hypoxia), BP 88/52, weak pulse, cool peripheries, CRT 4 seconds",
+      "improving": "HR 72, BP 105/68, stronger pulse, warming up",
+      "critical": "Bradycardia progressing, may lose pulse"
+    },
+    "disability": {
+      "initial": "GCS 3 (E1V1M1), unresponsive to all stimuli, pupils 1mm bilateral (pinpoint - classic opioid sign)",
+      "improving": "GCS 10-12, drowsy but rousable, following commands, pupils 3mm reactive",
+      "note": "Pupils dilate toward normal as opioid reversed"
+    },
+    "exposure": {
+      "needle_marks": "Fresh injection site left antecubital fossa, older track marks on both forearms",
+      "paraphernalia": "Syringe on floor, possibly tourniquet nearby",
+      "no_trauma": "No signs of injury"
+    },
+    
+    "sample_history": {
+      "symptoms": "Found unresponsive with respiratory depression",
+      "allergies": "Unknown",
+      "medications": "Unknown - likely opioid use disorder, unknown if on methadone/buprenorphine program",
+      "past_history": "Unknown - track marks suggest chronic IV drug use",
+      "last_intake": "Unknown",
+      "events": "Security guard: 'Found him about 5 minutes ago when I did my rounds. He wasn't here an hour ago. I see a lot of overdoses in this park.'"
+    },
+
+    "opioid_toxidrome": {
+      "classic_triad": [
+        "Respiratory depression (RR 4)",
+        "CNS depression (GCS 3)",
+        "Miosis (pinpoint pupils 1mm)"
+      ],
+      "additional_signs": [
+        "Bradycardia (from hypoxia)",
+        "Hypotension",
+        "Hypothermia (mild)",
+        "Decreased bowel sounds"
+      ],
+      "differential": "Consider: other sedative overdose, head injury, hypoglycemia, stroke - but classic triad with needle marks = opioid overdose"
+    }
+  },
+
+  "ecg_findings": {
+    "available": true,
+    "requires_equipment": "12-lead ECG monitor",
+    "acquisition_time_seconds": 10,
+
+    "findings_structured": {
+      "rhythm_and_rate": {
+        "rhythm": "Sinus bradycardia",
+        "regularity": "regular",
+        "rate_bpm": 52
+      },
+
+      "st_segment_changes": [],
+
+      "other_findings": [
+        "Bradycardia (hypoxia-induced)",
+        "No acute ischemic changes",
+        "Possible prolonged QTc (methadone consideration)"
+      ]
+    },
+
+    "interpretation": {
+      "diagnosis": "Sinus bradycardia secondary to hypoxia",
+      "mechanism": "Hypoxia causes bradycardia (unlike most other causes which cause tachycardia)",
+      "territory": "N/A",
+      "severity": "Will improve with oxygenation",
+      "note": "FOR AGENT REFERENCE ONLY"
+    },
+
+    "teaching_point": "Bradycardia in overdose is usually from HYPOXIA, not direct opioid effect. Treat the hypoxia (ventilate!) and heart rate will improve. ECG useful to check for prolonged QTc if methadone involved. Don't delay ventilation for ECG.",
+    "teaching_point_note": "FOR AAR AGENT USE",
+
+    "presentation_mode": "structured_text"
+  },
+
+  "critical_treatments": ["ventilation", "naloxone"],
+
+  "primary_medications": {
+    "naloxone": {
+      "generic_name": "Naloxone",
+      "brand_names": ["Narcan", "Nyxoid"],
+      "class": "Opioid antagonist",
+      "indication": "Opioid overdose with respiratory depression",
+      "mechanism": "Competitively blocks opioid receptors, reverses respiratory depression",
+      
+      "dosing": {
+        "initial_iv_im": "0.4mg IV/IM",
+        "intranasal": "2mg IN (one spray each nostril) if no IV",
+        "repeat": "Every 2-3 minutes if no response",
+        "titration_goal": "Adequate respiratory effort (RR >12), NOT full consciousness",
+        "max_typical": "2mg total, but fentanyl may require 10mg+"
+      },
+      
+      "pharmacokinetics": {
+        "onset_iv_minutes": "1-2",
+        "onset_im_minutes": "3-5",
+        "onset_in_minutes": "3-5",
+        "duration_minutes": "30-90",
+        "note": "Duration often SHORTER than opioid - re-sedation common"
+      },
+      
+      "contraindications": {
+        "absolute": [],
+        "caution": "Opioid-dependent patients - may precipitate withdrawal"
+      },
+      
+      "side_effects": [
+        "Acute opioid withdrawal (if dependent): nausea, vomiting, diarrhea, agitation, tachycardia, hypertension",
+        "Pulmonary edema (rare)",
+        "Seizures (rare)"
+      ],
+      
+      "warnings": [
+        "VENTILATE FIRST - naloxone doesn't work on dead patients",
+        "Titrate to breathing, not consciousness",
+        "Over-reversal causes withdrawal, vomiting (aspiration risk), combativeness, patient leaving AMA",
+        "Re-sedation common - monitor for at least 2 hours",
+        "Fentanyl may require much higher doses"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": true,
+        "must_ventilate_first": true,
+        "time_to_effect_minutes": 2,
+        "vital_changes": {
+          "RR": 14,
+          "SpO2": 96,
+          "HR": 72,
+          "GCS": 11,
+          "pupils": "3mm reactive"
+        },
+        "patient_response_titrated": "Patient starts breathing better. Becomes drowsy but rousable. Opens eyes to voice. Confused: 'Where am I? What happened?' May be irritable or anxious.",
+        "patient_response_over_reversed": "Patient suddenly fully awake, agitated, possibly combative. 'Get off me!' May vomit (aspiration risk). May try to leave. May become hostile.",
+        "clinical_effect": "Reverses opioid effects at receptor level. Goal: adequate breathing, patient can protect airway.",
+        "points_if_titrated_correctly": 25,
+        "points_if_over_reversed": 10,
+        "teaching_point": "Titrate to BREATHING, not consciousness. A drowsy patient who is breathing is safer than a fully awake patient who bolts and re-uses."
+      }
+    },
+
+    "bag_valve_mask": {
+      "indication": "Respiratory support before and during naloxone effect",
+      
+      "scenario_specific_response": {
+        "critical_treatment": true,
+        "must_do_before_naloxone": true,
+        "vital_changes": {
+          "SpO2": 92
+        },
+        "clinical_effect": "Provides oxygen and ventilation while waiting for naloxone to work",
+        "points_if_used_first": 20,
+        "points_if_skipped_for_naloxone": -10,
+        "teaching_point": "VENTILATE FIRST. Naloxone takes 1-2 minutes to work. Patient needs oxygen NOW. BVM bridges the gap."
+      }
+    },
+
+    "oxygen": {
+      "indication": "Hypoxia",
+      
+      "scenario_specific_response": {
+        "importance": "critical_adjunct",
+        "clinical_effect": "High-flow oxygen supports oxygenation",
+        "points_if_given": 5,
+        "note": "Oxygen alone insufficient - patient not breathing adequately, needs BVM"
+      }
+    }
+  },
+
+  "treatment_responses": {
+    "bvm_then_naloxone": {
+      "sequence": "BVM ventilation → SpO2 improves → Naloxone → Patient starts breathing spontaneously",
+      "vital_changes": {
+        "SpO2": "78 → 92 (BVM) → 97 (naloxone + spontaneous breathing)",
+        "RR": "4 → assisted → 14 spontaneous",
+        "GCS": "3 → 11"
+      },
+      "clinical_effect": "Optimal sequence - patient oxygenated throughout, smooth reversal"
+    },
+    "naloxone_without_bvm": {
+      "vital_changes": {
+        "SpO2": "May drop further during 1-2 min waiting for naloxone to work",
+        "risk": "Cardiac arrest from prolonged hypoxia"
+      },
+      "clinical_effect": "Dangerous - patient hypoxic during naloxone onset time"
+    },
+    "over_reversal": {
+      "vital_changes": {
+        "HR": 115,
+        "BP_systolic": 165,
+        "RR": 22,
+        "GCS": 15
+      },
+      "patient_response": "Fully awake, agitated, vomiting, trying to leave, possibly combative",
+      "clinical_effect": "Acute withdrawal precipitated - patient uncomfortable, aspiration risk, may leave AMA and re-use"
+    }
+  },
+
+  "no_treatment_progression": {
+    "5min": {
+      "vitals": {
+        "HR": 45,
+        "RR": 2,
+        "SpO2": 65,
+        "BP_systolic": 78,
+        "GCS": 3
+      },
+      "state": "deteriorating",
+      "description": "Near-apneic, profound hypoxia, bradycardia worsening, imminent arrest"
+    },
+    "9min": {
+      "vitals": {
+        "HR": 35,
+        "RR": 0,
+        "SpO2": 50,
+        "BP_systolic": 60,
+        "GCS": 3
+      },
+      "state": "critical",
+      "description": "Respiratory arrest, severe bradycardia, hypotensive, will arrest within minutes"
+    },
+    "13min": {
+      "vitals": {
+        "HR": 0,
+        "RR": 0,
+        "SpO2": "unrecordable",
+        "BP_systolic": "unrecordable",
+        "GCS": 3
+      },
+      "state": "cardiac_arrest",
+      "description": "Cardiac arrest from hypoxia - requires CPR"
+    }
+  },
+
+  "secondary_medications_by_impact": {
+    "critical_harm": [
+      {
+        "name": "excessive_naloxone",
+        "description": "Large bolus (2mg+) given rapidly",
+        "why_problematic": "Precipitates severe acute withdrawal",
+        "if_given": {
+          "vital_changes": {
+            "HR": 125,
+            "BP_systolic": 175,
+            "RR": 24
+          },
+          "patient_response": "Patient suddenly fully awake, agitated, vomiting, diaphoretic, tachycardic. 'What did you give me?! Get away from me!' May become combative. High risk of vomiting and aspiration.",
+          "clinical_effect": "Acute opioid withdrawal precipitated. Patient uncomfortable, aspiration risk, will likely refuse transport, may re-use immediately.",
+          "points": -15,
+          "aar_flag": "over_reversal"
+        },
+        "teaching_point": "Titrate naloxone to BREATHING, not consciousness. 0.4mg, wait 2 minutes, repeat if needed. Goal RR >12, not GCS 15."
+      }
+    ],
+
+    "worsens": [
+      {
+        "name": "flumazenil",
+        "generic_name": "Flumazenil",
+        "why_wrong": "This is opioid overdose, not benzodiazepine. And flumazenil can cause seizures.",
+        "if_given": {
+          "clinical_effect": "No effect - flumazenil reverses benzodiazepines, not opioids. If patient also took benzos, flumazenil may cause seizures.",
+          "points": -10,
+          "aar_flag": "wrong_antidote"
+        },
+        "teaching_point": "Naloxone reverses OPIOIDS. Flumazenil reverses BENZODIAZEPINES. Different receptors, different antidotes. Also, flumazenil causes seizures in benzo-dependent patients."
+      }
+    ],
+
+    "neutral": [
+      {
+        "name": "glucose",
+        "generic_name": "Glucose 40%",
+        "indication": "Hypoglycemia",
+        "why_check": "Reasonable to check glucose in any unresponsive patient",
+        "if_given": {
+          "clinical_effect": "No effect if glucose normal. But checking glucose is good practice in altered mental status.",
+          "points": 0,
+          "aar_flag": "appropriate_differential_consideration"
+        },
+        "teaching_point": "Checking glucose in unresponsive patient is good practice. But this presentation (pinpoint pupils, needle marks, RR 4) is classic opioid overdose."
+      }
+    ]
+  },
+
+  "critical_actions_checklist": [
+    {
+      "id": "CA1",
+      "action": "Scene safety assessment",
+      "category": "scene_safety",
+      "time_target_minutes": 1,
+      "points": 5,
+      "importance": "essential",
+      "criteria": "Needle safety, BSI, no other hazards",
+      "matching": {
+        "keywords": ["scene", "safety", "safe"],
+        "synonyms": ["needle", "sharps", "bsi", "gloves", "hazard"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA2",
+      "action": "Recognize opioid toxidrome",
+      "category": "assessment",
+      "time_target_minutes": 2,
+      "points": 10,
+      "importance": "critical",
+      "criteria": "Identifies triad: respiratory depression + CNS depression + miosis",
+      "matching": {
+        "keywords": ["opioid", "overdose", "toxidrome"],
+        "synonyms": ["heroin", "fentanyl", "pinpoint", "miosis", "respiratory depression", "narcotics"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA3",
+      "action": "Open airway and position patient",
+      "category": "treatment",
+      "time_target_minutes": 2,
+      "points": 5,
+      "importance": "critical",
+      "matching": {
+        "keywords": ["airway", "position"],
+        "synonyms": ["head tilt", "chin lift", "jaw thrust", "recovery position"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA4",
+      "action": "Provide BVM ventilation",
+      "category": "treatment",
+      "time_target_minutes": 3,
+      "points": 20,
+      "importance": "critical",
+      "criteria": "MUST ventilate BEFORE or WHILE giving naloxone",
+      "matching": {
+        "keywords": ["bvm", "ventilate", "bag valve"],
+        "synonyms": ["ambu", "bag mask", "assist ventilation", "breathe for", "ventilation"],
+        "tool_mappings": ["use_bvm", "ventilate_patient"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA5",
+      "action": "Administer naloxone",
+      "category": "treatment",
+      "time_target_minutes": 4,
+      "points": 20,
+      "importance": "critical",
+      "criteria": "0.4mg IV/IM titrated to respiratory effort",
+      "matching": {
+        "keywords": ["naloxone", "narcan"],
+        "synonyms": ["0.4mg", "0.4 mg", "opioid antagonist", "reversal"],
+        "tool_mappings": ["administer_naloxone", "give_narcan"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA6",
+      "action": "Titrate to breathing NOT consciousness",
+      "category": "treatment",
+      "time_target_minutes": 6,
+      "points": 10,
+      "importance": "critical",
+      "criteria": "Goal RR >12, patient breathing adequately, NOT necessarily fully awake",
+      "matching": {
+        "keywords": ["titrate", "breathing"],
+        "synonyms": ["respiratory rate", "adequate breathing", "not full reversal", "partial reversal"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA7",
+      "action": "Monitor for re-sedation",
+      "category": "monitoring",
+      "time_target_minutes": 10,
+      "points": 5,
+      "importance": "important",
+      "criteria": "Recognizes naloxone may wear off before opioid",
+      "matching": {
+        "keywords": ["monitor", "re-sedation", "wear off"],
+        "synonyms": ["watch", "recheck", "naloxone duration", "may need more"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA8",
+      "action": "Transport decision with harm reduction approach",
+      "category": "disposition",
+      "time_target_minutes": 12,
+      "points": 5,
+      "importance": "important",
+      "matching": {
+        "keywords": ["transport", "hospital"],
+        "synonyms": ["harm reduction", "monitoring", "observation"],
+        "exclusion_keywords": []
+      }
+    }
+  ],
+
+  "common_errors": [
+    {
+      "error_id": "E1",
+      "error": "Naloxone before ventilation",
+      "teaching_point": "VENTILATE FIRST - naloxone takes 1-2 minutes to work, patient needs oxygen NOW",
+      "clinical_anchor": "Naloxone doesn't work on dead patients. Ventilate first, naloxone second."
+    },
+    {
+      "error_id": "E2",
+      "error": "Over-reversal with large naloxone dose",
+      "teaching_point": "Titrate to breathing (RR >12), not consciousness",
+      "clinical_anchor": "A drowsy patient who's breathing is safer than an awake patient who vomits, fights, and leaves to use again."
+    },
+    {
+      "error_id": "E3",
+      "error": "Didn't recognize re-sedation risk",
+      "teaching_point": "Naloxone lasts 30-90 minutes, opioids last hours - re-sedation common",
+      "clinical_anchor": "Naloxone wears off. The opioid doesn't. Watch for round two."
+    },
+    {
+      "error_id": "E4",
+      "error": "Single dose naloxone assumed sufficient",
+      "teaching_point": "May need repeat doses, especially with fentanyl",
+      "clinical_anchor": "One dose may not be enough. Fentanyl can laugh at 0.4mg naloxone."
+    },
+    {
+      "error_id": "E5",
+      "error": "Didn't prioritize airway/breathing assessment",
+      "teaching_point": "ABC always applies - opioid overdose is primarily a respiratory emergency",
+      "clinical_anchor": "This is a breathing problem first, a drug problem second. Treat the A and B."
+    },
+    {
+      "error_id": "E6",
+      "error": "Judgmental approach to patient",
+      "teaching_point": "Harm reduction approach improves outcomes - treat with dignity",
+      "clinical_anchor": "Addiction is a disease. Judgment doesn't save lives, naloxone does."
+    }
+  ],
+
+  "consequence_templates": [
+    {
+      "gap_trigger": "CA4_missed",
+      "checklist_item_id": "CA4",
+      "gap_type": "missed_action",
+      "template": "BVM ventilation was never provided. {patient_name} had a respiratory rate of 4 and SpO2 of 78%. While waiting for naloxone to work (1-2 minutes), his brain was severely hypoxic. Naloxone reverses opioid effects, but it cannot reverse the brain damage from prolonged hypoxia.",
+      "severity": "critical",
+      "medical_basis": "Opioid overdose deaths are from respiratory depression and hypoxia. Ventilation provides immediate oxygenation while waiting for naloxone to take effect."
+    },
+    {
+      "gap_trigger": "CA5_late",
+      "checklist_item_id": "CA5",
+      "gap_type": "delayed_action",
+      "template": "Naloxone was given at {actual_time} minutes. While ventilation may have supported oxygenation, delayed naloxone prolonged the period of respiratory depression and required continued manual ventilation.",
+      "severity": "moderate",
+      "medical_basis": "Prompt naloxone administration restores spontaneous respiration, reducing need for prolonged assisted ventilation."
+    },
+    {
+      "gap_trigger": "CA4_after_CA5",
+      "checklist_item_id": "CA4",
+      "gap_type": "wrong_sequence",
+      "template": "Naloxone was given BEFORE ventilation was established. During the 1-2 minutes while naloxone took effect, {patient_name}'s SpO2 of 78% continued to fall. The sequence should be: VENTILATE → naloxone → continue support until breathing adequate.",
+      "severity": "high",
+      "medical_basis": "Naloxone onset is 1-2 minutes IV. During this time, an apneic patient continues to be hypoxic. BVM ventilation bridges this gap."
+    }
+  ],
+
+  "critical_decision_points": [
+    {
+      "id": "CDP1",
+      "decision": "ventilation_before_naloxone",
+      "description": "Prioritizing oxygenation before antidote",
+      
+      "optimal_sequence": [
+        "Open airway (head tilt, jaw thrust)",
+        "Assess breathing - RR 4, inadequate",
+        "Begin BVM ventilation with high-flow oxygen",
+        "See SpO2 improve with ventilation",
+        "THEN give naloxone while continuing ventilation support"
+      ],
+      
+      "scoring": {
+        "optimal": "Immediately opened airway, initiated BVM ventilation, gave naloxone while ventilating, verbalized: 'Need to oxygenate first - naloxone takes a minute to work.'",
+        "acceptable": "Provided ventilation and naloxone nearly simultaneously.",
+        "suboptimal": "Gave naloxone first, then started ventilation after brief delay.",
+        "dangerous": "Gave naloxone without ever ventilating, or significant delay to oxygenation."
+      },
+      
+      "clinical_anchor": "Naloxone doesn't work on dead patients. Ventilate first, reverse second.",
+      
+      "aar_teaching_point": "Opioid overdose kills by stopping breathing. Naloxone is the antidote, but it takes 1-2 minutes to work. During that time, patient needs oxygen. BVM ventilation is THE immediate life-saving intervention. Naloxone is second."
+    },
+    {
+      "id": "CDP2",
+      "decision": "naloxone_titration",
+      "description": "Appropriate naloxone dosing to avoid over-reversal",
+      
+      "scoring": {
+        "optimal": "Started with 0.4mg, assessed response, repeated incrementally, stopped when RR >12 even though patient still drowsy. Verbalized: 'Goal is breathing, not full awakening.'",
+        "acceptable": "Gave appropriate doses, achieved adequate breathing.",
+        "suboptimal": "Gave larger initial dose, patient uncomfortable but not severely over-reversed.",
+        "dangerous": "Large bolus (2mg+) causing severe withdrawal, vomiting, combativeness."
+      },
+      
+      "clinical_anchor": "Titrate to breathing, not consciousness. Drowsy and breathing beats awake and vomiting.",
+      
+      "aar_teaching_point": "Naloxone goal: RR >12, patient protecting airway. NOT GCS 15. Over-reversal causes acute withdrawal (vomiting, agitation, tachycardia, hypertension), aspiration risk, patient leaving AMA, and immediate re-use. A drowsy patient who's breathing adequately is the optimal endpoint."
+    },
+    {
+      "id": "CDP3",
+      "decision": "re_sedation_awareness",
+      "description": "Recognizing and planning for naloxone wearing off",
+      
+      "scoring": {
+        "optimal": "Verbalized awareness that naloxone may wear off before opioid, planned for monitoring, prepared for repeat dosing.",
+        "acceptable": "Monitored patient, recognized when re-sedation began, repeated naloxone.",
+        "suboptimal": "Assumed single dose sufficient, didn't actively monitor.",
+        "dangerous": "Left patient after initial reversal, no monitoring plan."
+      },
+      
+      "clinical_anchor": "Naloxone wears off in 30-90 minutes. Fentanyl lasts hours. Plan for round two.",
+      
+      "aar_teaching_point": "Naloxone duration: 30-90 minutes. Many opioids (especially fentanyl): 4-24 hours. Re-sedation is COMMON and EXPECTED. All opioid overdose patients need at least 2 hours of monitoring. Transport is essential even if patient refuses initially."
+    }
+  ],
+
+  "aar_teaching_points": {
+    "key_concepts": [
+      "VENTILATE FIRST - naloxone doesn't work on dead patients",
+      "Titrate to BREATHING (RR >12), not CONSCIOUSNESS",
+      "Opioid toxidrome: respiratory depression + CNS depression + miosis (pinpoint pupils)",
+      "Re-sedation is common - naloxone wears off before opioid does",
+      "Harm reduction approach: treat with dignity, don't judge"
+    ],
+    "clinical_pearls": [
+      "Bradycardia in overdose is from HYPOXIA - will improve with oxygenation",
+      "Fentanyl may require much higher naloxone doses (10mg+)",
+      "Pinpoint pupils help distinguish opioid OD from other causes of unresponsiveness",
+      "Over-reversal causes vomiting (aspiration risk) and patient leaving AMA to use again",
+      "0.4mg IV, wait 2-3 minutes, repeat - not large bolus doses"
+    ]
+  },
+
+  "simulation_config": {
+    "real_time_progression": true,
+    "auto_deterioration_if_no_treatment": true,
+    "max_duration_minutes": 20,
+    "deterioration_timing_minutes": [5, 9, 13],
+    "layer_two_enabled": true,
+    "challenge_points_active": false,
+    "critical_decision_points_active": true,
+    "max_cdp_evaluations": 3
+  }
+}

@@ -1,0 +1,699 @@
+{
+  "scenario_id": "STATUS_EPILEPTICUS_MVP_V3_001_SK",
+  "metadata": {
+    "title": "Status epilepticus s hypoglykémiou",
+    "version": "3.0_Enhanced_SK",
+    "difficulty": "vysoká",
+    "estimated_duration_minutes": 20,
+    "scenario_type": "neurologické_metabolické",
+    "learning_objectives": [
+      "Rozpoznať status epilepticus (kŕče >5 minút alebo opakované bez zotavenia)",
+      "Uprednostniť meranie glykémie PRED benzodiazepínmi",
+      "Rozpoznať hypoglykémiu ako reverzibilnú príčinu kŕčov",
+      "Správne podať glukózu pri hypoglykemických kŕčoch",
+      "Pochopiť rozdiel medzi symptomatickou a kauzálnou liečbou",
+      "Preukázať bezpečný manažment dýchacích ciest počas aktívnych kŕčov",
+      "Vyhnúť sa zbytočným intervenciám (nevkladať nič do úst)"
+    ],
+    "target_student_level": "študent_druhého_ročníka_záchranár",
+    "language": "slovenčina",
+    "changelog": {
+      "v3.0_enhanced_sk": "Slovenská verzia. Blueprint Structure Enhancement v2. Časovanie deteriorácie 5/9/13 min. Trvanie 20 minút."
+    }
+  },
+
+  "dispatch_info": {
+    "call_type": "Kŕče",
+    "age": "34",
+    "sex": "Žena",
+    "location": "Kancelária, pracovisko",
+    "caller": "Kolega",
+    "additional_info": "Žena má záchvat, trasie sa, nereaguje, trvá to už niekoľko minút"
+  },
+
+  "scene_description": {
+    "location": "Open-space kancelária, pacientka na zemi medzi stolmi",
+    "safety": "Miesto bezpečné, kolegovia odsunuli nábytok, žiadne nebezpečenstvá",
+    "access": "Prízemie, prístup pre nosidlá, výťah k dispozícii",
+    "bystanders": "Niekoľko kolegov, jeden manažér koordinuje, mobilizovaná prvá pomoc"
+  },
+
+  "patient_profile": {
+    "name": "Andrea",
+    "age": 34,
+    "weight_kg": 62,
+    "personality": "Počas kŕčov nereagujúca. Po zotavení: zmätená, dezorientovaná, môže byť agitovaná alebo ospanlivá"
+  },
+
+  "initial_vitals": {
+    "HR": 118,
+    "RR": 8,
+    "SpO2": 89,
+    "BP_systolic": 165,
+    "BP_diastolic": 95,
+    "temperature": 37.8,
+    "GCS": 3,
+    "glucose": 1.8,
+    "pupils": "4mm bilaterálne, reaktívne ale môžu byť deviované nahor počas kŕčov"
+  },
+
+  "state_descriptions": {
+    "initial": {
+      "student_sees": "Prichádzate k 34-ročnej žene ležiacej na zemi v kancelárskom priestore. Aktívne sa trhá v generalizovaných tonicko-klonických kŕčoch - celé jej telo je stuhnuté a rytmicky sa trasie. Jej čeľusť je pevne zovretá a z kútika úst jej tečú sliny s odtieňom krvi (zrejme si uhryzla jazyk). Jej oči sú otvorené ale prevracajú sa nahor. Koža je bledá a spotená. Kolegyňa kľačí vedľa a snaží sa jej niečo vložiť do úst - 'Aby si neprehltla jazyk!' Iný kolega hovorí: 'Začalo to asi pred 6-7 minútami. Len sme počuli buchnutie a ona bola na zemi a triasla sa. Je diabetička - viem, že si pichá inzulín.' Všimnete si inzulínové pero a glukomer na jej stole. Na jej pracovnom stole je aj nedojedený obed.",
+      "appearance": "Aktívne generalizované tonicko-klonické kŕče, tuhá a rytmicky sa trasúca, zovretá čeľusť, pena s krvou pri ústach, oči deviované nahor, bledá a spotená",
+      "clinical_note": "STATUS EPILEPTICUS (kŕče >5 minút) u známej diabetičky. KRITICKÉ: Skontrolujte glykémiu NAJPRV. Glykémia 1.8 mmol/L = ťažká hypoglykémia - TOTO JE PRÍČINA kŕčov. Glukóza lieči príčinu, benzodiazepín len potláča symptóm. Sekvencia: Polohovanie → Kyslík → Skontrolovať glykémiu → Glukóza ak je nízka → Diazepam len ak kŕče pokračujú PO korekcii glykémie.",
+      "urgency_level": "kritická"
+    },
+    "improving": {
+      "student_sees": "Po vašej liečbe sa kŕče zastavili. Pacientka je teraz pokojná, ale hlboko nereagujúca - je v postiktálnom stave. Jej dýchanie je hlasné ale pravidelné. Farba sa zlepšuje. Keď zavoláte jej meno, mierne zastoná ale neotvorí oči. Jej svaly sú uvoľnené. Kolegyňa si všimne: 'Prestala sa triasť! Bude v poriadku?' Čeľusť sa uvoľnila a môžete vidieť, že si uhryzla jazyk.",
+      "appearance": "Postiktálny stav, uvoľnená, dýcha, nereagujúca ale stabilná",
+      "clinical_note": "Kŕče ukončené po korekcii glykémie. Postiktálna fáza je normálna - môže trvať 15-60 minút. Pokračujte v monitorovaní glykémie, dýchacích ciest a vitálnych funkcií. Pacientka by mala postupne nadobúdať vedomie. Ak kŕče recidivujú, môže byť potrebný benzodiazepín.",
+      "urgency_level": "stredná"
+    },
+    "deteriorating": {
+      "student_sees": "Kŕče pacientky pokračujú bez prestávky. Jej tvár teraz nadobúda modrastý odtieň - stáva sa cyanotickou. Rytmus kŕčov sa mení - sú nepravidelnejšie a menej organizované. Jej dýchanie je sotva viditeľné medzi kontrakciami. Je to teraz viac ako 10 minút nepretržitých kŕčov. Kolegovia vyzerajú čoraz viac vydesene.",
+      "appearance": "Pokračujúce kŕče, cyanóza, vyčerpanie, dezorganizovaná aktivita",
+      "clinical_note": "Prolongovaný status epilepticus s hypoxiou. Ak glykémia nebola skontrolovaná a korigovaná, hypoglykémia pokračuje v udržiavaní kŕčovej aktivity. Ak boli podané benzodiazepíny bez glukózy, len potláčate symptómy bez liečby príčiny. Kritický stav.",
+      "urgency_level": "kritická"
+    },
+    "critical": {
+      "student_sees": "KRITICKÉ: Kŕče sa náhle zastavili, ale pacientka je teraz úplne ochablá a nereagujúca. Jej dýchanie sa stalo veľmi povrchným a nepravidelným. Jej koža je sivo-modrá. Neodpovedá na žiadnu stimuláciu. Toto nie je normálny postiktálny stav - toto je respiračné zlyhanie alebo metabolický kolaps.",
+      "appearance": "Náhle ukončenie kŕčov, ochablá, apnoická alebo agonálna, hlboká cyanóza, nereagujúca",
+      "clinical_note": "Kritický stav - buď hypoxická zástava z prolongovaných kŕčov alebo ťažká hypoglykemická kóma. Okamžitá BVM ventilácia potrebná. Ak glykémia stále nebola korigovaná, mozog je kriticky hypoglykemický a hypoxický.",
+      "urgency_level": "život-ohrozujúca"
+    }
+  },
+
+  "assessment_findings": {
+    "airway": {
+      "during_seizure": "Kompromitované - zovretá čeľusť, nadmerné sekréty, riziko aspirácie",
+      "post_ictal": "Ohrozené - znížené vedomie, potreba polohovania",
+      "note": "NEVKLADAJTE nič do úst počas kŕčov - zlomíte zuby a poraníte pacienta"
+    },
+    "breathing": {
+      "during_seizure": "DF 8 a nepravidelné, periódy apnoe počas tonickej fázy, cyanóza možná",
+      "post_ictal": "DF 16-20, hlasné ale adekvátne, môže byť stertorozné",
+      "improving": "DF 18, pravidelné, SpO2 zlepšujúce sa"
+    },
+    "circulation": {
+      "during_seizure": "TF 118, TK 165/95 (zvýšené zo svalovej aktivity), kapilárny návrat 2 sekundy",
+      "post_ictal": "TF 95, TK 130/80, normalizujúce sa",
+      "note": "Hypertenzia a tachykardia počas kŕčov sú normálne - neliečte ich"
+    },
+    "disability": {
+      "during_seizure": "GCS 3, aktívne kŕče, oči deviované, zrenice môžu byť dilatované a nereaktívne počas záchvatu",
+      "post_ictal": "GCS 6-9, postupne sa zlepšujúce, zmätená, dezorientovaná",
+      "improving": "GCS 12-14, bdelá ale zmätená, postupne orientovaná"
+    },
+    "exposure": {
+      "general": "Bledá, spotená, môže byť inkontinentná moču",
+      "tongue": "Uhryznutie jazyka - laterálne (typické pre epileptický záchvat)",
+      "injuries": "Skontrolujte na poranenia z pádu - možná kontúzia hlavy"
+    },
+    
+    "sample_history": {
+      "symptoms": "Generalizované tonicko-klonické kŕče, trvajúce >6 minút",
+      "allergies": "Žiadne známe liekové alergie",
+      "medications": [
+        "Inzulín aspart (NovoRapid) - rýchlo pôsobiaci",
+        "Inzulín glargín (Lantus) - dlhodobo pôsobiaci",
+        "Metformín 1000mg 2x denne"
+      ],
+      "past_history": "Diabetes mellitus 1. typu od 12 rokov, bez predchádzajúcej anamnézy epilepsie, žiadne predchádzajúce kŕče",
+      "last_intake": "Kolega: 'Mala dnes veľa práce, videl som ju jesť len polovicu obeda pred asi 2 hodinami. Povedala niečo o tom, že si ráno zabudla skontrolovať cukor.'",
+      "events": "Kolega: 'Počul som buchnutie, otočil som sa a bola na zemi a triasla sa. Nikto nevidel, či spadla alebo sa zosula. Trvá to asi 6-7 minút.'"
+    },
+
+    "glucose_finding": {
+      "value": 1.8,
+      "unit": "mmol/L",
+      "interpretation": "ŤAŽKÁ HYPOGLYKÉMIA",
+      "normal_range": "4.0-7.8 mmol/L",
+      "critical_threshold": "<3.0 mmol/L",
+      "significance": "TOTO JE PRÍČINA KŔČOV - liečte glukózou, nie benzodiazepínmi"
+    },
+
+    "key_scene_clues": [
+      "Inzulínové pero a glukomer na stole",
+      "Nedojedený obed",
+      "Kolega spomína diabetes a inzulín",
+      "Žiadna predchádzajúca anamnéza kŕčov",
+      "Diabetička, ktorá 'vynechala kontrolu cukru ráno'"
+    ]
+  },
+
+  "ecg_findings": {
+    "available": true,
+    "requires_equipment": "12-zvodový EKG monitor",
+    "acquisition_time_seconds": 10,
+
+    "findings_structured": {
+      "rhythm_and_rate": {
+        "rhythm": "Sínusová tachykardia",
+        "regularity": "pravidelný",
+        "rate_bpm": 118
+      },
+
+      "st_segment_changes": [],
+
+      "other_findings": [
+        "Pohybové artefakty z kŕčovej aktivity",
+        "Žiadne akútne ischemické zmeny",
+        "Žiadne známky hyperkaliémie"
+      ]
+    },
+
+    "interpretation": {
+      "diagnosis": "Sínusová tachykardia - fyziologická odpoveď na kŕče",
+      "mechanism": "Zvýšená sympatická aktivita z kŕčov",
+      "territory": "N/A",
+      "severity": "Očakávané pri status epilepticus",
+      "note": "LEN PRE REFERENCIU AGENTA"
+    },
+
+    "teaching_point": "EKG NIE je prioritou pri status epilepticus. Tachykardia je očakávaná. Sústreďte sa na: (1) Skontrolovať glykémiu, (2) Liečiť príčinu (hypoglykémia), (3) Zastaviť kŕče ak pokračujú. EKG môže byť užitočné neskôr na vylúčenie kardiálnych príčin synkopy.",
+    "teaching_point_note": "PRE POUŽITIE AAR AGENTOM",
+
+    "presentation_mode": "structured_text"
+  },
+
+  "critical_treatments": ["kontrola_glykémie", "glukóza_ak_nízka"],
+
+  "primary_medications": {
+    "glucose_40_percent": {
+      "generic_name": "Glukóza 40%",
+      "class": "Monosacharid",
+      "indication": "Hypoglykémia",
+      "mechanism": "Priamy zdroj energie pre mozog",
+      
+      "dosing": {
+        "adult": "40-80ml 40% glukózy IV (16-32g glukózy)",
+        "alternative": "Glukagón 1mg IM ak nie je IV vstup"
+      },
+      
+      "pharmacokinetics": {
+        "onset_minutes": "1-3",
+        "peak_effect_minutes": 5,
+        "duration_minutes": "30-60"
+      },
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": true,
+        "life_saving": true,
+        "treats_cause": true,
+        "time_to_effect_minutes": 2,
+        "vital_changes": {
+          "GCS": 9,
+          "glucose": 6.5,
+          "seizure_activity": "zastavené"
+        },
+        "patient_response": "Kŕče sa zastavia do 1-3 minút. Pacientka vstúpi do postiktálneho stavu, potom postupne nadobudne vedomie.",
+        "clinical_effect": "Mozog dostane palivo, ktoré potrebuje. Kŕče sa zastavia, pretože je vyriešená PRÍČINA, nie len potlačený symptóm.",
+        "points_if_given": 35,
+        "timing_critical": "Musí byť podaná ak je glykémia <4.0 mmol/L"
+      }
+    },
+
+    "diazepam": {
+      "generic_name": "Diazepam",
+      "brand_names": ["Apaurin", "Valium"],
+      "class": "Benzodiazepín",
+      "indication": "Status epilepticus (po vylúčení/liečbe hypoglykémie)",
+      "mechanism": "Zosilňuje GABA, potláča kŕčovú aktivitu",
+      
+      "dosing": {
+        "adult_iv": "5-10mg IV pomalou injekciou",
+        "adult_rectal": "10-20mg rektálne ak nie je IV",
+        "max_dose": "20mg"
+      },
+      
+      "pharmacokinetics": {
+        "onset_iv_minutes": "1-3",
+        "peak_effect_minutes": 5,
+        "duration_minutes": "15-30"
+      },
+      
+      "contraindications": {
+        "relative": ["respiračná_depresia", "akútna_intoxikácia"]
+      },
+      
+      "side_effects": ["respiračná_depresia", "hypotenzia", "sedácia"],
+      
+      "warnings": [
+        "Pripravte sa na manažment dýchacích ciest",
+        "Môže spôsobiť respiračnú zástavu",
+        "NELIEČI hypoglykemické kŕče - len ich maskuje"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": "podmienečné",
+        "when_appropriate": "LEN ak kŕče pokračujú PO korekcii glykémie",
+        "if_given_before_glucose": {
+          "vital_changes": {
+            "RR": 6,
+            "SpO2": 82,
+            "GCS": 3
+          },
+          "clinical_effect": "Kŕče sa môžu dočasne zastaviť, ale príčina (hypoglykémia) zostáva. Pacientka teraz hlboko sedovaná s respiračnou depresiou a stále hypoglykemická. Kŕče pravdepodobne recidivujú.",
+          "points": -15,
+          "aar_flag": "symptomatická_liečba_pred_kauzálnou"
+        },
+        "if_given_after_glucose": {
+          "vital_changes": {
+            "seizure_activity": "zastavené"
+          },
+          "clinical_effect": "Vhodné ak kŕče pokračovali napriek korekcii glykémie",
+          "points": 10
+        },
+        "teaching_point": "Benzodiazepín potláča SYMPTÓM (kŕče). Glukóza lieči PRÍČINU (hypoglykémia). Liečte príčinu najprv."
+      }
+    },
+
+    "oxygen": {
+      "indication": "Hypoxia počas kŕčov (SpO2 <94%)",
+      "target": "SpO2 94-98%",
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "importance": "podporné",
+        "clinical_effect": "Podporuje oxygenáciu počas kŕčov keď je dýchanie kompromitované",
+        "points_if_given": 5
+      }
+    },
+
+    "glucagon": {
+      "generic_name": "Glukagón",
+      "indication": "Hypoglykémia keď nie je dostupný IV vstup",
+      "dosing": "1mg IM",
+      
+      "pharmacokinetics": {
+        "onset_minutes": "10-15",
+        "note": "Pomalší nástup ako IV glukóza"
+      },
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "when_to_use": "Ak nie je možný IV vstup",
+        "clinical_effect": "Mobilizuje glykogén z pečene. Pomalší nástup ako IV glukóza, ale účinný.",
+        "points_if_given": 20,
+        "limitation": "Neúčinný pri vyčerpaných zásobách glykogénu (hladovanie, alkoholizmus)"
+      }
+    }
+  },
+
+  "treatment_responses": {
+    "glucose_first": {
+      "sequence": "Polohovanie → Kyslík → Kontrola glykémie → Glukóza IV → Kŕče sa zastavia",
+      "time_to_effect_minutes": 2,
+      "vital_changes": {
+        "GCS": "3 → 6 → 9 → 12 v priebehu 10-15 minút",
+        "glucose": "1.8 → 6.5",
+        "seizure_activity": "zastavené"
+      },
+      "clinical_effect": "Príčina liečená, kŕče sa zastavia, pacientka sa prebúdza"
+    },
+    "diazepam_first": {
+      "sequence": "Diazepam → Kŕče sa zastavia → Pacientka sedovaná → Stále hypoglykemická → Kŕče recidivujú alebo kóma pretrváva",
+      "vital_changes": {
+        "RR": 6,
+        "SpO2": 82,
+        "GCS": 3
+      },
+      "clinical_effect": "Symptóm potlačený, príčina neliečená, respiračná depresia, horšia situácia"
+    }
+  },
+
+  "no_treatment_progression": {
+    "5min": {
+      "vitals": {
+        "HR": 125,
+        "RR": 6,
+        "SpO2": 82,
+        "BP_systolic": 175,
+        "GCS": 3,
+        "glucose": 1.5
+      },
+      "state": "deteriorating",
+      "description": "Kŕče pokračujú, zhoršujúca sa hypoxia, hlbšia hypoglykémia, cyanóza sa vyvíja"
+    },
+    "9min": {
+      "vitals": {
+        "HR": 135,
+        "RR": 4,
+        "SpO2": 72,
+        "BP_systolic": 180,
+        "GCS": 3,
+        "glucose": 1.2
+      },
+      "state": "deteriorating",
+      "description": "Prolongované kŕče, ťažká hypoxia, kŕčová aktivita sa stáva dezorganizovanou, kritická hypoglykémia"
+    },
+    "13min": {
+      "vitals": {
+        "HR": 55,
+        "RR": 2,
+        "SpO2": 60,
+        "BP_systolic": 90,
+        "GCS": 3,
+        "glucose": 0.9
+      },
+      "state": "critical",
+      "description": "Kŕče sa môžu zastaviť z vyčerpania, hlboká kóma, bradykardia z hypoxie, blíži sa srdcová zástava"
+    }
+  },
+
+  "secondary_medications_by_impact": {
+    "critical_harm": [
+      {
+        "name": "diazepam_bez_kontroly_glykémie",
+        "description": "Benzodiazepín podaný bez kontroly glykémie",
+        "why_dangerous": "Potláča symptóm, ignoruje príčinu, spôsobuje respiračnú depresiu",
+        "if_given": {
+          "vital_changes": {
+            "RR": 6,
+            "SpO2": 78,
+            "GCS": 3
+          },
+          "clinical_effect": "Kŕče sa môžu dočasne zastaviť. Pacientka je teraz hlboko sedovaná s respiračnou depresiou. Stále je hypoglykemická (1.8 mmol/L). Kŕče pravdepodobne recidivujú, alebo pacientka zostane v kóme z hypoglykémie.",
+          "points": -20,
+          "state_change": "deteriorating",
+          "aar_flag": "kritická_sekvencia_chyba"
+        },
+        "teaching_point": "Skontroluj glykémiu, lieč príčinu. Benzodiazepín potláča symptómy, glukóza rieši problém."
+      }
+    ],
+
+    "worsens": [
+      {
+        "name": "vkladanie_predmetov_do_ust",
+        "description": "Pokus vložiť predmet do úst pacienta počas kŕčov",
+        "why_wrong": "Spôsobuje poranenie zubov, aspiráciu, poranenie záchranára",
+        "if_done": {
+          "clinical_effect": "Riziko zlomených zubov (aspiračné riziko), poranená sliznica úst, možné poranenie záchranára. Mýtus 'prehltnutia jazyka' je lekársky nesprávny.",
+          "points": -10,
+          "aar_flag": "škodlivá_intervencia"
+        },
+        "teaching_point": "Čeľusť je počas kŕčov zovretá nadľudskou silou. Zlomíte zuby, nepomôžete. Jazyk nemožno prehltnúť."
+      },
+      {
+        "name": "obmedzovanie_pacienta",
+        "description": "Pokus fyzicky obmedziť kŕčujúceho pacienta",
+        "why_wrong": "Spôsobuje zlomeniny a poranenia",
+        "if_done": {
+          "clinical_effect": "Riziko zlomenín z boja proti kŕčom. Nemôžete zastaviť kŕče fyzickým obmedzením.",
+          "points": -5,
+          "aar_flag": "škodlivá_intervencia"
+        },
+        "teaching_point": "Ochráňte pred poranením, neobmedzujte. Polohujte, odstráňte nebezpečenstvá, nič viac."
+      }
+    ],
+
+    "neutral": [
+      {
+        "name": "diazepam_po_glukóze",
+        "description": "Benzodiazepín podaný PO korekcii glykémie pre pretrvávajúce kŕče",
+        "if_given": {
+          "clinical_effect": "Vhodné ak kŕče pokračujú napriek normalizovanej glykémii. Správna sekvencia.",
+          "points": 10,
+          "aar_flag": "vhodná_sekundárna_liečba"
+        },
+        "teaching_point": "Ak kŕče pokračujú po korekcii glykémie, benzodiazepín je indikovaný. Sekvencia je kľúčová."
+      }
+    ]
+  },
+
+  "critical_actions_checklist": [
+    {
+      "id": "CA1",
+      "action": "Bezpečné polohovanie pacienta",
+      "category": "bezpečnosť",
+      "time_target_minutes": 1,
+      "points": 5,
+      "importance": "nevyhnutné",
+      "criteria": "Chrániť hlavu, odstrániť nebezpečenstvá, poloha na boku ak je to bezpečné",
+      "matching": {
+        "keywords": ["polohovanie", "poloha", "bezpečná"],
+        "synonyms": ["chrániť hlavu", "odstrániť nebezpečenstvá", "stabilná poloha", "na boku"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA2",
+      "action": "Aplikovať kyslík",
+      "category": "liečba",
+      "time_target_minutes": 2,
+      "points": 5,
+      "importance": "dôležité",
+      "matching": {
+        "keywords": ["kyslík", "o2"],
+        "synonyms": ["maska", "vysoký prietok"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA3",
+      "action": "Skontrolovať glykémiu",
+      "category": "vyšetrenie",
+      "time_target_minutes": 3,
+      "points": 20,
+      "importance": "kritické",
+      "criteria": "MUSÍ byť vykonané PRED akoukoľvek antikonvulzívnou liečbou",
+      "matching": {
+        "keywords": ["glykémia", "cukor", "glukóza"],
+        "synonyms": ["glukomer", "krvný cukor", "skontrolovať cukor", "hypoglykémia", "bgs", "glu"],
+        "tool_mappings": ["skontrolovať_glykémiu", "zmerať_glukózu"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA4",
+      "action": "Podať glukózu ak je hypoglykémia",
+      "category": "liečba",
+      "time_target_minutes": 5,
+      "points": 35,
+      "importance": "kritické",
+      "criteria": "40-80ml 40% glukózy IV pre glykémiu <4.0 mmol/L",
+      "matching": {
+        "keywords": ["glukóza", "dextróza"],
+        "synonyms": ["40%", "g40", "d40", "hypertonická glukóza", "glukagón"],
+        "tool_mappings": ["podať_glukózu"],
+        "exclusion_keywords": ["kontrola", "merať", "skontrolovať"]
+      }
+    },
+    {
+      "id": "CA5",
+      "action": "Zabezpečiť IV vstup",
+      "category": "liečba",
+      "time_target_minutes": 5,
+      "points": 5,
+      "importance": "dôležité",
+      "matching": {
+        "keywords": ["iv", "intravenózny"],
+        "synonyms": ["linka", "vstup", "kanyla"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA6",
+      "action": "Monitorovať odpoveď",
+      "category": "monitoring",
+      "time_target_minutes": 8,
+      "points": 5,
+      "importance": "dôležité",
+      "criteria": "Sledovať zastavenie kŕčov, prebudenie, kontrola glykémie",
+      "matching": {
+        "keywords": ["monitorovať", "sledovať", "prehodnotiť"],
+        "synonyms": ["kontrola glykémie", "či sa zastavili kŕče", "odpoveď"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA7",
+      "action": "Zvážiť benzodiazepín ak kŕče pokračujú",
+      "category": "liečba",
+      "time_target_minutes": 10,
+      "points": 5,
+      "importance": "podmienečne_dôležité",
+      "criteria": "LEN ak kŕče pokračujú PO korekcii glykémie",
+      "matching": {
+        "keywords": ["diazepam", "benzodiazepín"],
+        "synonyms": ["apaurin", "valium", "antikonvulzívum", "midazolam"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA8",
+      "action": "Získať anamnézu",
+      "category": "vyšetrenie",
+      "time_target_minutes": 7,
+      "points": 5,
+      "importance": "dôležité",
+      "criteria": "Diabetes, lieky, posledné jedlo, predchádzajúce kŕče",
+      "matching": {
+        "keywords": ["anamnéza", "lieky"],
+        "synonyms": ["diabetik", "inzulín", "predchádzajúce záchvaty", "sample"],
+        "exclusion_keywords": []
+      }
+    }
+  ],
+
+  "common_errors": [
+    {
+      "error_id": "E1",
+      "error": "Diazepam podaný pred kontrolou glykémie",
+      "teaching_point": "Benzodiazepín potláča symptóm, glukóza lieči príčinu. Sekvencia záleží.",
+      "clinical_anchor": "Skontroluj glykémiu, lieč príčinu. Benzodiazepín potláča symptómy, glukóza rieši problém."
+    },
+    {
+      "error_id": "E2",
+      "error": "Glykémia vôbec nebola skontrolovaná",
+      "teaching_point": "KAŽDÝ pacient s kŕčmi alebo zmeneným vedomím potrebuje kontrolu glykémie",
+      "clinical_anchor": "Glukomer je najrýchlejšie reverzibilné diagnostické náradie. Použite ho."
+    },
+    {
+      "error_id": "E3",
+      "error": "Vkladanie predmetov do úst",
+      "teaching_point": "Jazyk nemožno prehltnúť - tento mýtus zraňuje pacientov",
+      "clinical_anchor": "Čeľusť je počas kŕčov zovretá nadľudskou silou. Zlomíte zuby, nepomôžete."
+    },
+    {
+      "error_id": "E4",
+      "error": "Fyzické obmedzovanie počas kŕčov",
+      "teaching_point": "Obmedzovanie spôsobuje zlomeniny a poranenia",
+      "clinical_anchor": "Chrániť, neobmedzovať. Nemôžete bojovať proti kŕčom a vyhrať."
+    },
+    {
+      "error_id": "E5",
+      "error": "Nerozpoznanie diabetických indícií na mieste",
+      "teaching_point": "Vodítka: inzulínové pero, glukomer, medicínsky náramok, kolega spomína diabetes",
+      "clinical_anchor": "Miesto hovorí príbehy. Inzulín na stole plus kŕče sa rovná 'skontroluj cukor'."
+    },
+    {
+      "error_id": "E6",
+      "error": "Čakanie na zastavenie kŕčov pred intervenciou",
+      "teaching_point": "Status epilepticus je emergentnosť - zasiahnite počas kŕčov",
+      "clinical_anchor": "Čas sú mozgové bunky. Nečakajte kým mozog prestane kričať o pomoc."
+    }
+  ],
+
+  "consequence_templates": [
+    {
+      "gap_trigger": "CA3_missed",
+      "checklist_item_id": "CA3",
+      "gap_type": "vynechaná_akcia",
+      "template": "Glykémia NEBOLA skontrolovaná. {patient_name} mala ťažkú hypoglykémiu (1.8 mmol/L) spôsobujúcu jej kŕče. Bez kontroly glykémie bola táto reverzibilná príčina prehliadnutá. Mozog hladoval na glukózu - jeho primárne palivo - zatiaľ čo diagnostika nebola nikdy vykonaná.",
+      "severity": "kritická",
+      "medical_basis": "Hypoglykémia je najčastejšou reverzibilnou príčinou kŕčov u diabetikov. Kontrola glykémie trvá 10 sekúnd a môže zachrániť život."
+    },
+    {
+      "gap_trigger": "CA4_missed",
+      "checklist_item_id": "CA4",
+      "gap_type": "vynechaná_akcia",
+      "template": "Napriek dokumentovanej hypoglykémii ({glucose_value} mmol/L), glukóza nebola podaná. Mozog {patient_name} potrebuje glukózu na fungovanie - pokračujúca hypoglykémia spôsobuje neuronálnu smrť a permanentné mozgové poškodenie.",
+      "variables": {
+        "glucose_value": "1.8",
+        "patient_name": "patient_profile.name"
+      },
+      "severity": "kritická",
+      "medical_basis": "Prolongovaná hypoglykémia spôsobuje ireverzibilné mozgové poškodenie. Glukóza je definitívnou liečbou hypoglykemických kŕčov."
+    },
+    {
+      "gap_trigger": "diazepam_before_glucose",
+      "gap_type": "chyba_v_sekvencii",
+      "template": "Diazepam bol podaný PRED kontrolou alebo korekciou glykémie. Toto potlačilo SYMPTÓM (kŕče), ale neriešilo PRÍČINU (hypoglykémia). {patient_name} je teraz sedovaná s respiračnou depresiou a stále hypoglykemická. Jej mozog stále hladuje.",
+      "severity": "kritická",
+      "medical_basis": "Benzodiazepíny neliečia hypoglykémiu. Potláčajú kŕčovú aktivitu, ale mozog zostáva bez glukózy. Respiračná depresia z benzodiazepínu pridáva hypoxiu k hypoglykémii."
+    }
+  ],
+
+  "critical_decision_points": [
+    {
+      "id": "CDP1",
+      "decision": "priorita_glykémie",
+      "description": "Kontrola glykémie pred antikonvulzívnou liečbou",
+      "evaluate_if": "Študent inicioval akúkoľvek liečbu",
+      
+      "optimal_sequence": [
+        "Polohovať bezpečne, odstrániť nebezpečenstvá",
+        "Aplikovať kyslík",
+        "Skontrolovať glykémiu PRED akýmkoľvek antikonvulzívom",
+        "Identifikovať hypoglykémiu (1.8 mmol/L)",
+        "Podať glukózu IV ako prvolíniovú liečbu",
+        "Pozorovať zastavenie kŕčov",
+        "Diazepam LEN ak kŕče pokračujú po korekcii glykémie"
+      ],
+      
+      "scoring": {
+        "optimal": "Skontroloval glykémiu do 3 minút, identifikoval hypoglykémiu, podal glukózu ako prvolíniovú liečbu pred benzodiazepínom.",
+        "acceptable": "Skontroloval glykémiu a podal glukózu, aj keď mierne oneskorene.",
+        "suboptimal": "Skontroloval glykémiu, ale podal diazepam pred glukózou.",
+        "dangerous": "Podal diazepam bez kontroly glykémie, alebo nikdy neskontroloval glykémiu."
+      },
+      
+      "clinical_anchor": "Glukomer je 10 sekúnd. Zmeškané hypoglykémie znamená premeškané okno na zachránenie mozgu.",
+      
+      "aar_teaching_point": "KAŽDÝ pacient so zmeneným vedomím alebo kŕčmi potrebuje kontrolu glykémie. U diabetikov je hypoglykémia hlavnou diferenciálnou diagnózou. Glukóza lieči príčinu, benzodiazepín potláča symptóm. Sekvencia: Polohuj → O2 → Skontroluj glykémiu → Glukóza ak <4 → Diazepam len ak kŕče pokračujú."
+    },
+    {
+      "id": "CDP2",
+      "decision": "manažment_dýchacích_ciest_počas_kŕčov",
+      "description": "Bezpečný manažment dýchacích ciest bez škodlivých intervencií",
+      
+      "scoring": {
+        "optimal": "Polohoval bezpečne, chránil hlavu, aplikoval kyslík, NEVKLADAL nič do úst, nepokúšal sa fyzicky obmedziť.",
+        "acceptable": "Bezpečné polohovanie, žiadne škodlivé intervencie.",
+        "suboptimal": "Pokúsil sa obmedziť alebo manipulovať s pacientom počas aktívnych kŕčov.",
+        "dangerous": "Vkladal predmety do úst, agresívne obmedzoval, spôsobil poranenie."
+      },
+      
+      "clinical_anchor": "Počas kŕčov: Polohuj bezpečne, nepokúšaj sa otvoriť ústa, nevkladaj nič dovnútra.",
+      
+      "aar_teaching_point": "Počas kŕčov: (1) Polohuj bezpečne - chráň hlavu, odstraň nebezpečenstvá. (2) NEVKLADAJ nič do úst - čeľusť je zovretá so silou 250kg, zlomíš zuby. (3) Neobmedzuj fyzicky - spôsobíš zlomeniny. (4) Aplikuj kyslík cez masku bez pásov ak je to tolerované."
+    },
+    {
+      "id": "CDP3",
+      "decision": "rozpoznanie_vodítok_na_mieste",
+      "description": "Identifikácia diabetických vodítok z prostredia",
+      
+      "scoring": {
+        "optimal": "Všimol si inzulínové pero, glukomer, neúplný obed. Ihneď podozrieval hypoglykémiu.",
+        "acceptable": "Rozpoznal diabetes z informácie kolegu alebo pomôcok.",
+        "suboptimal": "Neintegroval vodítka z prostredia do diagnostickej úvahy.",
+        "dangerous": "Úplne prehliadol diabetické vodítka, liečil ako primárnu epilepsiu."
+      },
+      
+      "clinical_anchor": "Miesto hovorí príbehy. Inzulín na stole plus kŕče sa rovná 'skontroluj glykémiu TERAZ'.",
+      
+      "aar_teaching_point": "Vodítka z prostredia: Medicínske pomôcky (inzulínové pero, glukomer), medicínske náramky, lieky, výpovede kolegov. Diabetik s kŕčmi bez anamnézy epilepsie = hypoglykémia kým sa nedokáže opak. VŽDY skontroluj glykémiu."
+    }
+  ],
+
+  "aar_teaching_points": {
+    "key_concepts": [
+      "VŽDY skontroluj glykémiu pri kŕčoch alebo zmenenom vedomí",
+      "Hypoglykémia je najčastejšou reverzibilnou príčinou kŕčov u diabetikov",
+      "Glukóza lieči PRÍČINU, benzodiazepín potláča SYMPTÓM",
+      "Sekvencia: Polohovanie → Kyslík → Glykémia → Glukóza → Diazepam (ak potrebný)",
+      "NEVKLADAJ nič do úst počas kŕčov"
+    ],
+    "clinical_pearls": [
+      "Glukomer je 10-sekundový test, ktorý môže zachrániť mozog",
+      "Diabetik s 'prvým záchvatom' = hypoglykémia kým sa nedokáže opak",
+      "Benzodiazepín pred glukózou = respiračná depresia + neliečená hypoglykémia",
+      "Čeľusť je počas kŕčov zovretá nadľudskou silou - nezlomíš ju, zlomíš zuby",
+      "Postiktálny stav je normálny a môže trvať 15-60 minút"
+    ]
+  },
+
+  "simulation_config": {
+    "real_time_progression": true,
+    "auto_deterioration_if_no_treatment": true,
+    "max_duration_minutes": 20,
+    "deterioration_timing_minutes": [5, 9, 13],
+    "layer_two_enabled": true,
+    "challenge_points_active": false,
+    "critical_decision_points_active": true,
+    "max_cdp_evaluations": 3
+  }
+}

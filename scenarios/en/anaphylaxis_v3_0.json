@@ -1,0 +1,695 @@
+{
+  "scenario_id": "ANAPHYLAXIS_MVP_V3_001",
+  "metadata": {
+    "title": "Anaphylaxis - Bee Sting Reaction",
+    "version": "3.0_Enhanced",
+    "difficulty": "moderate_high",
+    "estimated_duration_minutes": 20,
+    "scenario_type": "medical_respiratory_allergic",
+    "learning_objectives": [
+      "Recognize anaphylaxis criteria (skin + respiratory OR skin + cardiovascular)",
+      "Administer epinephrine as first-line treatment without delay",
+      "Manage combined airway compromise and circulatory shock",
+      "Differentiate anaphylaxis from isolated asthma",
+      "Understand epinephrine dosing and repeat criteria",
+      "Demonstrate appropriate positioning for shock vs respiratory distress"
+    ],
+    "target_student_level": "second_year_paramedic_student",
+    "changelog": {
+      "v3.0_enhanced": "New scenario created with Blueprint Structure Enhancement v2: matching config, clinical anchors, consequence templates, ECG standardization. Deterioration timing 5/9/13 min. 20-minute duration."
+    }
+  },
+
+  "dispatch_info": {
+    "call_type": "Allergic reaction",
+    "age": "67",
+    "sex": "Male",
+    "location": "Residential backyard during family gathering",
+    "caller": "Wife",
+    "additional_info": "Bee sting, swelling, difficulty breathing, getting worse quickly"
+  },
+
+  "scene_description": {
+    "location": "Backyard garden during family barbecue, patient sitting against fence",
+    "safety": "Scene safe, no ongoing bee threat, family members present",
+    "access": "Ground level, direct access through side gate, stretcher accessible",
+    "bystanders": "Wife very anxious, adult children present, one is a nurse"
+  },
+
+  "patient_profile": {
+    "name": "Rudolf",
+    "age": 67,
+    "weight_kg": 82,
+    "personality": "Anxious and frightened, cooperative, becomes less responsive as condition worsens"
+  },
+
+  "initial_vitals": {
+    "HR": 118,
+    "RR": 28,
+    "SpO2": 91,
+    "BP_systolic": 88,
+    "BP_diastolic": 60,
+    "temperature": 36.9,
+    "GCS": 14,
+    "glucose": 6.2
+  },
+
+  "state_descriptions": {
+    "initial": {
+      "student_sees": "You arrive to find a 67-year-old man sitting on the ground leaning against a wooden fence. His face and lips are visibly swollen - angioedema is obvious. He's speaking with a hoarse, muffled voice, and you can hear stridor when he breathes in. His arms and chest are covered with raised red welts - urticaria spreading across his skin. He's scratching at the hives while struggling to breathe. His wife is kneeling beside him: 'A bee stung him about 10 minutes ago on his hand - look how swollen it is! He's allergic but hasn't been stung in 20 years. He had an EpiPen but it expired years ago.' The patient looks at you with frightened eyes and manages to say in a hoarse voice: 'Can't... breathe right... throat tight...'",
+      "appearance": "Facial angioedema, lip swelling, hoarse voice with stridor, widespread urticaria, anxious, pale, diaphoretic despite warm weather",
+      "clinical_note": "ANAPHYLAXIS with both respiratory (stridor, airway swelling) and cardiovascular (hypotension 88/60) involvement. This is life-threatening and requires IMMEDIATE epinephrine. Stridor indicates upper airway obstruction - this can progress to complete obstruction within minutes. Hypotension indicates distributive shock. ACE inhibitor use (lisinopril) may worsen angioedema.",
+      "urgency_level": "critical"
+    },
+    "improving": {
+      "student_sees": "After your treatment, the patient's condition is improving. His voice is less hoarse, and the stridor has diminished significantly. The facial swelling is starting to reduce - you can see his features more clearly now. His breathing is easier, though still slightly labored. The urticaria remains but isn't spreading further. He says in a clearer voice: 'That shot... it's helping... I can breathe better.' His color is improving and he looks less frightened. His wife is visibly relieved.",
+      "appearance": "Reduced angioedema, voice clearing, stridor resolving, urticaria stable, better color, less anxious",
+      "clinical_note": "Positive response to epinephrine. Airway improving, blood pressure stabilizing. Continue monitoring - may need second dose. Steroids and antihistamines for ongoing management. Watch for biphasic reaction (recurrence in 1-8 hours).",
+      "urgency_level": "moderate"
+    },
+    "deteriorating": {
+      "student_sees": "The patient's condition is worsening rapidly. His face is now massively swollen - eyes nearly shut, lips grotesquely enlarged. His voice has become barely audible, and the stridor is now a high-pitched wheeze with each breath. He's grabbing at his throat. His skin is becoming mottled and gray despite the urticaria. He's no longer able to speak, just making gasping sounds and pointing at his throat with terrified eyes.",
+      "appearance": "Severe angioedema, near-complete airway obstruction, unable to speak, mottled skin, severe respiratory distress, altered consciousness",
+      "clinical_note": "Critical deterioration - airway obstruction progressing, shock worsening. Immediate epinephrine if not given, or repeat dose needed. Prepare for surgical airway if complete obstruction occurs. This patient may die within minutes without intervention.",
+      "urgency_level": "critical"
+    },
+    "critical": {
+      "student_sees": "CRITICAL: The patient is now barely conscious and making only weak, ineffective attempts to breathe. His face is massively swollen with complete upper airway obstruction. No air movement is audible. His skin is gray-blue and mottled. He's unresponsive to voice. You cannot ventilate with BVM due to complete upper airway obstruction. This is a surgical airway emergency.",
+      "appearance": "Complete airway obstruction, unresponsive, cyanotic, no air movement, agonal state",
+      "clinical_note": "Respiratory arrest from airway obstruction plus cardiovascular collapse. Without immediate intervention (surgical airway, continued epinephrine, aggressive resuscitation), death is imminent.",
+      "urgency_level": "life-threatening"
+    }
+  },
+
+  "assessment_findings": {
+    "airway": {
+      "initial": "Compromised - stridor present, hoarse voice, visible pharyngeal swelling, tongue swelling beginning",
+      "improving": "Improving - stridor reduced, voice clearing, swelling decreasing",
+      "deteriorating": "Near-complete obstruction - severe stridor, unable to speak, air hunger",
+      "critical": "Complete obstruction - no air movement, BVM ventilation impossible"
+    },
+    "breathing": {
+      "initial": "RR 28, labored, inspiratory stridor, no wheeze (this is upper airway, not bronchospasm), accessory muscle use",
+      "improving": "RR 22, stridor resolving, easier breathing",
+      "deteriorating": "RR 36, severe stridor, minimal air movement despite maximal effort",
+      "critical": "Apneic or agonal, complete obstruction"
+    },
+    "circulation": {
+      "initial": "HR 118, BP 88/60 (hypotensive - shock), weak pulse, pale, diaphoretic, CRT 4 seconds, warm peripheries (distributive shock)",
+      "improving": "HR 95, BP 102/68, stronger pulse, better perfusion",
+      "deteriorating": "HR 135, BP 72/48, thready pulse, mottled skin",
+      "critical": "HR 45 (bradycardia from hypoxia), BP unrecordable, no peripheral pulses"
+    },
+    "disability": {
+      "initial": "GCS 14 (E4 V4 M6 - voice impaired by swelling), anxious, oriented",
+      "improving": "GCS 15, alert, oriented, less anxious",
+      "deteriorating": "GCS 11, confused, agitated",
+      "critical": "GCS 3-6, unresponsive"
+    },
+    "exposure": {
+      "initial": "Bee sting site on right hand - localized swelling and redness. Widespread urticaria on arms, chest, back. No injuries.",
+      "skin_findings": "Raised erythematous wheals (hives) covering approximately 40% body surface. Angioedema of face, lips, tongue."
+    },
+    
+    "sample_history": {
+      "symptoms": "Throat tightness, difficulty breathing, feeling faint, itching all over, started 10 minutes after bee sting",
+      "allergies": "BEES - known severe allergy, last reaction 20 years ago required hospital admission",
+      "medications": [
+        "Lisinopril 10mg daily (ACE inhibitor - WORSENS angioedema)",
+        "Aspirin 100mg daily",
+        "Atorvastatin 20mg daily"
+      ],
+      "past_history": "Hypertension, hyperlipidemia. Previous severe bee sting reaction 20 years ago - was in hospital 3 days",
+      "last_intake": "Lunch 2 hours ago at the barbecue",
+      "events": "Was gardening, felt bee sting on right hand. Within 5 minutes developed itching, then hives appeared, then face started swelling, then difficulty breathing. Wife called ambulance when breathing became difficult."
+    },
+
+    "specific_findings": {
+      "sting_site": "Right hand dorsum - 2cm area of localized swelling, redness, visible puncture mark",
+      "angioedema": "Periorbital swelling (eyes half-shut), lip swelling (upper and lower), tongue swelling (visible when mouth opens), pharyngeal swelling (visible on inspection)",
+      "urticaria": "Raised wheals 1-3cm, erythematous with central pallor, distributed on arms, chest, back, spreading to legs",
+      "throat_exam": "Uvula swollen, posterior pharynx edematous, voice hoarse"
+    },
+
+    "chief_complaint_detail": "Patient in hoarse voice: 'Can't... breathe right... throat tight... everything itching...' Wife: 'It's getting worse so fast! Please help him!'"
+  },
+
+  "ecg_findings": {
+    "available": true,
+    "requires_equipment": "12-lead ECG monitor",
+    "acquisition_time_seconds": 10,
+
+    "findings_structured": {
+      "rhythm_and_rate": {
+        "rhythm": "Sinus tachycardia",
+        "regularity": "regular",
+        "rate_bpm": 118
+      },
+
+      "st_segment_changes": [],
+
+      "other_findings": [
+        "Low voltage QRS complexes (hypovolemia/shock)",
+        "No acute ischemic changes"
+      ]
+    },
+
+    "interpretation": {
+      "diagnosis": "Sinus tachycardia - compensatory",
+      "mechanism": "Compensatory response to distributive shock and hypoxia",
+      "territory": "N/A",
+      "severity": "Appropriate for clinical state",
+      "note": "FOR AGENT REFERENCE ONLY"
+    },
+
+    "teaching_point": "ECG in anaphylaxis shows compensatory sinus tachycardia. ECG is NOT a priority in anaphylaxis - epinephrine is the priority. ECG may show low voltage due to poor perfusion. Rule out Kounis syndrome (allergic acute coronary syndrome) if chest pain present after epinephrine.",
+    "teaching_point_note": "FOR AAR AGENT USE",
+
+    "presentation_mode": "structured_text"
+  },
+
+  "critical_treatments": ["epinephrine", "oxygen"],
+
+  "primary_medications": {
+    "epinephrine": {
+      "generic_name": "Epinephrine (Adrenaline)",
+      "brand_names": ["Adrenalin", "EpiPen", "Jext"],
+      "class": "Sympathomimetic (alpha and beta agonist)",
+      "indication": "Anaphylaxis (first-line), cardiac arrest, severe bronchospasm",
+      "mechanism": "Alpha-1: vasoconstriction (raises BP, reduces angioedema). Beta-1: positive inotrope/chronotrope. Beta-2: bronchodilation, mast cell stabilization.",
+      
+      "dosing": {
+        "anaphylaxis_adult": "0.5mg (500mcg) IM into lateral thigh",
+        "anaphylaxis_pediatric": "0.01mg/kg IM (max 0.3mg child, 0.5mg adolescent)",
+        "repeat_dose": "Every 5-15 minutes if no improvement",
+        "route_priority": "IM preferred (faster absorption than SC), IV only in cardiac arrest or refractory shock"
+      },
+      
+      "pharmacokinetics": {
+        "onset_im_minutes": "3-5",
+        "peak_effect_minutes": "10-15",
+        "duration_minutes": "15-20"
+      },
+      
+      "contraindications": {
+        "absolute": [],
+        "note": "NO absolute contraindications in anaphylaxis - it is ALWAYS indicated"
+      },
+      
+      "side_effects": ["tachycardia", "palpitations", "tremor", "anxiety", "headache", "hypertension"],
+      
+      "warnings": [
+        "May need repeat doses - short duration of action",
+        "Give IM not SC for faster absorption",
+        "Lateral thigh is best site (highest blood flow)",
+        "Beta-blocker patients may have reduced response - may need higher doses or glucagon"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": true,
+        "life_saving": true,
+        "time_to_effect_minutes": 4,
+        "vital_changes": {
+          "HR": 95,
+          "BP_systolic": 108,
+          "BP_diastolic": 72,
+          "RR": 22,
+          "SpO2": 96
+        },
+        "patient_says": "That shot... it's helping... I can breathe better...",
+        "clinical_effect": "Vasoconstriction improves BP and reduces angioedema. Bronchodilation if any bronchospasm. Mast cell stabilization reduces further histamine release. Visible reduction in swelling within 5-10 minutes.",
+        "points_if_given": 35,
+        "timing_critical": "Must give within 5 minutes - delay increases mortality"
+      }
+    },
+
+    "oxygen": {
+      "indication": "Hypoxia, respiratory distress, shock",
+      "target": "SpO2 >94%",
+      
+      "delivery_options": {
+        "non_rebreather_mask": "15 L/min",
+        "bvm_if_needed": "For assisted ventilation if airway compromised"
+      },
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": true,
+        "time_to_effect_minutes": 1,
+        "vital_changes": {
+          "SpO2": 94
+        },
+        "points_if_given": 10
+      }
+    },
+
+    "hydrocortisone": {
+      "generic_name": "Hydrocortisone",
+      "class": "Glucocorticoid",
+      "indication": "Anaphylaxis (second-line, prevents biphasic reaction)",
+      
+      "dosing": {
+        "adult": "200mg IV"
+      },
+      
+      "pharmacokinetics": {
+        "onset_hours": "4-6",
+        "note": "Does NOT treat acute anaphylaxis - prevents biphasic reaction"
+      },
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": false,
+        "importance": "important_secondary",
+        "vital_changes": {},
+        "clinical_effect": "No immediate effect. Prevents biphasic reaction 1-8 hours later.",
+        "points_if_given": 5,
+        "timing_note": "Give AFTER epinephrine - steroids are NOT first-line",
+        "teaching_point": "Steroids do NOT treat acute anaphylaxis. Epinephrine is the ONLY first-line treatment. Steroids prevent biphasic reaction."
+      }
+    },
+
+    "antihistamines": {
+      "medications": ["diphenhydramine", "chlorpheniramine"],
+      "class": "H1 antihistamine",
+      "indication": "Anaphylaxis (adjunct only)",
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": false,
+        "importance": "adjunct_only",
+        "vital_changes": {},
+        "clinical_effect": "May help with urticaria and itching. Does NOT treat airway or cardiovascular compromise.",
+        "points_if_given": 3,
+        "teaching_point": "Antihistamines are adjuncts only. They do NOT treat anaphylaxis - only epinephrine does. Never delay epinephrine to give antihistamines."
+      }
+    },
+
+    "iv_fluids": {
+      "indication": "Hypotension in anaphylaxis",
+      "dosing": "500ml-1L crystalloid bolus, repeat as needed",
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": false,
+        "importance": "important_adjunct",
+        "vital_changes": {
+          "BP_systolic": "+10-15"
+        },
+        "clinical_effect": "Helps support blood pressure alongside epinephrine",
+        "points_if_given": 5,
+        "teaching_point": "Fluids support BP but do NOT replace epinephrine. Anaphylaxis can cause significant third-spacing - may need several liters."
+      }
+    }
+  },
+
+  "treatment_responses": {
+    "epinephrine": {
+      "time_to_effect_minutes": 4,
+      "vital_changes": {
+        "HR": 95,
+        "BP_systolic": 108,
+        "BP_diastolic": 72,
+        "RR": 22,
+        "SpO2": 96
+      },
+      "patient_says": "That shot... it's helping... I can breathe better...",
+      "clinical_effect": "Stridor reducing, angioedema improving, BP rising, color improving"
+    },
+    "oxygen": {
+      "time_to_effect_minutes": 1,
+      "vital_changes": {
+        "SpO2": 94
+      },
+      "clinical_effect": "Improved oxygenation"
+    },
+    "second_epinephrine": {
+      "indication": "No improvement after 5-15 minutes",
+      "vital_changes": {
+        "BP_systolic": 118,
+        "HR": 88
+      },
+      "clinical_effect": "Further improvement if first dose inadequate"
+    }
+  },
+
+  "no_treatment_progression": {
+    "5min": {
+      "vitals": {
+        "HR": 128,
+        "RR": 34,
+        "SpO2": 85,
+        "BP_systolic": 78,
+        "BP_diastolic": 48,
+        "GCS": 13
+      },
+      "state": "deteriorating",
+      "description": "Angioedema worsening, stridor more pronounced, patient becoming confused, skin mottling appearing"
+    },
+    "9min": {
+      "vitals": {
+        "HR": 138,
+        "RR": 40,
+        "SpO2": 75,
+        "BP_systolic": 62,
+        "BP_diastolic": 40,
+        "GCS": 10
+      },
+      "state": "deteriorating",
+      "description": "Near-complete airway obstruction, severe shock, patient barely responsive, agonal breathing attempts"
+    },
+    "13min": {
+      "vitals": {
+        "HR": 45,
+        "RR": 4,
+        "SpO2": 55,
+        "BP_systolic": "unrecordable",
+        "GCS": 3
+      },
+      "state": "critical",
+      "description": "Complete airway obstruction, cardiovascular collapse, respiratory arrest, bradycardia from hypoxia, imminent cardiac arrest"
+    }
+  },
+
+  "secondary_medications_by_impact": {
+    "critical_harm": [
+      {
+        "name": "beta_blocker",
+        "generic_name": "Metoprolol/Propranolol",
+        "why_dangerous": "Blocks epinephrine's life-saving effects, worsens bronchospasm and hypotension",
+        "if_given": {
+          "vital_changes": {
+            "BP_systolic": 68,
+            "HR": 55,
+            "SpO2": 78
+          },
+          "patient_response": "Condition deteriorates rapidly. Beta-blocker blocks the body's compensatory mechanisms and prevents epinephrine from working.",
+          "points": -30,
+          "state_change": "critical",
+          "aar_flag": "contraindicated_medication"
+        },
+        "teaching_point": "Beta-blockers are disastrous in anaphylaxis. They block the beta effects of epinephrine, worsening hypotension and bronchospasm. If patient is ON beta-blockers, may need glucagon."
+      }
+    ],
+
+    "worsens": [
+      {
+        "name": "salbutamol_alone",
+        "generic_name": "Salbutamol",
+        "why_wrong": "Bronchodilator does not treat anaphylaxis - only addresses bronchospasm component, not airway swelling or shock",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "No improvement - this is upper airway swelling (angioedema), not bronchospasm. Salbutamol doesn't help swelling. Blood pressure still low.",
+          "points": -10,
+          "aar_flag": "wrong_treatment"
+        },
+        "teaching_point": "This is ANAPHYLAXIS not asthma. The stridor is from SWELLING not bronchospasm. Salbutamol doesn't shrink swollen tissue - epinephrine does. Never substitute bronchodilators for epinephrine in anaphylaxis."
+      }
+    ],
+
+    "neutral": [
+      {
+        "name": "antihistamine_first",
+        "generic_name": "Diphenhydramine given before epinephrine",
+        "why_suboptimal": "Delays life-saving epinephrine",
+        "if_given": {
+          "patient_response": "Antihistamine has minimal effect on airway or blood pressure. Critical time wasted.",
+          "points": -5,
+          "aar_flag": "delayed_critical_treatment"
+        },
+        "teaching_point": "Antihistamines do NOT treat anaphylaxis. They only help with itching/hives. EPINEPHRINE is the only first-line treatment. Never delay epinephrine to give antihistamines."
+      }
+    ]
+  },
+
+  "critical_actions_checklist": [
+    {
+      "id": "CA1",
+      "action": "Scene safety assessment",
+      "category": "scene_safety",
+      "time_target_minutes": 1,
+      "points": 5,
+      "importance": "essential",
+      "matching": {
+        "keywords": ["scene", "safety", "safe"],
+        "synonyms": ["hazard", "bees", "secure"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA2",
+      "action": "Recognize anaphylaxis",
+      "category": "assessment",
+      "time_target_minutes": 2,
+      "points": 15,
+      "importance": "critical",
+      "criteria": "Identifies allergen exposure + skin signs + respiratory OR cardiovascular compromise",
+      "matching": {
+        "keywords": ["anaphylaxis", "anaphylactic"],
+        "synonyms": ["severe allergic", "allergic reaction", "angioedema", "swelling", "stridor", "shock"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA3",
+      "action": "Administer epinephrine IM",
+      "category": "treatment",
+      "time_target_minutes": 3,
+      "points": 35,
+      "importance": "critical",
+      "criteria": "0.5mg IM into lateral thigh",
+      "matching": {
+        "keywords": ["epinephrine", "adrenaline", "epipen"],
+        "synonyms": ["epi", "adrenalin", "0.5mg", "0.5 mg", "intramuscular", "im", "thigh", "jext"],
+        "tool_mappings": ["administer_epinephrine", "give_epi"],
+        "exclusion_keywords": ["don't", "dont", "should i", "not yet", "iv"]
+      }
+    },
+    {
+      "id": "CA4",
+      "action": "Apply high-flow oxygen",
+      "category": "treatment",
+      "time_target_minutes": 3,
+      "points": 10,
+      "importance": "critical",
+      "matching": {
+        "keywords": ["oxygen", "o2"],
+        "synonyms": ["nrb", "mask", "15l"],
+        "exclusion_keywords": ["don't", "dont"]
+      }
+    },
+    {
+      "id": "CA5",
+      "action": "Establish IV access",
+      "category": "treatment",
+      "time_target_minutes": 5,
+      "points": 5,
+      "importance": "important",
+      "matching": {
+        "keywords": ["iv", "intravenous"],
+        "synonyms": ["line", "access", "cannula", "venflon"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA6",
+      "action": "Administer IV fluids",
+      "category": "treatment",
+      "time_target_minutes": 7,
+      "points": 5,
+      "importance": "important",
+      "criteria": "Crystalloid bolus for hypotension",
+      "matching": {
+        "keywords": ["fluids", "saline", "crystalloid"],
+        "synonyms": ["bolus", "ringer", "hartmann", "500ml", "1000ml"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA7",
+      "action": "Administer corticosteroids",
+      "category": "treatment",
+      "time_target_minutes": 10,
+      "points": 5,
+      "importance": "important",
+      "criteria": "After epinephrine - for biphasic prevention",
+      "matching": {
+        "keywords": ["steroid", "hydrocortisone"],
+        "synonyms": ["solu-cortef", "methylprednisolone", "200mg"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA8",
+      "action": "Reassess and consider second epinephrine dose",
+      "category": "monitoring",
+      "time_target_minutes": 10,
+      "points": 5,
+      "importance": "important",
+      "matching": {
+        "keywords": ["reassess", "second dose", "repeat"],
+        "synonyms": ["another epi", "more epinephrine", "not improving"],
+        "exclusion_keywords": []
+      }
+    }
+  ],
+
+  "common_errors": [
+    {
+      "error_id": "E1",
+      "error": "Delayed epinephrine administration",
+      "teaching_point": "Epinephrine must be given within 3-5 minutes of recognizing anaphylaxis",
+      "clinical_anchor": "In anaphylaxis, minutes matter. Delayed epinephrine is the number one cause of anaphylaxis deaths."
+    },
+    {
+      "error_id": "E2",
+      "error": "Gave antihistamines instead of epinephrine",
+      "teaching_point": "Antihistamines do NOT treat anaphylaxis - only epinephrine does",
+      "clinical_anchor": "Antihistamines for hives, epinephrine for life. Know the difference."
+    },
+    {
+      "error_id": "E3",
+      "error": "Gave salbutamol thinking it was asthma",
+      "teaching_point": "Stridor is upper airway swelling, not bronchospasm. Salbutamol doesn't treat angioedema.",
+      "clinical_anchor": "Stridor = swelling. Wheeze = bronchospasm. Different sounds, different treatments."
+    },
+    {
+      "error_id": "E4",
+      "error": "Wrong epinephrine route (IV instead of IM)",
+      "teaching_point": "IV epinephrine in anaphylaxis causes dangerous arrhythmias. IM is the correct route.",
+      "clinical_anchor": "IM epi saves lives. IV epi in anaphylaxis causes arrhythmias."
+    },
+    {
+      "error_id": "E5",
+      "error": "Didn't recognize need for second dose",
+      "teaching_point": "Epinephrine lasts 15-20 minutes. Repeat every 5-15 minutes if symptoms persist.",
+      "clinical_anchor": "One dose may not be enough. Reassess and repeat—epinephrine is short-acting."
+    },
+    {
+      "error_id": "E6",
+      "error": "Focused on skin findings, missed airway/circulation",
+      "teaching_point": "Hives alone isn't anaphylaxis. Anaphylaxis = allergen + skin PLUS respiratory OR cardiovascular compromise.",
+      "clinical_anchor": "Hives are dramatic but don't kill. Airway swelling and shock kill. Treat the threats to life."
+    }
+  ],
+
+  "consequence_templates": [
+    {
+      "gap_trigger": "CA3_late",
+      "checklist_item_id": "CA3",
+      "gap_type": "delayed_action",
+      "template": "Epinephrine was given at {actual_time} minutes (target: {target_time} minutes). During the {delay_minutes} minute delay, {patient_name}'s airway continued to swell and blood pressure continued to drop. Anaphylaxis mortality is directly linked to time-to-epinephrine. Those {delay_minutes} minutes allowed progressive airway compromise that could have been prevented.",
+      "variables": {
+        "actual_time": "checklistResults.CA3.time",
+        "target_time": "3",
+        "delay_minutes": "calculated",
+        "patient_name": "patient_profile.name"
+      },
+      "severity": "critical",
+      "medical_basis": "Studies show anaphylaxis deaths are associated with delayed epinephrine. Airway edema and cardiovascular collapse progress rapidly without treatment."
+    },
+    {
+      "gap_trigger": "CA3_missed",
+      "checklist_item_id": "CA3",
+      "gap_type": "missed_action",
+      "template": "Epinephrine was NEVER given. {patient_name} had life-threatening anaphylaxis with airway compromise and shock, yet the only treatment that could save his life was withheld. This represents a critical failure. There is NO substitute for epinephrine in anaphylaxis - not antihistamines, not steroids, nothing.",
+      "variables": {
+        "patient_name": "patient_profile.name"
+      },
+      "severity": "critical",
+      "medical_basis": "Failure to give epinephrine in anaphylaxis is the leading cause of preventable anaphylaxis deaths. No other medication treats the underlying pathophysiology."
+    }
+  ],
+
+  "critical_decision_points": [
+    {
+      "id": "CDP1",
+      "decision": "anaphylaxis_vs_asthma_differentiation",
+      "description": "Distinguishing anaphylaxis from isolated respiratory conditions",
+      "evaluate_if": "Student made diagnosis",
+      
+      "optimal_sequence": [
+        "Identify allergen exposure (bee sting)",
+        "Recognize multi-system involvement (skin + airway + cardiovascular)",
+        "Note stridor (upper airway) vs wheeze (lower airway)",
+        "Identify hypotension as sign of distributive shock",
+        "Conclude: anaphylaxis, not asthma"
+      ],
+      
+      "scoring": {
+        "optimal": "Immediately recognized anaphylaxis based on allergen exposure + urticaria + stridor + hypotension. Understood this is multi-system allergic emergency, not isolated respiratory problem.",
+        "acceptable": "Recognized severe allergic reaction requiring epinephrine, even if didn't articulate all diagnostic criteria.",
+        "suboptimal": "Confused anaphylaxis with asthma, considered bronchodilators before epinephrine.",
+        "dangerous": "Treated as asthma with salbutamol, missed anaphylaxis diagnosis, didn't give epinephrine."
+      },
+      
+      "clinical_anchor": "Allergen + hives + stridor + shock = anaphylaxis, not asthma. The treatment is epinephrine, not bronchodilators.",
+      
+      "aar_teaching_point": "Anaphylaxis criteria: allergen exposure PLUS skin involvement (urticaria/angioedema) PLUS either respiratory compromise (stridor, wheeze) OR cardiovascular compromise (hypotension). This patient had all components. Stridor indicates UPPER airway swelling - bronchodilators don't treat swelling."
+    },
+    {
+      "id": "CDP2",
+      "decision": "epinephrine_prioritization",
+      "description": "Giving epinephrine as absolute first-line treatment",
+      "evaluate_if": "Student gave any medication",
+      
+      "scoring": {
+        "optimal": "Epinephrine given as FIRST medication within 3 minutes. Other treatments (O2, fluids, steroids, antihistamines) given AFTER epinephrine.",
+        "acceptable": "Epinephrine given within 5 minutes, even if oxygen given first.",
+        "suboptimal": "Epinephrine delayed while giving antihistamines or steroids first.",
+        "dangerous": "Epinephrine not given, or given very late (>10 min) after other medications."
+      },
+      
+      "clinical_anchor": "In anaphylaxis, epinephrine is THE treatment. Everything else is adjunct. There is no substitute.",
+      
+      "aar_teaching_point": "Treatment priority in anaphylaxis: (1) Epinephrine IM 0.5mg - immediately. (2) Oxygen. (3) IV access and fluids. (4) Steroids and antihistamines (adjuncts only). Antihistamines treat itch, not anaphylaxis. Steroids prevent biphasic reaction, not acute anaphylaxis. ONLY epinephrine treats the core pathophysiology."
+    },
+    {
+      "id": "CDP3",
+      "decision": "second_dose_recognition",
+      "description": "Recognizing need for repeat epinephrine",
+      "evaluate_if": "First epinephrine given and symptoms persist",
+      
+      "scoring": {
+        "optimal": "Reassessed at 5 minutes, recognized incomplete response, gave second dose appropriately.",
+        "acceptable": "Recognized need for second dose by 10-15 minutes.",
+        "suboptimal": "Did not consider second dose despite persistent symptoms.",
+        "dangerous": "Never reassessed, assumed one dose was sufficient despite ongoing deterioration."
+      },
+      
+      "clinical_anchor": "Epinephrine wears off in 15-20 minutes. Reassess and repeat—one dose may not be enough.",
+      
+      "aar_teaching_point": "Epinephrine duration is short (15-20 minutes). Guidelines recommend repeating every 5-15 minutes if symptoms persist. Many patients require 2+ doses. Failure to give second dose is a common error in anaphylaxis management."
+    }
+  ],
+
+  "aar_teaching_points": {
+    "key_concepts": [
+      "Anaphylaxis = allergen + skin PLUS respiratory OR cardiovascular compromise",
+      "Epinephrine is THE treatment - no substitute, no delay",
+      "Stridor = upper airway swelling (needs epinephrine), Wheeze = bronchospasm (needs bronchodilator)",
+      "Antihistamines and steroids are ADJUNCTS only - they do NOT treat anaphylaxis",
+      "May need repeat epinephrine doses - reassess frequently"
+    ],
+    "clinical_pearls": [
+      "IM epinephrine into lateral thigh - fastest absorption",
+      "Hypotension in anaphylaxis = distributive shock from vasodilation",
+      "ACE inhibitors (like patient's lisinopril) worsen angioedema",
+      "Biphasic reactions occur in up to 20% - that's why we give steroids",
+      "Beta-blocker patients may be refractory to epinephrine - consider glucagon"
+    ]
+  },
+
+  "simulation_config": {
+    "real_time_progression": true,
+    "auto_deterioration_if_no_treatment": true,
+    "improvement_requires_critical_treatments": true,
+    "max_duration_minutes": 20,
+    "deterioration_timing_minutes": [5, 9, 13],
+    "layer_two_enabled": true,
+    "challenge_points_active": false,
+    "critical_decision_points_active": true,
+    "max_cdp_evaluations": 3
+  }
+}

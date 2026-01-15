@@ -1,0 +1,583 @@
+{
+  "scenario_id": "HEMORRHAGIC_SHOCK_MVP_V3_001",
+  "metadata": {
+    "title": "Hemorrhagic Shock - Pelvic Trauma",
+    "version": "3.0_Enhanced",
+    "difficulty": "high",
+    "estimated_duration_minutes": 20,
+    "scenario_type": "trauma_hemorrhagic",
+    "learning_objectives": [
+      "Recognize hemorrhagic shock (tachycardia, hypotension, altered mental status)",
+      "Identify pelvic fracture as source of occult bleeding",
+      "Apply pelvic binder correctly",
+      "Understand permissive hypotension concept",
+      "Avoid excessive fluid resuscitation",
+      "Prioritize rapid transport over scene interventions",
+      "Demonstrate damage control resuscitation principles"
+    ],
+    "target_student_level": "second_year_paramedic_student",
+    "changelog": {
+      "v3.0_enhanced": "New scenario with Blueprint Structure Enhancement v2: matching config, clinical anchors, consequence templates, ECG standardization. Deterioration timing 5/9/13 min. 20-minute duration."
+    }
+  },
+
+  "dispatch_info": {
+    "call_type": "Traffic accident - pedestrian struck",
+    "age": "32",
+    "sex": "Female",
+    "location": "Urban street, crosswalk",
+    "caller": "Bystander",
+    "additional_info": "Woman hit by car, conscious but confused, lying on ground"
+  },
+
+  "scene_description": {
+    "location": "Urban street at crosswalk, patient lying on asphalt, vehicle stopped nearby",
+    "safety": "Scene secured by police, traffic diverted, glass debris on road",
+    "access": "Street level, good stretcher access",
+    "bystanders": "Driver distraught but uninjured, several witnesses, police on scene"
+  },
+
+  "patient_profile": {
+    "name": "Marta",
+    "age": 32,
+    "weight_kg": 68,
+    "personality": "Initially confused and agitated, complaining of pain, becomes quieter as shock progresses"
+  },
+
+  "initial_vitals": {
+    "HR": 128,
+    "RR": 24,
+    "SpO2": 96,
+    "BP_systolic": 92,
+    "BP_diastolic": 68,
+    "temperature": 36.5,
+    "GCS": 14,
+    "GCS_breakdown": "E4 V4 M6",
+    "capillary_refill": 4,
+    "glucose": 6.8
+  },
+
+  "state_descriptions": {
+    "initial": {
+      "student_sees": "You arrive to find a young woman lying supine on the asphalt next to a crosswalk. She's pale and sweaty despite the cool weather. Her eyes are open but she looks confused and frightened. 'It hurts... my hips... please help me,' she says weakly. You can see an abrasion on her left hip through torn clothing. Her legs are slightly externally rotated. A witness tells you: 'The car was turning right and hit her - maybe 30 km/h. She flew about 2 meters and landed on her back. She's been awake the whole time but getting more confused.' You notice her clothing is wet in the groin area - could be urine or blood. The driver is standing nearby, shaking: 'I didn't see her, I swear I didn't see her.'",
+      "appearance": "Young female, pale, diaphoretic, confused, externally rotated legs, abrasion left hip, lying supine",
+      "clinical_note": "HEMORRHAGIC SHOCK Class II-III. Mechanism: pedestrian struck by vehicle with lateral impact to pelvis. Tachycardia (128), hypotension (92/68), delayed capillary refill (4 sec), and confusion indicate significant blood loss. Pelvic fracture can hide 2-4 liters of blood in retroperitoneal space. DO NOT repeatedly test pelvic stability. Apply pelvic binder and transport rapidly.",
+      "urgency_level": "critical"
+    },
+    "improving": {
+      "student_sees": "After your interventions, the patient appears slightly more stable. Her color is still pale but she's more alert. 'What happened? Was I hit by a car?' The pelvic binder is in place. She's still complaining of hip pain but is answering questions more appropriately. Her pulse feels slightly stronger. 'Am I going to be okay?' she asks.",
+      "appearance": "Pelvic binder in place, more alert, still pale but stable, appropriate responses",
+      "clinical_note": "Pelvic binder applied - helps tamponade bleeding. Shock NOT reversed but stabilized. Key now is RAPID TRANSPORT to trauma center with blood products. Do not delay for IV if it delays transport. Permissive hypotension target: SBP 80-90.",
+      "urgency_level": "high"
+    },
+    "deteriorating": {
+      "student_sees": "The patient's condition is worsening. She's become much quieter and is no longer responding to questions - just moaning weakly. Her skin is now gray and mottled, especially on her knees and elbows. Her pulse is very rapid and thready - hard to feel at the wrist. 'Stay with me, Marta!' you say. Her eyes flutter but she doesn't respond coherently. You notice the wet area in her groin has spread.",
+      "appearance": "Unresponsive to verbal, mottled skin, thready pulse, increasing blood at pelvis",
+      "clinical_note": "Class III-IV hemorrhagic shock. Decompensating - blood loss exceeds compensation. This patient is bleeding to death internally. Aggressive transport needed NOW. Blood products are the treatment, not crystalloid.",
+      "urgency_level": "critical"
+    },
+    "critical": {
+      "student_sees": "CRITICAL: The patient is now unresponsive. Her skin is gray, cold, and mottled. You cannot palpate a radial pulse - only a weak, rapid carotid pulse. Her breathing is shallow and rapid. She's not responding to anything. This is Class IV hemorrhagic shock - she's dying from blood loss.",
+      "appearance": "Unresponsive, gray mottled skin, no radial pulse, agonal state",
+      "clinical_note": "Class IV hemorrhagic shock - >40% blood volume lost. Without immediate blood transfusion and surgical intervention, death is imminent. Crystalloid cannot save this patient - she needs blood products and surgery.",
+      "urgency_level": "life-threatening"
+    }
+  },
+
+  "assessment_findings": {
+    "airway": {
+      "initial": "Patent, patient talking",
+      "critical": "At risk with decreasing consciousness"
+    },
+    "breathing": {
+      "initial": "RR 24, slightly labored, clear bilaterally",
+      "deteriorating": "RR 30, shallow, compensatory",
+      "critical": "RR 36-40, shallow, gasping"
+    },
+    "circulation": {
+      "initial": "HR 128, BP 92/68, pulse weak and rapid, CRT 4 seconds, pale, diaphoretic, cool peripheries EXCEPT warm near pelvis (internal bleeding)",
+      "improving": "HR 115, BP 88/62 (stable - permissive hypotension acceptable)",
+      "deteriorating": "HR 140, BP 72/50, thready pulse, mottled skin",
+      "critical": "HR 150, BP unrecordable, no radial pulse, severe mottling"
+    },
+    "disability": {
+      "initial": "GCS 14 (E4V4M6), confused but follows commands",
+      "deteriorating": "GCS 10, responds only to pain",
+      "critical": "GCS 6, unresponsive"
+    },
+    "exposure": {
+      "left_hip": "Large abrasion and developing hematoma over iliac crest",
+      "pelvis": "Externally rotated legs suggest pelvic disruption. DO NOT repeatedly test pelvic stability - one gentle assessment only, if positive STOP and apply binder.",
+      "perineum": "Blood visible at vaginal area - concerning for open pelvic fracture",
+      "other": "No obvious long bone fractures, abdomen soft but distended"
+    },
+    
+    "sample_history": {
+      "symptoms": "Severe hip/pelvic pain, dizziness, thirst, confusion",
+      "allergies": "No known drug allergies",
+      "medications": "Oral contraceptive pill only",
+      "past_history": "Healthy, no significant medical history",
+      "last_intake": "Coffee 1 hour ago",
+      "events": "Witness: 'She was crossing with green light. Car turning right hit her at maybe 30 km/h. Direct impact to her left side. Thrown about 2 meters, landed on back. No head strike seen. Conscious whole time but getting more confused.'"
+    },
+
+    "pelvic_assessment": {
+      "inspection": "External rotation of legs, abrasion over left iliac crest, blood at perineum",
+      "palpation": "ONE gentle assessment only - if instability felt, STOP. Do NOT rock pelvis repeatedly.",
+      "finding": "Unstable pelvis with crepitus on gentle lateral compression",
+      "action_required": "Apply pelvic binder immediately"
+    }
+  },
+
+  "ecg_findings": {
+    "available": true,
+    "requires_equipment": "12-lead ECG monitor",
+    "acquisition_time_seconds": 10,
+
+    "findings_structured": {
+      "rhythm_and_rate": {
+        "rhythm": "Sinus tachycardia",
+        "regularity": "regular",
+        "rate_bpm": 128
+      },
+
+      "st_segment_changes": [],
+
+      "other_findings": [
+        "Low voltage QRS (hypovolemia)",
+        "No acute ischemic changes"
+      ]
+    },
+
+    "interpretation": {
+      "diagnosis": "Sinus tachycardia - compensatory for hypovolemia",
+      "mechanism": "Compensatory response to blood loss and shock",
+      "territory": "N/A",
+      "severity": "Appropriate for hemorrhagic shock",
+      "note": "FOR AGENT REFERENCE ONLY"
+    },
+
+    "teaching_point": "ECG is NOT a priority in hemorrhagic shock. Tachycardia is compensatory - do NOT treat it. Low voltage reflects hypovolemia. Focus on hemorrhage control (pelvic binder) and rapid transport. ECG may be useful to rule out cardiac contusion if blunt chest trauma.",
+    "teaching_point_note": "FOR AAR AGENT USE",
+
+    "presentation_mode": "structured_text"
+  },
+
+  "critical_treatments": ["pelvic_binder", "rapid_transport"],
+
+  "primary_interventions": {
+    "pelvic_binder": {
+      "device": "Commercial pelvic binder or improvised sheet wrap",
+      "application": "At level of greater trochanters, snug but not crushing",
+      "mechanism": "Reduces pelvic volume, allows tamponade of venous bleeding",
+      
+      "scenario_specific_response": {
+        "critical_treatment": true,
+        "life_saving": true,
+        "time_to_effect_minutes": 2,
+        "vital_changes": {
+          "HR": 120,
+          "BP_systolic": 88
+        },
+        "clinical_effect": "Pelvic volume reduced, bleeding tamponaded, prevents further blood loss but does NOT replace lost blood",
+        "points_if_applied": 30,
+        "timing_critical": "Must apply within 5 minutes"
+      }
+    },
+
+    "iv_access": {
+      "indication": "Vascular access for fluid/blood administration",
+      "approach": "Two large bore (16-18G) if possible without delaying transport",
+      
+      "scenario_specific_response": {
+        "importance": "important_but_transport_priority",
+        "clinical_effect": "Enables fluid administration",
+        "points_if_achieved": 5,
+        "teaching_point": "IV access is important but do NOT delay transport to establish it. Can be done en route."
+      }
+    },
+
+    "iv_fluids": {
+      "indication": "Hypotension in hemorrhagic shock",
+      "dosing": "250ml crystalloid boluses",
+      "target": "SBP 80-90mmHg (permissive hypotension)",
+      
+      "scenario_specific_response": {
+        "appropriate_dose": "250ml boluses to target SBP 80-90",
+        "excessive_dose": ">1000ml without reassessment",
+        "vital_changes_per_bolus": {
+          "BP_systolic": "+8-10"
+        },
+        "if_appropriate": {
+          "points": 5,
+          "clinical_effect": "Transient BP improvement"
+        },
+        "if_excessive": {
+          "points": -10,
+          "clinical_effect": "Dilutional coagulopathy, hypothermia, increased bleeding",
+          "aar_flag": "over_resuscitation"
+        },
+        "teaching_point": "Crystalloid doesn't carry oxygen or clot. Over-resuscitation dilutes clotting factors and increases bleeding. Target SBP 80-90 until surgical control."
+      }
+    },
+
+    "oxygen": {
+      "indication": "Support oxygen delivery in shock",
+      
+      "scenario_specific_response": {
+        "importance": "supportive",
+        "clinical_effect": "Supports what little hemoglobin remains",
+        "points_if_given": 3
+      }
+    }
+  },
+
+  "no_treatment_progression": {
+    "5min": {
+      "vitals": {
+        "HR": 138,
+        "RR": 28,
+        "SpO2": 94,
+        "BP_systolic": 82,
+        "BP_diastolic": 55,
+        "GCS": 13
+      },
+      "state": "deteriorating",
+      "description": "Shock progressing, becoming more confused, skin mottling appearing, pulse harder to feel"
+    },
+    "9min": {
+      "vitals": {
+        "HR": 148,
+        "RR": 32,
+        "SpO2": 92,
+        "BP_systolic": 68,
+        "BP_diastolic": 45,
+        "GCS": 10
+      },
+      "state": "deteriorating",
+      "description": "Decompensating, responds only to pain, severe mottling, no radial pulse palpable"
+    },
+    "13min": {
+      "vitals": {
+        "HR": 160,
+        "RR": 8,
+        "SpO2": 85,
+        "BP_systolic": "unrecordable",
+        "GCS": 5
+      },
+      "state": "critical",
+      "description": "Class IV shock, near-arrest, unresponsive, agonal breathing, imminent cardiac arrest"
+    }
+  },
+
+  "secondary_medications_by_impact": {
+    "critical_harm": [
+      {
+        "name": "excessive_fluids",
+        "description": "More than 2L crystalloid without blood products",
+        "why_dangerous": "Dilutes clotting factors, causes hypothermia, increases bleeding",
+        "if_given": {
+          "vital_changes": {
+            "BP_systolic": 78,
+            "note": "Transient improvement then worse bleeding"
+          },
+          "clinical_effect": "Initially BP improves, then patient bleeds more as clots are disrupted",
+          "points": -15,
+          "aar_flag": "over_resuscitation"
+        },
+        "teaching_point": "Crystalloid doesn't carry oxygen or clot. You can't 'fill the tank' faster than it leaks. The treatment is surgical control and blood products, not saline."
+      }
+    ],
+
+    "worsens": [
+      {
+        "name": "repeated_pelvic_examination",
+        "description": "Multiple assessments of pelvic stability",
+        "why_wrong": "Disrupts any clot formation, increases bleeding",
+        "if_done": {
+          "vital_changes": {
+            "BP_systolic": -10,
+            "note": "Each exam worsens bleeding"
+          },
+          "points": -10,
+          "aar_flag": "iatrogenic_harm"
+        },
+        "teaching_point": "Assess pelvis ONCE. If unstable, apply binder and STOP examining. Each manipulation disrupts clots and increases bleeding."
+      }
+    ],
+
+    "neutral": [
+      {
+        "name": "tranexamic_acid",
+        "generic_name": "Tranexamic acid (TXA)",
+        "indication": "Hemorrhagic shock within 3 hours of injury",
+        "if_given": {
+          "clinical_effect": "Antifibrinolytic - helps maintain clots. Appropriate if available and within time window.",
+          "points": 5,
+          "aar_flag": "appropriate_adjunct"
+        },
+        "teaching_point": "TXA reduces mortality in hemorrhagic shock if given within 3 hours. Dose: 1g IV over 10 minutes. Follow local protocols."
+      }
+    ]
+  },
+
+  "critical_actions_checklist": [
+    {
+      "id": "CA1",
+      "action": "Scene safety and mechanism assessment",
+      "category": "scene_safety",
+      "time_target_minutes": 1,
+      "points": 5,
+      "importance": "essential",
+      "matching": {
+        "keywords": ["scene", "safety", "mechanism"],
+        "synonyms": ["moi", "hit", "struck", "impact"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA2",
+      "action": "Recognize hemorrhagic shock",
+      "category": "assessment",
+      "time_target_minutes": 3,
+      "points": 15,
+      "importance": "critical",
+      "criteria": "Identifies tachycardia + hypotension + altered mental status = shock",
+      "matching": {
+        "keywords": ["shock", "hemorrhagic", "bleeding"],
+        "synonyms": ["hypovolemic", "blood loss", "hypotension", "tachycardia", "decompensating"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA3",
+      "action": "Identify pelvic injury",
+      "category": "assessment",
+      "time_target_minutes": 3,
+      "points": 10,
+      "importance": "critical",
+      "criteria": "ONE gentle pelvic assessment, identifies instability",
+      "matching": {
+        "keywords": ["pelvis", "pelvic"],
+        "synonyms": ["hip", "iliac", "unstable pelvis", "crepitus"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA4",
+      "action": "Apply pelvic binder",
+      "category": "treatment",
+      "time_target_minutes": 5,
+      "points": 30,
+      "importance": "critical",
+      "criteria": "Applied at level of greater trochanters",
+      "matching": {
+        "keywords": ["pelvic binder", "binder"],
+        "synonyms": ["sheet wrap", "pelvic wrap", "sam sling", "stabilize pelvis"],
+        "tool_mappings": ["apply_pelvic_binder"],
+        "exclusion_keywords": ["don't", "should i"]
+      }
+    },
+    {
+      "id": "CA5",
+      "action": "Establish IV access",
+      "category": "treatment",
+      "time_target_minutes": 7,
+      "points": 5,
+      "importance": "important",
+      "criteria": "Large bore IV, ideally two lines, but NOT delaying transport",
+      "matching": {
+        "keywords": ["iv", "access"],
+        "synonyms": ["line", "cannula", "venflon", "16 gauge", "18 gauge"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA6",
+      "action": "Judicious fluid resuscitation",
+      "category": "treatment",
+      "time_target_minutes": 10,
+      "points": 5,
+      "importance": "important",
+      "criteria": "250ml boluses targeting SBP 80-90 (permissive hypotension)",
+      "matching": {
+        "keywords": ["fluids", "bolus"],
+        "synonyms": ["saline", "crystalloid", "250ml", "permissive hypotension"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA7",
+      "action": "Prevent hypothermia",
+      "category": "treatment",
+      "time_target_minutes": 8,
+      "points": 5,
+      "importance": "important",
+      "criteria": "Cover patient, warm fluids if available",
+      "matching": {
+        "keywords": ["warm", "blanket", "hypothermia"],
+        "synonyms": ["cover", "temperature", "keep warm", "thermal"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA8",
+      "action": "Rapid transport decision",
+      "category": "disposition",
+      "time_target_minutes": 5,
+      "points": 10,
+      "importance": "critical",
+      "criteria": "Load and go mentality - trauma center with blood products",
+      "matching": {
+        "keywords": ["transport", "hospital", "trauma center"],
+        "synonyms": ["load and go", "rapid transport", "move", "blood products", "surgery"],
+        "exclusion_keywords": []
+      }
+    }
+  ],
+
+  "common_errors": [
+    {
+      "error_id": "E1",
+      "error": "No pelvic binder applied",
+      "teaching_point": "Pelvic binder reduces pelvic volume and allows tamponade of venous bleeding",
+      "clinical_anchor": "The pelvis is a bucket that can hold 4 liters of blood. The binder makes the bucket smaller."
+    },
+    {
+      "error_id": "E2",
+      "error": "Repeated pelvic examinations",
+      "teaching_point": "Each examination disrupts clots and increases bleeding",
+      "clinical_anchor": "Check the pelvis ONCE. After that, you're just stirring up the bleeding."
+    },
+    {
+      "error_id": "E3",
+      "error": "Excessive fluid resuscitation",
+      "teaching_point": "Crystalloid doesn't clot or carry oxygen - over-resuscitation worsens coagulopathy",
+      "clinical_anchor": "You can't fill the tank faster than it leaks. Saline doesn't clot and doesn't carry oxygen."
+    },
+    {
+      "error_id": "E4",
+      "error": "Delayed transport for scene interventions",
+      "teaching_point": "Definitive treatment is surgery and blood products - not available prehospital",
+      "clinical_anchor": "Every minute on scene is a minute she's bleeding. Surgery stops bleeding, not bandages."
+    },
+    {
+      "error_id": "E5",
+      "error": "Targeting normal blood pressure",
+      "teaching_point": "Permissive hypotension (SBP 80-90) reduces bleeding until surgical control",
+      "clinical_anchor": "Normal BP in hemorrhage means more bleeding. Target 80-90 until the surgeon has control."
+    },
+    {
+      "error_id": "E6",
+      "error": "Didn't recognize shock severity",
+      "teaching_point": "Tachycardia + hypotension + confusion = significant shock",
+      "clinical_anchor": "Fast heart, low pressure, foggy brain—she's lost at least 30% of her blood."
+    }
+  ],
+
+  "consequence_templates": [
+    {
+      "gap_trigger": "CA4_missed",
+      "checklist_item_id": "CA4",
+      "gap_type": "missed_action",
+      "template": "Pelvic binder was NEVER applied. {patient_name} had an unstable pelvic fracture - a injury that can bleed 2-4 liters into the retroperitoneum. Without a binder to reduce pelvic volume and tamponade bleeding, she continued to hemorrhage throughout your care.",
+      "severity": "critical",
+      "medical_basis": "Pelvic binders reduce mortality in pelvic fractures by enabling tamponade of venous bleeding. Without it, the pelvis acts as an expanding reservoir for blood."
+    },
+    {
+      "gap_trigger": "CA4_late",
+      "checklist_item_id": "CA4",
+      "gap_type": "delayed_action",
+      "template": "Pelvic binder applied at {actual_time} minutes (target: {target_time} minutes). During those {delay_minutes} minutes, {patient_name}'s pelvis remained unsupported and bleeding continued unchecked. Pelvic fracture bleeding is FAST - each minute of delay represents significant additional blood loss.",
+      "severity": "high",
+      "medical_basis": "Pelvic fracture bleeding can exceed 500ml per minute in severe cases. Early binder application is critical."
+    },
+    {
+      "gap_trigger": "CA8_late",
+      "checklist_item_id": "CA8",
+      "gap_type": "delayed_action",
+      "template": "Transport was delayed until {actual_time} minutes. The only treatment that can save {patient_name} is blood products and surgery - neither available on scene. Every minute on scene was a minute of continued bleeding.",
+      "severity": "high",
+      "medical_basis": "Hemorrhagic shock requires blood product resuscitation and surgical hemostasis. Scene time directly correlates with mortality."
+    }
+  ],
+
+  "critical_decision_points": [
+    {
+      "id": "CDP1",
+      "decision": "shock_recognition",
+      "description": "Identifying hemorrhagic shock class and severity",
+      
+      "scoring": {
+        "optimal": "Immediately recognized Class II-III shock from vitals (tachycardia, hypotension, delayed CRT, confusion). Verbalized concern for significant blood loss.",
+        "acceptable": "Recognized patient in shock, initiated appropriate treatment.",
+        "suboptimal": "Delayed recognition of shock severity.",
+        "dangerous": "Failed to recognize shock, treated as minor injury."
+      },
+      
+      "clinical_anchor": "Fast heart, low pressure, slow cap refill, foggy brain—that's 30% blood volume gone.",
+      
+      "aar_teaching_point": "Hemorrhagic shock classes: Class I (<15%) - normal vitals; Class II (15-30%) - tachycardia, narrowed pulse pressure; Class III (30-40%) - hypotension, confusion, oliguria; Class IV (>40%) - near-death. This patient: Class II-III transitioning."
+    },
+    {
+      "id": "CDP2",
+      "decision": "pelvic_management",
+      "description": "Appropriate pelvic fracture assessment and management",
+      
+      "scoring": {
+        "optimal": "Single gentle pelvic assessment, immediately recognized instability, applied binder without repeated examinations.",
+        "acceptable": "Applied pelvic binder appropriately.",
+        "suboptimal": "Multiple pelvic examinations before applying binder.",
+        "dangerous": "No binder applied, or excessive pelvic manipulation."
+      },
+      
+      "clinical_anchor": "One exam, one chance. After that, you're just making her bleed more.",
+      
+      "aar_teaching_point": "Pelvic fractures can hide massive hemorrhage. Assess ONCE - if unstable, apply binder immediately at level of greater trochanters. DO NOT repeatedly rock or compress pelvis - each manipulation disrupts clots."
+    },
+    {
+      "id": "CDP3",
+      "decision": "resuscitation_strategy",
+      "description": "Appropriate fluid resuscitation and permissive hypotension",
+      
+      "scoring": {
+        "optimal": "Small boluses (250ml) targeting SBP 80-90, verbalized permissive hypotension concept, prioritized transport over IV fluids.",
+        "acceptable": "Judicious fluid use, didn't over-resuscitate.",
+        "suboptimal": "Attempted to normalize blood pressure with large fluid volumes.",
+        "dangerous": "Massive crystalloid resuscitation (>2L) or delayed transport for fluid administration."
+      },
+      
+      "clinical_anchor": "Target SBP 80-90. Normal BP in hemorrhage just means you're pushing clots out faster.",
+      
+      "aar_teaching_point": "Permissive hypotension: In uncontrolled hemorrhage, target SBP 80-90. Higher BP = higher bleeding rate. Crystalloid doesn't clot or carry oxygen. Over-resuscitation causes dilutional coagulopathy, hypothermia, and increased bleeding."
+    }
+  ],
+
+  "aar_teaching_points": {
+    "key_concepts": [
+      "Pelvic fractures can hide 2-4 liters of blood",
+      "Pelvic binder is life-saving - reduces pelvic volume for tamponade",
+      "Permissive hypotension: target SBP 80-90 until surgical control",
+      "Crystalloid doesn't clot or carry oxygen - don't over-resuscitate",
+      "Definitive treatment is surgery and blood products"
+    ],
+    "clinical_pearls": [
+      "Assess pelvis ONCE - each manipulation disrupts clots",
+      "External rotation of legs suggests pelvic ring disruption",
+      "Blood at perineum = open pelvic fracture = much higher mortality",
+      "Scene time correlates with mortality - load and go",
+      "Warm fluids if available - hypothermia worsens coagulopathy"
+    ]
+  },
+
+  "simulation_config": {
+    "real_time_progression": true,
+    "auto_deterioration_if_no_treatment": true,
+    "max_duration_minutes": 20,
+    "deterioration_timing_minutes": [5, 9, 13],
+    "layer_two_enabled": true,
+    "challenge_points_active": false,
+    "critical_decision_points_active": true,
+    "max_cdp_evaluations": 3
+  }
+}

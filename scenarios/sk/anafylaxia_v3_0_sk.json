@@ -1,0 +1,696 @@
+{
+  "scenario_id": "ANAFYLAXIA_MVP_V3_001_SK",
+  "metadata": {
+    "title": "Anafylaxia - Reakcia na bodnutie včelou",
+    "version": "3.0_Enhanced_SK",
+    "difficulty": "stredne_vysoká",
+    "estimated_duration_minutes": 20,
+    "scenario_type": "interné_respiračné_alergické",
+    "learning_objectives": [
+      "Rozpoznať kritériá anafylaxie (koža + respiračné ALEBO koža + kardiovaskulárne)",
+      "Podať epinefrín ako prvolíniovú liečbu bez odkladu",
+      "Manažovať kombinované postihnutie dýchacích ciest a obehový šok",
+      "Odlíšiť anafylaxiu od izolovanej astmy",
+      "Pochopiť dávkovanie epinefrínu a kritériá opakovania",
+      "Preukázať vhodnú polohu pre šok vs respiračnú tieseň"
+    ],
+    "target_student_level": "študent_druhého_ročníka_záchranár",
+    "language": "slovenčina",
+    "changelog": {
+      "v3.0_enhanced_sk": "Slovenská verzia. Nový scenár s Blueprint Structure Enhancement v2. Časovanie deteriorácie 5/9/13 min. Trvanie 20 minút."
+    }
+  },
+
+  "dispatch_info": {
+    "call_type": "Alergická reakcia",
+    "age": "67",
+    "sex": "Muž",
+    "location": "Záhrada rodinného domu počas rodinného stretnutia",
+    "caller": "Manželka",
+    "additional_info": "Bodnutie včelou, opuch, ťažkosti s dýchaním, rýchlo sa zhoršuje"
+  },
+
+  "scene_description": {
+    "location": "Záhrada za domom počas rodinného grilovania, pacient sedí oprený o plot",
+    "safety": "Miesto bezpečné, žiadna prebiehajúca hrozba včiel, rodinní príslušníci prítomní",
+    "access": "Prízemie, priamy prístup cez bočnú bránu, prístup pre nosidlá",
+    "bystanders": "Manželka veľmi úzkostlivá, dospelé deti prítomné, jedna je zdravotná sestra"
+  },
+
+  "patient_profile": {
+    "name": "Rudolf",
+    "age": 67,
+    "weight_kg": 82,
+    "personality": "Úzkostlivý a vystrašený, spolupracujúci, menej reagujúci ako sa stav zhoršuje"
+  },
+
+  "initial_vitals": {
+    "HR": 118,
+    "RR": 28,
+    "SpO2": 91,
+    "BP_systolic": 88,
+    "BP_diastolic": 60,
+    "temperature": 36.9,
+    "GCS": 14,
+    "glucose": 6.2
+  },
+
+  "state_descriptions": {
+    "initial": {
+      "student_sees": "Prichádzate k 67-ročnému mužovi, ktorý sedí na zemi oprený o drevený plot. Jeho tvár a pery sú viditeľne opuchnuté - angioedém je zjavný. Hovorí chrapľavým, tlmeným hlasom a pri nádychu počujete stridor. Jeho ruky a hrudník sú pokryté vyvýšenými červenými vyrážkami - urtikária sa šíri po jeho koži. Škrabe sa po žihľavke a zároveň sa snaží dýchať. Jeho manželka kľačí vedľa neho: 'Včela ho pichla asi pred 10 minútami do ruky - pozrite, aká je opuchnutá! Je alergický, ale nebol pichnutý 20 rokov. Mal EpiPen, ale expiroval pred rokmi.' Pacient sa na vás pozerá vystrašenými očami a chrapľavým hlasom sa mu podarí povedať: 'Nemôžem... správne dýchať... hrdlo stlačené...'",
+      "appearance": "Angioedém tváre, opuch pier, chrapľavý hlas so stridorom, rozšírená urtikária, úzkostlivý, bledý, spotený napriek teplému počasiu",
+      "clinical_note": "ANAFYLAXIA s respiračným (stridor, opuch dýchacích ciest) aj kardiovaskulárnym (hypotenzia 88/60) postihnutím. Toto je život ohrozujúce a vyžaduje OKAMŽITÝ epinefrín. Stridor indikuje obštrukciu horných dýchacích ciest - môže progredovať do úplnej obštrukcie v priebehu minút. Hypotenzia indikuje distributívny šok. Užívanie ACE inhibítora (lisinopril) môže zhoršiť angioedém.",
+      "urgency_level": "kritická"
+    },
+    "improving": {
+      "student_sees": "Po vašej liečbe sa stav pacienta zlepšuje. Jeho hlas je menej chrapľavý a stridor sa výrazne zmenšil. Opuch tváre začína ustupovať - jeho črty sú teraz jasnejšie viditeľné. Jeho dýchanie je ľahšie, hoci stále mierne namáhavé. Urtikária zostáva, ale ďalej sa nešíri. Jasnejším hlasom hovorí: 'Tá injekcia... pomáha... môžem lepšie dýchať.' Jeho farba sa zlepšuje a vyzerá menej vystrašene. Jeho manželka je viditeľne uľavená.",
+      "appearance": "Znížený angioedém, hlas sa čistí, stridor ustupuje, urtikária stabilná, lepšia farba, menej úzkostlivý",
+      "clinical_note": "Pozitívna odpoveď na epinefrín. Dýchacie cesty sa zlepšujú, krvný tlak sa stabilizuje. Pokračujte v monitorovaní - môže byť potrebná druhá dávka. Steroidy a antihistaminiká pre prebiehajúci manažment. Sledujte bifázickú reakciu (recidíva o 1-8 hodín).",
+      "urgency_level": "stredná"
+    },
+    "deteriorating": {
+      "student_sees": "Stav pacienta sa rýchlo zhoršuje. Jeho tvár je teraz masívne opuchnutá - oči takmer zatvorené, pery groteskne zväčšené. Jeho hlas sa stal sotva počuteľným a stridor je teraz vysokofrekvenčný piskot pri každom nádychu. Chytá sa za hrdlo. Jeho koža sa stáva škvrnitou a sivou napriek urtikárii. Už nie je schopný hovoriť, len vydáva lapajúce zvuky a ukazuje na hrdlo vystrašenými očami.",
+      "appearance": "Ťažký angioedém, takmer úplná obštrukcia dýchacích ciest, neschopný hovoriť, škvrnitá koža, ťažká respiračná tieseň, zmenené vedomie",
+      "clinical_note": "Kritické zhoršenie - obštrukcia dýchacích ciest progreduje, šok sa zhoršuje. Okamžitý epinefrín ak nebol podaný, alebo potrebná opakovaná dávka. Pripravte sa na chirurgické zaistenie dýchacích ciest ak nastane úplná obštrukcia. Tento pacient môže zomrieť v priebehu minút bez intervencie.",
+      "urgency_level": "kritická"
+    },
+    "critical": {
+      "student_sees": "KRITICKÉ: Pacient je teraz sotva pri vedomí a robí len slabé, neefektívne pokusy o dýchanie. Jeho tvár je masívne opuchnutá s úplnou obštrukciou horných dýchacích ciest. Žiadny pohyb vzduchu nie je počuteľný. Jeho koža je sivo-modrá a škvrnitá. Nereaguje na nič. Nie je možné ventilovať BVM kvôli úplnej obštrukcii horných dýchacích ciest. Toto je núdzová situácia vyžadujúca chirurgické zaistenie dýchacích ciest.",
+      "appearance": "Úplná obštrukcia dýchacích ciest, nereagujúci, cyanotický, žiadny pohyb vzduchu, agonálny stav",
+      "clinical_note": "Respiračná zástava z obštrukcie dýchacích ciest plus kardiovaskulárny kolaps. Bez okamžitej intervencie (chirurgické zaistenie dýchacích ciest, pokračujúci epinefrín, agresívna resuscitácia) je smrť bezprostredná.",
+      "urgency_level": "život-ohrozujúca"
+    }
+  },
+
+  "assessment_findings": {
+    "airway": {
+      "initial": "Kompromitované - prítomný stridor, chrapľavý hlas, viditeľný faryngálny opuch, začínajúci opuch jazyka",
+      "improving": "Zlepšuje sa - stridor znížený, hlas sa čistí, opuch ustupuje",
+      "deteriorating": "Takmer úplná obštrukcia - ťažký stridor, neschopný hovoriť, hlad po vzduchu",
+      "critical": "Úplná obštrukcia - žiadny pohyb vzduchu, BVM ventilácia nemožná"
+    },
+    "breathing": {
+      "initial": "DF 28, namáhavé, inspiračný stridor, žiadny sipot (toto sú horné dýchacie cesty, nie bronchospazmus), používanie pomocných svalov",
+      "improving": "DF 22, stridor ustupuje, ľahšie dýchanie",
+      "deteriorating": "DF 36, ťažký stridor, minimálny pohyb vzduchu napriek maximálnemu úsiliu",
+      "critical": "Apnoický alebo agonálny, úplná obštrukcia"
+    },
+    "circulation": {
+      "initial": "TF 118, TK 88/60 (hypotenzný - šok), slabý pulz, bledý, spotený, kapilárny návrat 4 sekundy, teplé periférie (distributívny šok)",
+      "improving": "TF 95, TK 102/68, silnejší pulz, lepšia perfúzia",
+      "deteriorating": "TF 135, TK 72/48, nitkovitý pulz, škvrnitá koža",
+      "critical": "TF 45 (bradykardia z hypoxie), TK nezmerateľný, žiadne periférne pulzy"
+    },
+    "disability": {
+      "initial": "GCS 14 (E4 V4 M6 - hlas sťažený opuchom), úzkostlivý, orientovaný",
+      "improving": "GCS 15, bdelý, orientovaný, menej úzkostlivý",
+      "deteriorating": "GCS 11, zmätený, agitovaný",
+      "critical": "GCS 3-6, nereagujúci"
+    },
+    "exposure": {
+      "initial": "Miesto bodnutia včelou na pravej ruke - lokalizovaný opuch a začervenanie. Rozšírená urtikária na rukách, hrudi, chrbte. Žiadne zranenia.",
+      "skin_findings": "Vyvýšené erytematózne pomfy (žihľavka) pokrývajúce približne 40% povrchu tela. Angioedém tváre, pier, jazyka."
+    },
+    
+    "sample_history": {
+      "symptoms": "Tlak v hrdle, ťažkosti s dýchaním, pocit mdloby, svrbenie po celom tele, začalo 10 minút po bodnutí včelou",
+      "allergies": "VČELY - známa ťažká alergia, posledná reakcia pred 20 rokmi vyžadovala hospitalizáciu",
+      "medications": [
+        "Lisinopril 10mg denne (ACE inhibítor - ZHORŠUJE angioedém)",
+        "Aspirín 100mg denne",
+        "Atorvastatín 20mg denne"
+      ],
+      "past_history": "Hypertenzia, hyperlipidémia. Predchádzajúca ťažká reakcia na bodnutie včelou pred 20 rokmi - bol v nemocnici 3 dni",
+      "last_intake": "Obed pred 2 hodinami na grilovačke",
+      "events": "Pracoval na záhrade, pocítil bodnutie včelou na pravej ruke. Do 5 minút sa vyvinulo svrbenie, potom sa objavila žihľavka, potom začala opúchať tvár, potom ťažkosti s dýchaním. Manželka zavolala záchranku keď sa dýchanie sťažilo."
+    },
+
+    "specific_findings": {
+      "sting_site": "Dorzum pravej ruky - 2cm oblasť lokalizovaného opuchu, začervenania, viditeľný vpich",
+      "angioedema": "Periorbitálny opuch (oči napoly zatvorené), opuch pier (horná aj dolná), opuch jazyka (viditeľný pri otvorení úst), faryngálny opuch (viditeľný pri inšpekcii)",
+      "urticaria": "Vyvýšené pomfy 1-3cm, erytematózne so svetlým stredom, distribuované na rukách, hrudi, chrbte, šíriace sa na nohy",
+      "throat_exam": "Uvula opuchnutá, zadná faryngálna stena edematózna, hlas chrapľavý"
+    },
+
+    "chief_complaint_detail": "Pacient chrapľavým hlasom: 'Nemôžem... správne dýchať... hrdlo stlačené... všetko svrbí...' Manželka: 'Zhoršuje sa to tak rýchlo! Prosím, pomôžte mu!'"
+  },
+
+  "ecg_findings": {
+    "available": true,
+    "requires_equipment": "12-zvodový EKG monitor",
+    "acquisition_time_seconds": 10,
+
+    "findings_structured": {
+      "rhythm_and_rate": {
+        "rhythm": "Sínusová tachykardia",
+        "regularity": "pravidelný",
+        "rate_bpm": 118
+      },
+
+      "st_segment_changes": [],
+
+      "other_findings": [
+        "Nízka voltáž QRS komplexov (hypovolémia/šok)",
+        "Žiadne akútne ischemické zmeny"
+      ]
+    },
+
+    "interpretation": {
+      "diagnosis": "Sínusová tachykardia - kompenzačná",
+      "mechanism": "Kompenzačná odpoveď na distributívny šok a hypoxiu",
+      "territory": "N/A",
+      "severity": "Adekvátna klinickému stavu",
+      "note": "LEN PRE REFERENCIU AGENTA"
+    },
+
+    "teaching_point": "EKG pri anafylaxii ukazuje kompenzačnú sínusovú tachykardiu. EKG NIE je prioritou pri anafylaxii - epinefrín je prioritou. EKG môže ukazovať nízku voltáž kvôli zlej perfúzii. Vylúčte Kounisov syndróm (alergický akútny koronárny syndróm) ak je prítomná bolesť na hrudi po epinefríne.",
+    "teaching_point_note": "PRE POUŽITIE AAR AGENTOM",
+
+    "presentation_mode": "structured_text"
+  },
+
+  "critical_treatments": ["epinefrin", "kyslík"],
+
+  "primary_medications": {
+    "epinefrin": {
+      "generic_name": "Epinefrín (Adrenalín)",
+      "brand_names": ["Adrenalin", "EpiPen", "Jext"],
+      "class": "Sympatomimetikum (alfa a beta agonista)",
+      "indication": "Anafylaxia (prvolíniová liečba), srdcová zástava, ťažký bronchospazmus",
+      "mechanism": "Alfa-1: vazokonstrikcia (zvyšuje TK, znižuje angioedém). Beta-1: pozitívny inotrop/chronotrop. Beta-2: bronchodilatácia, stabilizácia mastocytov.",
+      
+      "dosing": {
+        "anaphylaxis_adult": "0,5mg (500mcg) IM do laterálneho stehna",
+        "anaphylaxis_pediatric": "0,01mg/kg IM (max 0,3mg dieťa, 0,5mg adolescent)",
+        "repeat_dose": "Každých 5-15 minút ak nie je zlepšenie",
+        "route_priority": "IM preferovaná (rýchlejšia absorpcia ako SC), IV len pri srdcovej zástave alebo refraktérnom šoku"
+      },
+      
+      "pharmacokinetics": {
+        "onset_im_minutes": "3-5",
+        "peak_effect_minutes": "10-15",
+        "duration_minutes": "15-20"
+      },
+      
+      "contraindications": {
+        "absolute": [],
+        "note": "ŽIADNE absolútne kontraindikácie pri anafylaxii - je VŽDY indikovaný"
+      },
+      
+      "side_effects": ["tachykardia", "palpitácie", "tremor", "úzkosť", "bolesť hlavy", "hypertenzia"],
+      
+      "warnings": [
+        "Môže byť potrebné opakovanie dávok - krátke trvanie účinku",
+        "Podajte IM nie SC pre rýchlejšiu absorpciu",
+        "Laterálne stehno je najlepšie miesto (najvyšší prietok krvi)",
+        "Pacienti na beta-blokátoroch môžu mať zníženú odpoveď - môžu potrebovať vyššie dávky alebo glukagón"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": true,
+        "life_saving": true,
+        "time_to_effect_minutes": 4,
+        "vital_changes": {
+          "HR": 95,
+          "BP_systolic": 108,
+          "BP_diastolic": 72,
+          "RR": 22,
+          "SpO2": 96
+        },
+        "patient_says": "Tá injekcia... pomáha... môžem lepšie dýchať...",
+        "clinical_effect": "Vazokonstrikcia zlepšuje TK a znižuje angioedém. Bronchodilatácia ak je prítomný bronchospazmus. Stabilizácia mastocytov znižuje ďalšie uvoľňovanie histamínu. Viditeľné zníženie opuchu do 5-10 minút.",
+        "points_if_given": 35,
+        "timing_critical": "Musí byť podaný do 5 minút - oneskorenie zvyšuje mortalitu"
+      }
+    },
+
+    "oxygen": {
+      "indication": "Hypoxia, respiračná tieseň, šok",
+      "target": "SpO2 >94%",
+      
+      "delivery_options": {
+        "non_rebreather_mask": "15 L/min",
+        "bvm_if_needed": "Pre asistovanú ventiláciu ak sú dýchacie cesty kompromitované"
+      },
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": true,
+        "time_to_effect_minutes": 1,
+        "vital_changes": {
+          "SpO2": 94
+        },
+        "points_if_given": 10
+      }
+    },
+
+    "hydrocortisone": {
+      "generic_name": "Hydrokortizón",
+      "class": "Glukokortikoid",
+      "indication": "Anafylaxia (druholíniová, predchádza bifázickej reakcii)",
+      
+      "dosing": {
+        "adult": "200mg IV"
+      },
+      
+      "pharmacokinetics": {
+        "onset_hours": "4-6",
+        "note": "NELIEČI akútnu anafylaxiu - predchádza bifázickej reakcii"
+      },
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": false,
+        "importance": "dôležité_sekundárne",
+        "vital_changes": {},
+        "clinical_effect": "Žiadny okamžitý účinok. Predchádza bifázickej reakcii o 1-8 hodín neskôr.",
+        "points_if_given": 5,
+        "timing_note": "Podajte PO epinefríne - steroidy NIE sú prvolíniové",
+        "teaching_point": "Steroidy NELIEČIA akútnu anafylaxiu. Epinefrín je JEDINÁ prvolíniová liečba. Steroidy predchádzajú bifázickej reakcii."
+      }
+    },
+
+    "antihistamines": {
+      "medications": ["difenhydramin", "chlorfeniramin"],
+      "class": "H1 antihistaminikum",
+      "indication": "Anafylaxia (len adjuvans)",
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": false,
+        "importance": "len_adjuvans",
+        "vital_changes": {},
+        "clinical_effect": "Môže pomôcť s urtikáriou a svrbením. NELIEČI postihnutie dýchacích ciest alebo kardiovaskulárne kompromitovanie.",
+        "points_if_given": 3,
+        "teaching_point": "Antihistaminiká sú len adjuvans. NELIEČIA anafylaxiu - len epinefrín to robí. Nikdy neoneskorujte epinefrín kvôli podaniu antihistaminík."
+      }
+    },
+
+    "iv_fluids": {
+      "indication": "Hypotenzia pri anafylaxii",
+      "dosing": "500ml-1L kryštaloidný bolus, opakovať podľa potreby",
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": false,
+        "importance": "dôležité_adjuvans",
+        "vital_changes": {
+          "BP_systolic": "+10-15"
+        },
+        "clinical_effect": "Pomáha podporiť krvný tlak spolu s epinefrínom",
+        "points_if_given": 5,
+        "teaching_point": "Tekutiny podporujú TK, ale NENAHRÁDZAJÚ epinefrín. Anafylaxia môže spôsobiť výrazné presuny tekutín - môže byť potrebných niekoľko litrov."
+      }
+    }
+  },
+
+  "treatment_responses": {
+    "epinefrin": {
+      "time_to_effect_minutes": 4,
+      "vital_changes": {
+        "HR": 95,
+        "BP_systolic": 108,
+        "BP_diastolic": 72,
+        "RR": 22,
+        "SpO2": 96
+      },
+      "patient_says": "Tá injekcia... pomáha... môžem lepšie dýchať...",
+      "clinical_effect": "Stridor sa znižuje, angioedém sa zlepšuje, TK stúpa, farba sa zlepšuje"
+    },
+    "oxygen": {
+      "time_to_effect_minutes": 1,
+      "vital_changes": {
+        "SpO2": 94
+      },
+      "clinical_effect": "Zlepšená oxygenácia"
+    },
+    "second_epinephrine": {
+      "indication": "Žiadne zlepšenie po 5-15 minútach",
+      "vital_changes": {
+        "BP_systolic": 118,
+        "HR": 88
+      },
+      "clinical_effect": "Ďalšie zlepšenie ak bola prvá dávka nedostatočná"
+    }
+  },
+
+  "no_treatment_progression": {
+    "5min": {
+      "vitals": {
+        "HR": 128,
+        "RR": 34,
+        "SpO2": 85,
+        "BP_systolic": 78,
+        "BP_diastolic": 48,
+        "GCS": 13
+      },
+      "state": "deteriorating",
+      "description": "Angioedém sa zhoršuje, stridor výraznejší, pacient sa stáva zmäteným, objavuje sa škvrnitosť kože"
+    },
+    "9min": {
+      "vitals": {
+        "HR": 138,
+        "RR": 40,
+        "SpO2": 75,
+        "BP_systolic": 62,
+        "BP_diastolic": 40,
+        "GCS": 10
+      },
+      "state": "deteriorating",
+      "description": "Takmer úplná obštrukcia dýchacích ciest, ťažký šok, pacient sotva reaguje, agonálne pokusy o dýchanie"
+    },
+    "13min": {
+      "vitals": {
+        "HR": 45,
+        "RR": 4,
+        "SpO2": 55,
+        "BP_systolic": "nezmerateľný",
+        "GCS": 3
+      },
+      "state": "critical",
+      "description": "Úplná obštrukcia dýchacích ciest, kardiovaskulárny kolaps, respiračná zástava, bradykardia z hypoxie, bezprostredná srdcová zástava"
+    }
+  },
+
+  "secondary_medications_by_impact": {
+    "critical_harm": [
+      {
+        "name": "beta_blocker",
+        "generic_name": "Metoprolol/Propranolol",
+        "why_dangerous": "Blokuje život zachraňujúce účinky epinefrínu, zhoršuje bronchospazmus a hypotenziu",
+        "if_given": {
+          "vital_changes": {
+            "BP_systolic": 68,
+            "HR": 55,
+            "SpO2": 78
+          },
+          "patient_response": "Stav sa rýchlo zhoršuje. Beta-blokátor blokuje kompenzačné mechanizmy tela a bráni účinku epinefrínu.",
+          "points": -30,
+          "state_change": "critical",
+          "aar_flag": "kontraindikovaný_liek"
+        },
+        "teaching_point": "Beta-blokátory sú katastrofálne pri anafylaxii. Blokujú beta účinky epinefrínu, zhoršujú hypotenziu a bronchospazmus. Ak pacient UŽÍVA beta-blokátory, môže byť potrebný glukagón."
+      }
+    ],
+
+    "worsens": [
+      {
+        "name": "salbutamol_samotný",
+        "generic_name": "Salbutamol",
+        "why_wrong": "Bronchodilatátor nelieči anafylaxiu - rieši len komponent bronchospazmu, nie opuch dýchacích ciest alebo šok",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadne zlepšenie - toto je opuch horných dýchacích ciest (angioedém), nie bronchospazmus. Salbutamol nepomáha pri opuchu. Krvný tlak stále nízky.",
+          "points": -10,
+          "aar_flag": "nesprávna_liečba"
+        },
+        "teaching_point": "Toto je ANAFYLAXIA nie astma. Stridor je z OPUCHU nie bronchospazmu. Salbutamol nezmenšuje opuchnuté tkanivo - to robí epinefrín. Nikdy nenahrádzajte bronchodilatanciá epinefrínom pri anafylaxii."
+      }
+    ],
+
+    "neutral": [
+      {
+        "name": "antihistaminikum_najprv",
+        "generic_name": "Difenhydramín podaný pred epinefrínom",
+        "why_suboptimal": "Oneskoruje život zachraňujúci epinefrín",
+        "if_given": {
+          "patient_response": "Antihistaminikum má minimálny účinok na dýchacie cesty alebo krvný tlak. Premrhaný kritický čas.",
+          "points": -5,
+          "aar_flag": "oneskorená_kritická_liečba"
+        },
+        "teaching_point": "Antihistaminiká NELIEČIA anafylaxiu. Pomáhajú len so svrbením/žihľavkou. EPINEFRÍN je jediná prvolíniová liečba. Nikdy neoneskorujte epinefrín kvôli podaniu antihistaminík."
+      }
+    ]
+  },
+
+  "critical_actions_checklist": [
+    {
+      "id": "CA1",
+      "action": "Zhodnotenie bezpečnosti miesta",
+      "category": "bezpečnosť_miesta",
+      "time_target_minutes": 1,
+      "points": 5,
+      "importance": "nevyhnutné",
+      "matching": {
+        "keywords": ["miesto", "bezpečnosť", "bezpečné"],
+        "synonyms": ["nebezpečenstvo", "včely", "zabezpečiť"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA2",
+      "action": "Rozpoznať anafylaxiu",
+      "category": "vyšetrenie",
+      "time_target_minutes": 2,
+      "points": 15,
+      "importance": "kritické",
+      "criteria": "Identifikuje expozíciu alergénu + kožné príznaky + respiračné ALEBO kardiovaskulárne kompromitovanie",
+      "matching": {
+        "keywords": ["anafylaxia", "anafylaktická"],
+        "synonyms": ["ťažká alergická", "alergická reakcia", "angioedém", "opuch", "stridor", "šok"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA3",
+      "action": "Podať epinefrín IM",
+      "category": "liečba",
+      "time_target_minutes": 3,
+      "points": 35,
+      "importance": "kritické",
+      "criteria": "0,5mg IM do laterálneho stehna",
+      "matching": {
+        "keywords": ["epinefrín", "adrenalín", "epipen"],
+        "synonyms": ["epi", "adrenalin", "0.5mg", "0,5mg", "intramuskulárne", "im", "stehno", "jext"],
+        "tool_mappings": ["podať_epinefrín", "dať_epi"],
+        "exclusion_keywords": ["nie", "mám", "ešte nie", "iv"]
+      }
+    },
+    {
+      "id": "CA4",
+      "action": "Aplikovať vysokoprietokový kyslík",
+      "category": "liečba",
+      "time_target_minutes": 3,
+      "points": 10,
+      "importance": "kritické",
+      "matching": {
+        "keywords": ["kyslík", "o2"],
+        "synonyms": ["nrb", "maska", "15l"],
+        "exclusion_keywords": ["nie"]
+      }
+    },
+    {
+      "id": "CA5",
+      "action": "Zabezpečiť IV vstup",
+      "category": "liečba",
+      "time_target_minutes": 5,
+      "points": 5,
+      "importance": "dôležité",
+      "matching": {
+        "keywords": ["iv", "intravenózny"],
+        "synonyms": ["linka", "vstup", "kanyla", "venflon"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA6",
+      "action": "Podať IV tekutiny",
+      "category": "liečba",
+      "time_target_minutes": 7,
+      "points": 5,
+      "importance": "dôležité",
+      "criteria": "Kryštaloidný bolus pre hypotenziu",
+      "matching": {
+        "keywords": ["tekutiny", "fyziologický", "kryštaloid"],
+        "synonyms": ["bolus", "ringer", "hartmann", "500ml", "1000ml"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA7",
+      "action": "Podať kortikosteroidy",
+      "category": "liečba",
+      "time_target_minutes": 10,
+      "points": 5,
+      "importance": "dôležité",
+      "criteria": "Po epinefríne - pre prevenciu bifázickej reakcie",
+      "matching": {
+        "keywords": ["steroid", "hydrokortizón"],
+        "synonyms": ["solu-cortef", "metylprednizolón", "200mg"],
+        "exclusion_keywords": []
+      }
+    },
+    {
+      "id": "CA8",
+      "action": "Prehodnotiť a zvážiť druhú dávku epinefrínu",
+      "category": "monitoring",
+      "time_target_minutes": 10,
+      "points": 5,
+      "importance": "dôležité",
+      "matching": {
+        "keywords": ["prehodnotiť", "druhá dávka", "opakovať"],
+        "synonyms": ["ďalší epi", "viac epinefrínu", "nezlepšuje sa"],
+        "exclusion_keywords": []
+      }
+    }
+  ],
+
+  "common_errors": [
+    {
+      "error_id": "E1",
+      "error": "Oneskorené podanie epinefrínu",
+      "teaching_point": "Epinefrín musí byť podaný do 3-5 minút od rozpoznania anafylaxie",
+      "clinical_anchor": "Pri anafylaxii záleží na minútach. Oneskorený epinefrín je príčina číslo jeden úmrtí na anafylaxiu."
+    },
+    {
+      "error_id": "E2",
+      "error": "Podal antihistaminiká namiesto epinefrínu",
+      "teaching_point": "Antihistaminiká NELIEČIA anafylaxiu - len epinefrín",
+      "clinical_anchor": "Antihistaminiká pre žihľavku, epinefrín pre život. Poznajte rozdiel."
+    },
+    {
+      "error_id": "E3",
+      "error": "Podal salbutamol v domnienke, že ide o astmu",
+      "teaching_point": "Stridor je opuch horných dýchacích ciest, nie bronchospazmus. Salbutamol nelieči angioedém.",
+      "clinical_anchor": "Stridor = opuch. Sipot = bronchospazmus. Rôzne zvuky, rôzna liečba."
+    },
+    {
+      "error_id": "E4",
+      "error": "Zlá cesta podania epinefrínu (IV namiesto IM)",
+      "teaching_point": "IV epinefrín pri anafylaxii spôsobuje nebezpečné arytmie. IM je správna cesta.",
+      "clinical_anchor": "IM epi zachraňuje životy. IV epi pri anafylaxii spôsobuje arytmie."
+    },
+    {
+      "error_id": "E5",
+      "error": "Nerozpoznal potrebu druhej dávky",
+      "teaching_point": "Epinefrín trvá 15-20 minút. Opakujte každých 5-15 minút ak príznaky pretrvávajú.",
+      "clinical_anchor": "Jedna dávka nemusí stačiť. Prehodnoťte a opakujte—epinefrín má krátky účinok."
+    },
+    {
+      "error_id": "E6",
+      "error": "Sústredil sa na kožné prejavy, prehliadol dýchacie cesty/obeh",
+      "teaching_point": "Samotná žihľavka nie je anafylaxia. Anafylaxia = alergén + koža PLUS respiračné ALEBO kardiovaskulárne kompromitovanie.",
+      "clinical_anchor": "Žihľavka je dramatická, ale nezabíja. Opuch dýchacích ciest a šok zabíjajú. Liečte ohrozenia života."
+    }
+  ],
+
+  "consequence_templates": [
+    {
+      "gap_trigger": "CA3_late",
+      "checklist_item_id": "CA3",
+      "gap_type": "oneskorená_akcia",
+      "template": "Epinefrín bol podaný v {actual_time} minúte (cieľ: {target_time} minúty). Počas {delay_minutes} minútového oneskorenia dýchacie cesty {patient_name} pokračovali v opúchaní a krvný tlak pokračoval v poklese. Mortalita anafylaxie je priamo spojená s časom do epinefrínu. Tých {delay_minutes} minút umožnilo progresívne kompromitovanie dýchacích ciest, ktorému sa dalo predísť.",
+      "variables": {
+        "actual_time": "checklistResults.CA3.time",
+        "target_time": "3",
+        "delay_minutes": "calculated",
+        "patient_name": "patient_profile.name"
+      },
+      "severity": "kritická",
+      "medical_basis": "Štúdie ukazujú, že úmrtia na anafylaxiu sú spojené s oneskoreným epinefrínom. Edém dýchacích ciest a kardiovaskulárny kolaps postupujú rýchlo bez liečby."
+    },
+    {
+      "gap_trigger": "CA3_missed",
+      "checklist_item_id": "CA3",
+      "gap_type": "vynechaná_akcia",
+      "template": "Epinefrín NEBOL NIKDY podaný. {patient_name} mal život ohrozujúcu anafylaxiu s kompromitovaním dýchacích ciest a šokom, napriek tomu jediná liečba, ktorá mohla zachrániť jeho život, nebola podaná. Toto predstavuje kritické zlyhanie. Neexistuje ŽIADNA náhrada za epinefrín pri anafylaxii - nie antihistaminiká, nie steroidy, nič.",
+      "variables": {
+        "patient_name": "patient_profile.name"
+      },
+      "severity": "kritická",
+      "medical_basis": "Zlyhanie podať epinefrín pri anafylaxii je hlavnou príčinou preventabilných úmrtí na anafylaxiu. Žiadny iný liek nelieči základnú patofyziológiu."
+    }
+  ],
+
+  "critical_decision_points": [
+    {
+      "id": "CDP1",
+      "decision": "diferenciácia_anafylaxia_vs_astma",
+      "description": "Odlíšenie anafylaxie od izolovaných respiračných stavov",
+      "evaluate_if": "Študent stanovil diagnózu",
+      
+      "optimal_sequence": [
+        "Identifikovať expozíciu alergénu (bodnutie včelou)",
+        "Rozpoznať multiorgánové postihnutie (koža + dýchacie cesty + kardiovaskulárne)",
+        "Všimnúť si stridor (horné dýchacie cesty) vs sipot (dolné dýchacie cesty)",
+        "Identifikovať hypotenziu ako znak distributívneho šoku",
+        "Záver: anafylaxia, nie astma"
+      ],
+      
+      "scoring": {
+        "optimal": "Okamžite rozpoznal anafylaxiu na základe expozície alergénu + urtikária + stridor + hypotenzia. Pochopil, že ide o multiorgánovú alergickú emergentnosť, nie izolovaný respiračný problém.",
+        "acceptable": "Rozpoznal ťažkú alergickú reakciu vyžadujúcu epinefrín, aj keď neartikoval všetky diagnostické kritériá.",
+        "suboptimal": "Zamieňal anafylaxiu s astmou, zvažoval bronchodilatanciá pred epinefrínom.",
+        "dangerous": "Liečil ako astmu salbutamolom, prehliadol diagnózu anafylaxie, nepodal epinefrín."
+      },
+      
+      "clinical_anchor": "Alergén + žihľavka + stridor + šok = anafylaxia, nie astma. Liečba je epinefrín, nie bronchodilatanciá.",
+      
+      "aar_teaching_point": "Kritériá anafylaxie: expozícia alergénu PLUS postihnutie kože (urtikária/angioedém) PLUS buď respiračné kompromitovanie (stridor, sipot) ALEBO kardiovaskulárne kompromitovanie (hypotenzia). Tento pacient mal všetky komponenty. Stridor indikuje opuch HORNÝCH dýchacích ciest - bronchodilatanciá neliečia opuch."
+    },
+    {
+      "id": "CDP2",
+      "decision": "prioritizácia_epinefrínu",
+      "description": "Podanie epinefrínu ako absolútnej prvolíniovej liečby",
+      "evaluate_if": "Študent podal akýkoľvek liek",
+      
+      "scoring": {
+        "optimal": "Epinefrín podaný ako PRVÝ liek do 3 minút. Ostatné liečby (O2, tekutiny, steroidy, antihistaminiká) podané PO epinefríne.",
+        "acceptable": "Epinefrín podaný do 5 minút, aj keď kyslík bol podaný ako prvý.",
+        "suboptimal": "Epinefrín oneskorený počas podávania antihistaminík alebo steroidov ako prvých.",
+        "dangerous": "Epinefrín nebol podaný, alebo bol podaný veľmi neskoro (>10 min) po iných liekoch."
+      },
+      
+      "clinical_anchor": "Pri anafylaxii je epinefrín LIEČBA. Všetko ostatné je adjuvans. Neexistuje náhrada.",
+      
+      "aar_teaching_point": "Priorita liečby pri anafylaxii: (1) Epinefrín IM 0,5mg - okamžite. (2) Kyslík. (3) IV vstup a tekutiny. (4) Steroidy a antihistaminiká (len adjuvans). Antihistaminiká liečia svrbenie, nie anafylaxiu. Steroidy predchádzajú bifázickej reakcii, nie akútnej anafylaxii. LEN epinefrín lieči základnú patofyziológiu."
+    },
+    {
+      "id": "CDP3",
+      "decision": "rozpoznanie_potreby_druhej_dávky",
+      "description": "Rozpoznanie potreby opakovať epinefrín",
+      "evaluate_if": "Prvý epinefrín bol podaný a príznaky pretrvávajú",
+      
+      "scoring": {
+        "optimal": "Prehodnotil v 5 minútach, rozpoznal nekompletnú odpoveď, podal druhú dávku primerane.",
+        "acceptable": "Rozpoznal potrebu druhej dávky do 10-15 minút.",
+        "suboptimal": "Nezvážil druhú dávku napriek pretrvávajúcim príznakom.",
+        "dangerous": "Nikdy neprehodnotil, predpokladal, že jedna dávka je dostatočná napriek pokračujúcemu zhoršovaniu."
+      },
+      
+      "clinical_anchor": "Epinefrín sa vyčerpá za 15-20 minút. Prehodnoťte a opakujte—jedna dávka nemusí stačiť.",
+      
+      "aar_teaching_point": "Trvanie účinku epinefrínu je krátke (15-20 minút). Odporúčania hovoria opakovať každých 5-15 minút ak príznaky pretrvávajú. Mnoho pacientov potrebuje 2+ dávok. Zlyhanie podať druhú dávku je častá chyba v manažmente anafylaxie."
+    }
+  ],
+
+  "aar_teaching_points": {
+    "key_concepts": [
+      "Anafylaxia = alergén + koža PLUS respiračné ALEBO kardiovaskulárne kompromitovanie",
+      "Epinefrín je LIEČBA - žiadna náhrada, žiadne oneskorenie",
+      "Stridor = opuch horných dýchacích ciest (potrebuje epinefrín), Sipot = bronchospazmus (potrebuje bronchodilatátor)",
+      "Antihistaminiká a steroidy sú len ADJUVANS - NELIEČIA anafylaxiu",
+      "Môžu byť potrebné opakované dávky epinefrínu - prehodnocujte často"
+    ],
+    "clinical_pearls": [
+      "IM epinefrín do laterálneho stehna - najrýchlejšia absorpcia",
+      "Hypotenzia pri anafylaxii = distributívny šok z vazodilatácie",
+      "ACE inhibítory (ako pacientov lisinopril) zhoršujú angioedém",
+      "Bifázické reakcie sa vyskytujú až u 20% - preto podávame steroidy",
+      "Pacienti na beta-blokátoroch môžu byť refraktérni na epinefrín - zvážte glukagón"
+    ]
+  },
+
+  "simulation_config": {
+    "real_time_progression": true,
+    "auto_deterioration_if_no_treatment": true,
+    "improvement_requires_critical_treatments": true,
+    "max_duration_minutes": 20,
+    "deterioration_timing_minutes": [5, 9, 13],
+    "layer_two_enabled": true,
+    "challenge_points_active": false,
+    "critical_decision_points_active": true,
+    "max_cdp_evaluations": 3
+  }
+}
