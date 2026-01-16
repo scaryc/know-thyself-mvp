@@ -209,11 +209,9 @@
           "BP_systolic": "+8-10"
         },
         "if_appropriate": {
-          "points": 5,
           "clinical_effect": "Transient BP improvement"
         },
         "if_excessive": {
-          "points": -10,
           "clinical_effect": "Dilutional coagulopathy, hypothermia, increased bleeding",
           "aar_flag": "over_resuscitation"
         },
@@ -282,7 +280,6 @@
             "note": "Transient improvement then worse bleeding"
           },
           "clinical_effect": "Initially BP improves, then patient bleeds more as clots are disrupted",
-          "points": -15,
           "aar_flag": "over_resuscitation"
         },
         "teaching_point": "Crystalloid doesn't carry oxygen or clot. You can't 'fill the tank' faster than it leaks. The treatment is surgical control and blood products, not saline."
@@ -299,7 +296,6 @@
             "BP_systolic": -10,
             "note": "Each exam worsens bleeding"
           },
-          "points": -10,
           "aar_flag": "iatrogenic_harm"
         },
         "teaching_point": "Assess pelvis ONCE. If unstable, apply binder and STOP examining. Each manipulation disrupts clots and increases bleeding."
@@ -313,7 +309,6 @@
         "indication": "Hemorrhagic shock within 3 hours of injury",
         "if_given": {
           "clinical_effect": "Antifibrinolytic - helps maintain clots. Appropriate if available and within time window.",
-          "points": 5,
           "aar_flag": "appropriate_adjunct"
         },
         "teaching_point": "TXA reduces mortality in hemorrhagic shock if given within 3 hours. Dose: 1g IV over 10 minutes. Follow local protocols."
@@ -321,13 +316,136 @@
     ]
   },
 
+  "progress_milestones": {
+    "enabled": true,
+    "display_location": "clinical_notes_panel",
+    "milestone_definitions": {
+      "UM1": {
+        "name": "Scene Secured",
+        "description": "Scene safety established, BSI taken"
+      },
+      "UM2": {
+        "name": "Emergency Recognized",
+        "description": "Primary problem identified"
+      },
+      "UM3": {
+        "name": "Breathing Supported",
+        "description": "Airway/breathing intervention initiated"
+      },
+      "UM4": {
+        "name": "Critical Treatment",
+        "description": "Primary life-saving treatment given"
+      },
+      "UM5": {
+        "name": "Assessment Complete",
+        "description": "ABCDE/SAMPLE/secondary exam completed"
+      },
+      "UM6": {
+        "name": "Monitoring Established",
+        "description": "Ongoing reassessment initiated"
+      }
+    },
+    "milestone_mappings": {
+      "UM1": { "trigger_actions": ["CA1"] },
+      "UM2": { "trigger_actions": ["CA2"] },
+      "UM3": { "trigger_actions": ["CA7"] },
+      "UM4": { "trigger_actions": ["CA4"] },
+      "UM5": { "trigger_actions": ["CA3", "CA5"] },
+      "UM6": { "trigger_actions": ["CA8"] }
+    }
+  },
+
+  "safety_gate": {
+    "enabled": true,
+    "tracking_mode": "silent",
+    "interrupt_scenario": false,
+    "critical_failures": [
+      {
+        "id": "SF1",
+        "type": "omission",
+        "description": "Pelvic binder never applied to unstable pelvic fracture",
+        "detection_criteria": {
+          "condition": "scenario_end AND pelvic_binder_applied == false",
+          "patient_state_required": "unstable_pelvic_fracture_identified"
+        },
+        "patient_outcome": "Without pelvic binding, the pelvis remains an unstable, expanding cavity. Venous bleeding continues uncontrolled. Patient exsanguinates from preventable hemorrhage. Can lose 4+ liters into unbound pelvis.",
+        "aar_teaching_point": "Pelvic binder is THE life-saving intervention for unstable pelvic fractures. It reduces pelvic volume, tamponades venous bleeding, and allows clot formation. Without it, the pelvis is a 4-liter bucket that keeps expanding. This patient will bleed to death without mechanical hemorrhage control. Application must be immediate - it's as critical as a tourniquet for extremity bleeding."
+      },
+      {
+        "id": "SF2",
+        "type": "commission",
+        "description": "Excessive fluid resuscitation (>2L crystalloid) before hemorrhage control",
+        "detection_criteria": {
+          "condition": "crystalloid_volume > 2000_ml AND pelvic_binder_applied == false"
+        },
+        "patient_outcome": "Over-resuscitation without hemorrhage control causes dilutional coagulopathy (clotting factors diluted), hypothermia (cold fluids), disrupts forming clots with hydrostatic pressure, and accelerates bleeding. Patient enters 'lethal triad' of hypothermia, coagulopathy, acidosis. Death from medical over-treatment.",
+        "aar_teaching_point": "You cannot fill the tank faster than it leaks. Crystalloid doesn't carry oxygen and doesn't clot - it just dilutes the blood that's left. Over-resuscitation before hemorrhage control makes bleeding worse through three mechanisms: dilutes clotting factors, causes hypothermia, and increases hydrostatic pressure that disrupts clots. Target permissive hypotension (SBP 80-90) with small boluses. Definitive treatment is surgical hemostasis and blood products, not saline."
+      },
+      {
+        "id": "SF3",
+        "type": "commission",
+        "description": "Repeated pelvic examinations (>1 assessment of stability)",
+        "detection_criteria": {
+          "condition": "pelvic_exam_count > 1"
+        },
+        "patient_outcome": "Each pelvic manipulation disrupts fragile clot formation in fracture sites. Every 'spring' or stability check re-opens bleeding. Iatrogenic acceleration of hemorrhage from repeated examination.",
+        "aar_teaching_point": "Assess pelvic stability ONCE. If unstable: apply binder and NEVER examine again. Each manipulation tears newly formed clots and restarts venous bleeding. This is iatrogenic harm - you're actively worsening the injury. The saying is: 'Check the pelvis once. After that, you're just stirring up the bleeding.'"
+      },
+      {
+        "id": "SF4",
+        "type": "omission",
+        "description": "Prolonged scene time (>10 minutes) for non-essential interventions",
+        "detection_criteria": {
+          "condition": "time_on_scene > 10_minutes AND no_valid_entrapment_or_extrication_required"
+        },
+        "patient_outcome": "Every minute on scene is a minute patient continues to exsanguinate. Definitive treatment (surgery, blood products) only available in hospital. Delayed transport = preventable death from bleeding.",
+        "aar_teaching_point": "Hemorrhagic shock requires load-and-go mentality. You cannot stop pelvic bleeding prehospitally - only slow it with binder. Definitive treatment is surgical hemorrhage control and blood product resuscitation, neither available on scene. Scene time should be <10 minutes: assess, binder, scoop and run. 'Staying and playing' kills hemorrhaging patients. Every minute on scene is a minute closer to death."
+      },
+      {
+        "id": "SF5",
+        "type": "contraindication",
+        "description": "Medication given despite stated allergy",
+        "detection_criteria": {
+          "condition": "medication_given IN patient.allergies"
+        },
+        "patient_outcome": "Allergic reaction on top of hemorrhagic shock emergency",
+        "aar_teaching_point": "Always verify allergies before medication administration."
+      }
+    ]
+  },
+
+  "scenario_states": {
+    "initial": {
+      "timing": "0-5 min",
+      "description": "Hemorrhagic shock presentation - tachycardic (118), hypotensive (88/60), altered mental status, unstable pelvic fracture palpable, pale and diaphoretic. Compensated shock transitioning to decompensated."
+    },
+    "early_deteriorating": {
+      "timing": "5-7 min (if untreated)",
+      "description": "Decompensation beginning - increasing tachycardia, blood pressure dropping further, confusion worsening, skin increasingly mottled"
+    },
+    "deteriorating": {
+      "timing": "7-9 min (if untreated)",
+      "description": "Severe decompensation - marked tachycardia, severe hypotension (SBP <70), significantly altered consciousness, gray and mottled, oliguric"
+    },
+    "critical": {
+      "timing": "9-13 min (if untreated)",
+      "description": "Pre-arrest hemorrhagic shock - profound hypotension, barely conscious or unconscious, imminent cardiac arrest from exsanguination"
+    },
+    "improving": {
+      "timing": "After hemorrhage control and judicious resuscitation",
+      "description": "Stabilized with mechanical hemorrhage control - pelvic binder applied, blood pressure maintained at permissive hypotension (80-90), mental status improving, bleeding slowed"
+    },
+    "stable": {
+      "timing": "After sustained hemorrhage control",
+      "description": "Temporarily stabilized for transport - binder in place, permissive hypotension maintained, ready for rapid transport to trauma surgery"
+    }
+  },
+
   "critical_actions_checklist": [
     {
       "id": "CA1",
       "action": "Scene safety and mechanism assessment",
       "category": "scene_safety",
-      "time_target_minutes": 1,
-      "points": 5,
       "importance": "essential",
       "matching": {
         "keywords": ["scene", "safety", "mechanism"],
@@ -339,51 +457,145 @@
       "id": "CA2",
       "action": "Recognize hemorrhagic shock",
       "category": "assessment",
-      "time_target_minutes": 3,
-      "points": 15,
       "importance": "critical",
       "criteria": "Identifies tachycardia + hypotension + altered mental status = shock",
       "matching": {
         "keywords": ["shock", "hemorrhagic", "bleeding"],
         "synonyms": ["hypovolemic", "blood loss", "hypotension", "tachycardia", "decompensating"],
         "exclusion_keywords": []
+      },
+      "competence_assessment": {
+        "method": "outcome_based",
+        "exemplary": {
+          "patient_state_at_action": ["initial"],
+          "patient_state_after": ["initial", "improving"],
+          "outcome_description": "Hemorrhagic shock recognized immediately from vital signs triad",
+          "feedback_template": "Excellent recognition - you immediately identified hemorrhagic shock based on the classic triad: tachycardia (HR 118), hypotension (BP 88/60), and altered mental status. You understood this represents decompensated shock requiring immediate hemorrhage control and rapid transport. This rapid diagnosis enabled life-saving interventions."
+        },
+        "competent": {
+          "patient_state_at_action": ["initial", "early_deteriorating"],
+          "patient_state_after": ["initial", "early_deteriorating", "improving"],
+          "outcome_description": "Shock recognized before critical decompensation",
+          "feedback_template": "Good recognition of hemorrhagic shock. You identified the indicators and proceeded with appropriate hemorrhage control."
+        },
+        "developing": {
+          "patient_state_at_action": ["deteriorating", "critical"],
+          "patient_state_after": ["deteriorating", "critical", "improving"],
+          "outcome_description": "Shock recognition delayed, patient critically decompensated",
+          "feedback_template": "Recognition of hemorrhagic shock was delayed. By the time you identified it, the patient was in {patient_state_at_action} state with profound hypotension - this is pre-arrest exsanguination. The triad of tachycardia, hypotension, and altered mental status with trauma mechanism should immediately trigger 'hemorrhagic shock' diagnosis. What was your assessment reasoning?"
+        },
+        "novice": {
+          "criteria": [
+            "Never recognized shock",
+            "Misdiagnosed as other condition",
+            "Didn't identify need for hemorrhage control"
+          ],
+          "outcome_description": "Failed to recognize life-threatening hemorrhagic shock",
+          "feedback_template": "Hemorrhagic shock was not recognized. This patient had the classic presentation: traumatic mechanism, tachycardia (118), hypotension (88/60), altered mental status, pale and diaphoretic. This is decompensated hemorrhagic shock - actively dying from blood loss. Without recognition, appropriate hemorrhage control cannot be initiated."
+        }
       }
     },
     {
       "id": "CA3",
       "action": "Identify pelvic injury",
       "category": "assessment",
-      "time_target_minutes": 3,
-      "points": 10,
       "importance": "critical",
       "criteria": "ONE gentle pelvic assessment, identifies instability",
       "matching": {
         "keywords": ["pelvis", "pelvic"],
         "synonyms": ["hip", "iliac", "unstable pelvis", "crepitus"],
         "exclusion_keywords": []
+      },
+      "competence_assessment": {
+        "method": "outcome_based",
+        "exemplary": {
+          "patient_state_at_action": ["initial"],
+          "patient_state_after": ["initial"],
+          "outcome_description": "Pelvic instability identified with single, gentle assessment",
+          "feedback_template": "Excellent technique - you performed ONE gentle pelvic assessment and immediately identified the instability. You correctly understood that repeated examinations would disrupt clots and worsen bleeding. This is optimal trauma assessment - one check, then immediate binder application."
+        },
+        "competent": {
+          "patient_state_at_action": ["initial", "early_deteriorating"],
+          "patient_state_after": ["initial", "early_deteriorating"],
+          "outcome_description": "Pelvic instability identified appropriately",
+          "feedback_template": "Good pelvic assessment. You identified the instability and avoided repeated examinations."
+        },
+        "developing": {
+          "patient_state_at_action": ["any"],
+          "patient_state_after": ["any"],
+          "outcome_description": "Multiple pelvic examinations performed (iatrogenic harm)",
+          "feedback_template": "The pelvis was examined multiple times. Each examination disrupts fragile clot formation and increases bleeding. This is iatrogenic harm - you're making the injury worse by repeatedly 'springing' the pelvis. Assess stability ONCE, then apply binder and NEVER examine again."
+        },
+        "novice": {
+          "criteria": [
+            "Pelvis never assessed",
+            "Instability not recognized despite assessment",
+            "More than 2 examinations performed"
+          ],
+          "outcome_description": "Critical injury missed or worsened by repeated examination",
+          "feedback_template": "Pelvic assessment was inadequate or harmful. With hemorrhagic shock and trauma mechanism, pelvic fracture must be immediately considered. Assess ONCE to identify instability, then stop examining."
+        }
       }
     },
     {
       "id": "CA4",
       "action": "Apply pelvic binder",
       "category": "treatment",
-      "time_target_minutes": 5,
-      "points": 30,
       "importance": "critical",
       "criteria": "Applied at level of greater trochanters",
+      "dosing": {
+        "device": "pelvic_binder",
+        "location": "greater_trochanters",
+        "technique": "secure_closure"
+      },
       "matching": {
         "keywords": ["pelvic binder", "binder"],
         "synonyms": ["sheet wrap", "pelvic wrap", "sam sling", "stabilize pelvis"],
         "tool_mappings": ["apply_pelvic_binder"],
         "exclusion_keywords": ["don't", "should i"]
-      }
+      },
+      "competence_assessment": {
+        "method": "outcome_based",
+        "exemplary": {
+          "patient_state_at_action": ["initial"],
+          "patient_state_after": ["improving", "stable"],
+          "outcome_description": "Pelvic binder applied immediately, hemorrhage controlled, shock reversed",
+          "feedback_template": "Excellent hemorrhage control - pelvic binder applied immediately after identifying instability. You prevented exsanguination by mechanically reducing pelvic volume and allowing venous tamponade. The patient's blood pressure stabilized, mental status improved, and bleeding slowed. This is life-saving intervention performed at optimal timing. You correctly positioned it at the greater trochanters for maximum mechanical advantage."
+        },
+        "competent": {
+          "patient_state_at_action": ["initial", "early_deteriorating"],
+          "patient_state_after": ["improving", "stable"],
+          "outcome_description": "Binder applied before critical decompensation, patient stabilized",
+          "feedback_template": "Effective hemorrhage control with pelvic binder. Patient stabilized with mechanical reduction of pelvic volume. Some deterioration occurred but you intervened before irreversible shock."
+        },
+        "developing": {
+          "patient_state_at_action": ["deteriorating", "critical"],
+          "patient_state_after": ["improving", "stable"],
+          "outcome_description": "Binder application delayed, patient reached critical shock before control",
+          "feedback_template": "Pelvic binder was delayed until patient reached {patient_state_at_action} state with severe decompensation. During that time, uncontrolled pelvic bleeding continued - the pelvis can hold 4+ liters of blood without mechanical control. While treatment eventually worked, the delay allowed preventable hemorrhage and near-exsanguination. In unstable pelvic fractures, the binder is as urgent as a tourniquet on a spurting extremity wound. What delayed this critical intervention?"
+        },
+        "novice": {
+          "criteria": [
+            "Binder never applied",
+            "Applied incorrectly (wrong location)",
+            "Patient exsanguinated without hemorrhage control"
+          ],
+          "outcome_description": "Critical hemorrhage control omitted - patient died or nearly died",
+          "feedback_template": "This is addressed as a Safety Gate issue - pelvic binder is THE life-saving intervention for unstable pelvic fractures. Without it, this patient bleeds to death from uncontrolled venous hemorrhage."
+        }
+      },
+      "assessment_data_required": [
+        "action_timestamp",
+        "patient_state_at_action",
+        "patient_state_after_action",
+        "technique_correctness",
+        "placement_location"
+      ]
     },
     {
       "id": "CA5",
       "action": "Establish IV access",
       "category": "treatment",
-      "time_target_minutes": 7,
-      "points": 5,
       "importance": "important",
       "criteria": "Large bore IV, ideally two lines, but NOT delaying transport",
       "matching": {
@@ -396,8 +608,6 @@
       "id": "CA6",
       "action": "Judicious fluid resuscitation",
       "category": "treatment",
-      "time_target_minutes": 10,
-      "points": 5,
       "importance": "important",
       "criteria": "250ml boluses targeting SBP 80-90 (permissive hypotension)",
       "matching": {
@@ -410,8 +620,6 @@
       "id": "CA7",
       "action": "Prevent hypothermia",
       "category": "treatment",
-      "time_target_minutes": 8,
-      "points": 5,
       "importance": "important",
       "criteria": "Cover patient, warm fluids if available",
       "matching": {
@@ -424,8 +632,6 @@
       "id": "CA8",
       "action": "Rapid transport decision",
       "category": "disposition",
-      "time_target_minutes": 5,
-      "points": 10,
       "importance": "critical",
       "criteria": "Load and go mentality - trauma center with blood products",
       "matching": {

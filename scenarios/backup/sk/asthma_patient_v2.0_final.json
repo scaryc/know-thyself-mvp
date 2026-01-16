@@ -1,0 +1,1269 @@
+{
+  "scenario_id": "ASTMA_MVP_001",
+  "metadata": {
+    "title": "Závažná exacerbácia astmy",
+    "version": "2.0_Final_SK",
+    "difficulty": "stredná",
+    "estimated_duration_minutes": 15,
+    "scenario_type": "interná_respiračná",
+    "learning_objectives": [
+      "Rozpoznať život ohrozujúcu astmu",
+      "Systematické ABCDE vyšetrenie",
+      "Správne podať bronchodilatanciá",
+      "Rozpoznať zhoršenie stavu",
+      "Preukázať klinické uvažovanie pod tlakom"
+    ],
+    "changelog": {
+      "v2.0_final": "Pridaný kognitívny tréning druhej úrovne (výzvy, kritické rozhodovacie body). Rozšírený zoznam liekov na 30+. Upravené časovanie progresie bez liečby na 3/5/10 min. Odstránené indikátory zložitosti pre MVP."
+    }
+  },
+
+  "dispatch_info": {
+    "call_type": "Ťažkosti s dýchaním",
+    "age": "28",
+    "sex": "Žena",
+    "location": "Bytový dom, 3. poschodie",
+    "caller": "Spolubývajúca",
+    "time_of_call": "14:32",
+    "additional_info": "Pacientka má poslednú hodinu vážne problémy s dýchaním. Spolubývajúca hlási, že sa jej stav zhoršuje, je veľmi dýchavičná, ledva hovorí. Pacientka má v anamnéze astmu. Spolubývajúca uvádza, že je bledá a spotená, opakovane používa inhalátor, ale nepomáha to."
+  },
+
+  "scene_description": {
+    "location": "Obývačka v malom byte",
+    "safety": "Scéna bezpečná, žiadne nebezpečenstvo",
+    "access": "3. poschodie, schody",
+    "bystanders": "Prítomná spolubývajúca, úzkostlivá, ale spolupracujúca"
+  },
+
+  "patient_profile": {
+    "name": "Sára",
+    "age": 28,
+    "weight_kg": 65,
+    "personality": "Úzkostlivá, spolupracujúca, keď je schopná hovoriť"
+  },
+
+  "initial_vitals": {
+    "HR": 128,
+    "RR": 32,
+    "SpO2": 88,
+    "BP_systolic": 138,
+    "BP_diastolic": 86,
+    "temperature": 37.1,
+    "GCS": 14
+  },
+
+  "state_descriptions": {
+    "initial": {
+      "student_sees": "Prichádzate k mladej žene, ktorá sedí predklonená s rukami na kolenách, v zjavnej ťažkej dychovej tiesni. Z druhého konca miestnosti počujete hlasný piskot. Je bledá a silno sa potí. Jej dýchanie je rýchle a namáhavé - pri každom nádychu používa krčné a ramenné svaly. Keď sa pokúsi prehovoriť, zvládne len jedno alebo dve slová, kým sa lapavo nadýchne.",
+      "appearance": "Pacientka v tripodovej polohe, ťažká dychová tieseň, hovorí len v slovách, používa pomocné dýchacie svaly, bledá a spotená",
+      "clinical_note": "Ťažká dychová tieseň s kritickou hypoxiou (SpO2 88%). Vyžaduje okamžité podanie kyslíka a systematické ABCDE vyšetrenie na zistenie príčiny. Zvážte bronchodilatanciá, ak vyšetrenie naznačuje bronchospazmus.",
+      "urgency_level": "vysoká"
+    },
+    "improving": {
+      "student_sees": "Pacientka vyzerá teraz viditeľne pohodlnejšie. Stále sedí, ale už nie v strnulej tripodovej polohe. Jej dýchanie, hoci stále rýchlejšie ako normálne, je menej namáhavé. Teraz dokáže hovoriť v krátkych frázach namiesto jednotlivých slov. Jej farba je lepšia - menej bledá a už sa tak nepotí. Dáva vám malé prikývnutie a podarí sa jej povedať 'cítim sa... trochu lepšie...'",
+      "appearance": "Pacientka uvoľnenejšia, dýcha ľahšie, dokáže hovoriť vo frázach, menšie použitie pomocných svalov, lepšia farba",
+      "clinical_note": "Pozitívna odpoveď na zásahy. Respiračný stav sa zlepšuje - pokračujte v monitorovaní a liečbe. Pacientka sa stabilizuje, ale stále vyžaduje dôkladné pozorovanie.",
+      "urgency_level": "stredná"
+    },
+    "deteriorating": {
+      "student_sees": "Stav pacientky sa výrazne zhoršil. Vyzerá vyčerpane a ledva dokáže udržať otvorené oči. Jej pery a nechty majú modrastý nádych. Keď počúvate jej hrudník, je desivo tichý - ledva počujete akýkoľvek pohyb vzduchu, čo je znepokojujúce vzhľadom na to, ako ťažko sa snaží dýchať. Už nereaguje jasne na vaše otázky, len slabo prikyvuje alebo krúti hlavou.",
+      "appearance": "Pacientka vyčerpaná, takmer nehovorí, zmenený stav vedomia, cyanotická, rozvíja sa tichý hrudník",
+      "clinical_note": "Kritické zhoršenie - zhoršujúce sa respiračné zlyhanie napriek zásahom alebo kvôli nedostatku liečby. Pripravte sa na pokročilé zaistenie dýchacích ciest (BVM, možná intubácia). Toto je predzástavový stav.",
+      "urgency_level": "kritická"
+    },
+    "critical": {
+      "student_sees": "KRITICKÉ: Pacientka je teraz nereagujúca alebo len minimálne reaguje. Jej dýchanie sa stalo veľmi pomalým a nepravidelným, alebo mohla úplne prestať dýchať. Jej koža má tmavomodro-sivú farbu. Nereaguje na váš hlas ani dotyk. Toto je život ohrozujúca núdzová situácia vyžadujúca okamžitý zásah.",
+      "appearance": "Pacientka nereagujúca alebo minimálne reagujúca, agonálne dýchanie alebo apnoická, hlboká cyanóza",
+      "clinical_note": "Hroziaca alebo prebiehajúca zástava dýchania. Vyžaduje okamžitú ventilačnú podporu (minimálne BVM). Pripravte sa na plnú resuscitáciu, ak prejde do zástavy srdca.",
+      "urgency_level": "život ohrozujúca"
+    }
+  },
+
+  "assessment_findings": {
+    "airway": "Priechodné, bez obštrukcie, počuteľný piskot",
+    "breathing": "DF 32, plytké, namáhavé, bilaterálne oslabené dýchanie s piskotmi, tichý hrudník na bázach (zlovestné znamenie), medzirebrové vťahovanie, použitie pomocných dýchacích svalov",
+    "circulation": "SF 128 pravidelná, ale slabý radiálny pulz, TK 138/86, CRT <2s, bledá a spotená",
+    "disability": "GCS 14 (O4 V4 M6), AVPU pri vedomí, ale v tiesni, zrenice izokorické, reagujúce na svetlo",
+    "exposure": "Bez zranení, bez vyrážok, teplota 37.1°C",
+    
+    "sample_history": {
+      "symptoms": "Tlak na hrudníku, piskoty, nemôže dýchať, zhoršuje sa to posledné 2 dni",
+      "allergies": "Peľ, roztoče, dym",
+      "medications": "Salbutamolový inhalátor (prázdny), Flutikazón (došiel pred 3 dňami)",
+      "past_history": "Astma od 8 rokov, hospitalizácia na JIS pred 2 rokmi",
+      "last_intake": "Malé dúšky vody - príliš dýchavičná na jedenie",
+      "events": "Príznaky prechladnutia pred 3 dňami, spolubývajúca fajčila vnútri, došiel jej kontrolný inhalátor"
+    },
+
+    "chest_examination": "Hypersonórny poklop, bilaterálne oslabené dýchanie, exspiračné piskoty po celom hrudníku, tichý hrudník v dolných zónach - znepokojujúce znamenie",
+    
+    "chief_complaint_detail": "Pacientka sa snaží hovoriť: 'Nemôžem... dýchať... horšie...' Spolubývajúca hlási, že stav pacientky sa zhoršuje posledné 2 dni, poslednú hodinu oveľa horšie"
+  },
+
+  "critical_treatments": ["salbutamol", "oxygen"],
+
+  "primary_medications": {
+    "salbutamol": {
+      "generic_name": "Salbutamol (Albuterol)",
+      "brand_names": ["Ventolin"],
+      "class": "Beta-2 agonista, bronchodilatans",
+      "indication": "Akútna astma, bronchospazmus, status asthmaticus, CHOCHP",
+      "mechanism": "Relaxácia hladkého svalstva priedušiek prostredníctvom stimulácie beta-2 receptorov, inhibuje uvoľňovanie histamínu z mastocytov",
+      
+      "dosing": {
+        "adult": "5mg (0.5-1ml Ventolin + 3ml fyziologického roztoku)",
+        "route": "Nebulizácia cez kyslík (10 l/min)",
+        "frequency": "Možno opakovať každých 20 minút alebo kontinuálna nebulizácia",
+        "pediatric": "2.5mg pre deti do 5 rokov"
+      },
+      
+      "pharmacokinetics": {
+        "onset_minutes": 3,
+        "peak_effect_minutes": 5,
+        "duration_hours": "4-6"
+      },
+      
+      "contraindications": {
+        "absolute": [],
+        "relative": ["tachykardia_nad_150", "tyreotoxikóza", "preeklampsia", "eklampsia"]
+      },
+      
+      "side_effects": [
+        "tachykardia a arytmie",
+        "tremor",
+        "palpitácie",
+        "bolesť hlavy",
+        "svalové kŕče",
+        "nauzea"
+      ],
+      
+      "warnings": [
+        "Môže zvýšiť spotrebu kyslíka myokardom u pacientov s ICHS",
+        "Monitorujte srdcovú frekvenciu - očakávajte zvýšenie o 10-15 úderov/min",
+        "Používajte s opatrnosťou pri východiskovej tachykardii"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": true,
+        "time_to_effect_minutes": 3,
+        "vital_changes": {
+          "HR": 115,
+          "RR": 24,
+          "SpO2": 94
+        },
+        "patient_says": "Pomáha to... dýcha sa mi ľahšie...",
+        "clinical_effect": "Bronchodilatácia, zlepšený prietok vzduchu, hlasnejší piskot (dobré znamenie - viac vzduchu sa pohybuje)",
+        "points_if_given": 25,
+        "timing_critical": "Musí sa podať do 5 minút pre plný počet bodov"
+      }
+    },
+
+    "syntophyllin": {
+      "generic_name": "Aminophylline",
+      "brand_names": ["Syntophyllin"],
+      "class": "Metylxantínový bronchodilatátor",
+      "indication": "Závažná astma (druhá línia), CHOCHP, bronchospazmus",
+      "mechanism": "Derivát teofylínu, inhibuje adenozínové receptory, bronchodilatácia, mierny protizápalový účinok, stimuluje dychové centrum",
+      
+      "dosing": {
+        "adult_regular_bronchodilator_use": "3-4 mg/kg IV pomaly",
+        "adult_no_regular_bronchodilator": "6-7 mg/kg IV pomaly",
+        "pediatric": "3-4 mg/kg IV pomaly",
+        "administration": "Pomalé IV podanie, riziko hypotenzie pri príliš rýchlom podaní"
+      },
+      
+      "pharmacokinetics": {
+        "onset_minutes": 5,
+        "duration_hours": "6-8"
+      },
+      
+      "contraindications": {
+        "absolute": ["alergia", "tachyarytmie", "pečeňová insuficiencia", "tyreotoxikóza", "AIM", "epilepsia"],
+        "relative": []
+      },
+      
+      "side_effects": [
+        "tachykardia",
+        "bolesť hlavy",
+        "nauzea a vracanie",
+        "hypotenzia pri rýchlom podaní",
+        "stimulácia CNS (nepokoj, úzkosť, tremor)"
+      ],
+      
+      "warnings": [
+        "Úzke terapeutické okno - riziko toxicity",
+        "Musí sa podávať pomaly, aby sa predišlo kardiovaskulárnemu kolapsu",
+        "Liečba druhej línie - najprv použite salbutamol"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": "druhá_línia",
+        "critical_treatment": false,
+        "importance": "prijateľná_alternatíva",
+        "time_to_effect_minutes": 5,
+        "vital_changes": {
+          "HR": 145,
+          "RR": 26,
+          "SpO2": 92
+        },
+        "patient_says": "Dýchanie sa trochu zlepší, ale cítim tras a nevoľnosť. Srdce mi búši.",
+        "clinical_effect": "Bronchodilatácia dosiahnutá, ale s viacerými vedľajšími účinkami ako salbutamol. Funguje, ale nie je optimálnou prvou voľbou.",
+        "points_if_given_first": -2,
+        "points_if_given_after_salbutamol": 0,
+        "teaching_point": "Aminofylín je účinný, ale je liekom druhej línie. Najprv použite salbutamol - má bezpečnejší profil, rýchlejší nástup účinku a menej vedľajších účinkov. Aminofylín si nechajte pre refraktérne prípady."
+      }
+    },
+
+    "hydrocortizon": {
+      "generic_name": "Hydrocortisone sodium succinate",
+      "brand_names": ["Hydrocortison"],
+      "class": "Glukokortikoid, steroid",
+      "indication": "Závažná astma, anafylaxia, adrenálna kríza, edém mozgu",
+      "mechanism": "Protizápalový, stabilizácia membrán, zlepšuje prekrvenie tkanív v mikrocirkulácii",
+      
+      "dosing": {
+        "adult_asthma": "100-200mg IV",
+        "adult_anaphylaxis": "200-500mg IV",
+        "pediatric": "2-4 mg/kg IV"
+      },
+      
+      "pharmacokinetics": {
+        "onset_minutes": 60,
+        "peak_effect_hours": "4-6",
+        "duration_hours": "12-36"
+      },
+      
+      "contraindications": {
+        "absolute": ["tuberkulóza", "herpes_zoster_ophthalmicus", "akútny glaukóm"],
+        "relative": []
+      },
+      
+      "side_effects": [
+        "Pri dlhodobom používaní: imunosupresia, hyperglykémia",
+        "Akútne podanie je dobre tolerované"
+      ],
+      
+      "warnings": [
+        "Účinok oneskorený o 60+ minút - podajte včas",
+        "Nevyhnutný na prevenciu relapsu o niekoľko hodín neskôr"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": false,
+        "importance": "dôležitý",
+        "time_to_effect_minutes": 60,
+        "vital_changes": {},
+        "patient_says": "Žiadna okamžitá zmena",
+        "clinical_effect": "Znižuje zápal v priebehu hodín - predchádza relapsu o 4-6 hodín neskôr. Nevyhnutný napriek oneskorenému účinku.",
+        "points_if_given": 10,
+        "teaching_point": "Steroidy neúčinkujú okamžite, ale predchádzajú relapsu - podajte ich včas. Myslite na to takto: kyslík a salbutamol riešia TERAZ, steroidy riešia stav o 4 HODINY."
+      }
+    },
+
+    "adrenalin": {
+      "generic_name": "Epinephrine",
+      "brand_names": ["Adrenalin", "Jext"],
+      "class": "Sympatomimetikum (alfa a beta agonista)",
+      "indication": "Anafylaxia, zástava srdca, závažný bronchospazmus (ak nie je dostupný salbutamol), akútna laryngitída",
+      "mechanism": "Stimuluje alfa a beta receptory - zvyšuje krvný tlak, srdcovú frekvenciu, bronchodilatáciu, znižuje edém",
+      
+      "dosing": {
+        "anaphylaxis_adult": "0.3-0.5mg IM (autoinjektor Jext)",
+        "anaphylaxis_pediatric": "0.15mg IM (vek 6-12), 0.01mg/kg IM",
+        "cardiac_arrest_adult": "1mg IV/IO každých 3-5 minút",
+        "bronchospasm": "0.25mg IM sa môže použiť, ak nie je dostupný salbutamol"
+      },
+      
+      "pharmacokinetics": {
+        "onset_im_minutes": "3-5",
+        "onset_iv_minutes": 1,
+        "duration_minutes": "10-20"
+      },
+      
+      "contraindications": {
+        "absolute": [],
+        "relative": ["hypertenzia", "hypertyreóza", "v kontexte vitálnej indikácie"]
+      },
+      
+      "side_effects": [
+        "tachykardia a arytmie",
+        "tremor",
+        "úzkosť a nepokoj",
+        "nauzea",
+        "palpitácie",
+        "hypertenzia"
+      ],
+      
+      "warnings": [
+        "Nie je prvou líniou pre astmu - použite salbutamol",
+        "Rezervujte pre anafylaxiu alebo ak nie je dostupný salbutamol"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": false,
+        "reason": "Nie je prvou líniou pre astmu bez anafylaktickej zložky",
+        "critical_treatment": false,
+        "time_to_effect_minutes": 3,
+        "vital_changes": {
+          "HR": 153,
+          "BP_systolic": 158,
+          "BP_diastolic": 101,
+          "RR": 30,
+          "SpO2": 90
+        },
+        "patient_says": "Srdce mi nepríjemne búši. Dýchanie sa trochu zlepší, ale nie dramaticky.",
+        "clinical_effect": "Určitá beta-2 bronchodilatácia, ale významná kardiovaskulárna stimulácia. Spôsobuje zbytočnú tachykardiu a hypertenziu. Nie je optimálny pre čistú astmu.",
+        "points_deducted": -5,
+        "teaching_point": "Adrenalín je na ANAFYLAXIU (alergická reakcia s kompromitáciou dýchacích ciest/obehového systému). Toto je ASTMA (bronchospazmus bez alergických príznakov). Salbutamol je prvou líniou pre astmu - má selektívnejší beta-2 účinok, menší kardiovaskulárny stres."
+      }
+    },
+
+    "oxygen": {
+      "indication": "Hypoxia (SpO2 < 94%)",
+      "target": "SpO2 94-98%",
+      
+      "delivery_options": {
+        "non_rebreather_mask": "15 l/min pre závažnú hypoxiu (SpO2 <90%)",
+        "nebulizer_driven": "8-10 l/min (dvojaký účel s bronchodilatátorom)",
+        "simple_mask": "6-10 l/min",
+        "nasal_cannula": "1-6 l/min (NEVHODNÉ pre SpO2 88%)"
+      },
+      
+      "pharmacokinetics": {
+        "onset_minutes": 1,
+        "immediate_effect": true
+      },
+      
+      "contraindications": {
+        "absolute": [],
+        "relative": ["CHOCHP_s_retenciou_CO2 (použite kontrolovaný kyslík)"]
+      },
+      
+      "warnings": [
+        "Pri CHOCHP cieľujte na 88-92%, aby sa predišlo retencii CO2",
+        "Pri astme cieľujte na 94-98% - žiadne riziko retencie CO2"
+      ],
+      
+      "scenario_specific_response": {
+        "appropriate_for_case": true,
+        "critical_treatment": true,
+        "time_to_effect_minutes": 1,
+        "vital_changes": {
+          "SpO2": 92
+        },
+        "patient_says": "Pacientka prikývne, vyzerá o niečo menej úzkostlivo",
+        "clinical_effect": "Zlepšená oxygenácia, ale bronchospazmus pretrváva - potrebuje aj bronchodilatátor",
+        "points_if_given": 15,
+        "timing_critical": "Musí sa podať do 2 minút pre plný počet bodov",
+        "teaching_point": "SpO2 88% je kriticky nízke - mozog potrebuje kyslík TERAZ. Okamžite aplikujte vysokoprietokový kyslík, zatiaľ čo pripravujete bronchodilatátor."
+      }
+    }
+  },
+
+  "treatment_responses": {
+    "salbutamol": {
+      "time_to_effect_minutes": 3,
+      "vital_changes": {
+        "HR": 115,
+        "RR": 24,
+        "SpO2": 94
+      },
+      "patient_says": "Pomáha to... dýcha sa mi ľahšie...",
+      "clinical_effect": "Bronchodilatácia, zlepšený prietok vzduchu, hlasnejší piskot"
+    },
+    "oxygen": {
+      "time_to_effect_minutes": 1,
+      "vital_changes": {
+        "SpO2": 92
+      },
+      "patient_says": "Pacientka prikývne, vyzerá o niečo menej úzkostlivo",
+      "clinical_effect": "Zlepšená oxygenácia, ale bronchospazmus pretrváva"
+    },
+    "syntophyllin": {
+      "time_to_effect_minutes": 5,
+      "vital_changes": {
+        "HR": 145,
+        "RR": 26,
+        "SpO2": 92
+      },
+      "patient_says": "Dýchanie sa zlepší, ale objaví sa tras a nevoľnosť",
+      "clinical_effect": "Bronchodilatácia s viacerými vedľajšími účinkami ako salbutamol"
+    },
+    "hydrocortisone": {
+      "time_to_effect_minutes": 60,
+      "vital_changes": {},
+      "patient_says": "Žiadna okamžitá zmena",
+      "clinical_effect": "Znižuje zápal v priebehu hodín - predchádza relapsu"
+    },
+    "adrenalin": {
+      "time_to_effect_minutes": 3,
+      "vital_changes": {
+        "HR": 153,
+        "BP_systolic": 158,
+        "SpO2": 90
+      },
+      "patient_says": "Srdce búši, mierne zlepšenie dýchania",
+      "clinical_effect": "Určitá bronchodilatácia, ale významná kardiovaskulárna stimulácia"
+    }
+  },
+
+  "no_treatment_progression": {
+    "3min": {
+      "vitals": {
+        "HR": 135,
+        "RR": 35,
+        "SpO2": 84,
+        "GCS": 14
+      },
+      "description": "Stav pacientky sa zhoršuje, je viac vyčerpaná, zvýšená tieseň"
+    },
+    "5min": {
+      "vitals": {
+        "HR": 142,
+        "RR": 38,
+        "SpO2": 81,
+        "GCS": 13
+      },
+      "description": "Závažné vyčerpanie, začínajúca zmätenosť, neschopnosť hovoriť"
+    },
+    "10min": {
+      "vitals": {
+        "HR": 55,
+        "RR": 6,
+        "SpO2": 70,
+        "GCS": 8
+      },
+      "description": "Respiračné zlyhanie - bradypnoe z vyčerpania, vyžaduje BVM"
+    }
+  },
+
+  "secondary_medications_by_impact": {
+    
+    "critical_harm": [
+      {
+        "name": "apaurin",
+        "generic_name": "Diazepam",
+        "class": "Benzodiazepín",
+        "primary_indication": "Kŕče, úzkosť, status epilepticus",
+        "why_dangerous": "Útlm dýchania u pacienta s respiračným zlyhaním",
+        "if_given": {
+          "vital_changes": {
+            "SpO2": 73,
+            "RR": 22,
+            "GCS": 11,
+            "note": "DF znížená, ale plytké, neefektívne dýchanie"
+          },
+          "patient_response": "KRITICKÉ: Do 2 minút sa dýchanie pacientky dramaticky zhorší. Stáva sa ospalou, jej hladina kyslíka klesá na 73%. Ledva reaguje. Benzodiazepín potlačil jej už zlyhávajúce dychové centrum.",
+          "clinical_note": "Benzodiazepín spôsobuje útlm dýchania pri respiračnom zlyhaní. Toto je nebezpečná medikačná chyba, ktorá môže spôsobiť zástavu dýchania.",
+          "points": -25,
+          "state_change": "kritický",
+          "aar_flag": "kritická_medikačná_chyba"
+        },
+        "teaching_point": "Nikdy nepodávajte lieky tlmiace dýchanie (benzodiazepíny, opioidy) pacientom v respiračnom zlyhaní. Apaurin potláča dychové centrum, keď pacient zúfalo potrebuje dýchať."
+      },
+      {
+        "name": "tramal",
+        "generic_name": "Tramadol",
+        "class": "Opioidný analgetikum",
+        "primary_indication": "Stredne silná až silná bolesť",
+        "why_dangerous": "Opioidný útlm dýchania pri respiračnom zlyhaní",
+        "if_given": {
+          "vital_changes": {
+            "SpO2": 76,
+            "RR": 24,
+            "GCS": 12
+          },
+          "patient_response": "Dýchanie pacientky sa nebezpečne spomaľuje, stáva sa ospalou. Saturácia kyslíkom ďalej klesá. Toto zhoršuje jej respiračné zlyhanie.",
+          "clinical_note": "Opioid spôsobuje útlm dýchania. Pacientka potrebuje VIAC dychového úsilia, nie menej.",
+          "points": -25,
+          "state_change": "zhoršujúci sa",
+          "aar_flag": "kritická_medikačná_chyba"
+        },
+        "teaching_point": "Opioidy tlmia dychové centrum. Nikdy ich nepodávajte pacientom s dychovou tiesňou - spôsobíte im zástavu dýchania."
+      },
+      {
+        "name": "novalgin",
+        "generic_name": "Metamizole",
+        "class": "Analgetikum, antipyretikum",
+        "primary_indication": "Bolesť, horúčka",
+        "why_dangerous": "Riziko anafylaxie, zhoršuje dychovú tieseň",
+        "if_given": {
+          "vital_changes": {
+            "BP_systolic": 100,
+            "HR": 145,
+            "note": "Riziko anafylaktickej reakcie"
+          },
+          "patient_response": "Žiadne zlepšenie dýchania. Riziko alergickej reakcie u už kompromitovanej pacientky.",
+          "clinical_note": "Nie je indikovaný a nesie so sebou riziko. Metamizol môže spôsobiť anafylaxiu.",
+          "points": -15,
+          "aar_flag": "nebezpečná_voľba_lieku"
+        },
+        "teaching_point": "Pacientka potrebuje bronchodilatanciá, nie analgetiká. Metamizol nesie riziko anafylaxie - nebezpečné pri dychovej tiesni."
+      }
+    ],
+
+    "worsens": [
+      {
+        "name": "furosemid",
+        "generic_name": "Furosemide",
+        "class": "Kľučkové diuretikum",
+        "primary_indication": "Pľúcny edém, zlyhanie srdca",
+        "why_wrong": "Zlá patológia - toto je astma (bronchospazmus), nie pľúcny edém (tekutina)",
+        "if_given": {
+          "vital_changes": {
+            "BP_systolic": 128,
+            "BP_diastolic": 78
+          },
+          "patient_response": "Dýchanie pacientky sa nezlepšuje. Cíti sa nepohodlnejšie. Žiadny prínos z diuretika.",
+          "clinical_note": "Furosemid lieči preťaženie tekutinami, nie bronchospazmus. Naznačuje diagnostickú neistotu medzi astmou a pľúcnym edémom.",
+          "points": -10,
+          "aar_flag": "diagnostická_nejasnosť"
+        },
+        "teaching_point": "ASTMA = bronchospazmus (zúžené dýchacie cesty, piskoty). PĽÚCNY EDÉM = tekutina v pľúcach (vrapky, ružový spútum). Iná patológia, iná liečba. Táto pacientka má piskoty, nie vrapky - je to astma."
+      },
+      {
+        "name": "tensiomin",
+        "generic_name": "Metoprolol",
+        "class": "Betablokátor",
+        "primary_indication": "Hypertenzia, tachykardia, AKS",
+        "why_wrong": "Betablokátory spôsobujú bronchospazmus - kontraindikované pri astme",
+        "if_given": {
+          "vital_changes": {
+            "HR": 98,
+            "RR": 36,
+            "SpO2": 84,
+            "note": "Zhoršujúci sa bronchospazmus"
+          },
+          "patient_response": "NEBEZPEČENSTVO: Dýchanie pacientky sa zhoršuje. Betablokátor blokuje bronchodilatáciu, ktorú zúfalo potrebuje. Jej dýchacie cesty sa ďalej zužujú.",
+          "clinical_note": "Betablokátory sú kontraindikované pri astme - blokujú beta-2 receptory potrebné na bronchodilatáciu.",
+          "points": -20,
+          "state_change": "zhoršujúci sa",
+          "aar_flag": "kontraindikovaný_liek"
+        },
+        "teaching_point": "Betablokátory sú KONTRAINDIKOVANÉ pri astme. Blokujú tie isté receptory, ktoré aktivuje salbutamol. Spôsobíte bronchospazmus. Nikdy nepodávajte betablokátory astmatikom."
+      }
+    ],
+
+    "neutral": [
+      {
+        "name": "glucose",
+        "generic_name": "Glucose 40%",
+        "primary_indication": "Hypoglykémia",
+        "why_unnecessary": "Pacientka nie je hypoglykemická - glykémia je v norme",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Pacientka vyzerá zmätene, prečo jej dávate cukor, keď nemôže dýchať. Jej dychová tieseň pokračuje bez zmeny.",
+          "clinical_note": "Glukóza nepomáha pri astme. Stráca čas a ukazuje nedostatok zameraného klinického uvažovania.",
+          "points": -3,
+          "aar_flag": "zbytočný_zásah"
+        },
+        "teaching_point": "Skontrolujte glykémiu pri podozrení na hypoglykémiu (zmenený stav vedomia, potenie, slabosť). Táto pacientka má respiračný problém, nie metabolický. Zamerajte sa na primárny problém."
+      },
+      {
+        "name": "carbosorb",
+        "generic_name": "Activated charcoal",
+        "primary_indication": "Orálna otrava, predávkovanie liekmi",
+        "why_unnecessary": "Nie je indikované pri astme",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadny účinok na dýchanie. Pacientka to aj tak nemôže prehltnúť - je príliš dýchavičná.",
+          "clinical_note": "Aktívne uhlie je na požitie toxínov, nie na respiračné núdzové stavy.",
+          "points": -3,
+          "aar_flag": "irelevantný_zásah"
+        },
+        "teaching_point": "Aktívne uhlie viaže toxíny v tráviacom trakte. Používa sa pri predávkovaní a otravách. Toto je astma, nie požitie toxínu."
+      },
+      {
+        "name": "paracetamol",
+        "generic_name": "Paracetamol (Acetaminophen)",
+        "primary_indication": "Bolesť, horúčka",
+        "why_unnecessary": "Pacientka nemá horúčku, bolesť nie je problém",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadny účinok na ťažkosti s dýchaním.",
+          "points": -3,
+          "aar_flag": "zbytočný_zásah"
+        },
+        "teaching_point": "Problémom pacientky je bronchospazmus, nie bolesť alebo horúčka. Sústreďte sa na núdzový stav dýchacích ciest."
+      },
+      {
+        "name": "analgin",
+        "generic_name": "Metamizole (Analgin)",
+        "primary_indication": "Bolesť, horúčka",
+        "why_unnecessary": "Nie je indikované pri dychovej tiesni",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadne zlepšenie dýchania.",
+          "points": -3,
+          "aar_flag": "zbytočný_zásah"
+        },
+        "teaching_point": "Zamerajte sa na respiračnú núdzu, nie na manažment bolesti."
+      },
+      {
+        "name": "degan",
+        "generic_name": "Metoclopramide",
+        "primary_indication": "Nauzea, vracanie",
+        "why_unnecessary": "Pacientka nemá nevoľnosť",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadny účinok na dýchanie.",
+          "points": -2,
+          "aar_flag": "zbytočný_zásah"
+        },
+        "teaching_point": "Antiemetikum je na nevoľnosť. Pacientka potrebuje bronchodilatátor, nie antiemetikum."
+      },
+      {
+        "name": "torecan",
+        "generic_name": "Thiethylperazine",
+        "primary_indication": "Nauzea, vracanie",
+        "why_unnecessary": "Nie je indikované",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadny účinok.",
+          "points": -2,
+          "aar_flag": "zbytočný_zásah"
+        },
+        "teaching_point": "Ďalšie antiemetikum. Nie je relevantné pre astmu."
+      },
+      {
+        "name": "dithiaden",
+        "generic_name": "Promethazine",
+        "primary_indication": "Alergia, sedácia",
+        "why_unnecessary": "Antihistaminikum nie je primárnou liečbou astmy",
+        "if_given": {
+          "vital_changes": {
+            "note": "Mierna sedácia"
+          },
+          "patient_response": "Minimálny účinok na dýchanie. Pacientka sa stáva mierne ospalou.",
+          "points": -2,
+          "aar_flag": "suboptimálna_voľba"
+        },
+        "teaching_point": "Antihistaminiká sú na alergické reakcie. Astma potrebuje bronchodilatanciá, nie antihistaminiká."
+      },
+      {
+        "name": "nospa",
+        "generic_name": "Drotaverine",
+        "primary_indication": "Spazmus hladkého svalstva (GI, GU)",
+        "why_unnecessary": "Neúčinné pri bronchospazme",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadny účinok na dychovú tieseň.",
+          "points": -3,
+          "aar_flag": "zlý_spazmolytikum"
+        },
+        "teaching_point": "NoSpa je na spazmy GI/GU. Na bronchospazmus použite salbutamol."
+      },
+      {
+        "name": "nitromin",
+        "generic_name": "Nitroglycerin",
+        "primary_indication": "Angina, akútny koronárny syndróm",
+        "why_unnecessary": "Pacientka má astmu, nie kardiálnu bolesť na hrudníku",
+        "if_given": {
+          "vital_changes": {
+            "BP_systolic": 118,
+            "HR": 135
+          },
+          "patient_response": "Krvný tlak mierne klesne, objaví sa bolesť hlavy. Žiadne zlepšenie dýchania.",
+          "points": -5,
+          "aar_flag": "zlá_diagnóza"
+        },
+        "teaching_point": "Nitroglycerín je na kardiálnu bolesť na hrudníku. Toto je dychová tieseň z astmy, nie AKS."
+      },
+      {
+        "name": "anopyrin",
+        "generic_name": "Aspirin",
+        "primary_indication": "AKS, cievna mozgová príhoda, bolesť",
+        "why_unnecessary": "Nie je indikovaný pri astme",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadny účinok na dýchanie.",
+          "points": -2,
+          "aar_flag": "irelevantný_zásah"
+        },
+        "teaching_point": "Aspirín je na AKS alebo cievnu mozgovú príhodu. Toto je astma."
+      },
+      {
+        "name": "trombex",
+        "generic_name": "Clopidogrel",
+        "primary_indication": "AKS, prevencia cievnej mozgovej príhody",
+        "why_unnecessary": "Antitrombotikum nie je indikované",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadny účinok.",
+          "points": -2,
+          "aar_flag": "irelevantný_zásah"
+        },
+        "teaching_point": "Antitrombotikum je na kardiovaskulárne ochorenia. Nie je relevantné pre astmu."
+      },
+      {
+        "name": "efient",
+        "generic_name": "Prasugrel",
+        "primary_indication": "AKS, po PCI",
+        "why_unnecessary": "Nie je indikované",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadny účinok.",
+          "points": -2,
+          "aar_flag": "irelevantný_zásah"
+        },
+        "teaching_point": "Antitrombotikum pre AKS. Tu nie je relevantné."
+      },
+      {
+        "name": "brilique",
+        "generic_name": "Ticagrelor",
+        "primary_indication": "AKS",
+        "why_unnecessary": "Nie je indikované",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadny účinok.",
+          "points": -2,
+          "aar_flag": "irelevantný_zásah"
+        },
+        "teaching_point": "Ďalšie antitrombotikum. Zamerajte sa na respiračnú núdzu."
+      },
+      {
+        "name": "heparin",
+        "generic_name": "Heparin",
+        "primary_indication": "AKS, PE, DVT",
+        "why_unnecessary": "Antikoagulans nie je indikovaný",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadny účinok na dýchanie.",
+          "points": -3,
+          "aar_flag": "irelevantný_zásah"
+        },
+        "teaching_point": "Heparín je na trombotické príhody. Toto je astma, nie PE alebo AKS."
+      },
+      {
+        "name": "clexane",
+        "generic_name": "Enoxaparin",
+        "primary_indication": "AKS, DVT, PE",
+        "why_unnecessary": "Nie je indikované",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadny účinok.",
+          "points": -3,
+          "aar_flag": "irelevantný_zásah"
+        },
+        "teaching_point": "Nízkomolekulárny heparín. Nie je relevantný pre astmu."
+      },
+      {
+        "name": "naloxone",
+        "generic_name": "Naloxone",
+        "primary_indication": "Predávkovanie opioidmi",
+        "why_unnecessary": "Pacientka neužíva opioidy",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadny účinok - pacientka nie je intoxikovaná opioidmi.",
+          "points": -2,
+          "aar_flag": "zlé_antidotum"
+        },
+        "teaching_point": "Naloxón zvráti účinok opioidov. Pacientka má astmu, nie predávkovanie opioidmi."
+      },
+      {
+        "name": "flumazenil",
+        "generic_name": "Flumazenil",
+        "primary_indication": "Predávkovanie benzodiazepínmi",
+        "why_unnecessary": "Pacientka neužíva benzodiazepíny",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadny účinok - pacientka nie je intoxikovaná benzodiazepínmi.",
+          "points": -2,
+          "aar_flag": "zlé_antidotum"
+        },
+        "teaching_point": "Flumazenil zvráti účinok benzodiazepínov. Tu nie je relevantný."
+      },
+      {
+        "name": "atropin",
+        "generic_name": "Atropine",
+        "primary_indication": "Bradykardia, otrava organofosfátmi",
+        "why_unnecessary": "Pacientka je tachykardická, nie bradykardická",
+        "if_given": {
+          "vital_changes": {
+            "HR": 158
+          },
+          "patient_response": "Srdcová frekvencia sa ďalej zvyšuje na 158 - zhoršuje tachykardiu. Žiadne zlepšenie dýchania.",
+          "points": -5,
+          "aar_flag": "nevhodné_pre_tachykardiu"
+        },
+        "teaching_point": "Atropín je na bradykardiu. Pacientka je už tachykardická (SF 128) - atropín to zhorší."
+      },
+      {
+        "name": "cordarone",
+        "generic_name": "Amiodarone",
+        "primary_indication": "Komorové arytmie, AF",
+        "why_unnecessary": "Pacientka má sínusovú tachykardiu, nie arytmiu",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Žiadny účinok na dýchanie. Pacientka nemá arytmiu.",
+          "points": -3,
+          "aar_flag": "zlá_indikácia"
+        },
+        "teaching_point": "Amiodaron je na arytmie. Pacientka má sínusovú tachykardiu (primeraná odpoveď na hypoxiu), nie arytmiu."
+      },
+      {
+        "name": "rectodelt",
+        "generic_name": "Prednisone suppository",
+        "primary_indication": "Zápalové stavy",
+        "why_unnecessary": "Perorálne/IV steroidy sú vhodnejšie pre akútnu astmu",
+        "if_given": {
+          "vital_changes": {},
+          "patient_response": "Pacientka je príliš v tiesni na spoluprácu pri rektálnom podaní. IV hydrokortizón by bol lepší.",
+          "points": -2,
+          "aar_flag": "suboptimálna_cesta_podania"
+        },
+        "teaching_point": "Steroidy sú správny nápad, ale IV hydrokortizón je preferovaná cesta podania pri akútnej závažnej astme."
+      }
+    ],
+
+    "appropriate_advanced": [
+      {
+        "name": "magnesium",
+        "generic_name": "Magnesium sulfate",
+        "primary_indication": "Závažná refraktérna astma, eklampsia, torsades de pointes",
+        "why_good": "Založené na dôkazoch pre závažnú astmu nereagujúcu na bronchodilatanciá",
+        "requires": "Zavedený IV prístup, 1.2-2g IV infúzia počas 20 minút",
+        "if_given": {
+          "vital_changes": {
+            "RR": 20,
+            "SpO2": 97,
+            "note": "Ďalšie zlepšenie po 20-minútovej infúzii"
+          },
+          "patient_response": "Po 20 minútach infúzie magnézia pacientka vykazuje ďalšie zlepšenie dýchania. Dychová frekvencia ďalej klesá, saturácia kyslíkom je vynikajúca.",
+          "clinical_note": "Magnézium je založené na dôkazoch pre závažnú astmu. Ukazuje pokročilé znalosti. Malo by sa podať PO salbutamole, nie namiesto neho.",
+          "points_if_given_after_salbutamol": 5,
+          "points_if_given_before_salbutamol": -5,
+          "aar_flag": "pokročilá_voľba_liečby"
+        },
+        "teaching_point": "Vynikajúce zváženie magnézia pre závažnú astmu. Dôkazy ukazujú prínos v refraktérnych prípadoch. Kľúčové princípy: (1) Podajte PO liečbe prvej línie (kyslík, salbutamol, steroidy), (2) Vyžaduje IV prístup a 20-minútovú infúziu, (3) Ukazuje pokročilé klinické znalosti."
+      }
+    ]
+  },
+
+  "challenge_points": {
+    "available_challenges": [
+      {
+        "id": "CP1",
+        "name": "salbutamol_before_assessment",
+        "priority": "vysoká",
+        "trigger": {
+          "type": "treatment_mentioned",
+          "keywords": ["salbutamol", "ventolin", "bronchodilatátor", "nebulizátor"],
+          "condition": "študent nezaznamenal DF, SpO2, schopnosť hovoriť vo svojom vyšetrení"
+        },
+        "skip_if": {
+          "already_assessed_severity": true,
+          "already_challenged_assessment": true
+        },
+        "challenge_text": "Počkajte - predtým, ako podáte bronchodilatanciá, prejdite so mnou vaše hodnotenie závažnosti. Aké špecifické klinické ukazovatele používate na usmernenie vášho rozhodnutia práve teraz?",
+        "teaching_goal": "Systematické hodnotenie závažnosti pred liečbou usmerňuje primeranú intenzitu zásahu. Aj v naliehavých situáciách rýchle 30-sekundové hodnotenie predchádza automatickým chybám.",
+        "acceptable_responses": [
+          "Študent spomenie dychovú frekvenciu >30",
+          "Študent spomenie SpO2 <92%",
+          "Študent spomenie neschopnosť hovoriť vo vetách (hovorí len v slovách)",
+          "Študent spomenie použitie pomocných dýchacích svalov",
+          "Študent spomenie tichý hrudník alebo výrazne oslabené dýchanie",
+          "Študent preukáže systematický prístup ABCDE"
+        ],
+        "resolution": {
+          "if_good_reasoning": "Vynikajúce - systematicky hodnotíte závažnosť pred konaním. Tento klinický úsudok usmerňuje vaše liečebné rozhodnutia a pomáha vám prispôsobiť intenzitu zásahu potrebám pacienta. Pokračujme s vaším liečebným plánom.",
+          "if_protocol_only": "Počujem, že viete, že protokol hovorí podať bronchodilatanciá pri astme. Ale prejdite so mnou PREČO - čo konkrétne v prezentácii TEJTO pacientky vám hovorí, že potrebuje bronchodilatanciá HNEĎ TERAZ oproti čakaniu na ďalšie vyšetrenie?",
+          "if_struggling": "Zamyslite sa nad ukazovateľmi závažnosti: Ako rýchlo dýcha? Aká je jej hladina kyslíka? Dokáže hovoriť v celých vetách, frázach alebo len v slovách? Používa krčné a ramenné svaly? Tieto pozorovania usmerňujú, ako agresívni musíme byť s liečbou."
+        },
+        "estimated_duration_seconds": 45,
+        "cognitive_goal": "Zabrániť automatickej reakcii podľa protokolu bez klinického uvažovania. Vybudovať zvyk vysvetľovať rozhodnutia."
+      },
+      {
+        "id": "CP2",
+        "name": "vague_oxygen_order",
+        "priority": "stredná",
+        "trigger": {
+          "type": "vague_treatment_order",
+          "keywords": ["dať kyslík", "aplikovať kyslík", "začať kyslík", "kyslík"],
+          "condition": "študent nešpecifikoval podávacie zariadenie alebo prietok"
+        },
+        "skip_if": {
+          "specific_order_given": true,
+          "already_challenged_oxygen": true
+        },
+        "challenge_text": "Chcem jej dať kyslík - ale potrebujem od vás ako záchranára špecifiká. Aké podávacie zariadenie si vyberáte a pri akom prietoku? Zamyslite sa nad jej aktuálnym SpO2 88%.",
+        "teaching_goal": "Špecifické príkazy (zariadenie, prietok, cieľ) predchádzajú nebezpečnej nejednoznačnosti v kritických situáciách. Vágne príkazy spôsobujú chyby.",
+        "acceptable_responses": [
+          "Maska s rezervoárom pri 15 l/min",
+          "Vysokoprietokový kyslík cez nebulizátor (8-10 l/min s bronchodilatátorom)",
+          "Akékoľvek špecifické zariadenie + špecifický prietok + spomenutý cieľový SpO2",
+          "Študent špecifikuje zariadenie primerané závažnosti"
+        ],
+        "resolution": {
+          "if_good_reasoning": "Perfektné - na špecifických príkazoch záleží. 'Dať kyslík' je vágne a môže viesť k chybám. 'Maska s rezervoárom pri 15 litroch s cieľom 94-98%' je presné a bezpečné. To je to, čo potrebujeme v núdzových situáciách.",
+          "if_protocol_only": "Protokol hovorí kyslík, áno - ale ako vedúci záchranár, VY rozhodujete o zariadení a prietoku. Jej SpO2 je 88% - kriticky nízke. Čo vám táto závažnosť hovorí o vašej voľbe podávania kyslíka?",
+          "if_struggling": "Jej SpO2 je kriticky nízke na 88%. Zamyslite sa nad možnosťami podávania kyslíka: nosové okuliare dodávajú 1-6 l/min (nedostatočné pre túto závažnosť). Jednoduchá maska dodáva 6-10 l/min (lepšie, ale stále nedostatočné). Maska s rezervoárom dodáva až 15 l/min (zodpovedá závažnosti). Čo by ste si vybrali?"
+        },
+        "estimated_duration_seconds": 30,
+        "cognitive_goal": "Učiť presnosť v lekárskych príkazoch. Vágne príkazy spôsobujú chyby v reálnej praxi."
+      },
+      {
+        "id": "CP3",
+        "name": "silent_chest_recognition",
+        "priority": "kritická",
+        "trigger": {
+          "type": "finding_not_recognized",
+          "condition": "študent počúval hrudník, ale nespomenul nález tichého hrudníka alebo nerozpoznal jeho význam"
+        },
+        "skip_if": {
+          "silent_chest_recognized": true,
+          "already_challenged_silent_chest": true
+        },
+        "challenge_text": "Počúvate jej hrudník - opíšte, čo počujete na bázach v porovnaní s hornými poľami. Tento nález je kriticky dôležitý pre vaše hodnotenie závažnosti a naliehavosti.",
+        "teaching_goal": "Tichý hrudník je zlovestné znamenie (minimálny pohyb vzduchu = závažný bronchospazmus = predzástavový stav). Paradoxne horšie ako hlasný piskot.",
+        "acceptable_responses": [
+          "Študent rozpozná tichý hrudník alebo výrazne oslabené dýchanie na bázach",
+          "Študent identifikuje toto ako znepokojujúce alebo zlovestné znamenie",
+          "Študent eskaluje naliehavosť na základe tohto nálezu",
+          "Študent spomenie minimálny pohyb vzduchu napriek dychovému úsiliu",
+          "Študent sa pripravuje na možnú zástavu dýchania"
+        ],
+        "resolution": {
+          "if_good_reasoning": "Presne tak - tichý hrudník je jedným z najzlovestnejších nálezov pri astme. Nie je to zlepšenie, je to minimálny pohyb vzduchu z dôvodu závažného bronchospazmu. Toto je predzástavové znamenie. Vaše rozpoznanie by malo zmeniť vašu úroveň naliehavosti a prípravu. Dobrý postreh.",
+          "if_protocol_only": "Áno, počujete piskoty v horných poliach. Ale čo bázy, kde ledva niečo počujete? Keď nepočujete veľa pohybu vzduchu napriek silnému dychovému úsiliu pacientky, čo vám to hovorí o stave jej dýchacích ciest?",
+          "if_struggling": "Tichý hrudník sa zdá byť tichý a pokojný, ale v skutočnosti je desivý. Znamená to, že takmer žiadny vzduch sa nepohybuje cez tie dýchacie cesty - sú tak zúžené, že takmer nič neprejde. To je horšie ako hlasný piskot. Hlasný piskot znamená, že vzduch sa pohybuje (dobre). Tichý hrudník znamená, že žiadny vzduch sa nepohybuje (predzástava). Aká by mala byť vaša úroveň naliehavosti?"
+        },
+        "estimated_duration_seconds": 60,
+        "cognitive_goal": "Učiť interpretáciu protiintuitívnych klinických nálezov. Absencia zvuku môže byť horšia ako jeho prítomnosť."
+      },
+      {
+        "id": "CP4",
+        "name": "no_contraindication_check",
+        "priority": "stredná",
+        "trigger": {
+          "type": "medication_given",
+          "condition": "študent podáva liek bez spomenutia SF alebo kontroly kontraindikácií"
+        },
+        "skip_if": {
+          "contraindications_checked": true,
+          "already_challenged_contraindications": true
+        },
+        "challenge_text": "Predtým, ako podáme ten liek - prejdite so mnou všetky kontraindikácie, o ktorých by sme mali vedieť. Čo musíte skontrolovať ako prvé?",
+        "teaching_goal": "Aj v núdzových situáciách rýchly skríning kontraindikácií predchádza poškodeniu. Vybudovať zvyk systematických bezpečnostných kontrol.",
+        "acceptable_responses": [
+          "Študent kontroluje srdcovú frekvenciu pre prah tachykardie",
+          "Študent spomenie kontrolu relatívnych kontraindikácií",
+          "Študent preukáže povedomie o bezpečnosti liekov",
+          "Študent spomenie prijateľný rozsah SF pre bronchodilatanciá"
+        ],
+        "resolution": {
+          "if_good_reasoning": "Dobre - myslíte na bezpečnosť aj v núdzovej situácii. Rýchla kontrola SF na zabezpečenie, že nie je prítomná závažná tachykardia (>150). Jej SF je 128 - prijateľné pre bronchodilatátor. Bezpečné pokračovať.",
+          "if_protocol_only": "Protokol hovorí podať, áno. Ale ako záchranár musíte zabezpečiť, že je to bezpečné pre TÚTO pacientku. Ktorý vitálny znak by vás znepokojoval pred podaním lieku, ktorý zvyšuje srdcovú frekvenciu?",
+          "if_struggling": "Salbutamol zvyšuje srdcovú frekvenciu prostredníctvom beta-2 stimulácie. Ak má pacientka už závažnú tachykardiu (SF >150), mohlo by to byť nebezpečné. Rýchla kontrola: jej SF je 128. Je to prijateľné pre bronchodilatátor, alebo príliš vysoké?"
+        },
+        "estimated_duration_seconds": 30,
+        "cognitive_goal": "Vybudovať zvyk bezpečnostných kontrol aj pod tlakom."
+      },
+      {
+        "id": "CP5",
+        "name": "forgot_reassessment",
+        "priority": "nízka",
+        "trigger": {
+          "type": "time_threshold",
+          "condition": "liečba podaná pred viac ako 5 minútami, študent neprekontroloval vitálne funkcie ani nespomenul prehodnotenie"
+        },
+        "skip_if": {
+          "reassessment_done": true,
+          "already_challenged_reassessment": true
+        },
+        "challenge_text": "Pred niekoľkými minútami ste podali bronchodilatátor. Čo teraz hľadáte, aby ste zistili, či účinkuje? Prejdite so mnou váš plán prehodnotenia.",
+        "teaching_goal": "Systematické prehodnotenie po zásahoch usmerňuje ďalšiu liečbu. Liečba bez prehodnotenia je neúplná starostlivosť.",
+        "acceptable_responses": [
+          "Študent plánuje prekontrolovať vitálne funkcie",
+          "Študent spomenie časovanie (3-5 minút na účinok salbutamolu)",
+          "Študent opíše, čo prehodnotiť (DF, SpO2, schopnosť hovoriť, pomocné svaly)",
+          "Študent spomenie porovnanie s východiskovým stavom pre analýzu trendu",
+          "Študent diskutuje o rozhodovaní na základe odpovede"
+        ],
+        "resolution": {
+          "if_good_reasoning": "Vynikajúce systematické myslenie. Podali ste liečbu v konkrétnom čase, viete, kedy očakávať účinok, a plánujete zamerané prehodnotenie. Takto vieme, či naše zásahy fungujú a čo robiť ďalej.",
+          "if_protocol_only": "Protokol hovorí podať bronchodilatátor - ale čo sa stane potom? Ako viete, či to fungovalo? Čo by ste robili, keby to nefungovalo? To nám povie prehodnotenie.",
+          "if_struggling": "Zamyslite sa nad tým takto: Podali ste salbutamol, ktorý by mal účinkovať za 3-5 minút. Čo by ste prekontrolovali? Dychovú frekvenciu? Hladinu kyslíka? Dokáže lepšie hovoriť? Používa menej krčné svaly? Tieto porovnania s vaším východiskovým stavom vám povedia, či vaša liečba fungovala."
+        },
+        "estimated_duration_seconds": 40,
+        "cognitive_goal": "Vybudovať zvyk systematického prehodnocovania a analýzy trendov."
+      }
+    ],
+    "usage_rules": {
+      "max_challenges_per_session": 2,
+      "selection_criteria": "AI vyberá výzvy na základe skutočných chýb študenta počas scenára, pričom uprednostňuje podľa úrovne priority (kritická > vysoká > stredná > nízka)",
+      "timing": "Výzva okamžite, keď nastane spúšťacia podmienka, pred povolením študentovi pokračovať",
+      "tone": "Podporný a vzdelávací, nikdy nie trestajúci. Formulujte ako 'poďme si to spolu premyslieť'"
+    }
+  },
+
+  "critical_decision_points": {
+    "available_evaluations": [
+      {
+        "id": "CDP1",
+        "decision": "bronchodilator_timing_and_assessment",
+        "description": "Kedy podať bronchodilatátor v pomere k hodnoteniu závažnosti a skríningu kontraindikácií",
+        "evaluate_if": "Študent podal alebo nepodal bronchodilatátor (salbutamol alebo syntophyllin)",
+        
+        "optimal_sequence": [
+          "Rýchle hodnotenie závažnosti (15-30 sekúnd): DF 32, SpO2 88%, hovorí len v slovách, pomocné svaly",
+          "Stručná kontrola kontraindikácií (10 sekúnd): SF 128 - prijateľné, žiadna kontraindikácia tachykardie",
+          "Okamžité podanie bronchodilatátora: salbutamol 5mg nebulizovaný cez kyslík",
+          "Prehodnotiť 3-5 minút po liečbe: skontrolovať zmeny vitálnych funkcií, odpoveď pacienta, klinický účinok"
+        ],
+        
+        "factors_to_consider": [
+          "Závažnosť bronchospazmu: DF >30, SpO2 <92%, rozvíjajúci sa tichý hrudník",
+          "Riziko východiskovej tachykardie: SF už 128 - salbutamol ju ďalej zvýši",
+          "Čas do nástupu účinku liečby: potrebuje 3-5 minút na účinok",
+          "Anamnéza liekov pacienta: došiel jej kontrolný inhalátor pred 3 dňami",
+          "Naliehavosť situácie: život ohrozujúca prezentácia vyžaduje rýchlu akciu"
+        ],
+        
+        "scoring": {
+          "optimal": "Systematicky zhodnotil závažnosť (15-30 sekúnd), skontroloval srdcovú frekvenciu a kontraindikácie (10 sekúnd), podal primeranú dávku a cestu bronchodilatátora (salbutamol 5mg nebulizovaný), zdokumentoval časovanie, prehodnotil 3-5 minút po liečbe na vyhodnotenie odpovede. Preukázal rovnováhu medzi naliehavosťou a bezpečnosťou.",
+          
+          "acceptable": "Rýchlo podal bronchodilatátor na základe zjavných ukazovateľov závažnosti (SpO2 88%, ťažká tieseň), vynechal niektoré kroky hodnotenia, ale dosiahol primeranú liečbu do 3-5 minút, prehodnotil potom, aj keď nie dokonale systematicky.",
+          
+          "suboptimal": "Podal liečbu bez systematického hodnotenia, predpokladal potrebu bez potvrdenia ukazovateľov závažnosti, vágne príkazy ('dať kyslík' bez zariadenia/prietoku), oneskorené prehodnotenie, explicitne neskontroloval kontraindikácie, ALEBO trvalo príliš dlho s hodnotením (>5 minút do liečby).",
+          
+          "dangerous": "Podal bronchodilatátor napriek SF >150 bez rozpoznania relatívnej kontraindikácie, ALEBO oneskoril kritickú liečbu >10 minút pri vykonávaní nadmerného hodnotenia, ALEBO podal kontraindikovaný liek (napr. betablokátor, respiračný depresant), ALEBO nepodal žiadny bronchodilatátor napriek život ohrozujúcej astme."
+        },
+        
+        "aar_teaching_point": "Aj v naliehavých situáciách rýchle 30-sekundové hodnotenie závažnosti usmerňuje intenzitu liečby a predchádza automatickým chybám. Optimálna sekvencia je: (1) Rozpoznať ohrozenie života, (2) Rýchle zamerané hodnotenie (DF, SpO2, schopnosť hovoriť), (3) Rýchla bezpečnostná kontrola (SF pre prah tachykardie), (4) Okamžite liečiť, (5) Prehodnotiť za 3-5 minút. Toto trvá celkovo menej ako 60 sekúnd pred liečbou, nie 5-10 minút kompletného hodnotenia. Prispôsobte svoju naliehavosť závažnosti pacienta. SpO2 88% + neschopnosť hovoriť = život ohrozujúce → konajte do 2-5 minút."
+      },
+      
+      {
+        "id": "CDP2",
+        "decision": "oxygen_delivery_device_selection",
+        "description": "Výber vhodného zariadenia na podávanie kyslíka a prietoku na základe závažnosti hypoxie",
+        "evaluate_if": "Študent podal alebo spomenul kyslík",
+        
+        "optimal_sequence": [
+          "Rozpoznať kritickú hypoxiu: SpO2 88% (mozgové bunky odumierajú)",
+          "Vybrať vysokoprietokové zariadenie: maska s rezervoárom 15 l/min ALEBO nebulizátor poháňaný kyslíkom 8-10 l/min (dvojaký účel)",
+          "Špecifikovať cieľový SpO2: 94-98% pre astmu",
+          "Aplikovať okamžite: do 2 minút od príchodu",
+          "Prekontrolovať SpO2: po 1-2 minútach na potvrdenie zlepšenia"
+        ],
+        
+        "factors_to_consider": [
+          "Závažnosť hypoxie: SpO2 88% = kritická (hypoxia mozgu začína <90%)",
+          "Schopnosti zariadenia: nosové okuliare 1-6L (nedostatočné), jednoduchá maska 6-10L (nedostatočná), maska s rezervoárom 15L (primeraná)",
+          "Dvojitý prínos nebulizátora: dodáva kyslík + liek súčasne",
+          "Cieľová saturácia: 94-98% primeraná pre astmu (žiadne riziko retencie CO2)",
+          "Časovanie prehodnotenia: očakávajte zlepšenie do 1-2 minút"
+        ],
+        
+        "scoring": {
+          "optimal": "Okamžite rozpoznal kritickú hypoxiu, špecifikoval masku s rezervoárom pri 15 l/min ALEBO plánoval nebulizátor poháňaný kyslíkom (pochopenie dvojakého účelu), uviedol cieľový SpO2 94-98%, aplikoval do 2 minút, prekontroloval saturáciu po aplikácii, upravil podľa potreby.",
+          
+          "acceptable": "Rýchlo aplikoval vysokoprietokový kyslík (aj keď na začiatku nešpecifikoval presné zariadenie), dosiahol primeranú oxygenáciu, rozpoznal naliehavosť SpO2 88%, opravil zariadenie, ak bola počiatočná voľba nedostatočná.",
+          
+          "suboptimal": "Vágny príkaz ('dať kyslík' bez špecifikácie zariadenia/prietoku), zvolil na začiatku nízkoprietokové zariadenie nedostatočné pre závažnosť (nosové okuliare pre SpO2 88%), nešpecifikoval cieľovú saturáciu, oneskoril aplikáciu >3 minúty.",
+          
+          "dangerous": "Nepodal kyslík napriek SpO2 88%, ALEBO podal nevhodný nízkoprietokový kyslík a neprehodnotil/neeskaloval, keď sa saturácia nezlepšila, ALEBO oneskoril kyslík >5 minút."
+        },
+        
+        "aar_teaching_point": "Zariadenie na podávanie kyslíka musí zodpovedať závažnosti hypoxie. SpO2 88% je kriticky nízke - mozgové bunky začínajú odumierať pod 90%. Schopnosti zariadenia: nosové okuliare dodávajú len 1-6 l/min (hrubo nedostatočné pre 88%), jednoduchá maska dodáva 6-10 l/min (stále nedostatočné), maska s rezervoárom dodáva až 15 l/min (primerané pre túto závažnosť). Špecifické príkazy predchádzajú nejednoznačnosti a zachraňujú životy: 'Dať kyslík' je vágne a nebezpečné; 'Maska s rezervoárom pri 15 litroch s cieľom 94-98%' je presné a bezpečné. V núdzových situáciách na presnosti záleží."
+      },
+      
+      {
+        "id": "CDP3",
+        "decision": "silent_chest_recognition",
+        "description": "Identifikácia a primeraná reakcia na tichý hrudník ako zlovestné znamenie zhoršenia",
+        "evaluate_if": "Študent vykonal auskultáciu hrudníka alebo spomenul dychové zvuky",
+        
+        "optimal_sequence": [
+          "Systematická auskultácia hrudníka: bilaterálne, porovnanie hrotov s bázami",
+          "Rozpoznať tichý hrudník na bázach: minimálny pohyb vzduchu napriek silnému úsiliu",
+          "Správne interpretovať: zlovestné znamenie (nie zlepšenie), naznačuje závažný bronchospazmus",
+          "Eskalovať naliehavosť: pripraviť sa na možnú zástavu dýchania",
+          "Pripraviť pokročilé zásahy: BVM pripravený, zvážiť asistovanú ventiláciu, ak pokračuje",
+          "Maximalizovať bronchodilatačnú terapiu: kontinuálna nebulizácia, ak je dostupná"
+        ],
+        
+        "factors_to_consider": [
+          "Tichý hrudník = závažný bronchospazmus s minimálnym prietokom vzduchu (predzástavové znamenie)",
+          "Paradox: piskot je upokojujúci (vzduch sa pohybuje), ticho je desivé (žiadny vzduch sa nepohybuje)",
+          "Vyžaduje okamžitú eskaláciu naliehavosti a prípravu",
+          "Môže potrebovať asistovanú ventiláciu, ak sa stav naďalej zhoršuje",
+          "Ovplyvnené rozhodnutie o transporte: svetlá/sirény, včasné oznámenie nemocnici",
+          "Toto je NAJzlovestnejší nález pri astme"
+        ],
+        
+        "scoring": {
+          "optimal": "Identifikoval tichý hrudník počas systematického hodnotenia, správne ho interpretoval ako zlovestné predzástavové znamenie (nie zlepšenie), okamžite eskaloval naliehavosť, pripravil sa na možnú zástavu dýchania (BVM pripravený, polohovaný na asistovanú ventiláciu), maximalizoval bronchodilatačnú terapiu, komunikoval zhoršenie tímu/nemocnici, preukázal pochopenie život ohrozujúceho významu.",
+          
+          "acceptable": "Všimol si oslabené dýchanie alebo 'tichý hrudník', rozpoznal, že pacientka sa nezlepšuje napriek liečbe, primerane eskaloval zásahy, aj keď nepoužil špecifický termín 'tichý hrudník', prejavil primerané znepokojenie nad nálezom.",
+          
+          "suboptimal": "Počul oslabené dýchanie, ale nerozpoznal význam, pokračoval v rutinnom tempe bez eskalácie naliehavosti, prehliadol, že ticho je horšie ako piskot, nepripravil sa na zhoršenie.",
+          
+          "dangerous": "Interpretoval tichý hrudník ako zlepšenie ('dýchanie je teraz tichšie, musí sa jej dariť lepšie'), oneskoril kritické zásahy na základe nesprávnej interpretácie, nepripravil sa na možnú zástavu dýchania, uisťoval pacientku/rodinu, že 'sa upokojuje', keď v skutočnosti bola v predzástavovom stave."
+        },
+        
+        "aar_teaching_point": "Tichý hrudník je jedným z najzlovestnejších nálezov v respiračných núdzových situáciách. Je to protiintuitívne: hlasný piskot je hlučný a znepokojujúci, ale ticho je v skutočnosti oveľa horšie. Tu je dôvod: Piskot = vzduch sa pohybuje cez čiastočne zúžené dýchacie cesty (znepokojujúce, ale aspoň sa vzduch pohybuje). Tichý hrudník = dýchacie cesty sú tak závažne zúžené, že takmer ŽIADNY vzduch nimi neprechádza (predzástava). Keď počujete DOBRÝ piskot po liečbe bronchodilatátorom, to je v skutočnosti ZLEPŠENIE - viac pohybujúceho sa vzduchu robí viac hluku. Ale ak sa hrudník stane tichým, to je najnebezpečnejšie znamenie pri astme. Myslite na to ako na 'ticho pred búrkou' - tichý hrudník znamená, že zástava dýchania je bezprostredne hroziaca. Vyžaduje sa maximálna naliehavosť: pripravte BVM, maximalizujte liečbu, zvážte asistovanú ventiláciu, rýchly transport."
+      }
+    ],
+    
+    "usage_rules": {
+      "max_evaluations_per_session": 3,
+      "selection_criteria": "AAR Agent hodnotí 3 najrelevantnejšie CDP na základe toho, čo študent skutočne urobil počas scenára. Ak študent nepodal kyslík, nehodnoťte kyslíkové CDP. Zamerajte hodnotenie na rozhodnutia, ktorým študent skutočne čelil.",
+      "scoring_method": "Pre každé hodnotené CDP AAR Agent priradí úroveň skóre (optimálne/prijateľné/suboptimálne/nebezpečné) na základe pozorovaných akcií študenta, potom poskytne výučbový bod zodpovedajúci tejto úrovni.",
+      "integration_with_performance": "Skóre CDP vstupujú do celkového hodnotenia AAR, ale sú oddelené od kontrolného zoznamu kritických akcií. CDP hodnotia kvalitu uvažovania, nielen dokončenie úloh."
+    }
+  },
+
+  "critical_actions_checklist": [
+    {
+      "id": "CA1",
+      "action": "Hodnotenie bezpečnosti scény",
+      "category": "bezpečnosť_scény",
+      "time_target_minutes": 1,
+      "points": 5,
+      "importance": "nevyhnutné"
+    },
+    {
+      "id": "CA2",
+      "action": "Rozpoznať život ohrozujúcu astmu",
+      "category": "hodnotenie",
+      "time_target_minutes": 2,
+      "points": 15,
+      "importance": "kritické",
+      "criteria": "Identifikuje SpO2 <92%, neschopnosť dokončiť vety, ťažká tieseň"
+    },
+    {
+      "id": "CA3",
+      "action": "Aplikovať vysokoprietokový kyslík",
+      "category": "liečba",
+      "time_target_minutes": 2,
+      "points": 15,
+      "importance": "kritické"
+    },
+    {
+      "id": "CA4",
+      "action": "Podať salbutamolový nebulizátor",
+      "category": "liečba",
+      "time_target_minutes": 5,
+      "points": 25,
+      "importance": "kritické",
+      "criteria": "Správna dávka (5mg), nebulizátor poháňaný kyslíkom"
+    },
+    {
+      "id": "CA5",
+      "action": "Podať kortikosteroidy",
+      "category": "liečba",
+      "time_target_minutes": 10,
+      "points": 10,
+      "importance": "dôležité"
+    },
+    {
+      "id": "CA6",
+      "action": "Dokončiť ABCDE hodnotenie",
+      "category": "hodnotenie",
+      "time_target_minutes": 5,
+      "points": 10,
+      "importance": "nevyhnutné",
+      "criteria": "Všetkých päť zložiek skontrolovaných"
+    },
+    {
+      "id": "CA7",
+      "action": "Získať SAMPLE anamnézu",
+      "category": "hodnotenie",
+      "time_target_minutes": 8,
+      "points": 5,
+      "importance": "dôležité"
+    },
+    {
+      "id": "CA8",
+      "action": "Monitorovať a prehodnocovať",
+      "category": "monitorovanie",
+      "time_target_minutes": 10,
+      "points": 5,
+      "importance": "dôležité",
+      "criteria": "Skontrolovať vitálne funkcie po liečbe, prehodnotiť dýchanie"
+    }
+  ],
+
+  "common_errors": [
+    {
+      "error_id": "E1",
+      "error": "Oneskorené podanie bronchodilatátora",
+      "teaching_point": "Salbutamol sa musí podať do 5 minút pri život ohrozujúcej astme - je to liečba prvej línie pre bronchospazmus"
+    },
+    {
+      "error_id": "E2",
+      "error": "Žiadny kyslík napriek kritickej hypoxii",
+      "teaching_point": "SpO2 88% je kriticky nízke - mozgové bunky odumierajú pod 90%. Kyslík je okamžite život zachraňujúci a musí sa aplikovať do 2 minút"
+    },
+    {
+      "error_id": "E3",
+      "error": "Zabudol na kortikosteroidy",
+      "teaching_point": "Steroidy sú nevyhnutné aj s 60-minútovým oneskoreným účinkom - predchádzajú relapsu o 4-6 hodín neskôr. Podajte ich včas vo všetkých prípadoch závažnej astmy"
+    },
+    {
+      "error_id": "E4",
+      "error": "Neúplné alebo chýbajúce systematické hodnotenie",
+      "teaching_point": "Systematické ABCDE hodnotenie predchádza prehliadnutiu kritických nálezov ako je tichý hrudník. Aj v núdzových situáciách 30 sekúnd zameraného hodnotenia usmerňuje liečbu"
+    },
+    {
+      "error_id": "E5",
+      "error": "Nerozpoznal význam tichého hrudníka",
+      "teaching_point": "Tichý hrudník = závažný bronchospazmus s minimálnym pohybom vzduchu = predzástavové znamenie. Je to horšie ako hlasný piskot. Vyžaduje maximálnu naliehavosť a prípravu na zástavu dýchania"
+    },
+    {
+      "error_id": "E6",
+      "error": "Vágne príkazy na liečbu bez špecifík",
+      "teaching_point": "Vágne príkazy ako 'dať kyslík' spôsobujú chyby. Špecifické príkazy ako 'maska s rezervoárom pri 15 l/min s cieľom 94-98%' zaisťujú bezpečnú a primeranú liečbu"
+    },
+    {
+      "error_id": "E7",
+      "error": "Žiadne prehodnotenie po liečbe",
+      "teaching_point": "Liečba bez prehodnotenia je neúplná starostlivosť. Skontrolujte vitálne funkcie 3-5 minút po bronchodilatátore na potvrdenie účinku a usmernenie ďalšej liečby"
+    }
+  ],
+
+  "aar_teaching_points": {
+    "key_concepts": [
+      "Znaky život ohrozujúcej astmy: SpO2 <92%, vyčerpanie, tichý hrudník, neschopnosť hovoriť vo vetách",
+      "Priorita sekvencie liečby: Kyslík + Salbutamol NAJPRV (do 5 min), potom Steroidy (prevencia relapsu)",
+      "Tichý hrudník = zlovestné predzástavové znamenie (minimálny pohyb vzduchu), NIE zlepšenie",
+      "Steroidy neúčinkujú okamžite (nástup 60 min), ale predchádzajú relapsu - podajte ich včas",
+      "Systematické prehodnotenie po liečbe usmerňuje klinické rozhodnutia - porovnajte s východiskovým stavom pre trendy"
+    ],
+    "clinical_pearls": [
+      "Hovorenie len v slovách (nie vo frázach/vetách) = ťažká dychová tieseň",
+      "Tripodová poloha = ťažká tieseň - pacient sa polohuje, aby maximalizoval použitie pomocných svalov",
+      "Hlasnejší piskot po salbutamole = DOBRÉ znamenie (viac pohybujúceho sa vzduchu robí viac hluku)",
+      "DF >30 + SpO2 <92% + neschopnosť hovoriť = triáda život ohrozujúcej astmy",
+      "Zhoršenie môže byť rýchle bez liečby - pacient môže prejsť z počiatočného do kritického stavu za 10 minút",
+      "SpO2 88% znamená hypoxiu mozgu - kyslík je tak naliehavý ako KPR pri zástave srdca",
+      "Vedľajší účinok salbutamolu (zvýšenie SF o 10-15 úderov/min) je prijateľný kompromis za bronchodilatáciu",
+      "Nešpecifické príkazy ('dať kyslík') spôsobujú chyby - buďte presní so zariadením a prietokom"
+    ],
+    "common_misconceptions": [
+      "NESPRÁVNE: 'Tichý hrudník znamená, že sa upokojuje' - SPRÁVNE: Tichý hrudník je predzástavové znamenie",
+      "NESPRÁVNE: 'Počkajte na kompletné vyšetrenie pred liečbou' - SPRÁVNE: Rýchle zamerané vyšetrenie (30 s) a potom okamžitá liečba",
+      "NESPRÁVNE: 'Steroidy neúčinkujú rýchlo, tak ich nepodávajte' - SPRÁVNE: Podajte ich včas, aby ste predišli neskoršiemu relapsu",
+      "NESPRÁVNE: 'Salbutamol spôsobuje tachykardiu, tak sa mu vyhnite' - SPRÁVNE: Prínos bronchodilatácie prevyšuje zvýšenie SF pri život ohrozujúcej astme",
+      "NESPRÁVNE: 'Potrebuje sa upokojiť' (psychologický prístup) - SPRÁVNE: Má závažný bronchospazmus (fyziologický problém vyžadujúci bronchodilatátor)"
+    ]
+  },
+
+  "simulation_config": {
+    "real_time_progression": true,
+    "auto_deterioration_if_no_treatment": true,
+    "improvement_requires_critical_treatments": true,
+    "allow_repeat_nebulizers": true,
+    "max_duration_minutes": 20,
+    "layer_two_enabled": true,
+    "challenge_points_active": true,
+    "max_challenges_per_session": 2,
+    "critical_decision_points_active": true,
+    "max_cdp_evaluations": 3,
+    "difficulty_level": "stredná",
+    "student_level": "študent záchranárstva druhého ročníka"
+  }
+}

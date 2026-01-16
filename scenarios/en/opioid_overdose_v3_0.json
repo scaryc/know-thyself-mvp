@@ -358,7 +358,6 @@
         "why_wrong": "This is opioid overdose, not benzodiazepine. And flumazenil can cause seizures.",
         "if_given": {
           "clinical_effect": "No effect - flumazenil reverses benzodiazepines, not opioids. If patient also took benzos, flumazenil may cause seizures.",
-          "points": -10,
           "aar_flag": "wrong_antidote"
         },
         "teaching_point": "Naloxone reverses OPIOIDS. Flumazenil reverses BENZODIAZEPINES. Different receptors, different antidotes. Also, flumazenil causes seizures in benzo-dependent patients."
@@ -373,7 +372,6 @@
         "why_check": "Reasonable to check glucose in any unresponsive patient",
         "if_given": {
           "clinical_effect": "No effect if glucose normal. But checking glucose is good practice in altered mental status.",
-          "points": 0,
           "aar_flag": "appropriate_differential_consideration"
         },
         "teaching_point": "Checking glucose in unresponsive patient is good practice. But this presentation (pinpoint pupils, needle marks, RR 4) is classic opioid overdose."
@@ -381,13 +379,137 @@
     ]
   },
 
+  "progress_milestones": {
+    "enabled": true,
+    "display_location": "clinical_notes_panel",
+    "milestone_definitions": {
+      "UM1": {
+        "name": "Scene Secured",
+        "description": "Scene safety established, BSI taken"
+      },
+      "UM2": {
+        "name": "Emergency Recognized",
+        "description": "Primary problem identified"
+      },
+      "UM3": {
+        "name": "Breathing Supported",
+        "description": "Airway/breathing intervention initiated"
+      },
+      "UM4": {
+        "name": "Critical Treatment",
+        "description": "Primary life-saving treatment given"
+      },
+      "UM5": {
+        "name": "Assessment Complete",
+        "description": "ABCDE/SAMPLE/secondary exam completed"
+      },
+      "UM6": {
+        "name": "Monitoring Established",
+        "description": "Ongoing reassessment initiated"
+      }
+    },
+    "milestone_mappings": {
+      "UM1": { "trigger_actions": ["CA1"] },
+      "UM2": { "trigger_actions": ["CA2"] },
+      "UM3": { "trigger_actions": ["CA4"] },
+      "UM4": { "trigger_actions": ["CA5"] },
+      "UM5": { "trigger_actions": ["CA3", "CA6"] },
+      "UM6": { "trigger_actions": ["CA7"] }
+    }
+  },
+
+  "safety_gate": {
+    "enabled": true,
+    "tracking_mode": "silent",
+    "interrupt_scenario": false,
+    "critical_failures": [
+      {
+        "id": "SF1",
+        "type": "omission",
+        "description": "BVM ventilation never provided despite severe respiratory depression (RR <8)",
+        "detection_criteria": {
+          "condition": "scenario_end AND bvm_ventilation_provided == false",
+          "patient_state_required": "respiratory_rate_less_than_8"
+        },
+        "patient_outcome": "Without ventilation, patient remains severely hypoxic. Bradypneic respirations (4/min) cannot sustain life. Even if naloxone given, it takes 1-2 minutes to work - patient dies from hypoxic cardiac arrest while waiting for medication to take effect. Death from failure to address immediate life threat (hypoxia).",
+        "aar_teaching_point": "BVM ventilation is THE immediate life-saving intervention in opioid overdose with respiratory depression. Naloxone is important but takes 1-2 minutes to work. The patient is dying RIGHT NOW from lack of oxygen - you must ventilate IMMEDIATELY. The saying is: 'Naloxone doesn't work on dead patients. Ventilate first, naloxone second.' Without BVM, this patient dies from hypoxic arrest before naloxone can take effect."
+      },
+      {
+        "id": "SF2",
+        "type": "omission",
+        "description": "Naloxone never administered to confirmed opioid overdose",
+        "detection_criteria": {
+          "condition": "scenario_end AND naloxone_given == false",
+          "patient_state_required": "opioid_toxidrome_confirmed"
+        },
+        "patient_outcome": "Without naloxone, patient requires prolonged BVM ventilation and may develop aspiration, hypoxic injury, or cardiac complications. Naloxone would reverse the respiratory depression, but it was never given. Patient requires intubation and ICU admission for preventable prolonged sedation.",
+        "aar_teaching_point": "Naloxone is the specific antidote for opioid overdose. While BVM ventilation keeps patient alive acutely, naloxone reverses the underlying respiratory depression. This patient had classic opioid toxidrome: respiratory depression + CNS depression + pinpoint pupils + needle marks. Naloxone 0.4mg IV/IM titrated to respiratory effort (RR >12) is standard treatment. Without it, you're managing symptoms without treating the cause."
+      },
+      {
+        "id": "SF3",
+        "type": "commission",
+        "description": "Naloxone given BEFORE ventilation attempted (sequence error)",
+        "detection_criteria": {
+          "condition": "naloxone_timestamp < first_ventilation_timestamp"
+        },
+        "patient_outcome": "Patient remains hypoxic for 1-2 minutes while waiting for naloxone to work. During that time, severe hypoxia causes cardiac arrhythmias, seizures, or arrest. Preventable hypoxic injury from sequence error - patient needed oxygen NOW, not in 2 minutes.",
+        "aar_teaching_point": "CRITICAL SEQUENCE ERROR: Always ventilate BEFORE or WHILE giving naloxone. Here's why: Naloxone takes 1-2 minutes to work. The patient has RR of 4/min and is severely hypoxic RIGHT NOW. If you give naloxone first and wait, the patient is dying from hypoxia for those 2 minutes. Correct sequence: (1) BVM ventilation starts immediately, (2) Naloxone given while ventilating, (3) Continue BVM until naloxone works. Naloxone doesn't work on dead patients."
+      },
+      {
+        "id": "SF4",
+        "type": "commission",
+        "description": "Excessive naloxone dose causing acute withdrawal and patient flight risk",
+        "detection_criteria": {
+          "condition": "naloxone_total_dose > 2_mg OR full_reversal_to_consciousness"
+        },
+        "patient_outcome": "Patient fully awakened, experiences immediate opioid withdrawal (agitation, vomiting, combativeness), refuses further care, and leaves to use again. Lost opportunity for harm reduction, medical assessment, and social services connection. Increased risk of re-overdose.",
+        "aar_teaching_point": "Naloxone should be titrated to BREATHING (RR >12), NOT consciousness. Goal: drowsy patient who is breathing adequately. Over-reversal causes acute withdrawal syndrome - patient becomes agitated, may vomit and aspirate, fights care, and typically leaves immediately to use again. You lose the opportunity to connect them with medical care, social services, and harm reduction resources. A drowsy breathing patient is safer than an awake combative patient who leaves and overdoses again in an hour."
+      },
+      {
+        "id": "SF5",
+        "type": "contraindication",
+        "description": "Medication given despite stated allergy",
+        "detection_criteria": {
+          "condition": "medication_given IN patient.allergies"
+        },
+        "patient_outcome": "Allergic reaction on top of existing overdose emergency",
+        "aar_teaching_point": "Always verify allergies before medication administration."
+      }
+    ]
+  },
+
+  "scenario_states": {
+    "initial": {
+      "timing": "0-5 min",
+      "description": "Opioid overdose presentation - unresponsive, severe respiratory depression (RR 4), pinpoint pupils, cyanotic, needle marks visible. Classic opioid toxidrome requiring immediate ventilation and naloxone."
+    },
+    "early_deteriorating": {
+      "timing": "5-7 min (if not ventilated)",
+      "description": "Worsening hypoxia - increasing cyanosis, bradycardia developing from hypoxia, approaching cardiac arrest"
+    },
+    "deteriorating": {
+      "timing": "7-9 min (if not ventilated)",
+      "description": "Severe hypoxic state - profound cyanosis, bradycardia, pre-arrest, agonal respirations"
+    },
+    "critical": {
+      "timing": "9-13 min (if not ventilated)",
+      "description": "Hypoxic cardiac arrest imminent or occurring - no effective respirations, severe bradycardia or asystole"
+    },
+    "improving": {
+      "timing": "After ventilation ± naloxone",
+      "description": "Response to treatment - SpO2 rising with BVM, respiratory rate increasing after naloxone (if given), color improving, may be becoming more responsive"
+    },
+    "stable": {
+      "timing": "After successful reversal",
+      "description": "Breathing adequately (RR >12), SpO2 >90%, responsive enough to protect airway, may still be drowsy (appropriate partial reversal)"
+    }
+  },
+
   "critical_actions_checklist": [
     {
       "id": "CA1",
       "action": "Scene safety assessment",
       "category": "scene_safety",
-      "time_target_minutes": 1,
-      "points": 5,
       "importance": "essential",
       "criteria": "Needle safety, BSI, no other hazards",
       "matching": {
@@ -400,8 +522,6 @@
       "id": "CA2",
       "action": "Recognize opioid toxidrome",
       "category": "assessment",
-      "time_target_minutes": 2,
-      "points": 10,
       "importance": "critical",
       "criteria": "Identifies triad: respiratory depression + CNS depression + miosis",
       "matching": {
@@ -414,8 +534,6 @@
       "id": "CA3",
       "action": "Open airway and position patient",
       "category": "treatment",
-      "time_target_minutes": 2,
-      "points": 5,
       "importance": "critical",
       "matching": {
         "keywords": ["airway", "position"],
@@ -427,8 +545,6 @@
       "id": "CA4",
       "action": "Provide BVM ventilation",
       "category": "treatment",
-      "time_target_minutes": 3,
-      "points": 20,
       "importance": "critical",
       "criteria": "MUST ventilate BEFORE or WHILE giving naloxone",
       "matching": {
@@ -436,29 +552,106 @@
         "synonyms": ["ambu", "bag mask", "assist ventilation", "breathe for", "ventilation"],
         "tool_mappings": ["use_bvm", "ventilate_patient"],
         "exclusion_keywords": []
-      }
+      },
+      "competence_assessment": {
+        "method": "outcome_based",
+        "exemplary": {
+          "patient_state_at_action": ["initial"],
+          "patient_state_after": ["improving", "stable"],
+          "outcome_description": "BVM ventilation initiated immediately, prevented hypoxic arrest",
+          "feedback_template": "Excellent - you immediately initiated BVM ventilation for RR of 4/min. This is THE life-saving intervention in opioid overdose. You prevented hypoxic cardiac arrest by ensuring oxygenation while naloxone took effect. The correct sequence is: ventilate first, naloxone second. You recognized that naloxone takes 1-2 minutes to work and the patient needed oxygen RIGHT NOW. This is expert-level opioid overdose management."
+        },
+        "competent": {
+          "patient_state_at_action": ["initial", "early_deteriorating"],
+          "patient_state_after": ["improving", "stable"],
+          "outcome_description": "BVM ventilation provided before critical hypoxia, patient improved",
+          "feedback_template": "Effective airway management. You provided BVM ventilation and maintained oxygenation while treatments took effect."
+        },
+        "developing": {
+          "patient_state_at_action": ["deteriorating", "critical"],
+          "patient_state_after": ["improving", "stable"],
+          "outcome_description": "BVM ventilation delayed, patient reached severe hypoxic state",
+          "feedback_template": "BVM ventilation was delayed until patient was in {patient_state_at_action} state with severe hypoxia. During that delay, the patient was dying from lack of oxygen - RR of 4/min cannot sustain life. BVM is not 'one of the things to do' - it's THE immediate priority. What was your reasoning for the delay?"
+        },
+        "novice": {
+          "criteria": [
+            "BVM never provided despite RR <8",
+            "Relied solely on naloxone without ventilation",
+            "Patient died or arrested from hypoxia"
+          ],
+          "outcome_description": "Critical intervention omitted - patient died or nearly died from hypoxia",
+          "feedback_template": "This is addressed as a Safety Gate issue - BVM ventilation is mandatory with severe respiratory depression. Naloxone doesn't work on dead patients. Ventilate first, naloxone second."
+        }
+      },
+      "assessment_data_required": [
+        "action_timestamp",
+        "patient_state_at_action",
+        "patient_state_after_action",
+        "technique_correctness",
+        "ventilation_adequacy"
+      ]
     },
     {
       "id": "CA5",
       "action": "Administer naloxone",
       "category": "treatment",
-      "time_target_minutes": 4,
-      "points": 20,
       "importance": "critical",
       "criteria": "0.4mg IV/IM titrated to respiratory effort",
+      "dosing": {
+        "medication": "naloxone",
+        "dose": "0.4mg",
+        "route": "IV or IM",
+        "titration": "to respiratory effort, not consciousness"
+      },
       "matching": {
         "keywords": ["naloxone", "narcan"],
         "synonyms": ["0.4mg", "0.4 mg", "opioid antagonist", "reversal"],
         "tool_mappings": ["administer_naloxone", "give_narcan"],
         "exclusion_keywords": []
-      }
+      },
+      "competence_assessment": {
+        "method": "outcome_based",
+        "exemplary": {
+          "patient_state_at_action": ["initial"],
+          "patient_state_after": ["improving", "stable"],
+          "outcome_description": "Naloxone given with correct sequence (after/during ventilation), appropriate dose, titrated to breathing",
+          "feedback_template": "Excellent naloxone management - you gave 0.4mg IV/IM WHILE ventilating, waited for effect, and titrated to adequate breathing (RR >12) rather than full consciousness. This is the correct approach. The patient is now drowsy but breathing adequately - safer than full reversal which causes withdrawal and patient flight. You understood both the sequence (ventilate first) and the endpoint (breathing, not consciousness)."
+        },
+        "competent": {
+          "patient_state_at_action": ["initial", "early_deteriorating"],
+          "patient_state_after": ["improving", "stable"],
+          "outcome_description": "Naloxone administered appropriately, patient improved",
+          "feedback_template": "Effective use of naloxone. You reversed the opioid effect and achieved adequate breathing."
+        },
+        "developing": {
+          "patient_state_at_action": ["deteriorating", "critical"],
+          "patient_state_after": ["improving", "stable"],
+          "outcome_description": "Naloxone delayed or given before ventilation (sequence error)",
+          "feedback_template": "There was a delay or sequence issue with naloxone. If delayed: the patient reached {patient_state_at_action} state before receiving the antidote. If sequence error: naloxone was given before ventilation, leaving the patient hypoxic for 1-2 minutes while waiting for drug effect. What was your clinical reasoning?"
+        },
+        "novice": {
+          "criteria": [
+            "Naloxone never given",
+            "Excessive dose causing withdrawal",
+            "Given before any ventilation attempt"
+          ],
+          "outcome_description": "Critical medication omitted or dangerously administered",
+          "feedback_template": "This is addressed as Safety Gate issue - naloxone is the specific antidote for opioid overdose and must be given with correct sequence and dosing."
+        }
+      },
+      "assessment_data_required": [
+        "action_timestamp",
+        "patient_state_at_action",
+        "patient_state_after_action",
+        "dose_given",
+        "sequence_relative_to_ventilation",
+        "titration_endpoint"
+      ]
     },
     {
       "id": "CA6",
       "action": "Titrate to breathing NOT consciousness",
       "category": "treatment",
-      "time_target_minutes": 6,
-      "points": 10,
       "importance": "critical",
       "criteria": "Goal RR >12, patient breathing adequately, NOT necessarily fully awake",
       "matching": {
@@ -471,8 +664,6 @@
       "id": "CA7",
       "action": "Monitor for re-sedation",
       "category": "monitoring",
-      "time_target_minutes": 10,
-      "points": 5,
       "importance": "important",
       "criteria": "Recognizes naloxone may wear off before opioid",
       "matching": {
@@ -485,8 +676,6 @@
       "id": "CA8",
       "action": "Transport decision with harm reduction approach",
       "category": "disposition",
-      "time_target_minutes": 12,
-      "points": 5,
       "importance": "important",
       "matching": {
         "keywords": ["transport", "hospital"],

@@ -1,12 +1,18 @@
 /**
- * COMPONENT 5: Scenario Engine (Orchestrator)
- * 
+ * COMPONENT 5: Scenario Engine (Orchestrator) - V3.0 Performance Assessment System
+ *
  * Purpose: Coordinate all components and generate runtime contexts for AI
  * Architecture: Three-layer system
  *   - Layer 1: Full blueprint (2000+ lines) stored in database
  *   - Layer 2: Runtime context (300-500 lines) generated dynamically
  *   - Layer 3: Backend components handle all logic
- * 
+ *
+ * V3.0 Enhancements:
+ *   - Integrated outcome-based performance assessment
+ *   - Silent milestone tracking (progressive reveal)
+ *   - Silent safety gate monitoring
+ *   - Patient state progression tracking
+ *
  * This is the CORE of the MVP architecture
  */
 
@@ -18,14 +24,19 @@ import SimplifiedPerformanceTracker from './performanceTracker.js';
 class ScenarioEngine {
   constructor(fullBlueprint) {
     this.blueprint = fullBlueprint;
-    
+
     // Initialize all components
     this.stateManager = new SimplifiedPatientState(fullBlueprint);
     this.vitalsSimulator = new SimplifiedVitalSigns(fullBlueprint);
     this.treatmentEngine = new SimplifiedTreatmentEngine(fullBlueprint);
     this.performanceTracker = new SimplifiedPerformanceTracker(fullBlueprint);
-    
+
     this.sessionStartTime = Date.now();
+
+    // V3.0: Start periodic state update timer
+    this.stateUpdateInterval = setInterval(() => {
+      this.performanceTracker.updatePatientState();
+    }, 30000); // Update every 30 seconds
   }
 
   /**
@@ -111,7 +122,7 @@ class ScenarioEngine {
   }
 
   /**
-   * Process student action - MAIN ORCHESTRATION METHOD
+   * Process student action - MAIN ORCHESTRATION METHOD (V3.0 Enhanced)
    */
   processStudentAction(action) {
     const response = {
@@ -120,23 +131,29 @@ class ScenarioEngine {
       results: {}
     };
 
-    // Record action for performance tracking
-    this.performanceTracker.recordAction(action);
+    // V3.0: Record action for performance tracking with actionId
+    this.performanceTracker.recordAction({
+      type: action.type,
+      name: action.name || action.type,
+      details: action,
+      timestamp: Date.now(),
+      actionId: action.actionId || action.id // Support both formats
+    });
 
     // Handle different action types
     switch (action.type) {
       case 'treatment':
         response.results = this.handleTreatmentAction(action);
         break;
-        
+
       case 'assessment':
         response.results = this.handleAssessmentAction(action);
         break;
-        
+
       case 'communication':
         response.results = this.handleCommunicationAction(action);
         break;
-        
+
       default:
         response.success = false;
         response.error = 'Unknown action type';
@@ -145,11 +162,14 @@ class ScenarioEngine {
     // Update patient state after action
     this.updatePatientState();
 
+    // V3.0: Get updated milestone/progress data for frontend
+    response.progress_data = this.getProgressData();
+
     return response;
   }
 
   /**
-   * Handle treatment action
+   * Handle treatment action (V3.0 Enhanced)
    */
   handleTreatmentAction(action) {
     // Apply treatment through treatment engine
@@ -168,6 +188,17 @@ class ScenarioEngine {
 
     // Record treatment in state manager
     this.stateManager.recordTreatment(action.drug, action.dose);
+
+    // V3.0: Record medication in performance tracker for safety monitoring
+    this.performanceTracker.recordMedication({
+      name: action.drug,
+      dose: action.dose,
+      route: action.route || treatmentResult.route,
+      timestamp: Date.now(),
+      isCritical: treatmentResult.is_critical || false,
+      effect: treatmentResult.effect,
+      details: action.details || {}
+    });
 
     // Apply vital signs update immediately for MVP
     // (In full version, this would be time-delayed)
@@ -260,6 +291,47 @@ class ScenarioEngine {
    */
   getScenarioMetadata() {
     return this.blueprint.metadata;
+  }
+
+  /**
+   * V3.0: Get progress data for frontend (milestones only - progressive reveal)
+   * Returns ONLY completed milestones to support progressive reveal UI
+   */
+  getProgressData() {
+    // Access tracking modules through performance tracker
+    const milestoneTracker = this.performanceTracker.milestoneTracker;
+    const stateTracker = this.performanceTracker.stateTracker;
+
+    return {
+      // ONLY show completed milestones (progressive reveal)
+      completed_milestones: milestoneTracker.getCompletedMilestones(),
+
+      // Current patient state (for context, NOT displayed prominently)
+      current_patient_state: stateTracker.getCurrentState(),
+      current_vitals: stateTracker.getCurrentVitals(),
+
+      // Elapsed time
+      elapsed_minutes: stateTracker.getElapsedMinutes()
+    };
+  }
+
+  /**
+   * V3.0: Get safety gate status (for internal monitoring, NOT shown to student)
+   * Used by backend to track critical failures silently
+   */
+  getSafetyGateStatus() {
+    const safetyGateMonitor = this.performanceTracker.safetyGateMonitor;
+    return safetyGateMonitor.getSummary();
+  }
+
+  /**
+   * V3.0: Cleanup method to stop timers when scenario ends
+   */
+  cleanup() {
+    if (this.stateUpdateInterval) {
+      clearInterval(this.stateUpdateInterval);
+      this.stateUpdateInterval = null;
+    }
   }
 }
 
