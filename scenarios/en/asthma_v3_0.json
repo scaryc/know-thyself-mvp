@@ -196,9 +196,7 @@
           "SpO2": 94
         },
         "patient_says": "That's helping... I can breathe easier...",
-        "clinical_effect": "Bronchodilation, improved air entry, louder wheeze (good sign - more air moving)",
-        "points_if_given": 25,
-        "timing_critical": "Must give within 5 minutes for full points"
+        "clinical_effect": "Bronchodilation, improved air entry, louder wheeze (good sign - more air moving)"
       }
     },
 
@@ -259,7 +257,6 @@
         "vital_changes": {},
         "patient_says": "No immediate change",
         "clinical_effect": "Reduces inflammation over hours - prevents relapse 4-6 hours later",
-        "points_if_given": 10,
         "teaching_point": "Steroids don't work immediately but prevent relapse - give early"
       }
     },
@@ -281,9 +278,7 @@
           "SpO2": 92
         },
         "patient_says": "Patient nods, appears slightly less anxious",
-        "clinical_effect": "Improved oxygenation but bronchospasm remains - need bronchodilator too",
-        "points_if_given": 15,
-        "timing_critical": "Must give within 2 minutes for full points"
+        "clinical_effect": "Improved oxygenation but bronchospasm remains - need bronchodilator too"
       }
     }
   },
@@ -373,7 +368,6 @@
           },
           "patient_response": "Patient becomes drowsy, breathing slows further, oxygen level plummets. The benzodiazepine has suppressed her already-failing respiratory drive.",
           "clinical_note": "Benzodiazepine causes respiratory depression. Critical medication error.",
-          "points": -25,
           "state_change": "critical",
           "aar_flag": "critical_medication_error"
         },
@@ -392,7 +386,6 @@
             "GCS": 11
           },
           "patient_response": "Breathing becomes dangerously slow. Patient drowsy. Bronchospasm may worsen from histamine release.",
-          "points": -25,
           "state_change": "critical",
           "aar_flag": "critical_medication_error"
         },
@@ -414,7 +407,6 @@
             "SpO2": 82
           },
           "patient_response": "Patient's breathing worsens. Airways tighten further.",
-          "points": -20,
           "state_change": "deteriorating",
           "aar_flag": "contraindicated_medication"
         },
@@ -429,7 +421,6 @@
         "if_given": {
           "vital_changes": {},
           "patient_response": "No improvement in breathing.",
-          "points": -10,
           "aar_flag": "diagnostic_confusion"
         },
         "teaching_point": "ASTHMA = bronchospasm (wheeze). PULMONARY EDEMA = fluid (crackles). Different pathology, different treatment."
@@ -445,7 +436,6 @@
         "if_given": {
           "vital_changes": {},
           "patient_response": "No effect on breathing.",
-          "points": -3,
           "aar_flag": "unnecessary_intervention"
         },
         "teaching_point": "Focus on the respiratory problem. Glucose is for hypoglycemia."
@@ -458,7 +448,6 @@
         "if_given": {
           "vital_changes": {},
           "patient_response": "No effect.",
-          "points": -2,
           "aar_flag": "unnecessary_intervention"
         },
         "teaching_point": "Patient needs bronchodilator, not antiemetic."
@@ -477,7 +466,6 @@
             "SpO2": 93
           },
           "patient_response": "Modest additional bronchodilation after 15-20 minutes.",
-          "points": 5,
           "aar_flag": "appropriate_advanced_therapy"
         },
         "teaching_point": "Magnesium is appropriate for severe asthma not responding to first-line treatment. Give after salbutamol and steroids."
@@ -485,13 +473,126 @@
     ]
   },
 
+  "progress_milestones": {
+    "enabled": true,
+    "display_location": "clinical_notes_panel",
+    "milestone_definitions": {
+      "UM1": {
+        "name": "Scene Secured",
+        "description": "Scene safety established, BSI taken"
+      },
+      "UM2": {
+        "name": "Emergency Recognized",
+        "description": "Primary problem identified"
+      },
+      "UM3": {
+        "name": "Breathing Supported",
+        "description": "Airway/breathing intervention initiated"
+      },
+      "UM4": {
+        "name": "Critical Treatment",
+        "description": "Primary life-saving treatment given"
+      },
+      "UM5": {
+        "name": "Assessment Complete",
+        "description": "ABCDE/SAMPLE/secondary exam completed"
+      },
+      "UM6": {
+        "name": "Monitoring Established",
+        "description": "Ongoing reassessment initiated"
+      }
+    },
+    "milestone_mappings": {
+      "UM1": { "trigger_actions": ["CA1"] },
+      "UM2": { "trigger_actions": ["CA2"] },
+      "UM3": { "trigger_actions": ["CA3"] },
+      "UM4": { "trigger_actions": ["CA4"] },
+      "UM5": { "trigger_actions": ["CA6", "CA7"] },
+      "UM6": { "trigger_actions": ["CA8"] }
+    }
+  },
+
+  "safety_gate": {
+    "enabled": true,
+    "tracking_mode": "silent",
+    "interrupt_scenario": false,
+    "critical_failures": [
+      {
+        "id": "SF1",
+        "type": "omission",
+        "description": "Bronchodilator (salbutamol) never administered",
+        "detection_criteria": {
+          "condition": "scenario_end AND salbutamol_given == false",
+          "patient_state_required": "life_threatening_asthma_confirmed"
+        },
+        "patient_outcome": "Bronchospasm persists, respiratory failure progresses, patient requires intubation or experiences respiratory arrest. Without bronchodilation, this patient cannot move air and will die.",
+        "aar_teaching_point": "Salbutamol is the first-line, life-saving treatment for acute asthma. Steroids help long-term but don't work immediately. Oxygen alone doesn't fix bronchospasm. Without a bronchodilator, this patient's airways remain constricted and respiratory failure is inevitable."
+      },
+      {
+        "id": "SF2",
+        "type": "commission",
+        "description": "Sedatives given in severe asthma",
+        "detection_criteria": {
+          "condition": "medication_given == 'diazepam' OR medication_given == 'midazolam' OR medication_given == 'morphine' OR medication_given == 'fentanyl'"
+        },
+        "patient_outcome": "Respiratory drive suppressed, hypoventilation worsens, CO2 retention accelerates, respiratory arrest imminent. Sedatives in severe asthma are potentially fatal.",
+        "aar_teaching_point": "Sedatives and opioids are absolutely contraindicated in severe asthma. They suppress respiratory drive at a time when the patient needs maximal respiratory effort to overcome airway resistance. This error causes respiratory arrest."
+      },
+      {
+        "id": "SF3",
+        "type": "commission",
+        "description": "Beta-blockers given",
+        "detection_criteria": {
+          "condition": "medication_given == 'propranolol' OR medication_given == 'metoprolol' OR medication_given == 'atenolol'"
+        },
+        "patient_outcome": "Beta-blockade causes bronchospasm, directly worsening asthma. Counters the effect of salbutamol (beta-agonist). Critical deterioration.",
+        "aar_teaching_point": "Beta-blockers cause bronchospasm and are contraindicated in asthma. They also block the therapeutic effect of salbutamol (a beta-agonist bronchodilator). This is a dangerous medication error."
+      },
+      {
+        "id": "SF4",
+        "type": "contraindication",
+        "description": "Medication given despite stated allergy",
+        "detection_criteria": {
+          "condition": "medication_given IN patient.allergies"
+        },
+        "patient_outcome": "Allergic reaction on top of existing respiratory emergency",
+        "aar_teaching_point": "Always verify allergies before medication administration. Patient history was available and clear."
+      }
+    ]
+  },
+
+  "scenario_states": {
+    "initial": {
+      "timing": "0-5 min",
+      "description": "Severe asthma exacerbation - unable to complete sentences, accessory muscle use, tripod positioning, SpO2 88%, audible wheeze. Patient conscious but in severe respiratory distress."
+    },
+    "early_deteriorating": {
+      "timing": "5-7 min (if untreated)",
+      "description": "Worsening respiratory distress - speech limited to single words, increasing work of breathing, SpO2 declining further, fatigue beginning"
+    },
+    "deteriorating": {
+      "timing": "7-9 min (if untreated)",
+      "description": "Severe deterioration - minimal air movement (silent chest developing), exhaustion, altered mental status, profound hypoxia"
+    },
+    "critical": {
+      "timing": "9-13 min (if untreated)",
+      "description": "Imminent respiratory failure - silent chest, minimal respiratory effort, severely altered consciousness, pre-arrest state"
+    },
+    "improving": {
+      "timing": "After effective bronchodilator treatment",
+      "description": "Positive response to salbutamol - wheeze audible again (air moving), breathing easier, able to speak in phrases, SpO2 rising"
+    },
+    "stable": {
+      "timing": "After sustained improvement",
+      "description": "Stabilized - breathing comfortably, speaking in full sentences, SpO2 >92%, wheeze diminished or absent"
+    }
+  },
+
   "critical_actions_checklist": [
     {
       "id": "CA1",
       "action": "Scene safety assessment",
       "category": "scene_safety",
-      "time_target_minutes": 1,
-      "points": 5,
       "importance": "essential",
       "matching": {
         "keywords": ["scene", "safety", "safe"],
@@ -503,51 +604,137 @@
       "id": "CA2",
       "action": "Recognize life-threatening asthma",
       "category": "assessment",
-      "time_target_minutes": 3,
-      "points": 15,
       "importance": "critical",
       "criteria": "Identifies SpO2 <92%, can't complete sentences, severe distress",
       "matching": {
         "keywords": ["life-threatening", "severe", "critical"],
         "synonyms": ["status asthmaticus", "respiratory failure", "can't speak", "unable to speak", "tripod", "accessory muscles", "hypoxia"],
         "exclusion_keywords": []
+      },
+      "competence_assessment": {
+        "method": "outcome_based",
+        "exemplary": {
+          "patient_state_at_action": ["initial"],
+          "patient_state_after": ["initial", "improving"],
+          "outcome_description": "Recognized life-threatening asthma immediately",
+          "feedback_template": "Excellent recognition - you immediately identified this as life-threatening asthma based on inability to speak, accessory muscle use, tripod positioning, and SpO2 88%. This rapid assessment enabled immediate bronchodilator therapy."
+        },
+        "competent": {
+          "patient_state_at_action": ["initial", "early_deteriorating"],
+          "patient_state_after": ["initial", "early_deteriorating", "improving"],
+          "outcome_description": "Recognized severity before critical deterioration",
+          "feedback_template": "Good recognition of life-threatening asthma. You identified the severity indicators and proceeded with appropriate treatment."
+        },
+        "developing": {
+          "patient_state_at_action": ["deteriorating", "critical"],
+          "patient_state_after": ["deteriorating", "critical", "improving"],
+          "outcome_description": "Recognition delayed - patient deteriorated significantly",
+          "feedback_template": "Recognition of asthma severity was delayed. By the time you identified it as life-threatening, the patient was in {patient_state_at_action} state with silent chest developing (sign of imminent respiratory failure). What clinical findings would have alerted you earlier?"
+        },
+        "novice": {
+          "criteria": [
+            "Never recognized as life-threatening",
+            "Misdiagnosed as mild/moderate asthma",
+            "Did not identify need for aggressive treatment"
+          ],
+          "outcome_description": "Failed to recognize severity",
+          "feedback_template": "The life-threatening nature of this asthma was not recognized. Patient had classic signs: unable to speak in sentences, tripod position, accessory muscle use, SpO2 88%. This is respiratory failure in progress and requires immediate bronchodilator therapy."
+        }
       }
     },
     {
       "id": "CA3",
       "action": "Apply high-flow oxygen",
       "category": "treatment",
-      "time_target_minutes": 3,
-      "points": 15,
       "importance": "critical",
       "matching": {
         "keywords": ["oxygen", "o2"],
         "synonyms": ["non-rebreather", "nrb", "nasal cannula", "high-flow", "high flow", "mask", "15l", "15 l", "15 liters"],
         "tool_mappings": ["administer_oxygen", "apply_oxygen"],
         "exclusion_keywords": ["don't", "dont", "not yet", "should i", "do i need", "stop", "remove"]
+      },
+      "competence_assessment": {
+        "method": "outcome_based",
+        "exemplary": {
+          "patient_state_at_action": ["initial"],
+          "patient_state_after": ["initial", "improving"],
+          "outcome_description": "Oxygen applied immediately to support severe hypoxia",
+          "feedback_template": "Excellent - oxygen applied immediately to address SpO2 of 88%. This prevented further hypoxic injury while preparing bronchodilator therapy."
+        },
+        "competent": {
+          "patient_state_at_action": ["initial", "early_deteriorating"],
+          "patient_state_after": ["initial", "early_deteriorating", "improving"],
+          "outcome_description": "Oxygen applied appropriately",
+          "feedback_template": "Good oxygen therapy. Hypoxia was addressed before critical deterioration."
+        },
+        "developing": {
+          "patient_state_at_action": ["deteriorating", "critical"],
+          "patient_state_after": ["deteriorating", "critical", "improving"],
+          "outcome_description": "Oxygen delayed until severe hypoxia",
+          "feedback_template": "Oxygen was delayed until patient had severe hypoxia. SpO2 88% is a critical value requiring immediate supplemental oxygen."
+        }
       }
     },
     {
       "id": "CA4",
       "action": "Administer salbutamol nebulizer",
       "category": "treatment",
-      "time_target_minutes": 5,
-      "points": 25,
       "importance": "critical",
       "criteria": "Correct dose (5mg), oxygen-driven nebulizer",
+      "dosing": {
+        "medication": "salbutamol",
+        "dose": "5mg",
+        "route": "nebulized",
+        "driver": "oxygen"
+      },
       "matching": {
         "keywords": ["salbutamol", "albuterol"],
         "synonyms": ["ventolin", "bronchodilator", "nebulizer", "neb", "beta agonist", "5mg", "5 mg"],
         "tool_mappings": ["administer_salbutamol", "give_nebulizer"],
         "exclusion_keywords": ["don't", "dont", "not yet", "hold", "wait"]
-      }
+      },
+      "competence_assessment": {
+        "method": "outcome_based",
+        "exemplary": {
+          "patient_state_at_action": ["initial"],
+          "patient_state_after": ["improving", "stable"],
+          "outcome_description": "Bronchodilator given early, prevented respiratory failure",
+          "feedback_template": "Excellent timing - salbutamol nebulizer given while patient was still in initial state. You prevented progression to silent chest and respiratory failure. The patient responded well with improved air movement and rising SpO2. This is optimal asthma management."
+        },
+        "competent": {
+          "patient_state_at_action": ["initial", "early_deteriorating"],
+          "patient_state_after": ["improving", "stable"],
+          "outcome_description": "Bronchodilator given before critical deterioration, patient improved",
+          "feedback_template": "Effective treatment - salbutamol administered and patient responded with improved bronchodilation. Some worsening occurred but you intervened before silent chest developed."
+        },
+        "developing": {
+          "patient_state_at_action": ["deteriorating", "critical"],
+          "patient_state_after": ["improving", "stable"],
+          "outcome_description": "Bronchodilator delayed until near respiratory failure",
+          "feedback_template": "Salbutamol was delayed until patient reached {patient_state_at_action} state with silent chest developing - this is imminent respiratory failure. While treatment eventually worked, the delay allowed preventable deterioration toward respiratory arrest. In severe asthma, early bronchodilators prevent the need for intubation. What delayed the decision to give salbutamol?"
+        },
+        "novice": {
+          "criteria": [
+            "Salbutamol never administered",
+            "Wrong medication given instead (steroids only, oxygen only)",
+            "Patient reached respiratory arrest"
+          ],
+          "outcome_description": "Critical treatment omitted or patient reached arrest",
+          "feedback_template": "This is addressed as a Safety Gate issue - salbutamol is the first-line, life-saving treatment for severe asthma. Without bronchodilation, this patient will progress to respiratory failure."
+        }
+      },
+      "assessment_data_required": [
+        "action_timestamp",
+        "patient_state_at_action",
+        "patient_state_after_action",
+        "technique_correctness",
+        "dose_correctness"
+      ]
     },
     {
       "id": "CA5",
       "action": "Administer corticosteroids",
       "category": "treatment",
-      "time_target_minutes": 10,
-      "points": 10,
       "importance": "important",
       "matching": {
         "keywords": ["steroid", "corticosteroid"],
@@ -560,8 +747,6 @@
       "id": "CA6",
       "action": "Complete ABCDE assessment",
       "category": "assessment",
-      "time_target_minutes": 5,
-      "points": 10,
       "importance": "essential",
       "criteria": "All five components checked",
       "matching": {
@@ -574,8 +759,6 @@
       "id": "CA7",
       "action": "Obtain SAMPLE history",
       "category": "assessment",
-      "time_target_minutes": 8,
-      "points": 5,
       "importance": "important",
       "matching": {
         "keywords": ["sample", "history"],
@@ -587,8 +770,6 @@
       "id": "CA8",
       "action": "Monitor and reassess after treatment",
       "category": "monitoring",
-      "time_target_minutes": 10,
-      "points": 5,
       "importance": "important",
       "criteria": "Check vitals after treatment, reassess breathing",
       "matching": {

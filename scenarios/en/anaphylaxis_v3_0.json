@@ -219,7 +219,6 @@
         },
         "patient_says": "That shot... it's helping... I can breathe better...",
         "clinical_effect": "Vasoconstriction improves BP and reduces angioedema. Bronchodilation if any bronchospasm. Mast cell stabilization reduces further histamine release. Visible reduction in swelling within 5-10 minutes.",
-        "points_if_given": 35,
         "timing_critical": "Must give within 5 minutes - delay increases mortality"
       }
     },
@@ -239,8 +238,7 @@
         "time_to_effect_minutes": 1,
         "vital_changes": {
           "SpO2": 94
-        },
-        "points_if_given": 10
+        }
       }
     },
 
@@ -264,7 +262,6 @@
         "importance": "important_secondary",
         "vital_changes": {},
         "clinical_effect": "No immediate effect. Prevents biphasic reaction 1-8 hours later.",
-        "points_if_given": 5,
         "timing_note": "Give AFTER epinephrine - steroids are NOT first-line",
         "teaching_point": "Steroids do NOT treat acute anaphylaxis. Epinephrine is the ONLY first-line treatment. Steroids prevent biphasic reaction."
       }
@@ -281,7 +278,6 @@
         "importance": "adjunct_only",
         "vital_changes": {},
         "clinical_effect": "May help with urticaria and itching. Does NOT treat airway or cardiovascular compromise.",
-        "points_if_given": 3,
         "teaching_point": "Antihistamines are adjuncts only. They do NOT treat anaphylaxis - only epinephrine does. Never delay epinephrine to give antihistamines."
       }
     },
@@ -298,7 +294,6 @@
           "BP_systolic": "+10-15"
         },
         "clinical_effect": "Helps support blood pressure alongside epinephrine",
-        "points_if_given": 5,
         "teaching_point": "Fluids support BP but do NOT replace epinephrine. Anaphylaxis can cause significant third-spacing - may need several liters."
       }
     }
@@ -385,7 +380,6 @@
             "SpO2": 78
           },
           "patient_response": "Condition deteriorates rapidly. Beta-blocker blocks the body's compensatory mechanisms and prevents epinephrine from working.",
-          "points": -30,
           "state_change": "critical",
           "aar_flag": "contraindicated_medication"
         },
@@ -401,7 +395,6 @@
         "if_given": {
           "vital_changes": {},
           "patient_response": "No improvement - this is upper airway swelling (angioedema), not bronchospasm. Salbutamol doesn't help swelling. Blood pressure still low.",
-          "points": -10,
           "aar_flag": "wrong_treatment"
         },
         "teaching_point": "This is ANAPHYLAXIS not asthma. The stridor is from SWELLING not bronchospasm. Salbutamol doesn't shrink swollen tissue - epinephrine does. Never substitute bronchodilators for epinephrine in anaphylaxis."
@@ -415,7 +408,6 @@
         "why_suboptimal": "Delays life-saving epinephrine",
         "if_given": {
           "patient_response": "Antihistamine has minimal effect on airway or blood pressure. Critical time wasted.",
-          "points": -5,
           "aar_flag": "delayed_critical_treatment"
         },
         "teaching_point": "Antihistamines do NOT treat anaphylaxis. They only help with itching/hives. EPINEPHRINE is the only first-line treatment. Never delay epinephrine to give antihistamines."
@@ -423,13 +415,127 @@
     ]
   },
 
+  "progress_milestones": {
+    "enabled": true,
+    "display_location": "clinical_notes_panel",
+    "milestone_definitions": {
+      "UM1": {
+        "name": "Scene Secured",
+        "description": "Scene safety established, BSI taken"
+      },
+      "UM2": {
+        "name": "Emergency Recognized",
+        "description": "Primary problem identified"
+      },
+      "UM3": {
+        "name": "Breathing Supported",
+        "description": "Airway/breathing intervention initiated"
+      },
+      "UM4": {
+        "name": "Critical Treatment",
+        "description": "Primary life-saving treatment given"
+      },
+      "UM5": {
+        "name": "Assessment Complete",
+        "description": "ABCDE/SAMPLE/secondary exam completed"
+      },
+      "UM6": {
+        "name": "Monitoring Established",
+        "description": "Ongoing reassessment initiated"
+      }
+    },
+    "milestone_mappings": {
+      "UM1": { "trigger_actions": ["CA1"] },
+      "UM2": { "trigger_actions": ["CA2"] },
+      "UM3": { "trigger_actions": ["CA4"] },
+      "UM4": { "trigger_actions": ["CA3"] },
+      "UM5": { "trigger_actions": ["CA5", "CA6"] },
+      "UM6": { "trigger_actions": ["CA8"] }
+    }
+  },
+
+  "safety_gate": {
+    "enabled": true,
+    "tracking_mode": "silent",
+    "interrupt_scenario": false,
+    "critical_failures": [
+      {
+        "id": "SF1",
+        "type": "omission",
+        "description": "Epinephrine never administered",
+        "detection_criteria": {
+          "condition": "scenario_end AND epinephrine_given == false",
+          "patient_state_required": "anaphylaxis_confirmed"
+        },
+        "patient_outcome": "Airway obstruction progresses to arrest without epinephrine. Distributive shock leads to cardiovascular collapse. Patient dies without hospital rescue.",
+        "aar_teaching_point": "Epinephrine is the ONLY first-line treatment for anaphylaxis. Antihistamines and steroids are adjuncts, not replacements. Without epinephrine, this patient's airway will completely obstruct and cardiovascular collapse will occur. This is a lethal omission."
+      },
+      {
+        "id": "SF2",
+        "type": "commission",
+        "description": "IV epinephrine given (should be IM)",
+        "detection_criteria": {
+          "condition": "epinephrine_route == 'IV' OR epinephrine_route == 'intravenous'",
+          "exception": "cardiac_arrest_present == true"
+        },
+        "patient_outcome": "High risk of fatal arrhythmia from IV bolus. Ventricular tachycardia or ventricular fibrillation likely.",
+        "aar_teaching_point": "IV epinephrine in anaphylaxis (non-arrest) causes dangerous peak concentrations that trigger arrhythmias. IM route (0.5mg to lateral thigh) is safer, effective, and standard of care. IV epinephrine is only for cardiac arrest or as continuous infusion by specialists in ICU."
+      },
+      {
+        "id": "SF3",
+        "type": "commission",
+        "description": "Beta-blocker given in anaphylaxis",
+        "detection_criteria": {
+          "condition": "medication_given == 'propranolol' OR medication_given == 'metoprolol' OR medication_given == 'atenolol'"
+        },
+        "patient_outcome": "Beta-blocker blocks compensatory mechanisms and prevents epinephrine from working. Worsens hypotension and bronchospasm. Critical deterioration.",
+        "aar_teaching_point": "Beta-blockers are absolutely contraindicated in anaphylaxis. They block epinephrine's beta effects, worsening hypotension and preventing bronchodilation. This makes the patient refractory to epinephrine treatment."
+      },
+      {
+        "id": "SF4",
+        "type": "contraindication",
+        "description": "Medication given despite stated allergy",
+        "detection_criteria": {
+          "condition": "medication_given IN patient.allergies"
+        },
+        "patient_outcome": "Allergic reaction on top of existing anaphylaxis. Compounds emergency.",
+        "aar_teaching_point": "Always verify allergies before any medication. This patient's history was available - allergies must be checked before administering any drug."
+      }
+    ]
+  },
+
+  "scenario_states": {
+    "initial": {
+      "timing": "0-5 min",
+      "description": "Presenting anaphylaxis symptoms - angioedema, stridor, urticaria, hypotension. Patient conscious and speaking (hoarse voice). Airway compromised but patent. Responsive to assessment."
+    },
+    "early_deteriorating": {
+      "timing": "5-7 min (if untreated)",
+      "description": "First signs of worsening - angioedema progressing, stridor more pronounced, confusion beginning, blood pressure dropping further"
+    },
+    "deteriorating": {
+      "timing": "7-9 min (if untreated)",
+      "description": "Clear worsening - massive angioedema, near-complete airway obstruction, barely able to vocalize, mottled skin, altered consciousness"
+    },
+    "critical": {
+      "timing": "9-13 min (if untreated)",
+      "description": "Life-threatening state - complete or near-complete airway obstruction, unresponsive or minimally responsive, imminent respiratory and cardiovascular arrest"
+    },
+    "improving": {
+      "timing": "After effective epinephrine treatment",
+      "description": "Positive response to epinephrine - angioedema reducing, stridor resolving, voice clearing, blood pressure rising, better mental status"
+    },
+    "stable": {
+      "timing": "After sustained improvement",
+      "description": "Stabilized after treatment - airway patent, breathing comfortable, blood pressure adequate, conscious and appropriate"
+    }
+  },
+
   "critical_actions_checklist": [
     {
       "id": "CA1",
       "action": "Scene safety assessment",
       "category": "scene_safety",
-      "time_target_minutes": 1,
-      "points": 5,
       "importance": "essential",
       "matching": {
         "keywords": ["scene", "safety", "safe"],
@@ -441,50 +547,138 @@
       "id": "CA2",
       "action": "Recognize anaphylaxis",
       "category": "assessment",
-      "time_target_minutes": 2,
-      "points": 15,
       "importance": "critical",
       "criteria": "Identifies allergen exposure + skin signs + respiratory OR cardiovascular compromise",
       "matching": {
         "keywords": ["anaphylaxis", "anaphylactic"],
         "synonyms": ["severe allergic", "allergic reaction", "angioedema", "swelling", "stridor", "shock"],
         "exclusion_keywords": []
+      },
+      "competence_assessment": {
+        "method": "outcome_based",
+        "exemplary": {
+          "patient_state_at_action": ["initial"],
+          "patient_state_after": ["initial", "improving"],
+          "outcome_description": "Recognized anaphylaxis immediately based on multi-system presentation",
+          "feedback_template": "Excellent recognition - you identified anaphylaxis based on allergen exposure, urticaria, stridor, and hypotension. This rapid diagnosis enabled immediate appropriate treatment. Your systematic assessment caught all the key criteria."
+        },
+        "competent": {
+          "patient_state_at_action": ["initial", "early_deteriorating"],
+          "patient_state_after": ["initial", "early_deteriorating", "improving"],
+          "outcome_description": "Recognized anaphylaxis before critical deterioration",
+          "feedback_template": "Good recognition of anaphylaxis. You identified the multi-system nature of the emergency and proceeded with appropriate treatment before the patient reached a critical state."
+        },
+        "developing": {
+          "patient_state_at_action": ["deteriorating", "critical"],
+          "patient_state_after": ["deteriorating", "critical", "improving"],
+          "outcome_description": "Recognition delayed - patient deteriorated significantly before diagnosis",
+          "feedback_template": "Recognition of anaphylaxis was delayed. By the time you identified it, Rudolf was in {patient_state_at_action} state with massive angioedema and severe airway compromise. What clinical findings would have helped you recognize this earlier?"
+        },
+        "novice": {
+          "criteria": [
+            "Never recognized anaphylaxis",
+            "Misdiagnosed as isolated asthma or allergic reaction",
+            "Did not proceed with appropriate treatment"
+          ],
+          "outcome_description": "Failed to recognize anaphylaxis or misdiagnosed condition",
+          "feedback_template": "Anaphylaxis was not recognized. This patient had classic presentation: allergen exposure (bee sting) + skin signs (urticaria, angioedema) + respiratory compromise (stridor) + cardiovascular compromise (hypotension 88/60). This is life-threatening and requires immediate recognition. What was your diagnostic thinking?"
+        }
       }
     },
     {
       "id": "CA3",
       "action": "Administer epinephrine IM",
       "category": "treatment",
-      "time_target_minutes": 3,
-      "points": 35,
       "importance": "critical",
       "criteria": "0.5mg IM into lateral thigh",
+      "dosing": {
+        "medication": "epinephrine",
+        "dose": "0.5mg",
+        "route": "IM",
+        "location": "lateral thigh"
+      },
       "matching": {
         "keywords": ["epinephrine", "adrenaline", "epipen"],
         "synonyms": ["epi", "adrenalin", "0.5mg", "0.5 mg", "intramuscular", "im", "thigh", "jext"],
         "tool_mappings": ["administer_epinephrine", "give_epi"],
         "exclusion_keywords": ["don't", "dont", "should i", "not yet", "iv"]
-      }
+      },
+      "competence_assessment": {
+        "method": "outcome_based",
+        "exemplary": {
+          "patient_state_at_action": ["initial"],
+          "patient_state_after": ["improving", "stable"],
+          "outcome_description": "Prevented deterioration entirely - epinephrine given while patient in initial state",
+          "feedback_template": "Excellent timing - epinephrine given early while Rudolf was still in initial state. You prevented him from deteriorating into critical airway obstruction. His stridor resolved, angioedema reduced, and blood pressure stabilized. This is textbook anaphylaxis management - immediate recognition and immediate epinephrine."
+        },
+        "competent": {
+          "patient_state_at_action": ["initial", "early_deteriorating"],
+          "patient_state_after": ["improving", "stable"],
+          "outcome_description": "Patient stabilized with minor deterioration",
+          "feedback_template": "Effective treatment - epinephrine administered and Rudolf improved. Some initial worsening occurred but you intervened before he reached critical state. His airway remained manageable and he responded well to treatment."
+        },
+        "developing": {
+          "patient_state_at_action": ["deteriorating", "critical"],
+          "patient_state_after": ["improving", "stable"],
+          "outcome_description": "High-risk state reached before treatment",
+          "feedback_template": "Epinephrine was delayed until Rudolf reached {patient_state_at_action} state. At that point, he had massive angioedema with near-complete airway obstruction - this is a surgical airway emergency in the making. While treatment eventually worked, those minutes of delay allowed preventable airway compromise that put him at high risk of death. In anaphylaxis, minutes matter. What delayed your decision to give epinephrine?"
+        },
+        "novice": {
+          "criteria": [
+            "Epinephrine never administered",
+            "IV route used (except in arrest)",
+            "Wrong medication given instead (antihistamines, steroids, bronchodilators only)",
+            "Patient reached arrest state due to delayed treatment"
+          ],
+          "outcome_description": "Serious harm or would die without hospital rescue",
+          "feedback_template": "This is addressed as a Safety Gate issue - epinephrine is the ONLY first-line treatment for anaphylaxis. Without it, this patient will die from airway obstruction and cardiovascular collapse."
+        }
+      },
+      "assessment_data_required": [
+        "action_timestamp",
+        "patient_state_at_action",
+        "patient_state_after_action",
+        "technique_correctness",
+        "dose_correctness",
+        "route_correctness"
+      ]
     },
     {
       "id": "CA4",
       "action": "Apply high-flow oxygen",
       "category": "treatment",
-      "time_target_minutes": 3,
-      "points": 10,
       "importance": "critical",
       "matching": {
         "keywords": ["oxygen", "o2"],
         "synonyms": ["nrb", "mask", "15l"],
         "exclusion_keywords": ["don't", "dont"]
+      },
+      "competence_assessment": {
+        "method": "outcome_based",
+        "exemplary": {
+          "patient_state_at_action": ["initial"],
+          "patient_state_after": ["initial", "improving"],
+          "outcome_description": "Oxygen applied early, supporting oxygenation before significant desaturation",
+          "feedback_template": "Good airway management - oxygen applied early while SpO2 was still manageable. This prevented further hypoxic stress while preparing for definitive treatment."
+        },
+        "competent": {
+          "patient_state_at_action": ["initial", "early_deteriorating"],
+          "patient_state_after": ["initial", "early_deteriorating", "improving"],
+          "outcome_description": "Oxygen applied appropriately",
+          "feedback_template": "Appropriate oxygen therapy. Patient's oxygenation was supported adequately."
+        },
+        "developing": {
+          "patient_state_at_action": ["deteriorating", "critical"],
+          "patient_state_after": ["deteriorating", "critical", "improving"],
+          "outcome_description": "Oxygen delayed until significant hypoxia occurred",
+          "feedback_template": "Oxygen was delayed until Rudolf's SpO2 had dropped significantly. Early oxygen is a basic supportive measure in respiratory distress. What was your reasoning for the delay?"
+        }
       }
     },
     {
       "id": "CA5",
       "action": "Establish IV access",
       "category": "treatment",
-      "time_target_minutes": 5,
-      "points": 5,
       "importance": "important",
       "matching": {
         "keywords": ["iv", "intravenous"],
@@ -496,8 +690,6 @@
       "id": "CA6",
       "action": "Administer IV fluids",
       "category": "treatment",
-      "time_target_minutes": 7,
-      "points": 5,
       "importance": "important",
       "criteria": "Crystalloid bolus for hypotension",
       "matching": {
@@ -510,8 +702,6 @@
       "id": "CA7",
       "action": "Administer corticosteroids",
       "category": "treatment",
-      "time_target_minutes": 10,
-      "points": 5,
       "importance": "important",
       "criteria": "After epinephrine - for biphasic prevention",
       "matching": {
@@ -524,8 +714,6 @@
       "id": "CA8",
       "action": "Reassess and consider second epinephrine dose",
       "category": "monitoring",
-      "time_target_minutes": 10,
-      "points": 5,
       "importance": "important",
       "matching": {
         "keywords": ["reassess", "second dose", "repeat"],
@@ -576,29 +764,48 @@
 
   "consequence_templates": [
     {
-      "gap_trigger": "CA3_late",
+      "gap_trigger": "CA3_delayed",
       "checklist_item_id": "CA3",
       "gap_type": "delayed_action",
-      "template": "Epinephrine was given at {actual_time} minutes (target: {target_time} minutes). During the {delay_minutes} minute delay, {patient_name}'s airway continued to swell and blood pressure continued to drop. Anaphylaxis mortality is directly linked to time-to-epinephrine. Those {delay_minutes} minutes allowed progressive airway compromise that could have been prevented.",
+      "template": "When you administered epinephrine, {patient_name} was already in {patient_state_at_action} state. His angioedema had progressed significantly from the initial presentation, and his airway was in critical jeopardy. The deterioration from initial state to {patient_state_at_action} state represents preventable airway compromise. Every minute without epinephrine allowed the angioedema to worsen, increasing the risk of complete airway obstruction. This patient was minutes away from needing a surgical airway.",
       "variables": {
-        "actual_time": "checklistResults.CA3.time",
-        "target_time": "3",
-        "delay_minutes": "calculated",
-        "patient_name": "patient_profile.name"
+        "patient_name": "patient_profile.name",
+        "patient_state_at_action": "stateTracker.getStateAtTime(action.timestamp)",
+        "spo2_at_action": "stateTracker.vitals_at_action.SpO2",
+        "bp_at_action": "stateTracker.vitals_at_action.BP",
+        "initial_spo2": "blueprint.initial_vitals.SpO2",
+        "initial_bp": "blueprint.initial_vitals.BP_systolic"
       },
       "severity": "critical",
-      "medical_basis": "Studies show anaphylaxis deaths are associated with delayed epinephrine. Airway edema and cardiovascular collapse progress rapidly without treatment."
+      "medical_basis": "Studies show anaphylaxis deaths are associated with delayed epinephrine. Airway edema and cardiovascular collapse progress rapidly without treatment. Patient state progression from initial to deteriorating/critical increases mortality risk exponentially."
     },
     {
       "gap_trigger": "CA3_missed",
       "checklist_item_id": "CA3",
       "gap_type": "missed_action",
-      "template": "Epinephrine was NEVER given. {patient_name} had life-threatening anaphylaxis with airway compromise and shock, yet the only treatment that could save his life was withheld. This represents a critical failure. There is NO substitute for epinephrine in anaphylaxis - not antihistamines, not steroids, nothing.",
+      "template": "Epinephrine was NEVER given. {patient_name} had life-threatening anaphylaxis with airway compromise (stridor, angioedema) and distributive shock (BP {initial_bp}/{initial_bp_diastolic}). Without epinephrine, his airway would have completely obstructed and cardiovascular collapse would have occurred. He reached {final_patient_state} state. This represents a critical failure - there is NO substitute for epinephrine in anaphylaxis. Not antihistamines, not steroids, nothing.",
       "variables": {
-        "patient_name": "patient_profile.name"
+        "patient_name": "patient_profile.name",
+        "initial_bp": "blueprint.initial_vitals.BP_systolic",
+        "initial_bp_diastolic": "blueprint.initial_vitals.BP_diastolic",
+        "final_patient_state": "stateTracker.getFinalState()"
       },
       "severity": "critical",
-      "medical_basis": "Failure to give epinephrine in anaphylaxis is the leading cause of preventable anaphylaxis deaths. No other medication treats the underlying pathophysiology."
+      "medical_basis": "Failure to give epinephrine in anaphylaxis is the leading cause of preventable anaphylaxis deaths. No other medication treats the underlying pathophysiology (mast cell degranulation, vasodilation, increased vascular permeability)."
+    },
+    {
+      "gap_trigger": "CA4_delayed",
+      "checklist_item_id": "CA4",
+      "gap_type": "delayed_action",
+      "template": "When you applied oxygen, {patient_name}'s SpO2 had already dropped to {spo2_at_action}% from the initial {initial_spo2}%. This decline represents preventable hypoxic stress. In a patient with compromised airway from angioedema, maintaining oxygenation is critical to prevent secondary brain injury.",
+      "variables": {
+        "patient_name": "patient_profile.name",
+        "spo2_at_action": "stateTracker.vitals_at_action.SpO2",
+        "initial_spo2": "blueprint.initial_vitals.SpO2",
+        "patient_state_at_action": "stateTracker.getStateAtTime(action.timestamp)"
+      },
+      "severity": "moderate",
+      "medical_basis": "Hypoxia compounds the emergency. Early oxygen is a basic supportive measure in respiratory distress."
     }
   ],
 

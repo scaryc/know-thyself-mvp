@@ -35,8 +35,30 @@ export function buildFullAARContext(session) {
       // Full conversation transcript
       transcript: perf.fullTranscript || [],
 
-      // Structured performance data
+      // Structured performance data (V3.0 Enhanced)
       performance: {
+        // V3.0: Outcome-based competence assessment
+        competence_assessment: perf.competence_assessment || null,
+        overall_competence: perf.overall_competence || null,
+
+        // V3.0: Safety Gate (HIGHEST PRIORITY)
+        safety_gate: perf.safetyGate || perf.safety_gate || null,
+        critical_failures: perf.safetyGate?.failures || perf.critical_failures || [],
+
+        // V3.0: Outcome-based consequence feedback
+        outcomeBasedFeedback: perf.outcomeBasedFeedback || [],
+
+        // V3.0: Progress Milestones
+        progress_milestones: perf.progress_milestones || null,
+
+        // V3.0: Patient State Progression
+        patient_progression: perf.patient_progression || null,
+
+        // Action details with competence levels
+        completed_actions: perf.completed_actions || [],
+        missed_actions: perf.missed_actions || [],
+
+        // Legacy data (for backward compatibility)
         structuredMemory: perf.structuredMemory || {},
         cdpEvaluations: perf.cdpEvaluations || [],
         stateHistory: perf.stateHistory || [],
@@ -122,16 +144,41 @@ function formatBlueprintSummary(blueprint) {
     summary += `**Chief Complaint:** ${p.chief_complaint || 'Not specified'}\n\n`;
   }
 
-  // Critical actions checklist
-  if (blueprint.critical_actions_checklist?.length > 0) {
-    summary += `**Critical Actions Checklist:**\n`;
-    for (const action of blueprint.critical_actions_checklist) {
-      summary += `- ${action.id}: ${action.action} (target: ${action.time_target_minutes} min, ${action.importance})\n`;
+  // V3.0: Safety Gate Critical Failures
+  if (blueprint.safety_gate?.enabled && blueprint.safety_gate.critical_failures?.length > 0) {
+    summary += `**Safety Gate - Critical Failures to Monitor:**\n`;
+    for (const failure of blueprint.safety_gate.critical_failures) {
+      summary += `- ${failure.id}: ${failure.description} (${failure.type})\n`;
     }
     summary += '\n';
   }
 
-  // CDPs
+  // V3.0: Progress Milestones
+  if (blueprint.progress_milestones?.enabled && blueprint.progress_milestones.milestone_definitions) {
+    summary += `**Progress Milestones (Universal):**\n`;
+    for (const [id, milestone] of Object.entries(blueprint.progress_milestones.milestone_definitions)) {
+      summary += `- ${id}: ${milestone.name}\n`;
+    }
+    summary += '\n';
+  }
+
+  // Critical actions checklist (V3.0: no time targets or points)
+  if (blueprint.critical_actions_checklist?.length > 0) {
+    summary += `**Critical Actions Checklist:**\n`;
+    for (const action of blueprint.critical_actions_checklist) {
+      summary += `- ${action.id}: ${action.action} (${action.importance || 'standard'})\n`;
+      if (action.clinical_anchor) {
+        summary += `  Clinical Anchor: "${action.clinical_anchor}"\n`;
+      }
+      // V3.0: Show competence assessment method
+      if (action.competence_assessment?.method === 'outcome_based') {
+        summary += `  Assessment: Outcome-based (patient state at action & after)\n`;
+      }
+    }
+    summary += '\n';
+  }
+
+  // CDPs (legacy, may be deprecated in V3.0)
   if (blueprint.critical_decision_points?.points?.length > 0) {
     summary += `**Critical Decision Points:**\n`;
     for (const cdp of blueprint.critical_decision_points.points) {
@@ -143,7 +190,7 @@ function formatBlueprintSummary(blueprint) {
     summary += '\n';
   }
 
-  // Common errors with clinical anchors
+  // Common errors with clinical anchors (legacy)
   if (blueprint.common_errors?.length > 0) {
     summary += `**Common Errors & Teaching Points:**\n`;
     for (const error of blueprint.common_errors) {
@@ -180,47 +227,158 @@ function formatTranscript(transcript) {
 function formatPerformanceData(performance) {
   let formatted = '';
 
-  // Checklist Summary (if Phase 2 is implemented)
-  if (performance.checklistSummary) {
-    const cs = performance.checklistSummary;
-    formatted += `**Checklist Performance:**\n`;
-    formatted += `- Score: ${cs.totalPoints}/${cs.maxPoints} points (${cs.percentageScore}%)\n`;
-    formatted += `- Completed: ${cs.completedCount}/${cs.totalItems} actions\n`;
-    formatted += `- On Time: ${cs.onTimeCount}, Late: ${cs.lateCount}\n`;
+  // ===== V3.0: SAFETY GATE (HIGHEST PRIORITY) =====
+  if (performance.safety_gate) {
+    formatted += `**🚨 SAFETY GATE ASSESSMENT:**\n`;
+    formatted += `- Status: ${performance.safety_gate.passed ? '✅ PASSED' : '❌ FAILED'}\n`;
 
-    if (cs.hasCriticalMisses) {
-      formatted += `- ⚠️ CRITICAL ACTIONS MISSED: ${cs.criticalMissed.join(', ')}\n`;
+    if (!performance.safety_gate.passed && performance.critical_failures?.length > 0) {
+      formatted += `- Critical Failures Detected: ${performance.critical_failures.length}\n\n`;
+      formatted += `**CRITICAL FAILURES (Patient-Harming Errors):**\n`;
+
+      for (const failure of performance.critical_failures) {
+        formatted += `\n**${failure.type.toUpperCase()}: ${failure.description}**\n`;
+        formatted += `- Occurred at: ${failure.timestamp} minutes\n`;
+        formatted += `- Patient Outcome: ${failure.patient_outcome}\n`;
+        formatted += `- Teaching Point: ${failure.teaching_point}\n`;
+      }
+      formatted += '\n';
+    } else {
+      formatted += `- No critical safety failures detected\n\n`;
     }
-    if (cs.essentialMissed && cs.essentialMissed.length > 0) {
-      formatted += `- Essential actions missed: ${cs.essentialMissed.join(', ')}\n`;
+  }
+
+  // ===== V3.0: OUTCOME-BASED CONSEQUENCE FEEDBACK =====
+  if (performance.outcomeBasedFeedback && performance.outcomeBasedFeedback.length > 0) {
+    formatted += `**📊 OUTCOME-BASED PERFORMANCE FEEDBACK:**\n`;
+    formatted += `- ${performance.outcomeBasedFeedback.length} action(s) require debriefing\n\n`;
+
+    for (const feedback of performance.outcomeBasedFeedback) {
+      formatted += `**${feedback.action_id}: ${feedback.action_name}**\n`;
+      formatted += `- Competence Level: ${feedback.competence_level}\n`;
+
+      if (feedback.omission) {
+        formatted += `- Status: OMITTED (never performed)\n`;
+        formatted += `- Patient State at End: ${feedback.patient_state_at_end}\n`;
+      } else {
+        formatted += `- Patient State at Action: ${feedback.patient_state_at_action}\n`;
+        formatted += `- Patient State After: ${feedback.patient_state_after}\n`;
+
+        // Show vital signs if available
+        if (feedback.vitals_at_action && Object.keys(feedback.vitals_at_action).length > 0) {
+          formatted += `- Vitals at Action:`;
+          for (const [vital, value] of Object.entries(feedback.vitals_at_action)) {
+            formatted += ` ${vital}=${value}`;
+          }
+          formatted += '\n';
+        }
+
+        if (feedback.elapsed_minutes) {
+          formatted += `- Timing: ${feedback.elapsed_minutes.toFixed(1)} minutes into scenario\n`;
+        }
+      }
+
+      if (feedback.feedback_text) {
+        formatted += `- Outcome Feedback: ${feedback.feedback_text}\n`;
+      }
+
+      if (feedback.clinical_anchor) {
+        formatted += `- Clinical Anchor: "${feedback.clinical_anchor}"\n`;
+      }
+
+      if (feedback.teaching_point) {
+        formatted += `- Teaching Point: ${feedback.teaching_point}\n`;
+      }
+
+      formatted += '\n';
     }
-    if (cs.averageDelay > 0) {
-      formatted += `- Average delay (late actions): ${cs.averageDelay} minutes\n`;
+  }
+
+  // ===== V3.0: OVERALL COMPETENCE ASSESSMENT =====
+  if (performance.overall_competence) {
+    formatted += `**OVERALL COMPETENCE ASSESSMENT:**\n`;
+    formatted += `- Level: ${performance.overall_competence.level.toUpperCase()}\n`;
+    formatted += `- ${performance.overall_competence.description}\n`;
+    formatted += `- Rationale: ${performance.overall_competence.rationale}\n\n`;
+  }
+
+  // ===== V3.0: COMPETENCE DISTRIBUTION =====
+  if (performance.competence_assessment?.distribution) {
+    const dist = performance.competence_assessment.distribution;
+    formatted += `**Competence Distribution:**\n`;
+    formatted += `- Exemplary: ${dist.exemplary} actions\n`;
+    formatted += `- Competent: ${dist.competent} actions\n`;
+    formatted += `- Developing: ${dist.developing} actions\n`;
+    formatted += `- Novice: ${dist.novice} actions\n\n`;
+  }
+
+  // ===== V3.0: DETAILED ACTION ASSESSMENT =====
+  if (performance.completed_actions?.length > 0) {
+    formatted += `**Critical Actions - Outcome-Based Assessment:**\n`;
+    for (const action of performance.completed_actions) {
+      const level = action.competence_level?.toUpperCase() || 'N/A';
+      formatted += `\n- ${action.action}\n`;
+      formatted += `  Competence Level: ${level}\n`;
+      formatted += `  Time: ${action.timestamp_minutes?.toFixed(1) || action.minutesMark?.toFixed(1) || 'N/A'} minutes\n`;
+      formatted += `  Patient State at Action: ${action.patient_state_at_action || 'N/A'}\n`;
+      formatted += `  Patient State After: ${action.patient_state_after || 'N/A'}\n`;
+      formatted += `  Outcome: ${action.outcome_description || 'N/A'}\n`;
     }
     formatted += '\n';
   }
 
-  // Detailed Checklist Results (if Phase 2 is implemented)
-  if (performance.checklistResults?.length > 0) {
-    formatted += `**Checklist Details (Completed):**\n`;
-    for (const item of performance.checklistResults) {
-      const timing = item.onTime
-        ? `✅ on time`
-        : `⚠️ ${item.minutesLate?.toFixed(1) || 0} min late`;
-      formatted += `- ${item.id}: ${item.action}\n`;
-      formatted += `  Time: ${item.time?.toFixed(1) || 0} min (target: ${item.target} min) - ${timing}\n`;
-      formatted += `  Points: ${item.points}/${item.maxPoints}\n`;
+  // ===== V3.0: MISSED CRITICAL ACTIONS =====
+  if (performance.missed_actions?.length > 0) {
+    formatted += `**Missed Critical Actions:**\n`;
+    for (const action of performance.missed_actions) {
+      formatted += `- ${action.action} (${action.importance || 'standard'})\n`;
+      if (action.clinical_anchor) {
+        formatted += `  Clinical Anchor: "${action.clinical_anchor}"\n`;
+      }
     }
     formatted += '\n';
   }
 
-  if (performance.checklistSummary?.missed?.length > 0) {
-    formatted += `**Checklist Details (Missed):**\n`;
-    for (const item of performance.checklistSummary.missed) {
-      formatted += `- ${item.id}: ${item.action} (${item.importance}) - ❌ NOT COMPLETED\n`;
+  // ===== V3.0: PROGRESS MILESTONES =====
+  if (performance.progress_milestones) {
+    const pm = performance.progress_milestones;
+    formatted += `**Progress Milestones:**\n`;
+    formatted += `- Completed: ${pm.completed}/${pm.totalMilestones}\n`;
+    formatted += `- Completion Rate: ${(pm.completionRate * 100).toFixed(0)}%\n`;
+
+    if (pm.milestones && pm.milestones.length > 0) {
+      formatted += `\nCompleted Milestones:\n`;
+      for (const milestone of pm.milestones) {
+        if (milestone.completed) {
+          formatted += `- ${milestone.name} (${milestone.timestampFormatted || milestone.timestamp?.toFixed(1) + ' min'})\n`;
+        }
+      }
     }
     formatted += '\n';
   }
+
+  // ===== V3.0: PATIENT STATE PROGRESSION =====
+  if (performance.patient_progression) {
+    const pp = performance.patient_progression;
+    formatted += `**Patient State Progression:**\n`;
+    formatted += `- Initial State: ${pp.initial_state || 'initial'}\n`;
+    formatted += `- Final State: ${pp.final_state}\n`;
+    formatted += `- Worst State Reached: ${pp.worst_state_reached}\n`;
+    formatted += `- Critical Treatment Given: ${pp.critical_treatment_given ? 'Yes' : 'No'}\n`;
+    formatted += `- Duration: ${pp.duration_minutes?.toFixed(1) || 'N/A'} minutes\n`;
+
+    if (pp.state_history && pp.state_history.length > 0) {
+      formatted += `\nState Transition Timeline:\n`;
+      for (const transition of pp.state_history) {
+        formatted += `- ${transition.elapsedMinutes?.toFixed(1) || 'N/A'} min: ${transition.state}`;
+        if (transition.reason) formatted += ` (${transition.reason})`;
+        formatted += '\n';
+      }
+    }
+    formatted += '\n';
+  }
+
+  // ===== LEGACY DATA (Backward Compatibility) =====
 
   // CDP Evaluations
   if (performance.cdpEvaluations?.length > 0) {

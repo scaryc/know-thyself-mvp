@@ -1333,6 +1333,89 @@ function buildMedicationSafetyContext(dangerousMedications) {
 }
 
 /**
+ * Build medication safety context for Core Agent using V3.0 rich data
+ * Provides detailed patient response and vital changes from V3.0 scenarios
+ * Enables accurate, educational AI responses showing specific patient deterioration
+ * @param {Object} medicationIssue - Medication issue with V3.0 rich data
+ * @returns {string} - Formatted context for Core Agent prompt
+ */
+function buildMedicationSafetyContext_V3(medicationIssue) {
+  if (!medicationIssue) return '';
+
+  // Build detailed context using V3.0 rich data
+  let context = '\n=== ';
+
+  // Header based on severity
+  if (medicationIssue.severity === 'critical_harm') {
+    context += 'CRITICAL MEDICATION EVENT (SAFETY GATE FAILURE)';
+  } else if (medicationIssue.severity === 'worsens') {
+    context += 'MEDICATION CONCERN';
+  } else {
+    context += 'MEDICATION EVENT';
+  }
+
+  context += ' ===\n';
+
+  // Core medication info
+  context += `\nMEDICATION GIVEN: ${medicationIssue.medication}`;
+  if (medicationIssue.matchedName !== medicationIssue.medication) {
+    context += ` (matched: "${medicationIssue.matchedName}")`;
+  }
+  context += '\n';
+
+  context += `SEVERITY: ${medicationIssue.severity.toUpperCase()}\n`;
+  context += `REASON: ${medicationIssue.reason}\n`;
+
+  // Patient state information
+  if (medicationIssue.patient_state_at_action) {
+    context += `\nPATIENT STATE BEFORE: ${medicationIssue.patient_state_at_action}\n`;
+  }
+  if (medicationIssue.state_change) {
+    context += `PATIENT STATE AFTER: ${medicationIssue.state_change}\n`;
+  }
+
+  // V3.0 Rich Data: Patient Response
+  if (medicationIssue.patient_response) {
+    context += `\nPATIENT RESPONSE (USE THIS IN YOUR REPLY):\n`;
+    context += `${medicationIssue.patient_response}\n`;
+  }
+
+  // V3.0 Rich Data: Vital Changes
+  if (medicationIssue.vital_changes && Object.keys(medicationIssue.vital_changes).length > 0) {
+    context += `\nVITAL SIGN CHANGES (REFLECT THESE):\n`;
+    for (const [vital, value] of Object.entries(medicationIssue.vital_changes)) {
+      context += `- ${vital}: ${typeof value === 'number' ? value : `changes by ${value}`}\n`;
+    }
+  }
+
+  // Clinical Note
+  if (medicationIssue.clinical_note) {
+    context += `\nCLINICAL NOTE:\n${medicationIssue.clinical_note}\n`;
+  }
+
+  // Instructions for Core Agent
+  context += `\nINSTRUCTION:\n`;
+  context += `Your next response must show these adverse effects happening.\n`;
+
+  if (medicationIssue.patient_response) {
+    context += `Use the patient response text above as guidance for what happens.\n`;
+  }
+
+  if (medicationIssue.state_change) {
+    context += `The patient's condition should WORSEN to ${medicationIssue.state_change} state.\n`;
+  }
+
+  context += `Stay in character but make the adverse reaction clear and concerning.\n`;
+  context += `Continue the scenario naturally - do not interrupt or warn the student.\n`;
+
+  if (medicationIssue.severity === 'critical_harm') {
+    context += `This will be addressed as a Safety Gate failure in AAR debriefing.\n`;
+  }
+
+  return context;
+}
+
+/**
  * Helper functions for CDP criteria checking
  * These check if student actions meet various performance criteria
  */
@@ -1638,6 +1721,274 @@ function checkMedicationSafety(session, userMessage) {
   }
 
   return detectedDangers.length > 0 ? detectedDangers : null;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// V3.0 MEDICATION SAFETY SYSTEM
+// Direct integration with V3.0 scenario structure (secondary_medications_by_impact)
+// Implements outcome-based assessment (NO POINTS, uses severity levels)
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Brand name to generic name mapping for medication detection
+ * Used by detectMedicationMention() to catch brand name usage
+ */
+const BRAND_VARIANTS = {
+  'diazepam': ['apaurin', 'valium', 'seduxen'],
+  'morphine': ['morphin', 'mst', 'oramorph'],
+  'propranolol': ['inderal'],
+  'metoprolol': ['betaloc', 'lopressor'],
+  'flumazenil': ['anexate'],
+  'naloxone': ['narcan', 'nyxoid'],
+  'epinephrine': ['adrenaline', 'adrenalin', 'epipen', 'jext'],
+  'salbutamol': ['albuterol', 'ventolin'],
+  'insulin': ['novorapid', 'lantus', 'humalog', 'actrapid'],
+  'hydrocortisone': ['solu-cortef'],
+  'methylprednisolone': ['solu-medrol'],
+  'midazolam': ['dormicum'],
+  'lorazepam': ['ativan'],
+  'fentanyl': ['durogesic', 'actiq'],
+  'ketamine': ['ketalar'],
+  'atropine': ['atropin']
+};
+
+/**
+ * Helper: Detect if a medication is mentioned in user message
+ * Checks medication name, generic name, and brand variants
+ * @param {Object} med - Medication object from V3.0 scenario
+ * @param {string} lowerMessage - Lowercase user message
+ * @returns {boolean|string} - False if not detected, matched name if detected
+ */
+function detectMedicationMention(med, lowerMessage) {
+  // Check medication name (e.g., "apaurin")
+  if (med.name && lowerMessage.includes(med.name.toLowerCase())) {
+    return med.name;
+  }
+
+  // Check generic name (e.g., "diazepam")
+  if (med.generic_name && lowerMessage.includes(med.generic_name.toLowerCase())) {
+    return med.generic_name;
+  }
+
+  // Check brand variants based on generic name
+  const genericLower = med.generic_name?.toLowerCase();
+  if (genericLower && BRAND_VARIANTS[genericLower]) {
+    for (const variant of BRAND_VARIANTS[genericLower]) {
+      if (lowerMessage.includes(variant)) {
+        return variant;
+      }
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Helper: Create medication issue object with V3.0 rich data
+ * NO POINTS - uses severity levels instead (critical_harm, worsens, neutral)
+ * @param {Object} med - Medication object from V3.0 scenario
+ * @param {string} severity - Severity category from V3.0
+ * @param {Object} session - Current session
+ * @param {string} matchedName - The name/brand that was matched
+ * @returns {Object} - Structured medication issue
+ */
+function createMedicationIssue(med, severity, session, matchedName) {
+  const elapsedMinutes = (Date.now() - session.scenarioStartTime) / 60000;
+
+  return {
+    // Core identification
+    medication: med.generic_name || med.name,
+    matchedName: matchedName,
+
+    // Severity (NOT points - outcome-based assessment)
+    severity: severity,
+    reason: med.why_dangerous || med.reason || 'Inappropriate for this patient',
+
+    // V3.0 Rich Data for Core Agent
+    patient_response: med.if_given?.patient_response,
+    vital_changes: med.if_given?.vital_changes,
+    clinical_note: med.if_given?.clinical_note,
+    state_change: med.if_given?.state_change,
+
+    // Safety Gate Data (for AAR)
+    is_safety_gate_failure: severity === 'critical_harm',
+    aar_teaching_point: med.teaching_point,
+
+    // Context
+    patient_state_at_action: session.currentPatientState || 'unknown',
+    timestamp: Date.now(),
+    elapsedMinutes: elapsedMinutes,
+    userMessage: session.lastUserMessage
+  };
+}
+
+/**
+ * Helper: Apply vital sign changes from medication administration
+ * Updates session.currentVitals with V3.0 specified changes
+ * @param {Object} session - Current session
+ * @param {Object} vitalChanges - Vital changes object from V3.0 scenario
+ */
+function applyVitalChanges(session, vitalChanges) {
+  if (!vitalChanges || !session.currentVitals) return;
+
+  // Apply each vital change
+  for (const [vital, value] of Object.entries(vitalChanges)) {
+    if (typeof value === 'number') {
+      // Absolute value
+      session.currentVitals[vital] = value;
+    } else if (typeof value === 'string' && (value.startsWith('+') || value.startsWith('-'))) {
+      // Relative change (e.g., "+10-15" or "-20")
+      const numMatch = value.match(/[+-]?\d+/);
+      if (numMatch && session.currentVitals[vital]) {
+        session.currentVitals[vital] += parseInt(numMatch[0]);
+      }
+    }
+  }
+}
+
+/**
+ * Helper: Log medication error as Safety Gate failure
+ * Replaces deprecated CDP rating system - V3.0 uses Safety Gate for critical failures
+ * @param {Object} session - Current session
+ * @param {Object} med - Medication object from V3.0 scenario
+ * @param {string} matchedName - The name/brand that was matched
+ */
+function logSafetyGateFailure(session, med, matchedName) {
+  if (!session.safetyGateFailures) {
+    session.safetyGateFailures = [];
+  }
+
+  const elapsedMinutes = (Date.now() - session.scenarioStartTime) / 60000;
+
+  session.safetyGateFailures.push({
+    id: `SF_MED_${(med.generic_name || med.name).toUpperCase().replace(/\s+/g, '_')}`,
+    type: 'commission',
+    description: `${med.generic_name || med.name} administered (matched: "${matchedName}") - ${med.why_dangerous || med.reason}`,
+    timestamp: Date.now(),
+    elapsedMinutes: elapsedMinutes,
+    patient_outcome: med.if_given?.patient_response,
+    aar_teaching_point: med.teaching_point,
+    vital_changes: med.if_given?.vital_changes,
+    state_change: med.if_given?.state_change
+  });
+
+  console.warn('🚨 SAFETY GATE FAILURE:', med.generic_name || med.name, '- Commission error');
+}
+
+/**
+ * V3.0 Medication Safety Check
+ * Directly reads V3.0 secondary_medications_by_impact structure
+ * Detects dangerous medications and logs Safety Gate failures
+ * @param {Object} session - Current session
+ * @param {string} userMessage - Student's message/action
+ * @returns {Array|null} - Array of detected issues with V3.0 rich data, or null
+ */
+function checkMedicationSafety_V3(session, userMessage) {
+  // Guard: If scenario not loaded yet, skip check
+  if (!session.scenario) return null;
+
+  const scenario = session.scenario;
+  const secondaryMeds = scenario.secondary_medications_by_impact;
+
+  // Guard: No V3.0 medication data
+  if (!secondaryMeds) return null;
+
+  const lowerMessage = userMessage.toLowerCase();
+  const detectedIssues = [];
+
+  // Store user message for context
+  session.lastUserMessage = userMessage;
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // Process CRITICAL_HARM medications (Safety Gate failures)
+  // ═══════════════════════════════════════════════════════════════════════
+  if (secondaryMeds.critical_harm && Array.isArray(secondaryMeds.critical_harm)) {
+    for (const med of secondaryMeds.critical_harm) {
+      const matchedName = detectMedicationMention(med, lowerMessage);
+      if (matchedName) {
+        // Create issue with V3.0 rich data
+        const issue = createMedicationIssue(med, 'critical_harm', session, matchedName);
+
+        // Apply vital changes immediately
+        if (med.if_given?.vital_changes) {
+          applyVitalChanges(session, med.if_given.vital_changes);
+        }
+
+        // Update patient state if specified
+        if (med.if_given?.state_change) {
+          session.currentPatientState = med.if_given.state_change;
+        }
+
+        // Log as Safety Gate failure
+        logSafetyGateFailure(session, med, matchedName);
+
+        detectedIssues.push(issue);
+
+        // Log to critical actions (legacy compatibility)
+        session.criticalActionsLog.push({
+          action: 'dangerous_medication_given',
+          ...issue
+        });
+
+        // Increment safety violations counter
+        session.safetyViolations = (session.safetyViolations || 0) + 1;
+
+        console.warn('⚠️ CRITICAL_HARM MEDICATION DETECTED:', med.generic_name || med.name, '-', matchedName);
+      }
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // Process WORSENS medications (tracked but not Safety Gate)
+  // ═══════════════════════════════════════════════════════════════════════
+  if (secondaryMeds.worsens && Array.isArray(secondaryMeds.worsens)) {
+    for (const med of secondaryMeds.worsens) {
+      const matchedName = detectMedicationMention(med, lowerMessage);
+      if (matchedName) {
+        // Create issue (not Safety Gate)
+        const issue = createMedicationIssue(med, 'worsens', session, matchedName);
+
+        // Apply vital changes
+        if (med.if_given?.vital_changes) {
+          applyVitalChanges(session, med.if_given.vital_changes);
+        }
+
+        // Update patient state if specified
+        if (med.if_given?.state_change) {
+          session.currentPatientState = med.if_given.state_change;
+        }
+
+        detectedIssues.push(issue);
+
+        console.warn('⚠️ WORSENS MEDICATION DETECTED:', med.generic_name || med.name, '-', matchedName);
+      }
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // Track NEUTRAL medications (for teaching opportunities only)
+  // ═══════════════════════════════════════════════════════════════════════
+  if (secondaryMeds.neutral && Array.isArray(secondaryMeds.neutral)) {
+    if (!session.medicationNotes) {
+      session.medicationNotes = [];
+    }
+
+    for (const med of secondaryMeds.neutral) {
+      const matchedName = detectMedicationMention(med, lowerMessage);
+      if (matchedName) {
+        session.medicationNotes.push({
+          medication: med.generic_name || med.name,
+          matchedName: matchedName,
+          note: med.teaching_point || 'Neutral medication - no significant impact',
+          timestamp: Date.now()
+        });
+
+        console.log('ℹ️ NEUTRAL MEDICATION DETECTED:', med.generic_name || med.name, '-', matchedName);
+      }
+    }
+  }
+
+  return detectedIssues.length > 0 ? detectedIssues : null;
 }
 
 /**
@@ -2009,6 +2360,216 @@ function generateScenarioSummary(session) {
     timingAnalysis: timingAnalysis,
     completedAt: new Date().toISOString()
   };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// V3.0 OUTCOME-BASED CONSEQUENCE FEEDBACK
+// Patient state-based assessment (NO TIME THRESHOLDS)
+// Implements outcome-based competence assessment for AAR
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Assess competence level based on patient state trajectory (NOT time)
+ * V3.0 philosophy: Patient outcomes matter, not arbitrary time thresholds
+ * @param {string} patientStateAtAction - Patient state when action was performed
+ * @param {string} patientStateAfter - Patient state after action
+ * @param {string} technique - Execution technique (e.g., 'dangerous')
+ * @returns {string} - Competence level: EXEMPLARY, COMPETENT, DEVELOPING, or NOVICE
+ */
+function assessCompetenceLevel(patientStateAtAction, patientStateAfter, technique) {
+  // Check for dangerous execution - immediate NOVICE rating
+  if (technique === 'dangerous') {
+    return 'NOVICE';
+  }
+
+  // Guard for missing data
+  if (!patientStateAtAction || !patientStateAfter) {
+    return 'DEVELOPING';  // Default to DEVELOPING if data missing
+  }
+
+  // EXEMPLARY: Prevented deterioration entirely
+  // Action performed in initial state and patient improved/stabilized
+  if (patientStateAtAction === 'initial' &&
+      (patientStateAfter === 'improving' || patientStateAfter === 'stable')) {
+    return 'EXEMPLARY';
+  }
+
+  // COMPETENT: Stabilized before major deterioration
+  // Action performed in initial or early_deteriorating, patient improved/stabilized
+  if ((patientStateAtAction === 'initial' || patientStateAtAction === 'early_deteriorating') &&
+      (patientStateAfter === 'improving' || patientStateAfter === 'stable')) {
+    return 'COMPETENT';
+  }
+
+  // DEVELOPING: Patient was in high-risk state before treatment
+  // Action performed in deteriorating or critical state
+  if ((patientStateAtAction === 'deteriorating' || patientStateAtAction === 'critical') &&
+      patientStateAfter === 'improving') {
+    return 'DEVELOPING';
+  }
+
+  // DEVELOPING: Action performed but patient still in concerning state
+  if (patientStateAtAction === 'deteriorating' || patientStateAtAction === 'critical') {
+    return 'DEVELOPING';
+  }
+
+  // Default to DEVELOPING for edge cases
+  return 'DEVELOPING';
+}
+
+/**
+ * Build outcome-based feedback for a specific action
+ * Uses patient state data instead of time-based thresholds
+ * @param {Object} criticalAction - Critical action from scenario blueprint
+ * @param {string} patientStateAtAction - Patient state when action performed
+ * @param {string} patientStateAfter - Patient state after action
+ * @param {Object} actionRecord - Action record from session.actionLog
+ * @param {Object} scenario - Scenario blueprint
+ * @returns {Object} - Structured feedback object
+ */
+function buildStateFeedback(criticalAction, patientStateAtAction, patientStateAfter, actionRecord, scenario) {
+  const vitalsAtAction = actionRecord.vitals_at_action || {};
+  const initialVitals = scenario.initial_vitals || {};
+
+  // Assess competence level based on patient state
+  const competenceLevel = assessCompetenceLevel(
+    patientStateAtAction,
+    patientStateAfter,
+    actionRecord.technique
+  );
+
+  // Build feedback object (NO TIME VARIABLES - outcome-based only)
+  const feedback = {
+    action_id: criticalAction.id,
+    action_name: criticalAction.action,
+    competence_level: competenceLevel,
+
+    // Patient state data (outcome-based)
+    patient_state_at_action: patientStateAtAction,
+    patient_state_after: patientStateAfter,
+
+    // Vital signs at action
+    vitals_at_action: vitalsAtAction,
+    initial_vitals: initialVitals,
+
+    // Timing context (for reference, not assessment)
+    elapsed_minutes: actionRecord.elapsedMinutes || 0,
+
+    // Feedback will be populated by AAR Agent using V3.0 templates
+    // These are populated from scenario consequence_feedback_templates
+    feedback_text: '',
+    clinical_anchor: '',
+    teaching_point: ''
+  };
+
+  // If scenario has V3.0 consequence feedback templates, use them
+  if (scenario.consequence_feedback_templates && scenario.consequence_feedback_templates[criticalAction.id]) {
+    const template = scenario.consequence_feedback_templates[criticalAction.id];
+
+    // Select appropriate feedback based on competence level
+    let feedbackTemplate = template.developing;  // Default
+    if (competenceLevel === 'EXEMPLARY' && template.exemplary) {
+      feedbackTemplate = template.exemplary;
+    } else if (competenceLevel === 'COMPETENT' && template.competent) {
+      feedbackTemplate = template.competent;
+    } else if (competenceLevel === 'NOVICE' && template.novice) {
+      feedbackTemplate = template.novice;
+    }
+
+    if (feedbackTemplate) {
+      feedback.feedback_text = feedbackTemplate.consequence_text || '';
+      feedback.clinical_anchor = feedbackTemplate.clinical_anchor || '';
+      feedback.teaching_point = feedbackTemplate.teaching_point || '';
+    }
+  }
+
+  return feedback;
+}
+
+/**
+ * Build outcome-based feedback for omitted actions
+ * @param {Object} criticalAction - Critical action that was never performed
+ * @param {Object} scenario - Scenario blueprint
+ * @param {Array} stateHistory - Patient state history
+ * @returns {Object} - Structured omission feedback object
+ */
+function buildOmissionFeedback(criticalAction, scenario, stateHistory) {
+  // Determine final patient state
+  const finalState = stateHistory.length > 0 ?
+    stateHistory[stateHistory.length - 1].state : 'unknown';
+
+  return {
+    action_id: criticalAction.id,
+    action_name: criticalAction.action,
+    competence_level: 'DEVELOPING',  // Omission is always at least DEVELOPING
+    omission: true,
+
+    // Patient state data
+    patient_state_at_end: finalState,
+
+    // Feedback for omitted action
+    feedback_text: `${criticalAction.action} was never performed.`,
+    clinical_anchor: criticalAction.rationale || '',
+    teaching_point: `This is a critical action that should not be omitted.`
+  };
+}
+
+/**
+ * Generate outcome-based consequence feedback for all critical actions
+ * Pre-computes patient-focused feedback for AAR Agent
+ * V3.0 Philosophy: Uses patient state, NOT arbitrary time thresholds
+ * @param {Object} scenario - Scenario blueprint with V3.0 structure
+ * @param {Array} actionLog - Session action log with patient state at each action
+ * @param {Array} stateHistory - Patient state history
+ * @returns {Array} - Array of outcome-based feedback objects
+ */
+function buildOutcomeBasedFeedback(scenario, actionLog, stateHistory) {
+  const feedback = [];
+
+  // Guard: Check if scenario has critical actions
+  if (!scenario.critical_actions_checklist || !Array.isArray(scenario.critical_actions_checklist)) {
+    return feedback;
+  }
+
+  // Process each critical action
+  for (const criticalAction of scenario.critical_actions_checklist) {
+    // Find if action was performed in actionLog
+    const actionRecord = actionLog?.find(log =>
+      log.action_id === criticalAction.id ||
+      log.action === criticalAction.action ||
+      log.action?.toLowerCase().includes(criticalAction.action.toLowerCase())
+    );
+
+    if (!actionRecord) {
+      // Omission - action never performed
+      const omissionFeedback = buildOmissionFeedback(criticalAction, scenario, stateHistory);
+      feedback.push(omissionFeedback);
+    } else {
+      // Action performed - assess based on patient state
+      const patientStateAtAction = actionRecord.patient_state_at_action || 'unknown';
+      const patientStateAfter = actionRecord.patient_state_after || 'unknown';
+
+      // Only add feedback for DEVELOPING or NOVICE actions (teachable moments)
+      const competenceLevel = assessCompetenceLevel(
+        patientStateAtAction,
+        patientStateAfter,
+        actionRecord.technique
+      );
+
+      if (competenceLevel === 'DEVELOPING' || competenceLevel === 'NOVICE') {
+        const stateFeedback = buildStateFeedback(
+          criticalAction,
+          patientStateAtAction,
+          patientStateAfter,
+          actionRecord,
+          scenario
+        );
+        feedback.push(stateFeedback);
+      }
+    }
+  }
+
+  return feedback;
 }
 
 // ============================================================================
@@ -2745,7 +3306,13 @@ app.post('/api/sessions/:id/message', async (req, res) => {
       // ═══════════════════════════════════════════════════════════
 
       // Check for dangerous medications FIRST (before state changes)
-      const dangerousMedications = checkMedicationSafety(session, message);
+      // Use V3.0 function if scenario has V3.0 structure, otherwise fallback to legacy
+      let dangerousMedications = null;
+      if (session.scenario?.secondary_medications_by_impact) {
+        dangerousMedications = checkMedicationSafety_V3(session, message);
+      } else {
+        dangerousMedications = checkMedicationSafety(session, message);  // Legacy fallback
+      }
       if (dangerousMedications && dangerousMedications.length > 0) {
         console.warn('⚠️ MEDICATION SAFETY ALERT:', dangerousMedications.length, 'dangerous medication(s) detected');
 
@@ -2764,7 +3331,13 @@ app.post('/api/sessions/:id/message', async (req, res) => {
         console.log('📊 Updated Performance Score (Medication Safety):', updatedScore.overallScore + '%', updatedScore.interpretation);
 
         // Build medication safety context for AI prompt
-        session.medicationSafetyContext = buildMedicationSafetyContext(dangerousMedications);
+        // Use V3.0 function if rich data is present, otherwise use legacy
+        const hasRichData = dangerousMedications[0]?.patient_response !== undefined;
+        if (hasRichData) {
+          session.medicationSafetyContext = buildMedicationSafetyContext_V3(dangerousMedications[0]);
+        } else {
+          session.medicationSafetyContext = buildMedicationSafetyContext(dangerousMedications);
+        }
       } else {
         session.medicationSafetyContext = '';
       }
@@ -3520,6 +4093,14 @@ app.post('/api/sessions/:id/next-scenario', async (req, res) => {
       const checklistSummary = generateChecklistSummary(session);
       console.log(`📋 Checklist: ${checklistSummary.completedCount}/${checklistSummary.totalItems} completed (${checklistSummary.percentageScore}%)`);
 
+      // ✅ V3.0: Generate outcome-based consequence feedback
+      const outcomeBasedFeedback = buildOutcomeBasedFeedback(
+        session.scenario,
+        session.actionLog || session.criticalActionsLog || [],
+        session.patientStateHistory || session.stateHistory || []
+      );
+      console.log(`📊 Outcome-based feedback: ${outcomeBasedFeedback.length} items generated`);
+
       // Create comprehensive performance snapshot
       const performanceSnapshot = {
         scenarioId: session.scenario?.scenario_id || session.scenarioId,
@@ -3549,6 +4130,15 @@ app.post('/api/sessions/:id/next-scenario', async (req, res) => {
         // ✅ Phase 2: Checklist results and summary
         checklistResults: session.checklistResults || [],
         checklistSummary: checklistSummary,
+
+        // ✅ V3.0: Outcome-based assessment data
+        outcomeBasedFeedback: outcomeBasedFeedback,
+
+        // ✅ V3.0: Safety Gate results
+        safetyGate: {
+          passed: (session.safetyGateFailures || []).length === 0,
+          failures: session.safetyGateFailures || []
+        },
 
         // ✅ Phase 1: Full conversation transcript
         fullTranscript: [...(session.fullTranscript || [])],

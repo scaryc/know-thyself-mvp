@@ -192,7 +192,6 @@
         "appropriate_for_case": true,
         "importance": "important",
         "clinical_effect": "Prevents hypoxic secondary brain injury",
-        "points_if_given": 5,
         "teaching_point": "In TBI, hypoxia (SpO2 <90%) doubles mortality. Apply oxygen if SpO2 drops below 94%."
       }
     },
@@ -205,8 +204,6 @@
         "appropriate_for_case": "conditional",
         "importance": "if_hypotensive",
         "clinical_effect": "This patient is hypertensive (165/95) so does NOT need fluids. Only give if SBP drops below 90.",
-        "points_if_appropriate": 5,
-        "points_if_unnecessary": -3,
         "teaching_point": "Goal in TBI: prevent hypotension (SBP <90). This patient is HYPERtensive - do NOT fluid overload. Maintain IV access but restrict fluids unless BP drops."
       }
     },
@@ -218,8 +215,7 @@
         "appropriate_for_case": false,
         "reason": "Glucose is normal (5.8 mmol/L)",
         "if_given": {
-          "clinical_effect": "No effect - glucose is normal. Time wasted.",
-          "points": -3
+          "clinical_effect": "No effect - glucose is normal. Time wasted."
         },
         "teaching_point": "ALWAYS check glucose in altered mental status, but this patient's confusion is from HEAD INJURY, not hypoglycemia. Glucose 5.8 is normal."
       }
@@ -280,7 +276,6 @@
             "RR": 14
           },
           "patient_response": "Patient becomes sedated. GCS drops but is this from sedation or herniation? You can no longer tell.",
-          "points": -20,
           "state_change": "deteriorating",
           "aar_flag": "dangerous_masking_neuro_exam"
         },
@@ -300,7 +295,6 @@
             "pupils": "Both 2mm - now miotic"
           },
           "patient_response": "Patient drowsy, breathing slow, pupils constricted (miotic) - can no longer assess for herniation.",
-          "points": -15,
           "aar_flag": "opioid_masks_assessment"
         },
         "teaching_point": "Opioids mask neuro assessment in TWO ways: sedation masks GCS, and miosis masks pupil signs of herniation."
@@ -315,7 +309,6 @@
         "why_prehospital_caution": "May be appropriate for herniation but requires medical direction",
         "if_given": {
           "clinical_effect": "May transiently reduce ICP. Appropriate ONLY if herniation signs present.",
-          "points": 0,
           "aar_flag": "advanced_therapy_requires_medical_direction"
         },
         "teaching_point": "Mannitol can reduce ICP in herniation but is typically hospital therapy. Follow local protocols."
@@ -323,13 +316,138 @@
     ]
   },
 
+  "progress_milestones": {
+    "enabled": true,
+    "display_location": "clinical_notes_panel",
+    "milestone_definitions": {
+      "UM1": {
+        "name": "Scene Secured",
+        "description": "Scene safety established, BSI taken"
+      },
+      "UM2": {
+        "name": "Emergency Recognized",
+        "description": "Primary problem identified"
+      },
+      "UM3": {
+        "name": "Breathing Supported",
+        "description": "Airway/breathing intervention initiated"
+      },
+      "UM4": {
+        "name": "Critical Treatment",
+        "description": "Primary life-saving treatment given"
+      },
+      "UM5": {
+        "name": "Assessment Complete",
+        "description": "ABCDE/SAMPLE/secondary exam completed"
+      },
+      "UM6": {
+        "name": "Monitoring Established",
+        "description": "Ongoing reassessment initiated"
+      }
+    },
+    "milestone_mappings": {
+      "UM1": { "trigger_actions": ["CA1"] },
+      "UM2": { "trigger_actions": ["CA3", "CA4"] },
+      "UM3": { "trigger_actions": ["CA6"] },
+      "UM4": { "trigger_actions": ["CA2"] },
+      "UM5": { "trigger_actions": ["CA5"] },
+      "UM6": { "trigger_actions": ["CA7"] }
+    }
+  },
+
+  "safety_gate": {
+    "enabled": true,
+    "tracking_mode": "silent",
+    "interrupt_scenario": false,
+    "critical_failures": [
+      {
+        "id": "SF1",
+        "type": "omission",
+        "description": "C-spine never immobilized despite high-risk mechanism and altered consciousness",
+        "detection_criteria": {
+          "condition": "scenario_end AND c_spine_immobilized == false",
+          "patient_state_required": "high_risk_mechanism_with_altered_mental_status"
+        },
+        "patient_outcome": "Without C-spine precautions, any movement risks converting stable spinal injury to complete cord transection. Patient could become quadriplegic from preventable secondary injury during transport.",
+        "aar_teaching_point": "C-spine immobilization is mandatory with high-risk mechanism (fall from height) AND altered mental status. You cannot clear the C-spine clinically when the patient is confused or has reduced GCS. This is a basic trauma principle - failure to immobilize risks permanent paralysis."
+      },
+      {
+        "id": "SF2",
+        "type": "omission",
+        "description": "GCS never assessed or never trended",
+        "detection_criteria": {
+          "condition": "(gcs_assessments_count == 0) OR (gcs_assessments_count == 1 AND scenario_duration > 10_minutes)",
+          "patient_state_required": "head_injury_confirmed"
+        },
+        "patient_outcome": "Without serial GCS monitoring, you cannot detect deteriorating brain herniation. A dropping GCS is the clearest sign of life-threatening intracranial hemorrhage requiring emergency surgery. Missing this deterioration means missing the window for life-saving intervention.",
+        "aar_teaching_point": "Serial GCS is not optional in TBI - it's the ONLY way to detect deterioration. A single GCS tells you where they are now. Serial GCS tells you where they're going. GCS trending is what differentiates concussion from life-threatening hemorrhage. This must be repeated every 5-10 minutes."
+      },
+      {
+        "id": "SF3",
+        "type": "commission",
+        "description": "Sedatives or opioids given to TBI patient (masks neurological exam)",
+        "detection_criteria": {
+          "condition": "medication_given IN ['diazepam', 'midazolam', 'morphine', 'fentanyl', 'ketamine']",
+          "exception": "active_seizure == true"
+        },
+        "patient_outcome": "Sedatives fog the neurological window. GCS drops from medication, not from herniation - but you can't tell which. Pupils become unreliable. You've just blinded yourself to what's happening inside the skull. If the patient herniates, you won't know until they arrest.",
+        "aar_teaching_point": "NEVER sedate a TBI patient outside of specific indications (active seizures, combative requiring intubation). The GCS and pupils are your ONLY windows into intracranial pressure. Sedatives fog that window completely. If they're herniating, you need to know NOW, not after they've arrested."
+      },
+      {
+        "id": "SF4",
+        "type": "commission",
+        "description": "Hypotonic fluids given (worsens cerebral edema)",
+        "detection_criteria": {
+          "condition": "fluid_given == 'D5W' OR fluid_given == 'half_normal_saline' OR fluid_given == '0.45_saline'"
+        },
+        "patient_outcome": "Hypotonic fluids worsen cerebral edema through osmotic gradient, increasing intracranial pressure. In TBI, this accelerates herniation. Patient deteriorates from iatrogenic brain swelling.",
+        "aar_teaching_point": "Only isotonic fluids (0.9% saline, Ringer's lactate) are safe in TBI. Hypotonic fluids create osmotic gradient that worsens cerebral edema, raising ICP and accelerating herniation. This is a fundamental TBI management principle."
+      },
+      {
+        "id": "SF5",
+        "type": "contraindication",
+        "description": "Medication given despite stated allergy",
+        "detection_criteria": {
+          "condition": "medication_given IN patient.allergies"
+        },
+        "patient_outcome": "Allergic reaction on top of existing neurological emergency",
+        "aar_teaching_point": "Always verify allergies before medication administration. Patient or family history was available."
+      }
+    ]
+  },
+
+  "scenario_states": {
+    "initial": {
+      "timing": "0-5 min",
+      "description": "Post-fall TBI presentation - GCS 13 (E4 V4 M5), confused and disoriented, unequal pupils developing (4mm vs 3mm), on anticoagulant. Patient conscious but altered, concerning mechanism."
+    },
+    "early_deteriorating": {
+      "timing": "5-7 min (if untreated or secondary injury occurs)",
+      "description": "Subtle worsening - GCS declining to 11-12, pupil asymmetry increasing, patient more confused"
+    },
+    "deteriorating": {
+      "timing": "7-9 min (if untreated)",
+      "description": "Clear neurological deterioration - GCS 9-10, anisocoria pronounced (5mm vs 3mm), posturing may begin, signs of rising ICP"
+    },
+    "critical": {
+      "timing": "9-13 min (if untreated)",
+      "description": "Herniation syndrome - GCS ≤8, fixed dilated pupil, decerebrate posturing or flaccid, imminent brain death without neurosurgical intervention"
+    },
+    "improving": {
+      "timing": "With optimal TBI management",
+      "description": "Stabilized with prevention of secondary injury - GCS maintained or improved, SpO2 >90%, normotensive, pupils monitored, C-spine protected"
+    },
+    "stable": {
+      "timing": "After sustained optimal management",
+      "description": "Secondary injury prevented - adequate oxygenation maintained, no hypotension, serial GCS stable, ready for rapid transport to neurosurgery"
+    }
+  },
+
   "critical_actions_checklist": [
     {
       "id": "CA1",
       "action": "Scene safety and mechanism recognition",
       "category": "scene_safety",
-      "time_target_minutes": 1,
-      "points": 5,
       "importance": "essential",
       "criteria": "Identifies fall from height, high-risk mechanism",
       "matching": {
@@ -342,8 +460,6 @@
       "id": "CA2",
       "action": "C-spine immobilization",
       "category": "treatment",
-      "time_target_minutes": 3,
-      "points": 15,
       "importance": "critical",
       "criteria": "Manual stabilization then collar, cannot clear C-spine with altered mental status",
       "matching": {
@@ -351,70 +467,215 @@
         "synonyms": ["spine", "immobilization", "stabilization", "manual inline", "c collar", "neck"],
         "tool_mappings": ["apply_collar", "immobilize_spine"],
         "exclusion_keywords": []
-      }
+      },
+      "competence_assessment": {
+        "method": "outcome_based",
+        "exemplary": {
+          "patient_state_at_action": ["initial"],
+          "patient_state_after": ["initial", "improving"],
+          "outcome_description": "C-spine protected immediately, prevented secondary spinal injury",
+          "feedback_template": "Excellent - you immediately recognized the need for C-spine immobilization based on high-risk mechanism (fall from stairs) and altered mental status (GCS 13, confused). You correctly identified that you cannot clear the C-spine clinically when consciousness is impaired. This prevented potential catastrophic spinal cord injury during patient handling."
+        },
+        "competent": {
+          "patient_state_at_action": ["initial", "early_deteriorating"],
+          "patient_state_after": ["initial", "early_deteriorating", "improving"],
+          "outcome_description": "C-spine protected before significant movement",
+          "feedback_template": "Good spinal precautions. You recognized the indications for C-spine immobilization and applied it appropriately."
+        },
+        "developing": {
+          "patient_state_at_action": ["deteriorating", "critical"],
+          "patient_state_after": ["any"],
+          "outcome_description": "C-spine protection delayed, patient moved without precautions",
+          "feedback_template": "C-spine immobilization was delayed. During that time, the patient was moved or repositioned without spinal precautions, creating risk of converting a stable spinal injury to cord damage. With high-risk mechanism and altered consciousness, C-spine protection is an immediate priority. What was your assessment of spinal risk?"
+        },
+        "novice": {
+          "criteria": [
+            "C-spine never immobilized",
+            "Patient moved without precautions",
+            "Attempted to 'clear' C-spine clinically despite altered mental status"
+          ],
+          "outcome_description": "Critical safety omission - spinal injury risk unaddressed",
+          "feedback_template": "This is addressed as a Safety Gate issue - C-spine immobilization is mandatory with this mechanism and altered consciousness. You cannot clear C-spine clinically when GCS is reduced."
+        }
+      },
+      "assessment_data_required": [
+        "action_timestamp",
+        "patient_state_at_action",
+        "patient_moved_before_immobilization"
+      ]
     },
     {
       "id": "CA3",
       "action": "Perform GCS assessment",
       "category": "assessment",
-      "time_target_minutes": 3,
-      "points": 15,
       "importance": "critical",
       "criteria": "Complete GCS with E/V/M breakdown",
       "matching": {
         "keywords": ["gcs", "glasgow"],
         "synonyms": ["coma scale", "eye opening", "verbal response", "motor response", "level of consciousness", "avpu"],
         "exclusion_keywords": []
+      },
+      "competence_assessment": {
+        "method": "outcome_based",
+        "exemplary": {
+          "patient_state_at_action": ["initial"],
+          "patient_state_after": ["initial", "improving"],
+          "outcome_description": "GCS assessed immediately, establishing baseline for trend detection",
+          "feedback_template": "Excellent - you performed a complete GCS assessment (E4 V4 M5 = 13) immediately. This baseline is critical for detecting deterioration. You correctly documented the component scores, not just the total. This allows you to identify which function is declining - a key distinction in TBI management."
+        },
+        "competent": {
+          "patient_state_at_action": ["initial", "early_deteriorating"],
+          "patient_state_after": ["any"],
+          "outcome_description": "GCS assessed appropriately",
+          "feedback_template": "Good neurological assessment. You obtained the GCS baseline needed for trend monitoring."
+        },
+        "developing": {
+          "patient_state_at_action": ["deteriorating", "critical"],
+          "patient_state_after": ["any"],
+          "outcome_description": "GCS assessment delayed significantly",
+          "feedback_template": "GCS assessment was delayed until patient was already in {patient_state_at_action} state. In TBI, early baseline GCS is essential - it's your reference point for detecting deterioration. Without an early baseline, you can't tell if the patient is stable or worsening. What was your assessment priority reasoning?"
+        },
+        "novice": {
+          "criteria": [
+            "GCS never assessed",
+            "Only performed AVPU instead of GCS",
+            "Assessed incorrectly"
+          ],
+          "outcome_description": "No neurological baseline established",
+          "feedback_template": "GCS assessment was not performed or was insufficient. In head injury, GCS is mandatory - it's the universal language of consciousness level and the key tool for detecting life-threatening deterioration. AVPU is inadequate for TBI - you need the granularity of GCS with E/V/M components."
+        }
       }
     },
     {
       "id": "CA4",
       "action": "Pupil assessment",
       "category": "assessment",
-      "time_target_minutes": 3,
-      "points": 10,
       "importance": "critical",
       "criteria": "Check size, reactivity, symmetry both pupils",
       "matching": {
         "keywords": ["pupil", "pupils"],
         "synonyms": ["eyes", "perrla", "reactive", "light reflex", "anisocoria"],
         "exclusion_keywords": []
+      },
+      "competence_assessment": {
+        "method": "outcome_based",
+        "exemplary": {
+          "patient_state_at_action": ["initial"],
+          "patient_state_after": ["initial", "improving"],
+          "outcome_description": "Pupils assessed immediately, anisocoria detected early",
+          "feedback_template": "Excellent pupil examination. You immediately checked size, symmetry, and reactivity, discovering the anisocoria (4mm vs 3mm). This finding is critical - unequal pupils in TBI indicate lateralized intracranial pressure, suggesting expanding hemorrhage. You identified a neurosurgical emergency early."
+        },
+        "competent": {
+          "patient_state_at_action": ["initial", "early_deteriorating"],
+          "patient_state_after": ["any"],
+          "outcome_description": "Pupils assessed and anisocoria documented",
+          "feedback_template": "Good pupil assessment. You identified the asymmetry that indicates concerning intracranial pathology."
+        },
+        "developing": {
+          "patient_state_at_action": ["deteriorating", "critical"],
+          "patient_state_after": ["any"],
+          "outcome_description": "Pupil assessment delayed, asymmetry worsened before detection",
+          "feedback_template": "Pupil assessment was delayed until {patient_state_at_action} state. By that time, the anisocoria had progressed significantly. Early pupil assessment is a fundamental part of TBI evaluation - it detects herniation before it becomes irreversible. What delayed this basic neurological check?"
+        },
+        "novice": {
+          "criteria": [
+            "Pupils never assessed",
+            "Only checked one pupil",
+            "Missed obvious anisocoria"
+          ],
+          "outcome_description": "Critical neurological sign missed or not assessed",
+          "feedback_template": "Pupil assessment was not performed adequately. In TBI, pupils must be assessed bilaterally for size, symmetry, and reactivity. Anisocoria (unequal pupils) is a red flag for lateralized mass effect - it indicates one side of the brain is being compressed by bleeding. This is a neurosurgical emergency that you must identify immediately."
+        }
       }
     },
     {
       "id": "CA5",
       "action": "Identify anticoagulation status",
       "category": "assessment",
-      "time_target_minutes": 5,
-      "points": 10,
       "importance": "critical",
       "criteria": "Asks about medications, identifies warfarin use",
       "matching": {
         "keywords": ["medications", "warfarin", "anticoagulant"],
         "synonyms": ["blood thinner", "coumadin", "meds", "what tablets", "taking anything"],
         "exclusion_keywords": []
+      },
+      "competence_assessment": {
+        "method": "outcome_based",
+        "exemplary": {
+          "patient_state_at_action": ["initial"],
+          "patient_state_after": ["any"],
+          "outcome_description": "Anticoagulation identified early, critical risk factor communicated",
+          "feedback_template": "Excellent medication history. You identified the warfarin use early, which is a game-changer in TBI. Anticoagulated patients have massively higher risk of expanding intracranial hemorrhage. This information must be communicated immediately to the receiving hospital so they can prepare reversal agents. You recognized this critical risk modifier."
+        },
+        "competent": {
+          "patient_state_at_action": ["initial", "early_deteriorating"],
+          "patient_state_after": ["any"],
+          "outcome_description": "Anticoagulation status identified",
+          "feedback_template": "Good medication history. You identified the warfarin, which significantly changes the risk profile and hospital management."
+        },
+        "developing": {
+          "patient_state_at_action": ["deteriorating", "critical"],
+          "patient_state_after": ["any"],
+          "outcome_description": "Anticoagulation history obtained late",
+          "feedback_template": "Medication history was delayed until {patient_state_at_action} state. In head injury, asking about anticoagulants should be one of your first history questions - it's a critical risk factor that changes everything. Warfarin turns even minor bleeds into catastrophic ones. What was your history-taking approach?"
+        },
+        "novice": {
+          "criteria": [
+            "Never asked about medications",
+            "Warfarin use not identified",
+            "Didn't recognize significance of anticoagulation"
+          ],
+          "outcome_description": "Critical risk factor missed",
+          "feedback_template": "Anticoagulation status was not identified. In TBI, anticoagulation (warfarin, DOACs) is one of the most critical risk factors - it multiplies hemorrhage risk and requires urgent reversal. This must be asked about and communicated immediately. The receiving hospital needs this information to prepare reversal agents before the patient arrives."
+        }
       }
     },
     {
       "id": "CA6",
       "action": "Prevent secondary brain injury",
       "category": "treatment",
-      "time_target_minutes": 5,
-      "points": 10,
       "importance": "critical",
       "criteria": "Maintains SpO2 >90%, avoids hypotension",
       "matching": {
         "keywords": ["oxygen", "secondary injury", "prevent"],
         "synonyms": ["spo2", "saturation", "hypoxia", "blood pressure", "perfusion"],
         "exclusion_keywords": []
+      },
+      "competence_assessment": {
+        "method": "outcome_based",
+        "exemplary": {
+          "patient_state_at_action": ["initial"],
+          "patient_state_after": ["improving", "stable"],
+          "outcome_description": "Secondary injury prevention prioritized early, optimal oxygenation and perfusion maintained",
+          "feedback_template": "Excellent TBI management principles. You immediately addressed secondary injury prevention by ensuring adequate oxygenation and avoiding hypotension. The primary brain injury already happened in the fall - your job is preventing the secondary injury from hypoxia and hypoperfusion. You maintained SpO2 >90% and adequate blood pressure, protecting the injured brain from further insult."
+        },
+        "competent": {
+          "patient_state_at_action": ["initial", "early_deteriorating"],
+          "patient_state_after": ["improving", "stable"],
+          "outcome_description": "Secondary injury prevention measures implemented",
+          "feedback_template": "Good understanding of TBI management. You recognized the need to prevent secondary injury through adequate oxygenation and perfusion."
+        },
+        "developing": {
+          "patient_state_at_action": ["deteriorating", "critical"],
+          "patient_state_after": ["any"],
+          "outcome_description": "Secondary injury prevention delayed, patient experienced preventable hypoxia or hypotension",
+          "feedback_template": "Secondary injury prevention was not prioritized early. The patient experienced periods of inadequate oxygenation or blood pressure, which compounds the primary brain injury. In TBI, preventing secondary injury (hypoxia, hypotension) is the core of prehospital management. What was your assessment and treatment priority?"
+        },
+        "novice": {
+          "criteria": [
+            "Did not address oxygenation",
+            "Allowed hypotension",
+            "No concept of secondary injury prevention"
+          ],
+          "outcome_description": "Preventable secondary brain injury occurred",
+          "feedback_template": "Secondary injury prevention was not addressed. In TBI, the primary injury happened at impact - you can't undo that. But you CAN prevent secondary injury from hypoxia (SpO2 <90%) and hypotension (SBP <90). These two factors double mortality in TBI. You must maintain oxygenation and blood pressure to give the brain the best chance of recovery."
+        }
       }
     },
     {
       "id": "CA7",
       "action": "Serial GCS monitoring",
       "category": "monitoring",
-      "time_target_minutes": 10,
-      "points": 10,
       "importance": "important",
       "criteria": "Repeats GCS, documents trend",
       "matching": {
@@ -427,8 +688,6 @@
       "id": "CA8",
       "action": "Rapid transport decision",
       "category": "disposition",
-      "time_target_minutes": 10,
-      "points": 5,
       "importance": "important",
       "criteria": "Recognizes need for trauma center with neurosurgery",
       "matching": {

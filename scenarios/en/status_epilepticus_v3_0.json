@@ -380,7 +380,6 @@
             "GCS": 3
           },
           "patient_response": "Patient stops breathing. Seizure stops too - but from respiratory depression, not from successful treatment.",
-          "points": -25,
           "state_change": "critical",
           "aar_flag": "oversedation"
         },
@@ -395,7 +394,6 @@
         "why_wrong": "Causes injury - teeth break, jaw injury, finger injury",
         "if_attempted": {
           "clinical_effect": "Cannot insert - jaw clenched with tremendous force. Risk of broken teeth, injury to provider.",
-          "points": -10,
           "aar_flag": "dangerous_airway_attempt"
         },
         "teaching_point": "NEVER force anything into a seizing patient's mouth. Wait until seizure stops. Position on side, suction accessible secretions, apply oxygen near face."
@@ -409,7 +407,6 @@
         "indication": "Second-line anticonvulsant",
         "if_given": {
           "clinical_effect": "Appropriate second-line if benzodiazepine fails and underlying cause treated. Takes 20+ minutes to work.",
-          "points": 0,
           "aar_flag": "advanced_therapy"
         },
         "teaching_point": "Phenytoin is second-line for status epilepticus. Requires slow IV infusion, cardiac monitoring. Usually hospital therapy."
@@ -417,13 +414,136 @@
     ]
   },
 
+  "progress_milestones": {
+    "enabled": true,
+    "display_location": "clinical_notes_panel",
+    "milestone_definitions": {
+      "UM1": {
+        "name": "Scene Secured",
+        "description": "Scene safety established, BSI taken"
+      },
+      "UM2": {
+        "name": "Emergency Recognized",
+        "description": "Primary problem identified"
+      },
+      "UM3": {
+        "name": "Breathing Supported",
+        "description": "Airway/breathing intervention initiated"
+      },
+      "UM4": {
+        "name": "Critical Treatment",
+        "description": "Primary life-saving treatment given"
+      },
+      "UM5": {
+        "name": "Assessment Complete",
+        "description": "ABCDE/SAMPLE/secondary exam completed"
+      },
+      "UM6": {
+        "name": "Monitoring Established",
+        "description": "Ongoing reassessment initiated"
+      }
+    },
+    "milestone_mappings": {
+      "UM1": { "trigger_actions": ["CA1"] },
+      "UM2": { "trigger_actions": ["CA4"] },
+      "UM3": { "trigger_actions": ["CA2", "CA3"] },
+      "UM4": { "trigger_actions": ["CA5"] },
+      "UM5": { "trigger_actions": ["CA4", "CA8"] },
+      "UM6": { "trigger_actions": ["CA7"] }
+    }
+  },
+
+  "safety_gate": {
+    "enabled": true,
+    "tracking_mode": "silent",
+    "interrupt_scenario": false,
+    "critical_failures": [
+      {
+        "id": "SF1",
+        "type": "omission",
+        "description": "Glucose never checked in seizing diabetic patient",
+        "detection_criteria": {
+          "condition": "scenario_end AND glucose_checked == false",
+          "patient_state_required": "seizure_patient_diabetic_history"
+        },
+        "patient_outcome": "Hypoglycemic seizure continues untreated. Patient develops permanent neurological damage from prolonged neuroglycopenia. Simple, reversible cause missed - patient suffers brain injury from preventable hypoglycemia.",
+        "aar_teaching_point": "Checking blood glucose is MANDATORY in ALL seizure patients, especially those with diabetes history. Hypoglycemia is the most easily reversible cause of seizures. It takes 15 seconds to check and 2 minutes to fix with IV glucose. Failure to check means you miss the one thing you can instantly cure. This patient seized from low blood sugar - give glucose and seizure stops immediately. Without checking, you're treating blind and missing the reversible cause."
+      },
+      {
+        "id": "SF2",
+        "type": "commission",
+        "description": "Benzodiazepine given WITHOUT checking glucose first",
+        "detection_criteria": {
+          "condition": "benzodiazepine_given == true AND glucose_checked == false"
+        },
+        "patient_outcome": "Seizure suppressed by benzodiazepine but underlying hypoglycemia untreated. Patient remains unconscious from low blood sugar (now masked by sedation). Brain continues to starve for glucose. Permanent neurological damage from prolonged hypoglycemia.",
+        "aar_teaching_point": "NEVER give benzodiazepine before checking glucose in seizures. Benzodiazepine suppresses the SYMPTOM (seizure) but doesn't treat the CAUSE. If the cause is hypoglycemia, you've just masked it with sedation while the brain continues to starve. This is a critical sequence error: (1) Check glucose FIRST, (2) Give glucose if low, (3) THEN give benzodiazepine if seizure continues. Always treat the cause before suppressing symptoms."
+      },
+      {
+        "id": "SF3",
+        "type": "commission",
+        "description": "Excessive benzodiazepine dose (>20mg diazepam) causing respiratory arrest",
+        "detection_criteria": {
+          "condition": "benzodiazepine_total_dose > 20_mg_diazepam_equivalent"
+        },
+        "patient_outcome": "Respiratory depression progresses to apnea. Patient stops breathing - yes, seizure stops too, but from respiratory arrest, not successful treatment. Iatrogenic respiratory failure.",
+        "aar_teaching_point": "Maximum 20mg diazepam (or equivalent) in prehospital setting. Higher doses cause respiratory arrest - you stop the seizure by stopping breathing, which is not therapeutic success. Always have BVM ready when giving benzodiazepines, and never exceed dosing limits. If 20mg hasn't worked, patient needs hospital anticonvulsant therapy (phenytoin, levetiracetam), not more benzodiazepine."
+      },
+      {
+        "id": "SF4",
+        "type": "commission",
+        "description": "Forced oral airway insertion during active seizure",
+        "detection_criteria": {
+          "condition": "opa_insertion_attempted == true AND seizure_active == true"
+        },
+        "patient_outcome": "Broken teeth, oral trauma, jaw injury, potential aspiration of tooth fragments. Provider finger injury from bite force. Worsens situation without benefit.",
+        "aar_teaching_point": "NEVER force anything into the mouth of a seizing patient. The jaw is clenched with tremendous force - you will break teeth, injure the jaw, or get bitten. It provides no benefit and causes harm. Correct airway management during seizure: position on side, suction accessible secretions, apply oxygen near face. Wait until seizure terminates before inserting airways."
+      },
+      {
+        "id": "SF5",
+        "type": "contraindication",
+        "description": "Medication given despite stated allergy",
+        "detection_criteria": {
+          "condition": "medication_given IN patient.allergies"
+        },
+        "patient_outcome": "Allergic reaction on top of existing seizure emergency",
+        "aar_teaching_point": "Always verify allergies before medication administration."
+      }
+    ]
+  },
+
+  "scenario_states": {
+    "initial": {
+      "timing": "0-5 min",
+      "description": "Active generalized tonic-clonic seizure - patient convulsing, unresponsive, hypoxic (SpO2 84%), known diabetic with blood glucose 2.1 mmol/L (critically low). Seizure from hypoglycemia."
+    },
+    "early_deteriorating": {
+      "timing": "5-7 min (if untreated)",
+      "description": "Continued seizure activity, worsening hypoxia, prolonged neuroglycopenia causing progressive brain damage"
+    },
+    "deteriorating": {
+      "timing": "7-9 min (if untreated)",
+      "description": "Status epilepticus established (>5 min continuous seizure), severe hypoxia, brain injury accumulating from prolonged hypoglycemia and seizure"
+    },
+    "critical": {
+      "timing": "9-13 min (if untreated)",
+      "description": "Refractory status epilepticus, respiratory failure, severe brain injury from prolonged neuroglycopenia, approaching irreversible neurological damage"
+    },
+    "improving": {
+      "timing": "After glucose administration (if hypoglycemic)",
+      "description": "Seizure terminating or terminated after glucose given, consciousness returning, blood sugar normalizing. Dramatic improvement from treating reversible cause."
+    },
+    "stable": {
+      "timing": "After seizure resolution",
+      "description": "Post-ictal state or full recovery, glucose normalized, breathing adequate, airway protected"
+    }
+  },
+
   "critical_actions_checklist": [
     {
       "id": "CA1",
       "action": "Scene safety assessment",
       "category": "scene_safety",
-      "time_target_minutes": 1,
-      "points": 5,
       "importance": "essential",
       "matching": {
         "keywords": ["scene", "safety"],
@@ -435,8 +555,6 @@
       "id": "CA2",
       "action": "Position patient and protect airway",
       "category": "treatment",
-      "time_target_minutes": 2,
-      "points": 10,
       "importance": "critical",
       "criteria": "Recovery position, clear secretions, do NOT force OPA",
       "matching": {
@@ -449,8 +567,6 @@
       "id": "CA3",
       "action": "Apply oxygen",
       "category": "treatment",
-      "time_target_minutes": 2,
-      "points": 5,
       "importance": "important",
       "matching": {
         "keywords": ["oxygen", "o2"],
@@ -462,8 +578,6 @@
       "id": "CA4",
       "action": "CHECK BLOOD GLUCOSE",
       "category": "assessment",
-      "time_target_minutes": 3,
-      "points": 20,
       "importance": "critical",
       "criteria": "MUST check glucose in ALL seizure patients, especially known diabetics",
       "matching": {
@@ -471,29 +585,99 @@
         "synonyms": ["bsl", "blood sugar", "glucometer", "finger prick", "dextrose check", "hypoglycemia"],
         "tool_mappings": ["check_glucose", "measure_bsl"],
         "exclusion_keywords": []
+      },
+      "competence_assessment": {
+        "method": "outcome_based",
+        "exemplary": {
+          "patient_state_at_action": ["initial"],
+          "patient_state_after": ["initial"],
+          "outcome_description": "Glucose checked immediately, identified reversible cause before any medication",
+          "feedback_template": "Excellent clinical reasoning - you checked blood glucose IMMEDIATELY and discovered the cause: 2.1 mmol/L (critically low). This single assessment identified the reversible, curable cause of the seizure. You correctly prioritized finding the cause before treating symptoms. This is expert-level seizure management - many providers jump to benzodiazepines without checking the one thing that can be instantly fixed."
+        },
+        "competent": {
+          "patient_state_at_action": ["initial", "early_deteriorating"],
+          "patient_state_after": ["initial", "early_deteriorating"],
+          "outcome_description": "Glucose checked before administering benzodiazepine, identified hypoglycemia",
+          "feedback_template": "Good clinical approach. You checked glucose before giving benzodiazepines and identified the hypoglycemia. This sequence (assess cause → treat cause → symptom management if needed) is correct."
+        },
+        "developing": {
+          "patient_state_at_action": ["deteriorating", "critical"],
+          "patient_state_after": ["any"],
+          "outcome_description": "Glucose check delayed significantly, brain exposed to prolonged neuroglycopenia",
+          "feedback_template": "Blood glucose check was delayed until {patient_state_at_action} state. During that delay, the brain was deprived of glucose for several minutes - this causes cumulative neurological damage. Hypoglycemia is THE most easily reversible cause of seizures. It takes 15 seconds to check. Every minute of delay is a minute of preventable brain injury. What was your clinical reasoning for the delay?"
+        },
+        "novice": {
+          "criteria": [
+            "Glucose never checked",
+            "Benzodiazepine given before checking glucose",
+            "Didn't recognize need to check glucose in diabetic seizure patient"
+          ],
+          "outcome_description": "Critical reversible cause missed or sequence error",
+          "feedback_template": "This is addressed as a Safety Gate issue - checking blood glucose is MANDATORY in ALL seizure patients. Hypoglycemia is instantly reversible with IV glucose. Without checking, you miss the one cause you can cure in 2 minutes."
+        }
       }
     },
     {
       "id": "CA5",
       "action": "Administer glucose for hypoglycemia",
       "category": "treatment",
-      "time_target_minutes": 4,
-      "points": 25,
       "importance": "critical",
       "criteria": "Give glucose 40% 40-50ml IV if glucose <3.5",
+      "dosing": {
+        "medication": "glucose",
+        "concentration": "40%",
+        "dose": "40-50ml",
+        "route": "IV"
+      },
       "matching": {
         "keywords": ["glucose", "dextrose"],
         "synonyms": ["40%", "d50", "hypostop", "40ml", "50ml", "iv glucose"],
         "tool_mappings": ["administer_glucose", "give_dextrose"],
         "exclusion_keywords": []
-      }
+      },
+      "competence_assessment": {
+        "method": "outcome_based",
+        "exemplary": {
+          "patient_state_at_action": ["initial"],
+          "patient_state_after": ["improving", "stable"],
+          "outcome_description": "Glucose given immediately after identifying hypoglycemia, seizure terminated, dramatic recovery",
+          "feedback_template": "Excellent - you gave IV glucose immediately after discovering blood sugar of 2.1 mmol/L. The seizure terminated within 1-2 minutes. This is textbook management of hypoglycemic seizure: check glucose → find it low → give glucose → seizure stops. You treated the CAUSE, not just the symptom. The patient made a dramatic recovery because you addressed the reversible problem. This is one of the most satisfying treatments in emergency medicine - instant cure of a life-threatening condition."
+        },
+        "competent": {
+          "patient_state_at_action": ["initial", "early_deteriorating"],
+          "patient_state_after": ["improving", "stable"],
+          "outcome_description": "Glucose administered after identifying hypoglycemia, patient improved",
+          "feedback_template": "Effective treatment. You identified the hypoglycemia and treated it with IV glucose, resolving the seizure. This is correct management of the reversible cause."
+        },
+        "developing": {
+          "patient_state_at_action": ["deteriorating", "critical"],
+          "patient_state_after": ["improving", "stable"],
+          "outcome_description": "Glucose administration delayed despite known hypoglycemia, prolonged brain glucose deprivation",
+          "feedback_template": "IV glucose was delayed even after identifying blood sugar of 2.1 mmol/L. During that delay, the brain continued to starve for glucose while seizing - this causes cumulative neurological damage. Once you know it's hypoglycemia, glucose administration is URGENT. It's not 'one of the things to do' - it's THE thing to do. What delayed administration after you had the diagnosis?"
+        },
+        "novice": {
+          "criteria": [
+            "Glucose never administered despite hypoglycemia identified",
+            "Gave benzodiazepine instead of glucose for hypoglycemic seizure",
+            "Wrong treatment for identified hypoglycemia"
+          ],
+          "outcome_description": "Reversible cause identified but not treated",
+          "feedback_template": "This is addressed as Safety Gate and competence issue - once hypoglycemia is identified, IV glucose is the definitive treatment. Benzodiazepines suppress the symptom (seizure) but don't fix the cause (low blood sugar). Without glucose, the brain continues to starve and permanent damage occurs."
+        }
+      },
+      "assessment_data_required": [
+        "action_timestamp",
+        "patient_state_at_action",
+        "patient_state_after_action",
+        "dose_correctness",
+        "route_correctness",
+        "glucose_level_before_administration"
+      ]
     },
     {
       "id": "CA6",
       "action": "Administer benzodiazepine if seizure continues",
       "category": "treatment",
-      "time_target_minutes": 6,
-      "points": 10,
       "importance": "important",
       "criteria": "10mg diazepam IV if seizure continues AFTER glucose given",
       "matching": {
@@ -506,8 +690,6 @@
       "id": "CA7",
       "action": "Monitor respiratory status",
       "category": "monitoring",
-      "time_target_minutes": 8,
-      "points": 5,
       "importance": "important",
       "criteria": "Especially after benzodiazepine, have BVM ready",
       "matching": {
@@ -520,8 +702,6 @@
       "id": "CA8",
       "action": "Reassess glucose and recheck",
       "category": "monitoring",
-      "time_target_minutes": 10,
-      "points": 5,
       "importance": "important",
       "matching": {
         "keywords": ["recheck", "reassess", "glucose again"],
