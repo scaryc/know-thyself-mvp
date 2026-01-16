@@ -1,9 +1,12 @@
 # Development Plan: V3.0 Scenario Integration
 
-**Document Version:** 1.0
+**Document Version:** 2.0
 **Created:** January 2025
+**Last Updated:** January 2025
 **Status:** Ready for Implementation
-**Estimated Effort:** ~300 lines of code changes
+**Estimated Effort:** ~320 lines of code changes
+
+**Alignment:** This document is fully aligned with the **Performance Assessment System V3.0 Implementation Guide** and uses outcome-based, patient-state assessment philosophy.
 
 ---
 
@@ -13,7 +16,7 @@
 2. [Background: Why These Changes Are Needed](#2-background-why-these-changes-are-needed)
 3. [Part 3: Medication Safety Direct Integration](#3-part-3-medication-safety-direct-integration)
 4. [Part 3 Bonus: V3.0 Rich Data in Core Agent](#4-part-3-bonus-v30-rich-data-in-core-agent)
-5. [Part 4: Consequence Template Population](#5-part-4-consequence-template-population)
+5. [Part 4: Outcome-Based Consequence Feedback](#5-part-4-outcome-based-consequence-feedback)
 6. [Implementation Order](#6-implementation-order)
 7. [Testing Strategy](#7-testing-strategy)
 8. [Risk Assessment](#8-risk-assessment)
@@ -26,19 +29,30 @@
 
 We are updating the Know Thyself MVP system to fully utilize the new V3.0 scenario blueprint structure. The V3.0 scenarios contain richer, more detailed data that the current codebase cannot access due to structural mismatches.
 
+### Philosophy Alignment
+
+This plan follows the **outcome-based assessment philosophy** from the Performance Assessment System V3.0:
+
+| Principle | Implementation |
+|-----------|----------------|
+| **No points** | Severity levels (critical_harm, worsens) instead of point deductions |
+| **No arbitrary time thresholds** | Patient state at action time determines assessment |
+| **Patient outcomes matter** | Feedback describes what happened to the patient |
+| **Safety Gate integration** | Dangerous medications are Safety Gate failures |
+
 ### Three Key Changes
 
 | Change | Problem Solved | Benefit |
 |--------|---------------|---------|
-| **Medication Safety Direct Integration** | Current code looks for `dangerous_medications` array, but V3.0 uses `secondary_medications_by_impact` | Dangerous medications will be detected and flagged |
-| **V3.0 Rich Data in Core Agent** | V3.0 has `patient_response` and `vital_changes` for each medication error, but Core Agent doesn't use them | More realistic, educational AI responses |
-| **Consequence Template Population** | V3.0 has `consequence_templates` with variables, but they're never populated with actual data | AAR Agent can show personalized medical consequences |
+| **Medication Safety Direct Integration** | Current code looks for `dangerous_medications` array, but V3.0 uses `secondary_medications_by_impact` | Dangerous medications detected as Safety Gate failures |
+| **V3.0 Rich Data in Core Agent** | V3.0 has `patient_response` and `vital_changes` for each medication error, but Core Agent doesn't use them | More realistic, educational AI responses showing patient deterioration |
+| **Outcome-Based Consequence Feedback** | V3.0 consequence templates need patient-state variables | AAR Agent shows what happened to patient, not arbitrary time comparisons |
 
 ### Expected Outcomes
 
-1. **Medication errors will be detected** - Students giving dangerous medications will receive immediate feedback
-2. **Core Agent responses will be more realistic** - AI will describe specific adverse reactions from V3.0 data
-3. **AAR will show personalized consequences** - "You gave oxygen at 7.2 minutes, during those 4.2 minutes of delay, Maria's SpO2 remained at 88%..."
+1. **Medication errors detected as Safety Gate failures** - Critical medication errors trigger Safety Gate, addressed with HIGH PRIORITY in AAR
+2. **Core Agent shows realistic patient deterioration** - AI describes specific adverse reactions using V3.0 data
+3. **AAR shows patient-focused feedback** - "When you applied oxygen, Maria was in a deteriorating state with SpO2 of 82%..." (not "You were 4.2 minutes late")
 
 ---
 
@@ -46,7 +60,7 @@ We are updating the Know Thyself MVP system to fully utilize the new V3.0 scenar
 
 ### 2.1 The Structure Mismatch Problem
 
-When we created the V3.0 scenarios with the Blueprint Structure Enhancement Guide v2, we introduced a better, richer data structure. However, the existing code was written for an older structure.
+When we created the V3.0 scenarios, we introduced a better, richer data structure. However, the existing code was written for an older structure.
 
 **Medication Safety Mismatch:**
 
@@ -63,7 +77,7 @@ CURRENT CODE EXPECTS:                    V3.0 SCENARIOS HAVE:
     }                                            "if_given": {
   ]                                                "vital_changes": {...},
 }                                                  "patient_response": "...",
-                                                   "points": -20
+                                                   "state_change": "critical"
                                                  }
                                                }
                                              ],
@@ -77,20 +91,18 @@ CURRENT CODE EXPECTS:                    V3.0 SCENARIOS HAVE:
 
 ### 2.2 Why Direct Integration Over Adapter?
 
-We considered two approaches:
-
 | Approach | Description | Verdict |
 |----------|-------------|---------|
-| **Adapter** | Create function to convert V3.0 → legacy format | ❌ Rejected |
-| **Direct Integration** | Rewrite code to read V3.0 structure directly | ✅ Chosen |
+| **Adapter** | Create function to convert V3.0 → legacy format | Rejected |
+| **Direct Integration** | Rewrite code to read V3.0 structure directly | Chosen |
 
 **Why Direct Integration Wins:**
 
-1. **Durability** - No translation layer to maintain; changes in V3.0 don't require adapter updates
+1. **Durability** - No translation layer to maintain
 2. **Robustness** - Single data source; fails obviously if structure changes
-3. **Simplicity** - Just change where code looks for data, no complex mapping
-4. **Scalability** - V3.0 structure already has all needed fields
-5. **Rich Data Access** - Can use V3.0's `patient_response`, `vital_changes`, `clinical_note` directly
+3. **Simplicity** - Just change where code looks for data
+4. **Rich Data Access** - Can use V3.0's `patient_response`, `vital_changes`, `state_change` directly
+5. **Safety Gate Integration** - Maps directly to V3.0's severity levels
 
 ### 2.3 The Unused Rich Data Problem
 
@@ -105,36 +117,29 @@ V3.0 scenarios contain detailed information about what happens when dangerous me
   },
   "patient_response": "Patient becomes drowsy, breathing slows further, oxygen level plummets. The benzodiazepine has suppressed her already-failing respiratory drive.",
   "clinical_note": "Benzodiazepine causes respiratory depression. Critical medication error.",
-  "points": -20,
+  "state_change": "critical",
   "aar_flag": "dangerous_medication"
 }
 ```
 
 **Currently:** This data is completely ignored. Core Agent makes up its own response.
 
-**After Changes:** Core Agent receives exact `patient_response` text and `vital_changes` to create accurate, educational feedback.
+**After Changes:** Core Agent receives exact `patient_response` text and `vital_changes` to create accurate, educational feedback. The `state_change` triggers Safety Gate tracking.
 
-### 2.4 The Consequence Template Problem
+### 2.4 Outcome-Based Feedback Philosophy
 
-V3.0 scenarios have consequence templates designed to show students the medical impact of their delays:
+**DEPRECATED (Time-Based):**
+> "Oxygen was applied at 7.2 minutes—4.2 minutes past the 3-minute critical window."
 
-```json
-{
-  "gap_trigger": "CA3_late",
-  "template": "Oxygen was applied at {actual_time} minutes—{delay_minutes} minutes past the 2-minute critical window. During those {delay_minutes} minutes, {patient_name}'s SpO2 remained at {initial_spo2}%...",
-  "variables": {
-    "actual_time": "checklistResults.CA3.time",
-    "delay_minutes": "calculated",
-    "patient_name": "patient_profile.name",
-    "initial_spo2": "initial_vitals.SpO2"
-  }
-}
-```
+**NEW (Outcome-Based):**
+> "When oxygen was applied, Maria was in a deteriorating state with SpO2 of 82%. The drop from initial 88% represents preventable hypoxic damage."
 
-**Currently:** Templates are extracted but variables are never populated. AAR Agent receives raw templates with `{placeholders}`.
-
-**After Changes:** At scenario end, templates are populated with actual data:
-> "Oxygen was applied at 7.2 minutes—4.2 minutes past the 2-minute critical window. During those 4.2 minutes, Maria's SpO2 remained at 88%..."
+| Old Approach | New Approach |
+|--------------|--------------|
+| Focus on arbitrary time thresholds | Focus on patient state at action |
+| Punitive ("you were X minutes late") | Educational ("here's what happened to the patient") |
+| Creates anxiety | Creates understanding |
+| `{delay_minutes}`, `{target_time}` | `{patient_state_at_action}`, `{spo2_at_action}` |
 
 ---
 
@@ -142,7 +147,10 @@ V3.0 scenarios have consequence templates designed to show students the medical 
 
 ### 3.1 Objective
 
-Replace the current medication safety system with direct integration that reads V3.0's `secondary_medications_by_impact` structure.
+Replace the current medication safety system with direct integration that:
+1. Reads V3.0's `secondary_medications_by_impact` structure
+2. Logs critical_harm medications as **Safety Gate failures**
+3. Returns rich data for Core Agent responses
 
 ### 3.2 Current State Analysis
 
@@ -153,21 +161,16 @@ Replace the current medication safety system with direct integration that reads 
 ```javascript
 function checkMedicationSafety(session, userMessage) {
   const scenario = session.scenario;
-  const dangerousMeds = scenario.dangerous_medications || [];  // ← Always empty!
+  const dangerousMeds = scenario.dangerous_medications || [];  // Always empty!
 
-  if (dangerousMeds.length === 0) return null;  // ← Always returns here
+  if (dangerousMeds.length === 0) return null;  // Always returns here
   // ... rest never executes
 }
 ```
 
-**Call Site:** Line 2748
-```javascript
-const dangerousMedications = checkMedicationSafety(session, message);
-```
-
 ### 3.3 New Function: `checkMedicationSafety_V3()`
 
-**Purpose:** Directly read V3.0 medication structure and return rich error data.
+**Purpose:** Directly read V3.0 medication structure, detect dangerous medications, and log Safety Gate failures.
 
 **Location:** After current `checkMedicationSafety()` (after line 1641)
 
@@ -183,26 +186,26 @@ FUNCTION checkMedicationSafety_V3(session, userMessage):
     lowerMessage = userMessage.toLowerCase()
     detectedIssues = []
 
-    // Process CRITICAL HARM medications (most dangerous)
+    // Process CRITICAL HARM medications (Safety Gate failures)
     FOR each med IN secondaryMeds.critical_harm:
         IF detectMedicationMention(med, lowerMessage):
-            issue = createMedicationIssue(med, "critical_harm")
+            issue = createMedicationIssue(med, "critical_harm", session)
             applyVitalChanges(session, med.if_given.vital_changes)
             updatePatientState(session, med.if_given.state_change)
-            addDangerousCDP(session, med)
+            logSafetyGateFailure(session, med)  // NEW: Safety Gate integration
             detectedIssues.push(issue)
 
-    // Process WORSENS medications (harmful but not immediately life-threatening)
+    // Process WORSENS medications (tracked but not Safety Gate)
     FOR each med IN secondaryMeds.worsens:
         IF detectMedicationMention(med, lowerMessage):
-            issue = createMedicationIssue(med, "worsens")
+            issue = createMedicationIssue(med, "worsens", session)
             applyVitalChanges(session, med.if_given.vital_changes)
             detectedIssues.push(issue)
 
     // Track NEUTRAL medications (for teaching opportunities only)
     FOR each med IN secondaryMeds.neutral:
         IF detectMedicationMention(med, lowerMessage):
-            session.medicationWarnings.push(createWarning(med))
+            session.medicationNotes.push(createNote(med))
 
     RETURN detectedIssues if any, else null
 ```
@@ -212,8 +215,6 @@ FUNCTION checkMedicationSafety_V3(session, userMessage):
 #### 3.4.1 `detectMedicationMention(med, lowerMessage)`
 
 **Purpose:** Check if medication is mentioned in user message.
-
-**Why Needed:** V3.0 doesn't have a `keywords` array. We need to check `name`, `generic_name`, and common brand variants.
 
 **Brand Name Mapping:**
 
@@ -243,9 +244,9 @@ const BRAND_VARIANTS = {
 2. Check if `med.generic_name` is in message
 3. Check brand variants based on generic name
 
-#### 3.4.2 `createMedicationIssue(med, detection, session, severity)`
+#### 3.4.2 `createMedicationIssue(med, severity, session)`
 
-**Purpose:** Create structured issue object with all V3.0 rich data.
+**Purpose:** Create structured issue object with V3.0 rich data (NO POINTS).
 
 **Output Structure:**
 ```javascript
@@ -254,25 +255,28 @@ const BRAND_VARIANTS = {
   medication: "Diazepam",
   matchedName: "apaurin",
 
-  // Severity and reason
-  severity: "critical_harm",
+  // Severity (NOT points)
+  severity: "critical_harm",  // or "worsens"
   reason: "Respiratory depressant in patient with respiratory failure",
 
   // V3.0 Rich Data for Core Agent
   patient_response: "Patient becomes drowsy, breathing slows further...",
   vital_changes: { SpO2: 73, RR: 18, GCS: 10 },
   clinical_note: "Benzodiazepine causes respiratory depression.",
+  state_change: "critical",
 
-  // AAR Data
-  points: -20,
-  aar_flag: "dangerous_medication",
-  teaching_point: "Never give sedatives to patients in respiratory failure.",
+  // Safety Gate Data (for AAR)
+  is_safety_gate_failure: true,  // if critical_harm
+  aar_teaching_point: "Never give sedatives to patients in respiratory failure.",
 
-  // Timing
+  // Context
+  patient_state_at_action: session.currentPatientState,
   timestamp: Date.now(),
-  elapsedMinutes: 5.2
+  elapsedMinutes: getElapsedMinutes(session)
 }
 ```
+
+**Note:** No `points` field - assessment is by severity level and Safety Gate status.
 
 #### 3.4.3 `applyVitalChanges(session, vitalChanges)`
 
@@ -280,11 +284,31 @@ const BRAND_VARIANTS = {
 
 **Why Needed:** When dangerous medication given, vitals should immediately reflect the adverse effect.
 
-#### 3.4.4 `addDangerousCDPForMedication(session, med)`
+#### 3.4.4 `logSafetyGateFailure(session, med)` (NEW)
 
-**Purpose:** Add automatic 'dangerous' CDP evaluation for medication errors.
+**Purpose:** Add medication error as Safety Gate commission failure.
 
-**Why Needed:** Medication errors should count as dangerous CDP performance for AAR scoring.
+**Replaces:** `addDangerousCDPForMedication()` (deprecated - used points)
+
+**Implementation:**
+```javascript
+function logSafetyGateFailure(session, med) {
+  if (!session.safetyGateFailures) {
+    session.safetyGateFailures = [];
+  }
+
+  session.safetyGateFailures.push({
+    id: `SF_MED_${med.generic_name.toUpperCase()}`,
+    type: "commission",
+    description: `${med.generic_name} administered - ${med.why_dangerous}`,
+    timestamp: Date.now(),
+    elapsedMinutes: getElapsedMinutes(session),
+    patient_outcome: med.if_given.patient_response,
+    aar_teaching_point: med.teaching_point,
+    vital_changes: med.if_given.vital_changes
+  });
+}
+```
 
 ### 3.5 Call Site Update
 
@@ -308,7 +332,7 @@ if (session.scenario?.secondary_medications_by_impact) {
 
 | File | Location | Change Type |
 |------|----------|-------------|
-| `server/index.js` | Lines 1642-1750 (new) | ADD: New functions |
+| `server/index.js` | Lines 1642-1760 (new) | ADD: New functions |
 | `server/index.js` | Line 2748 | MODIFY: Call site |
 
 ---
@@ -317,7 +341,7 @@ if (session.scenario?.secondary_medications_by_impact) {
 
 ### 4.1 Objective
 
-When a medication error is detected, provide Core Agent with V3.0's `patient_response` and `vital_changes` so the AI can generate accurate, educational responses.
+When a medication error is detected, provide Core Agent with V3.0's `patient_response` and `vital_changes` so the AI can generate accurate, educational responses showing patient deterioration.
 
 ### 4.2 Current State
 
@@ -336,14 +360,15 @@ function buildMedicationSafetyContext(dangerousMedications) {
 
 **Purpose:** Build detailed context for Core Agent using V3.0 rich data.
 
-**Location:** After current `buildMedicationSafetyContext()` (after line 1333)
-
 **Output Format:**
 
 ```
-=== CRITICAL MEDICATION EVENT ===
+=== CRITICAL MEDICATION EVENT (SAFETY GATE FAILURE) ===
 MEDICATION GIVEN: Diazepam (matched: "apaurin")
 SEVERITY: CRITICAL_HARM
+
+PATIENT STATE BEFORE: deteriorating
+PATIENT STATE AFTER: critical
 
 PATIENT RESPONSE (USE THIS IN YOUR REPLY):
 Patient becomes drowsy, breathing slows further, oxygen level plummets.
@@ -360,9 +385,10 @@ Benzodiazepine causes respiratory depression. Critical medication error.
 INSTRUCTION:
 Your next response must show these adverse effects happening.
 Use the patient response text above as guidance.
-The patient's condition should WORSEN noticeably.
+The patient's condition should WORSEN to critical state.
 Stay in character but make the adverse reaction clear and concerning.
-This is a critical teaching moment about medication safety.
+Continue the scenario naturally - do not interrupt or warn the student.
+This will be addressed as a Safety Gate failure in AAR debriefing.
 ```
 
 ### 4.4 Why This Matters
@@ -397,49 +423,31 @@ if (dangerousMedications && dangerousMedications.length > 0) {
 
 | File | Location | Change Type |
 |------|----------|-------------|
-| `server/index.js` | Lines 1334-1380 (new) | ADD: `buildMedicationSafetyContext_V3()` |
+| `server/index.js` | Lines 1334-1390 (new) | ADD: `buildMedicationSafetyContext_V3()` |
 | `server/index.js` | Chat handler context building | MODIFY: Use new function when V3.0 data present |
 
 ---
 
-## 5. Part 4: Consequence Template Population
+## 5. Part 4: Outcome-Based Consequence Feedback
 
 ### 5.1 Objective
 
-Pre-compute populated consequence templates at scenario end, storing them in `performanceSnapshot` for AAR Agent to use.
+Pre-compute **outcome-based** consequence feedback at scenario end using patient state data, storing in `performanceSnapshot` for AAR Agent.
 
-### 5.2 Current State
+**Key Change:** This section is completely rewritten to use **patient state** instead of **time-based** assessment.
 
-**Consequence templates exist in V3.0 scenarios:**
-```json
-{
-  "gap_trigger": "CA3_late",
-  "template": "Oxygen was applied at {actual_time} minutes—{delay_minutes} minutes past...",
-  "variables": { ... }
-}
-```
+### 5.2 Philosophy: Patient State Over Time
 
-**Current Flow:**
-1. `blueprintLoader.extractAARRelevantContent()` extracts raw templates
-2. AAR Agent receives templates with `{placeholders}`
-3. AAR Agent must figure out which gaps occurred and populate variables (unreliable)
+| DEPRECATED (Time-Based) | NEW (Outcome-Based) |
+|-------------------------|---------------------|
+| "Oxygen applied 4.2 minutes late" | "When oxygen was applied, patient was in deteriorating state" |
+| `{delay_minutes}`, `{target_time}` | `{patient_state_at_action}`, `{spo2_at_action}` |
+| Arbitrary thresholds | Patient condition determines assessment |
+| Punitive tone | Educational focus on patient outcomes |
 
-**Problem:** Variables are never populated with actual scenario data.
+### 5.3 New Function: `buildOutcomeBasedFeedback()`
 
-### 5.3 Option A: Pre-compute at Scenario End (Chosen)
-
-**Why Option A over Option B (AAR time)?**
-
-| Criteria | Option A: Scenario End | Option B: AAR Build |
-|----------|------------------------|---------------------|
-| **Simplicity** | Compute once | Re-compute every AAR request |
-| **Robustness** | Data captured at exact moment | Blueprint reload could fail |
-| **Data Integrity** | checklistResults accurate at scenario end | Data might be stale |
-| **Debugging** | Can inspect in performanceSnapshot | Computed on-the-fly |
-
-### 5.4 New Function: `populateConsequenceTemplates()`
-
-**Purpose:** Populate V3.0 consequence templates with actual scenario data.
+**Purpose:** Generate patient-focused consequence feedback using state data.
 
 **Location:** Before scenario completion handler (around line 3490)
 
@@ -448,135 +456,190 @@ Pre-compute populated consequence templates at scenario end, storing them in `pe
 | Parameter | Type | Source |
 |-----------|------|--------|
 | scenario | Object | session.scenario |
-| checklistResults | Array | session.checklistResults |
-| checklistSummary | Object | Generated at scenario end |
+| actionLog | Array | session.actionLog with patient state at each action |
+| stateHistory | Array | session.patientStateHistory |
 
 **Pseudocode:**
 
 ```
-FUNCTION populateConsequenceTemplates(scenario, checklistResults, checklistSummary):
-    templates = scenario.consequence_templates
-    IF no templates THEN return []
+FUNCTION buildOutcomeBasedFeedback(scenario, actionLog, stateHistory):
+    feedback = []
 
-    populated = []
+    FOR each criticalAction IN scenario.critical_actions_checklist:
+        actionRecord = findActionInLog(actionLog, criticalAction.id)
 
-    FOR each template IN templates:
-        // Check if this gap occurred
-        gapAnalysis = analyzeGap(template, checklistResults, checklistSummary)
+        IF actionRecord == null:
+            // Omission - action never performed
+            feedback.push(buildOmissionFeedback(criticalAction, scenario, stateHistory))
+        ELSE:
+            // Action performed - assess based on patient state
+            patientStateAtAction = actionRecord.patient_state_at_action
+            patientStateAfter = actionRecord.patient_state_after
 
-        IF NOT gapAnalysis.gapOccurred THEN continue
+            level = assessCompetenceLevel(patientStateAtAction, patientStateAfter)
 
-        // Start with template text
-        populatedText = template.template
+            IF level == "DEVELOPING" OR level == "NOVICE":
+                feedback.push(buildStateFeedback(
+                    criticalAction,
+                    patientStateAtAction,
+                    patientStateAfter,
+                    actionRecord,
+                    scenario
+                ))
 
-        // Replace all variables
-        populatedText = replaceVariable(populatedText, "{patient_name}", scenario.patient_profile.name)
-        populatedText = replaceVariable(populatedText, "{actual_time}", gapAnalysis.actualTime)
-        populatedText = replaceVariable(populatedText, "{target_time}", gapAnalysis.targetTime)
-        populatedText = replaceVariable(populatedText, "{delay_minutes}", gapAnalysis.delayMinutes)
-        populatedText = replaceVariable(populatedText, "{initial_spo2}", scenario.initial_vitals.SpO2)
-        populatedText = replaceVariable(populatedText, "{initial_hr}", scenario.initial_vitals.HR)
-        populatedText = replaceVariable(populatedText, "{initial_rr}", scenario.initial_vitals.RR)
-
-        // Add to results
-        populated.push({
-            checklist_item_id: template.checklist_item_id,
-            gap_type: template.gap_type,
-            severity: template.severity,
-            populated_consequence: populatedText,
-            medical_basis: template.medical_basis,
-            gap_details: gapAnalysis
-        })
-
-    RETURN populated
+    RETURN feedback
 ```
 
-### 5.5 Helper Function: `analyzeGap()`
+### 5.4 Helper Function: `assessCompetenceLevel()`
 
-**Purpose:** Determine if a specific gap (missed/delayed) occurred.
+**Purpose:** Determine competence level based on patient state (NOT time).
 
-**Logic by Gap Type:**
+**Implementation:**
+```javascript
+function assessCompetenceLevel(patientStateAtAction, patientStateAfter, technique) {
+  // Check for dangerous execution
+  if (technique === 'dangerous') {
+    return 'NOVICE';
+  }
 
-| Gap Type | Detection | Data Extracted |
-|----------|-----------|----------------|
-| `missed_action` | checklist_item_id in checklistSummary.missed | None needed |
-| `delayed_action` | Item in checklistResults with minutesLate > 0 | actualTime, targetTime, delayMinutes |
-| `wrong_sequence` | Compare timestamps of related items | sequenceOrder |
+  // Assess based on patient state trajectory
+  if (patientStateAtAction === 'initial' &&
+      (patientStateAfter === 'improving' || patientStateAfter === 'stable')) {
+    return 'EXEMPLARY';  // Prevented deterioration entirely
+  }
 
-### 5.6 Variables Supported
+  if ((patientStateAtAction === 'initial' || patientStateAtAction === 'early_deteriorating') &&
+      (patientStateAfter === 'improving' || patientStateAfter === 'stable')) {
+    return 'COMPETENT';  // Stabilized before major deterioration
+  }
+
+  if ((patientStateAtAction === 'deteriorating' || patientStateAtAction === 'critical') &&
+      patientStateAfter === 'improving') {
+    return 'DEVELOPING';  // Patient was in high-risk state before treatment
+  }
+
+  return 'DEVELOPING';
+}
+```
+
+### 5.5 Helper Function: `buildStateFeedback()`
+
+**Purpose:** Generate outcome-based feedback text.
+
+**Output Structure:**
+```javascript
+{
+  action_id: "CA3",
+  action_name: "Apply high-flow oxygen",
+  competence_level: "DEVELOPING",
+
+  // Patient state data
+  patient_state_at_action: "deteriorating",
+  patient_state_after: "improving",
+
+  // Vital signs at action
+  vitals_at_action: {
+    SpO2: 82,
+    HR: 135,
+    RR: 38
+  },
+
+  // Populated feedback text (outcome-based)
+  feedback_text: "When you applied oxygen, Maria was in a deteriorating state with SpO2 of 82%. The drop from her initial 88% to 82% represents preventable hypoxic damage—that's brain cells dying that didn't need to die.",
+
+  // Clinical anchor for sticky learning
+  clinical_anchor: "Time is tissue—every minute of hypoxia compounds damage that can't be undone.",
+
+  // Teaching point
+  teaching_point: "In life-threatening asthma, oxygen should be applied while patient is still in initial state to prevent deterioration."
+}
+```
+
+### 5.6 Outcome-Based Variables
+
+**SUPPORTED (Patient-State Based):**
 
 | Variable | Source | Example Value |
 |----------|--------|---------------|
 | `{patient_name}` | scenario.patient_profile.name | "Maria" |
-| `{actual_time}` | checklistResults[].time | "7.2" |
-| `{target_time}` | checklistItem.time_target_minutes | "3" |
-| `{delay_minutes}` | checklistResults[].minutesLate | "4.2" |
+| `{patient_state_at_action}` | actionRecord.patient_state_at_action | "deteriorating" |
+| `{patient_state_after}` | actionRecord.patient_state_after | "improving" |
+| `{spo2_at_action}` | actionRecord.vitals_at_action.SpO2 | "82" |
 | `{initial_spo2}` | scenario.initial_vitals.SpO2 | "88" |
+| `{hr_at_action}` | actionRecord.vitals_at_action.HR | "135" |
 | `{initial_hr}` | scenario.initial_vitals.HR | "125" |
-| `{initial_bp}` | scenario.initial_vitals.BP_systolic | "88" |
+| `{rr_at_action}` | actionRecord.vitals_at_action.RR | "38" |
 | `{initial_rr}` | scenario.initial_vitals.RR | "32" |
-| `{initial_gcs}` | scenario.initial_vitals.GCS | "14" |
-| `{action_name}` | checklistItem.action | "Apply high-flow oxygen" |
+| `{gcs_at_action}` | actionRecord.vitals_at_action.GCS | "13" |
+| `{action_name}` | criticalAction.action | "Apply high-flow oxygen" |
+
+**DEPRECATED (Time-Based - Do NOT use):**
+
+| Variable | Status |
+|----------|--------|
+| ~~`{delay_minutes}`~~ | REMOVED - arbitrary time comparison |
+| ~~`{target_time}`~~ | REMOVED - arbitrary threshold |
+| ~~`{actual_time}`~~ | REMOVED - use patient state instead |
+| ~~`{minutes_late}`~~ | REMOVED - punitive time comparison |
 
 ### 5.7 Integration: Add to performanceSnapshot
 
 **Location:** `server/index.js` lines 3524-3567
 
-**Current Code (line 3549-3551):**
+**Add to performanceSnapshot:**
 ```javascript
-// Phase 2: Checklist results and summary
-checklistResults: session.checklistResults || [],
-checklistSummary: checklistSummary,
-```
-
-**Add After:**
-```javascript
-// Phase 3: Pre-computed consequence templates
-populatedConsequences: populateConsequenceTemplates(
+// Outcome-based assessment data
+outcomeBasedFeedback: buildOutcomeBasedFeedback(
   session.scenario,
-  session.checklistResults,
-  checklistSummary
+  session.actionLog,
+  session.patientStateHistory
 ),
+
+// Safety Gate results
+safetyGate: {
+  passed: (session.safetyGateFailures || []).length === 0,
+  failures: session.safetyGateFailures || []
+},
 ```
 
 ### 5.8 AAR Context Builder Update
 
 **File:** `server/services/aarContextBuilder.js`
 
-**What to Add:** New section in formatted AAR context for "Medical Consequences"
-
-**Example Output:**
+**New Section: Patient Outcome Summary**
 
 ```markdown
-## Medical Consequences of Performance Gaps
+## Patient Outcome Assessment
 
-### Delayed Oxygen (CA3)
-**Severity:** HIGH
-**What Happened:** Oxygen was applied at 7.2 minutes—4.2 minutes past the 3-minute
-critical window. During those 4.2 minutes, Maria's SpO2 remained at 88%. Each minute
-of SpO2 <85% accelerates cerebral hypoxia—brain cells begin dying after 4-6 minutes.
+### Safety Gate Status: PASSED / FAILED
+[If failed, list critical failures - addressed FIRST in debriefing]
 
-**Medical Basis:** Each minute of SpO2 <85% accelerates cerebral hypoxia...
+### Action-by-Action Assessment
 
+#### CA3: Apply High-Flow Oxygen
+**Competence Level:** DEVELOPING
+**Patient State at Action:** deteriorating (SpO2: 82%, HR: 135)
+**Patient State After:** improving
 
-### Missed Bronchodilator (CA4)
-**Severity:** CRITICAL
-**What Happened:** No bronchodilator was given. Maria had life-threatening asthma
-with severe bronchospasm, yet the primary treatment was never administered. Without
-bronchodilation, her airways remained critically narrowed, making respiratory failure inevitable.
+**Outcome Feedback:**
+When you applied oxygen, Maria was in a deteriorating state with SpO2 of 82%.
+The drop from her initial 88% to 82% represents preventable hypoxic damage.
 
-**Medical Basis:** Failure to administer bronchodilator in life-threatening asthma
-is a critical omission...
+**Clinical Anchor:** Time is tissue—every minute of hypoxia compounds damage
+that can't be undone.
+
+**Reasoning Question to Ask:**
+"What was your assessment that led to prioritizing other interventions first?"
 ```
 
 ### 5.9 Files to Modify
 
 | File | Location | Change Type |
 |------|----------|-------------|
-| `server/index.js` | Lines 3490-3520 (new) | ADD: `analyzeGap()` |
-| `server/index.js` | Lines 3520-3570 (new) | ADD: `populateConsequenceTemplates()` |
+| `server/index.js` | Lines 3490-3520 (new) | ADD: `assessCompetenceLevel()` |
+| `server/index.js` | Lines 3520-3580 (new) | ADD: `buildOutcomeBasedFeedback()`, `buildStateFeedback()` |
 | `server/index.js` | Line 3551 | MODIFY: Add to performanceSnapshot |
-| `server/services/aarContextBuilder.js` | formatAARContextForPrompt() | MODIFY: Add consequences section |
+| `server/services/aarContextBuilder.js` | formatAARContextForPrompt() | MODIFY: Add outcome-based section |
 
 ---
 
@@ -594,11 +657,11 @@ is a critical omission...
 │                                                                          │
 │  Step 1: detectMedicationMention()                                      │
 │       ↓                                                                  │
-│  Step 2: createMedicationIssue()                                        │
+│  Step 2: createMedicationIssue()  ←── NO POINTS, uses severity          │
 │       ↓                                                                  │
 │  Step 3: applyVitalChanges()                                            │
 │       ↓                                                                  │
-│  Step 4: addDangerousCDPForMedication()                                 │
+│  Step 4: logSafetyGateFailure()  ←── NEW: replaces CDP rating           │
 │       ↓                                                                  │
 │  Step 5: checkMedicationSafety_V3()  ←── Uses steps 1-4                 │
 │       ↓                                                                  │
@@ -611,16 +674,18 @@ is a critical omission...
 │       ↓                                                                  │
 │  Step 8: Update context building in chat handler                        │
 │                                                                          │
-│  PART 4: Consequence Templates (Independent)                            │
-│  ───────────────────────────────────────────                            │
+│  PART 4: Outcome-Based Feedback (Independent)                           │
+│  ─────────────────────────────────────────────                          │
 │                                                                          │
-│  Step 9: analyzeGap()                                                   │
+│  Step 9: assessCompetenceLevel()  ←── Patient state based               │
 │       ↓                                                                  │
-│  Step 10: populateConsequenceTemplates()  ←── Uses step 9               │
+│  Step 10: buildStateFeedback()                                          │
 │       ↓                                                                  │
-│  Step 11: Add to performanceSnapshot                                    │
+│  Step 11: buildOutcomeBasedFeedback()  ←── Uses steps 9-10              │
 │       ↓                                                                  │
-│  Step 12: Update aarContextBuilder.js                                   │
+│  Step 12: Add to performanceSnapshot                                    │
+│       ↓                                                                  │
+│  Step 13: Update aarContextBuilder.js                                   │
 │                                                                          │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
@@ -630,19 +695,20 @@ is a critical omission...
 | Order | Step | File | Estimated Lines |
 |-------|------|------|-----------------|
 | 1 | `detectMedicationMention()` | index.js | 30 |
-| 2 | `createMedicationIssue()` | index.js | 25 |
+| 2 | `createMedicationIssue()` (no points) | index.js | 25 |
 | 3 | `applyVitalChanges()` | index.js | 15 |
-| 4 | `addDangerousCDPForMedication()` | index.js | 20 |
+| 4 | `logSafetyGateFailure()` | index.js | 25 |
 | 5 | `checkMedicationSafety_V3()` | index.js | 60 |
 | 6 | Update call site | index.js | 10 |
-| 7 | `buildMedicationSafetyContext_V3()` | index.js | 40 |
+| 7 | `buildMedicationSafetyContext_V3()` | index.js | 45 |
 | 8 | Update context building | index.js | 10 |
-| 9 | `analyzeGap()` | index.js | 30 |
-| 10 | `populateConsequenceTemplates()` | index.js | 50 |
-| 11 | Add to performanceSnapshot | index.js | 5 |
-| 12 | Update AAR context | aarContextBuilder.js | 30 |
+| 9 | `assessCompetenceLevel()` | index.js | 25 |
+| 10 | `buildStateFeedback()` | index.js | 35 |
+| 11 | `buildOutcomeBasedFeedback()` | index.js | 40 |
+| 12 | Add to performanceSnapshot | index.js | 10 |
+| 13 | Update AAR context | aarContextBuilder.js | 35 |
 
-**Total:** ~325 lines
+**Total:** ~365 lines
 
 ---
 
@@ -656,41 +722,44 @@ is a critical omission...
 |---------|-----------|-------|----------|
 | MS-01 | V3.0 critical_harm detection | "I'll give apaurin" in asthma | Detects diazepam, returns rich data |
 | MS-02 | Brand name matching | "Give valium" | Matches diazepam via brand variants |
-| MS-03 | Worsens category | "Give salbutamol" in anaphylaxis | Detects from worsens, lower severity |
-| MS-04 | Neutral tracking | "Check glucose" in opioid OD | Logged as warning, not error |
+| MS-03 | Worsens category | "Give salbutamol" in anaphylaxis | Detects from worsens, not Safety Gate |
+| MS-04 | Neutral tracking | "Check glucose" in opioid OD | Logged as note, not error |
 | MS-05 | Vital changes applied | Give critical_harm med | session.currentVitals updated |
-| MS-06 | CDP auto-rating | Give critical_harm med | CDP evaluation with 'dangerous' score |
-| MS-07 | No false positives | "Should I give oxygen?" | No medication error detected |
+| MS-06 | Safety Gate logging | Give critical_harm med | safetyGateFailures array updated |
+| MS-07 | No points in output | Any medication detection | No `points` field in issue object |
+| MS-08 | No false positives | "Should I give oxygen?" | No medication error detected |
 
-#### Part 4: Consequence Templates
+#### Part 4: Outcome-Based Feedback
 
 | Test ID | Test Case | Input | Expected |
 |---------|-----------|-------|----------|
-| CT-01 | No gaps | All actions on time | Empty array |
-| CT-02 | Delayed action | CA3 at 7 min (target 3) | 1 consequence with populated text |
-| CT-03 | Missed action | CA4 never done | 1 consequence for missed |
-| CT-04 | Multiple gaps | CA3 late + CA5 missed | 2 consequences |
-| CT-05 | Variable replacement | Any gap | All {variables} replaced |
-| CT-06 | No templates | Legacy scenario | Empty array, no error |
+| OF-01 | Exemplary action | Action in initial state, patient improved | Level = EXEMPLARY |
+| OF-02 | Competent action | Action in early_deteriorating, patient stable | Level = COMPETENT |
+| OF-03 | Developing action | Action in deteriorating state | Level = DEVELOPING |
+| OF-04 | Omission | Critical action never performed | Omission feedback generated |
+| OF-05 | Patient state variables | Any DEVELOPING action | Feedback uses patient state, NOT time |
+| OF-06 | No time variables | Any feedback | No `{delay_minutes}` or `{target_time}` |
+| OF-07 | Clinical anchor included | DEVELOPING feedback | Clinical anchor present |
 
 ### 7.2 Integration Tests
 
 | Test ID | Test Case | Steps | Expected |
 |---------|-----------|-------|----------|
-| INT-01 | Full medication flow | Give diazepam in asthma | Error detected → Vitals change → CDP added → Core Agent shows adverse effect |
-| INT-02 | Full consequence flow | Complete scenario with late oxygen | performanceSnapshot has populatedConsequences → AAR shows personalized feedback |
-| INT-03 | Legacy compatibility | Use v2.0 scenario | Falls back to legacy functions, no errors |
+| INT-01 | Full medication flow | Give diazepam in asthma | Error detected → Vitals change → Safety Gate logged → Core Agent shows adverse effect |
+| INT-02 | Full outcome flow | Complete scenario with delayed oxygen | performanceSnapshot has outcomeBasedFeedback with patient state data |
+| INT-03 | Safety Gate in AAR | Medication error occurred | AAR context shows Safety Gate failure with HIGH PRIORITY |
+| INT-04 | Legacy compatibility | Use v2.0 scenario | Falls back to legacy functions, no errors |
 
 ### 7.3 Scenario Coverage
 
-| Scenario | Critical Harm Meds to Test | Consequence Templates to Test |
-|----------|---------------------------|------------------------------|
-| Asthma v3.0 | diazepam (apaurin) | CA3_late, CA4_late, CA3_missed, CA4_missed |
-| Anaphylaxis v3.0 | beta_blocker, salbutamol_alone | CA3_late, CA3_missed |
-| Opioid OD v3.0 | excessive_naloxone, flumazenil | CA4_missed, CA5_late, CA4_after_CA5 |
-| Status Epilepticus v3.0 | insulin, excessive_benzo | CA4_missed, CA5_missed, CA4_late |
-| TBI v3.0 | - | CA2_missed, CA3_late, CA5_missed |
-| Hemorrhagic Shock v3.0 | excessive_fluids | CA4_missed, CA4_late, CA8_late |
+| Scenario | Safety Gate Medications to Test | Outcome Feedback to Test |
+|----------|--------------------------------|--------------------------|
+| Asthma v3.0 | diazepam (apaurin) | Oxygen in deteriorating state |
+| Anaphylaxis v3.0 | beta_blocker | Epinephrine in critical state |
+| Opioid OD v3.0 | flumazenil | Naloxone in initial vs deteriorating |
+| Status Epilepticus v3.0 | insulin | Glucose/Diazepam timing |
+| TBI v3.0 | hypotonic fluids | Airway in deteriorating state |
+| Hemorrhagic Shock v3.0 | excessive_fluids | TXA/tourniquet in critical state |
 
 ---
 
@@ -702,9 +771,9 @@ is a critical omission...
 |------|-------------|--------|------------|
 | Legacy scenario breakage | Low | Medium | Keep legacy functions, add fallback |
 | Brand name mapping incomplete | Medium | Low | Start with known meds, expand as needed |
-| Variable replacement edge cases | Low | Low | Use "N/A" for missing values |
-| Performance impact | Low | Low | Population is O(n) on small arrays |
-| AAR context too long | Low | Medium | Limit to 3 most severe consequences |
+| Patient state not tracked | Medium | Medium | Add state tracking if missing |
+| Performance impact | Low | Low | Assessment is O(n) on small arrays |
+| AAR context too long | Low | Medium | Limit to 3 most significant items |
 
 ### 8.2 Rollback Plan
 
@@ -718,10 +787,11 @@ All changes are additive:
 | Criteria | Measurement |
 |----------|-------------|
 | Medication errors detected | >95% of dangerous meds caught in testing |
+| Safety Gate logging | All critical_harm meds create Safety Gate entries |
+| No points in system | Zero references to point values in new code |
+| Outcome-based feedback | All feedback uses patient state, not time |
 | Core Agent accuracy | Adverse effects match V3.0 patient_response |
-| Consequence personalization | All {variables} replaced with actual data |
 | No regression | Legacy scenarios still work |
-| Performance | No noticeable latency increase |
 
 ---
 
@@ -742,7 +812,6 @@ All changes are additive:
           "vital_changes": { "SpO2": 73, "RR": 18, "GCS": 10 },
           "patient_response": "Patient becomes drowsy...",
           "clinical_note": "Benzodiazepine causes respiratory depression.",
-          "points": -20,
           "state_change": "critical",
           "aar_flag": "dangerous_medication"
         },
@@ -755,28 +824,18 @@ All changes are additive:
 }
 ```
 
-### consequence_templates
+**Note:** No `points` field - severity is indicated by category (critical_harm, worsens, neutral).
 
-```json
-{
-  "consequence_templates": [
-    {
-      "gap_trigger": "CA3_late",
-      "checklist_item_id": "CA3",
-      "gap_type": "delayed_action",
-      "template": "Oxygen was applied at {actual_time} minutes—{delay_minutes} minutes past the {target_time}-minute critical window...",
-      "variables": {
-        "actual_time": "checklistResults.CA3.time",
-        "target_time": "3",
-        "delay_minutes": "calculated",
-        "patient_name": "patient_profile.name"
-      },
-      "severity": "high",
-      "medical_basis": "Each minute of SpO2 <85% accelerates cerebral hypoxia..."
-    }
-  ]
-}
-```
+### Patient State Definitions
+
+| State | Description | Competence Implication |
+|-------|-------------|------------------------|
+| `initial` | Presenting symptoms, stable for assessment | Action here = EXEMPLARY |
+| `early_deteriorating` | First signs of worsening | Action here = COMPETENT |
+| `deteriorating` | Clear worsening, needs immediate intervention | Action here = DEVELOPING |
+| `critical` | Life-threatening, imminent arrest | Action here = DEVELOPING |
+| `improving` | Positive response to treatment | Post-treatment state |
+| `stable` | Stabilized after treatment | Post-treatment state |
 
 ---
 
@@ -784,10 +843,28 @@ All changes are additive:
 
 | File | Total Lines Changed | Changes |
 |------|--------------------:|---------|
-| `server/index.js` | ~280 | 6 new functions, 2 modified sections |
-| `server/services/aarContextBuilder.js` | ~30 | 1 new section in formatter |
-| **Total** | **~310** | |
+| `server/index.js` | ~300 | 7 new functions, 2 modified sections |
+| `server/services/aarContextBuilder.js` | ~35 | 1 new section in formatter |
+| **Total** | **~335** | |
+
+---
+
+## Appendix C: Alignment with Performance Assessment V3.0
+
+This document is fully aligned with the Performance Assessment System V3.0 Implementation Guide:
+
+| Performance Assessment Principle | This Document's Implementation |
+|----------------------------------|--------------------------------|
+| Three-Tier Assessment | Safety Gate (Tier 2) + Competence Levels (Tier 3) |
+| No Points | `createMedicationIssue()` has no points field |
+| No Time Thresholds | `buildOutcomeBasedFeedback()` uses patient state |
+| Safety Gate for Critical Failures | `logSafetyGateFailure()` for medication errors |
+| Outcome-Based Competence | `assessCompetenceLevel()` uses patient state |
+| Patient State Variables | `{patient_state_at_action}`, `{spo2_at_action}`, etc. |
+| Silent Tracking | Core Agent continues naturally after medication error |
+| AAR Priority | Safety Gate failures addressed first in AAR |
 
 ---
 
 *Document prepared for Know Thyself MVP V3.0 Integration*
+*Aligned with Performance Assessment System V3.0 Implementation Guide*
