@@ -190,7 +190,7 @@
       "approach": "Two large bore (16-18G) if possible without delaying transport",
       
       "scenario_specific_response": {
-        "importance": "important_but_transport_priority",
+        "importance": "important",
         "clinical_effect": "Enables fluid administration",
         "points_if_achieved": 5,
         "teaching_point": "IV access is important but do NOT delay transport to establish it. Can be done en route."

@@ -257,7 +257,7 @@
       "indication": "Hypoxia",
       
       "scenario_specific_response": {
-        "importance": "critical_adjunct",
+        "importance": "supportive",
         "clinical_effect": "High-flow oxygen supports oxygenation",
         "points_if_given": 5,
         "note": "Oxygen alone insufficient - patient not breathing adequately, needs BVM"

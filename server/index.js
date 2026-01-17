@@ -3096,23 +3096,23 @@ function buildEnhancedInstruction(message, detected, toolResults) {
 }
 
 /**
- * POST /api/sessions/:id/message
+ * POST /api/sessions/:sessionId/message
  * Send message to AI patient
  */
-app.post('/api/sessions/:id/message', async (req, res) => {
+app.post('/api/sessions/:sessionId/message', async (req, res) => {
   let lockAcquired = false;
   try {
-    const { id } = req.params;
+    const { sessionId } = req.params;
     const { message } = req.body;
 
     // Acquire session lock to prevent concurrent modifications
-    await acquireSessionLock(id);
+    await acquireSessionLock(sessionId);
     lockAcquired = true;
 
-    const session = await getSession(id);
+    const session = await getSession(sessionId);
 
     if (!session) {
-      releaseSessionLock(id);
+      releaseSessionLock(sessionId);
       lockAcquired = false;
       return res.status(404).json({ error: 'Session not found' });
     }
@@ -3882,19 +3882,19 @@ res.json({
   } finally {
     // Always release the session lock
     if (lockAcquired) {
-      releaseSessionLock(req.params.id);
+      releaseSessionLock(req.params.sessionId);
     }
   }
 });
 
 /**
- * POST /api/sessions/:id/begin-scenario
+ * POST /api/sessions/:sessionId/begin-scenario
  * ✅ NEW: User clicked "Begin Scenario" button - load scenario and transition to Core Agent
  */
-app.post('/api/sessions/:id/begin-scenario', async (req, res) => {
+app.post('/api/sessions/:sessionId/begin-scenario', async (req, res) => {
   try {
-    const { id } = req.params;
-    const session = await getSession(id);
+    const { sessionId } = req.params;
+    const session = await getSession(sessionId);
 
     if (!session) {
       return res.status(404).json({ error: 'Session not found' });
@@ -4027,12 +4027,12 @@ app.post('/api/sessions/:id/begin-scenario', async (req, res) => {
 });
 
 /**
- * POST /api/sessions/:id/complete
+ * POST /api/sessions/:sessionId/complete
  * Mark scenario complete and get performance summary
  */
-app.post('/api/sessions/:id/complete', async (req, res) => {
+app.post('/api/sessions/:sessionId/complete', async (req, res) => {
   try {
-    const sessionId = req.params.id;
+    const sessionId = req.params.sessionId;
     const session = await getSession(sessionId);
 
     if (!session) {
@@ -4065,12 +4065,12 @@ app.post('/api/sessions/:id/complete', async (req, res) => {
 });
 
 /**
- * POST /api/sessions/:id/next-scenario
+ * POST /api/sessions/:sessionId/next-scenario
  * Complete current scenario and prepare for next one (within same session)
  */
-app.post('/api/sessions/:id/next-scenario', async (req, res) => {
+app.post('/api/sessions/:sessionId/next-scenario', async (req, res) => {
   try {
-    const sessionId = req.params.id;
+    const sessionId = req.params.sessionId;
     const session = await getSession(sessionId);
 
     if (!session) {
@@ -4395,38 +4395,6 @@ app.get('/api/sessions/:sessionId/vitals', async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching vitals:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-/**
- * GET /api/sessions/:sessionId/state
- * Get current session state and vitals (for frontend polling)
- * Phase 5, Task 5.3 - Vitals Polling Enhancement
- */
-app.get('/api/sessions/:sessionId/state', async (req, res) => {
-  try {
-    const { sessionId } = req.params;
-
-    const session = await getSession(sessionId);
-    if (!session) {
-      return res.status(404).json({ error: 'Session not found' });
-    }
-
-    // Update state before sending (ensure latest progression)
-    if (session.scenario && session.currentState) {
-      evaluateStateProgression(session);
-    }
-
-    res.json({
-      currentState: session.currentState,
-      vitals: session.vitals,
-      timeSinceStart: session.scenarioStartTime ? (Date.now() - session.scenarioStartTime) / 1000 : 0,
-      criticalTreatmentsGiven: session.criticalTreatmentsGiven || {},
-      stateHistory: session.stateHistory || []
-    });
-  } catch (error) {
-    console.error('Error fetching session state:', error);
     res.status(500).json({ error: error.message });
   }
 });

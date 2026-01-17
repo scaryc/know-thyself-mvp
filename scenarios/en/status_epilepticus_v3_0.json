@@ -448,7 +448,7 @@
       "UM2": { "trigger_actions": ["CA4"] },
       "UM3": { "trigger_actions": ["CA2", "CA3"] },
       "UM4": { "trigger_actions": ["CA5"] },
-      "UM5": { "trigger_actions": ["CA4", "CA8"] },
+      "UM5": { "trigger_actions": ["CA8"] },
       "UM6": { "trigger_actions": ["CA7"] }
     }
   },

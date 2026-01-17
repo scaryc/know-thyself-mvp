@@ -27,13 +27,22 @@ export function buildCognitiveCoachPrompt(session) {
   const { cognitiveCoach } = session;
   const { selectedQuestions, currentQuestionIndex } = cognitiveCoach;
 
-  // Get selected question details
-  const questions = selectedQuestions.map(qID =>
-    cognitiveCoachService.getQuestionByID(qID, language)
-  );
+  // Get selected question details with validation
+  const questions = selectedQuestions.map(qID => {
+    const question = cognitiveCoachService.getQuestionByID(qID, language);
+    if (!question) {
+      console.error(`[CognitiveCoach] Question ${qID} not found in pool for language ${language}`);
+      throw new Error(`Question ${qID} not found in question pool`);
+    }
+    return question;
+  });
 
-  // Get all questions for reference
+  // Get all questions for reference with validation
   const allQuestions = cognitiveCoachService.getAllQuestions(language);
+  if (!allQuestions || allQuestions.length === 0) {
+    console.error(`[CognitiveCoach] No questions found for language ${language}`);
+    throw new Error(`No cognitive coach questions available for language ${language}`);
+  }
   
   // Calculate progress
   const questionsRemaining = selectedQuestions.length - currentQuestionIndex;

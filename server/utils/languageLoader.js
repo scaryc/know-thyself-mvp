@@ -27,7 +27,8 @@ function loadPrompt(agentType, language = 'en') {
     }
 
     // Fallback to English if translation not available
-    console.warn(`Prompt not found for ${agentType} in ${language}, falling back to English`);
+    console.warn(`[LanguageLoader] ⚠️  FALLBACK TRIGGERED: Prompt '${agentType}' not found for language '${language}', using English instead`);
+    console.warn(`[LanguageLoader] Expected path: ${promptPath}`);
     const fallbackPath = path.join(__dirname, '..', 'prompts', 'en', `${agentType}.txt`);
     return fs.readFileSync(fallbackPath, 'utf-8');
   } catch (error) {
@@ -55,7 +56,8 @@ function loadScenario(scenarioId, language = 'en') {
     }
 
     // Fallback to English if translation not available
-    console.warn(`Scenario ${scenarioId} not found in ${language}, falling back to English`);
+    console.warn(`[LanguageLoader] ⚠️  FALLBACK TRIGGERED: Scenario '${scenarioId}' not found for language '${language}', using English instead`);
+    console.warn(`[LanguageLoader] Expected path: ${scenarioPath}`);
     const fallbackPath = path.join(__dirname, '..', '..', 'scenarios', 'en', filename);
     const content = fs.readFileSync(fallbackPath, 'utf-8');
     return JSON.parse(content);
@@ -81,7 +83,8 @@ function loadQuestions(language = 'en') {
     }
 
     // Fallback to English if translation not available
-    console.warn(`Questions not found in ${language}, falling back to English`);
+    console.warn(`[LanguageLoader] ⚠️  FALLBACK TRIGGERED: Cognitive questions not found for language '${language}', using English instead`);
+    console.warn(`[LanguageLoader] Expected path: ${questionsPath}`);
     const fallbackPath = path.join(__dirname, '..', 'data', 'en', 'cognitiveCoachQuestions.json');
     const content = fs.readFileSync(fallbackPath, 'utf-8');
     return JSON.parse(content);
@@ -108,7 +111,8 @@ function loadTranslations(language = 'en', namespace = 'api') {
     }
 
     // Fallback to English if translation not available
-    console.warn(`Translations not found for ${namespace} in ${language}, falling back to English`);
+    console.warn(`[LanguageLoader] ⚠️  FALLBACK TRIGGERED: Translations '${namespace}' not found for language '${language}', using English instead`);
+    console.warn(`[LanguageLoader] Expected path: ${translationsPath}`);
     const fallbackPath = path.join(__dirname, '..', '..', 'public', 'locales', 'en', `${namespace}.json`);
     const content = fs.readFileSync(fallbackPath, 'utf-8');
     return JSON.parse(content);

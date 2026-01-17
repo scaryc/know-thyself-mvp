@@ -259,7 +259,7 @@
       "scenario_specific_response": {
         "appropriate_for_case": true,
         "critical_treatment": false,
-        "importance": "important_secondary",
+        "importance": "important",
         "vital_changes": {},
         "clinical_effect": "No immediate effect. Prevents biphasic reaction 1-8 hours later.",
         "timing_note": "Give AFTER epinephrine - steroids are NOT first-line",
@@ -275,7 +275,7 @@
       "scenario_specific_response": {
         "appropriate_for_case": true,
         "critical_treatment": false,
-        "importance": "adjunct_only",
+        "importance": "supportive",
         "vital_changes": {},
         "clinical_effect": "May help with urticaria and itching. Does NOT treat airway or cardiovascular compromise.",
         "teaching_point": "Antihistamines are adjuncts only. They do NOT treat anaphylaxis - only epinephrine does. Never delay epinephrine to give antihistamines."
@@ -289,7 +289,7 @@
       "scenario_specific_response": {
         "appropriate_for_case": true,
         "critical_treatment": false,
-        "importance": "important_adjunct",
+        "importance": "supportive",
         "vital_changes": {
           "BP_systolic": "+10-15"
         },

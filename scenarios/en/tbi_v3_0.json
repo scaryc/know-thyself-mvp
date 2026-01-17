@@ -202,7 +202,7 @@
       
       "scenario_specific_response": {
         "appropriate_for_case": "conditional",
-        "importance": "if_hypotensive",
+        "importance": "important",
         "clinical_effect": "This patient is hypertensive (165/95) so does NOT need fluids. Only give if SBP drops below 90.",
         "teaching_point": "Goal in TBI: prevent hypotension (SBP <90). This patient is HYPERtensive - do NOT fluid overload. Maintain IV access but restrict fluids unless BP drops."
       }
@@ -347,7 +347,7 @@
     },
     "milestone_mappings": {
       "UM1": { "trigger_actions": ["CA1"] },
-      "UM2": { "trigger_actions": ["CA3", "CA4"] },
+      "UM2": { "trigger_actions": ["CA3"] },
       "UM3": { "trigger_actions": ["CA6"] },
       "UM4": { "trigger_actions": ["CA2"] },
       "UM5": { "trigger_actions": ["CA5"] },

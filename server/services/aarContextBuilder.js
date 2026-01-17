@@ -56,17 +56,7 @@ export function buildFullAARContext(session) {
 
         // Action details with competence levels
         completed_actions: perf.completed_actions || [],
-        missed_actions: perf.missed_actions || [],
-
-        // Legacy data (for backward compatibility)
-        structuredMemory: perf.structuredMemory || {},
-        cdpEvaluations: perf.cdpEvaluations || [],
-        stateHistory: perf.stateHistory || [],
-        criticalActionsLog: perf.actionsLog || [],
-        medicationErrors: perf.errors || [],
-        checklistResults: perf.checklistResults || [],
-        checklistSummary: perf.checklistSummary || null,
-        score: perf.score
+        missed_actions: perf.missed_actions || []
       },
 
       // Timing
