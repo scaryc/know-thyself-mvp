@@ -423,6 +423,133 @@
     ]
   },
 
+  "progress_milestones": {
+    "enabled": true,
+    "tracking_mode": "silent",
+    "display_mode": "progressive_reveal",
+    "display_location": "clinical_notes_panel",
+    "milestone_definitions": {
+      "UM1": {
+        "name": "Miesto zabezpečené",
+        "description": "Bezpečnosť miesta zaistená, BSI prijaté"
+      },
+      "UM2": {
+        "name": "Núdzová situácia rozpoznaná",
+        "description": "Primárny problém identifikovaný"
+      },
+      "UM3": {
+        "name": "Dýchanie podporené",
+        "description": "Intervencia dýchacích ciest/dýchania začatá"
+      },
+      "UM4": {
+        "name": "Kritická liečba",
+        "description": "Primárna život zachraňujúca liečba podaná"
+      },
+      "UM5": {
+        "name": "Hodnotenie dokončené",
+        "description": "ABCDE/SAMPLE/sekundárne vyšetrenie dokončené"
+      },
+      "UM6": {
+        "name": "Monitorovanie zavedené",
+        "description": "Prebiehajúce opätovné hodnotenie začaté"
+      }
+    },
+    "milestone_mappings": {
+      "UM1": { "trigger_actions": ["CA1"] },
+      "UM2": { "trigger_actions": ["CA4"] },
+      "UM3": { "trigger_actions": ["CA2", "CA3"] },
+      "UM4": { "trigger_actions": ["CA5"] },
+      "UM5": { "trigger_actions": ["CA8"] },
+      "UM6": { "trigger_actions": ["CA7"] }
+    }
+  },
+
+  "safety_gate": {
+    "enabled": true,
+    "tracking_mode": "silent",
+    "interrupt_scenario": false,
+    "critical_failures": [
+      {
+        "id": "SF1",
+        "type": "omission",
+        "description": "Glykémia nikdy nekontrolovaná u diabetického pacienta s kŕčmi",
+        "detection_criteria": {
+          "condition": "scenario_end AND glucose_checked == false",
+          "patient_state_required": "seizure_patient_diabetic_history"
+        },
+        "patient_outcome": "Hypoglykemické kŕče pokračujú neliečené. Pacient vyvinie trvalé neurologické poškodenie z dlhodobej neuroglykopenézie. Jednoduchá, reverzibilná príčina zmeškáná - pacient trpí poškodením mozgu z preventabilnej hypoglykémie.",
+        "aar_teaching_point": "Kontrola glykémie v krvi je POVINNÁ u VŠETKÝCH pacientov s kŕčmi, najmä u tých s anamnézou diabetu. Hypoglykémia je najľahšie reverzibilná príčina kŕčov. Kontrola trvá 15 sekúnd a opravu s IV glukózou 2 minúty. Ak nekontrolujete, prídete o jedinú vec, ktorú môžete okamžite vyliečiť. Tento pacient mal kŕče z nízkej hladiny cukru v krvi - podajte glukózu a kŕče ihneď ustanú. Bez kontroly liečite naslepo a prehliadate reverzibilnú príčinu."
+      },
+      {
+        "id": "SF2",
+        "type": "commission",
+        "description": "Benzodiazepín podaný BEZ predchádzajúcej kontroly glykémie",
+        "detection_criteria": {
+          "condition": "benzodiazepine_given == true AND glucose_checked == false"
+        },
+        "patient_outcome": "Benzodiazepín môže dočasne potlačiť kŕče, ale neliečí podkladovú hypoglykémiu. Kŕče sa môžu vrátiť, keď benzodiazepín prestane pôsobiť. Pacient je teraz sedovaný PLUS hypoglykemický - dvakrát ohrozený.",
+        "aar_teaching_point": "Benzodiazepín potláča SYMPTÓM (kŕč), ale neliečí PRÍČINU (nízky cukor). Vždy najprv skontrolujte glykémiu pri kŕčoch. Ak je nízka, podajte glukózu ako primárnu liečbu. Benzodiazepín je záložný, nie prvá línia pri hypoglykemických kŕčoch. Liečte príčinu, nie len symptóm."
+      },
+      {
+        "id": "SF3",
+        "type": "omission",
+        "description": "Glukóza nikdy nepodaná napriek dokumentovanej hypoglykémii",
+        "detection_criteria": {
+          "condition": "scenario_end AND glucose_low == true AND glucose_given == false"
+        },
+        "patient_outcome": "Kŕče pokračujú alebo sa opakujú, pretože príčina (hypoglykémia) ostáva neliečená. Mozog je zbavený glukózy po celú dobu trvania scenára, čo vedie k kumulatívnemu neurologickému poškodeniu. Pacient môže vyvinúť trvalé kognitívne poškodenie.",
+        "aar_teaching_point": "Keď diagnostikujete hypoglykémiu (glukóza <3.5), podanie IV glukózy je URGENTNÉ. Nie je to 'jedna z vecí, ktoré treba urobiť' - je to TÁ vec, ktorú treba urobiť. Každá minúta oneskorenia je minúta preventabilného poškodenia mozgu. Hypoglykemické kŕče sa IHNEĎ zastavia po podaní glukózy - je to najbližšie k 'zázračnému lieku', aké máme v medicíne urgentných stavov."
+      },
+      {
+        "id": "SF4",
+        "type": "commission",
+        "description": "Pokus vložiť orálnu vzduchovku alebo predmet do úst počas aktívnych kŕčov",
+        "detection_criteria": {
+          "condition": "oral_airway_during_seizure == true"
+        },
+        "patient_outcome": "Čeľuste sú stisnuté s nadľudskou silou. Pokus o vloženie čohokoľvek do úst vedie k zlomeniu zubov, poškodeniu mäkkých tkanív a potenciálnemu aspirovaniu. Žiadny benefit, len škoda.",
+        "aar_teaching_point": "NIKDY nič nevkladajte do úst pacienta počas aktívnych kŕčov. Čeľuste sú zovreté neuveriteľnou silou - zlomíte zuby, nie pomôžete. Chráňte dýchacie cesty umiestnením na bok, odsatím sekrétov a aplikáciou kyslíka. Počkajte, kým kŕče ustanú, potom zvážte dýchacie cesty, ak je to potrebné. Poškodenie zubov nemá žiadnu terapeutickú hodnotu."
+      }
+    ]
+  },
+
+  "scenario_states": {
+    "initial": {
+      "duration_minutes": 5,
+      "auto_deteriorate": true,
+      "deterioration_trigger": "time_based",
+      "deterioration_target": "early_deteriorating"
+    },
+    "early_deteriorating": {
+      "duration_minutes": 4,
+      "auto_deteriorate": true,
+      "deterioration_trigger": "time_based",
+      "deterioration_target": "deteriorating"
+    },
+    "deteriorating": {
+      "duration_minutes": 4,
+      "auto_deteriorate": true,
+      "deterioration_trigger": "time_based",
+      "deterioration_target": "critical"
+    },
+    "critical": {
+      "duration_minutes": null,
+      "auto_deteriorate": false,
+      "requires_intervention": true
+    },
+    "improving": {
+      "duration_minutes": 8,
+      "auto_improve": true,
+      "improvement_trigger": "glucose_corrected",
+      "improvement_target": "stable"
+    },
+    "stable": {
+      "duration_minutes": null,
+      "auto_deteriorate": false,
+      "maintain_state": true
+    }
+  },
+
   "critical_actions_checklist": [
     {
       "id": "CA1",
@@ -514,7 +641,7 @@
       "category": "liečba",
       "time_target_minutes": 10,
       "points": 5,
-      "importance": "podmienečne_dôležité",
+      "importance": "dôležité",
       "criteria": "LEN ak kŕče pokračujú PO korekcii glykémie",
       "matching": {
         "keywords": ["diazepam", "benzodiazepín"],

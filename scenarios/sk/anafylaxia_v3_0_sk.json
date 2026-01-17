@@ -424,6 +424,122 @@
     ]
   },
 
+  "progress_milestones": {
+    "enabled": true,
+    "display_location": "clinical_notes_panel",
+    "milestone_definitions": {
+      "UM1": {
+        "name": "Miesto zabezpečené",
+        "description": "Bezpečnosť miesta zaistená, BSI prijaté"
+      },
+      "UM2": {
+        "name": "Núdzová situácia rozpoznaná",
+        "description": "Primárny problém identifikovaný"
+      },
+      "UM3": {
+        "name": "Dýchanie podporené",
+        "description": "Intervencia dýchacích ciest/dýchania začatá"
+      },
+      "UM4": {
+        "name": "Kritická liečba",
+        "description": "Primárna život zachraňujúca liečba podaná"
+      },
+      "UM5": {
+        "name": "Hodnotenie dokončené",
+        "description": "ABCDE/SAMPLE/sekundárne vyšetrenie dokončené"
+      },
+      "UM6": {
+        "name": "Monitorovanie zavedené",
+        "description": "Prebiehajúce opätovné hodnotenie začaté"
+      }
+    },
+    "milestone_mappings": {
+      "UM1": { "trigger_actions": ["CA1"] },
+      "UM2": { "trigger_actions": ["CA2"] },
+      "UM3": { "trigger_actions": ["CA4"] },
+      "UM4": { "trigger_actions": ["CA3"] },
+      "UM5": { "trigger_actions": ["CA5", "CA6"] },
+      "UM6": { "trigger_actions": ["CA8"] }
+    }
+  },
+
+  "safety_gate": {
+    "enabled": true,
+    "tracking_mode": "silent",
+    "interrupt_scenario": false,
+    "critical_failures": [
+      {
+        "id": "SF1",
+        "type": "omission",
+        "description": "Epinefrín nikdy nepodaný",
+        "detection_criteria": {
+          "condition": "scenario_end AND epinephrine_given == false",
+          "patient_state_required": "anaphylaxis_confirmed"
+        },
+        "patient_outcome": "Obštrukcia dýchacích ciest postupuje k záchvatom bez epinefrínu. Distributívny šok vedie ku kardiovaskulárnemu kolapsu. Pacient zomiera bez nemocničnej záchrannej akcie.",
+        "aar_teaching_point": "Epinefrín je JEDINÁ prvolíniová liečba anafylaxie. Antihistaminiká a steroidy sú adjuvanciá, nie náhrady. Bez epinefrínu sa dýchacie cesty tohto pacienta úplne upchnú a dôjde ku kardiovaskulárnemu kolapsu. Toto je smrteľné opomenutie."
+      },
+      {
+        "id": "SF2",
+        "type": "commission",
+        "description": "IV epinefrín podaný (mal byť IM)",
+        "detection_criteria": {
+          "condition": "epinephrine_route == 'IV' OR epinephrine_route == 'intravenous'",
+          "exception": "cardiac_arrest_present == true"
+        },
+        "patient_outcome": "Vysoké riziko smrteľnej arytmie z IV bolusu. Ventrikulárna tachykardia alebo ventrikulárna fibrilácia pravdepodobná.",
+        "aar_teaching_point": "IV epinefrín pri anafylaxii (ne-zástava) spôsobuje nebezpečné maximálne koncentrácie, ktoré spúšťajú arytmie. IM cesta (0.5mg do laterálneho stehna) je bezpečnejšia, účinná a štandardná starostlivosť. IV epinefrín je len pre srdcovú zástavu alebo ako kontinuálna infúzia špecialistami na JIS."
+      },
+      {
+        "id": "SF3",
+        "type": "commission",
+        "description": "Beta-blokátor podaný pri anafylaxii",
+        "detection_criteria": {
+          "condition": "medication_given == 'propranolol' OR medication_given == 'metoprolol' OR medication_given == 'atenolol'"
+        },
+        "patient_outcome": "Beta-blokátor blokuje kompenzačné mechanizmy a bráni epinefrínu pôsobiť. Zhoršuje hypotenziu a bronchospazmus. Kritická deteriorácia.",
+        "aar_teaching_point": "Beta-blokátory sú absolútne kontraindikované pri anafylaxii. Blokujú beta-efekty epinefrínu, zhoršujú hypotenziu a bránia bronchodilatácii. To robí pacienta refrakterným na liečbu epinefrínom."
+      },
+      {
+        "id": "SF4",
+        "type": "contraindication",
+        "description": "Liek podaný napriek uvedenej alergii",
+        "detection_criteria": {
+          "condition": "medication_given IN patient.allergies"
+        },
+        "patient_outcome": "Alergická reakcia navyše na existujúcu anafylaxiu. Komplikuje núdzu.",
+        "aar_teaching_point": "Vždy overte alergie pred akýmkoľvek liekom. História tohto pacienta bola dostupná - alergie musia byť skontrolované pred podaním akéhokoľvek lieku."
+      }
+    ]
+  },
+
+  "scenario_states": {
+    "initial": {
+      "timing": "0-5 min",
+      "description": "Prezentujúce symptómy anafylaxie - angioedém, stridor, urtikária, hypotenzia. Pacient pri vedomí a hovorí (chrapľavý hlas). Dýchacie cesty kompromitované ale priechodné. Reaguje na hodnotenie."
+    },
+    "early_deteriorating": {
+      "timing": "5-7 min (ak neliečené)",
+      "description": "Prvé známky zhoršenia - angioedém postupuje, stridor výraznejší, začína zmätenosť, krvný tlak klesá ďalej"
+    },
+    "deteriorating": {
+      "timing": "7-9 min (ak neliečené)",
+      "description": "Jasné zhoršenie - masívny angioedém, takmer úplná obštrukcia dýchacích ciest, sotva schopný vokalizovať, škvrnitá koža, zmenené vedomie"
+    },
+    "critical": {
+      "timing": "9-13 min (ak neliečené)",
+      "description": "Život ohrozujúci stav - úplná alebo takmer úplná obštrukcia dýchacích ciest, nereagujúci alebo minimálne reagujúci, bezprostredná respiračná a kardiovaskulárna zástava"
+    },
+    "improving": {
+      "timing": "Po účinnej liečbe epinefrínom",
+      "description": "Pozitívna odpoveď na epinefrín - angioedém sa znižuje, stridor ustupuje, hlas sa čistí, krvný tlak stúpa, lepší duševný stav"
+    },
+    "stable": {
+      "timing": "Po trvalom zlepšení",
+      "description": "Stabilizovaný po liečbe - dýchacie cesty priechodné, dýchanie pohodlné, krvný tlak adekvátny, pri vedomí a primerane reagujúci"
+    }
+  },
+
   "critical_actions_checklist": [
     {
       "id": "CA1",

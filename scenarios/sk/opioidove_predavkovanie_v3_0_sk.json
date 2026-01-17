@@ -382,6 +382,132 @@
     ]
   },
 
+  "progress_milestones": {
+    "enabled": true,
+    "display_location": "clinical_notes_panel",
+    "milestone_definitions": {
+      "UM1": {
+        "name": "Miesto zabezpečené",
+        "description": "Bezpečnosť miesta zaistená, BSI prijaté"
+      },
+      "UM2": {
+        "name": "Núdzová situácia rozpoznaná",
+        "description": "Primárny problém identifikovaný"
+      },
+      "UM3": {
+        "name": "Dýchanie podporené",
+        "description": "Intervencia dýchacích ciest/dýchania začatá"
+      },
+      "UM4": {
+        "name": "Kritická liečba",
+        "description": "Primárna život zachraňujúca liečba podaná"
+      },
+      "UM5": {
+        "name": "Hodnotenie dokončené",
+        "description": "ABCDE/SAMPLE/sekundárne vyšetrenie dokončené"
+      },
+      "UM6": {
+        "name": "Monitorovanie zavedené",
+        "description": "Prebiehajúce opätovné hodnotenie začaté"
+      }
+    },
+    "milestone_mappings": {
+      "UM1": { "trigger_actions": ["CA1"] },
+      "UM2": { "trigger_actions": ["CA2"] },
+      "UM3": { "trigger_actions": ["CA4"] },
+      "UM4": { "trigger_actions": ["CA5"] },
+      "UM5": { "trigger_actions": ["CA3", "CA6"] },
+      "UM6": { "trigger_actions": ["CA7"] }
+    }
+  },
+
+  "safety_gate": {
+    "enabled": true,
+    "tracking_mode": "silent",
+    "interrupt_scenario": false,
+    "critical_failures": [
+      {
+        "id": "SF1",
+        "type": "omission",
+        "description": "BVM ventilácia nikdy neposkytnutá napriek závažnej respiračnej depresii (DF <8)",
+        "detection_criteria": {
+          "condition": "scenario_end AND bvm_ventilation_provided == false",
+          "patient_state_required": "respiratory_rate_less_than_8"
+        },
+        "patient_outcome": "Bez ventilácie pacient zostáva závažne hypoxický. Bradypnické dýchanie (4/min) nemôže udržať život. Aj keď je podaný naloxón, trvá 1-2 minúty, kým začne pôsobiť - pacient zomiera na hypoxickú srdcovú zástavu počas čakania na účinok lieku. Smrť z nezabezpečenia bezprostrednej život ohrozujúcej hrozby (hypoxia).",
+        "aar_teaching_point": "BVM ventilácia je BEZPROSTREDNÁ život zachraňujúca intervencia pri opioidovom predávkovaní s respiračnou depresiou. Naloxón je dôležitý, ale trvá 1-2 minúty, kým začne pôsobiť. Pacient PRÁVE TERAZ zomiera z nedostatku kyslíka - musíte OKAMŽITE ventilovať. Porekadlo znie: 'Naloxón nefunguje na mŕtvych pacientoch. Najprv ventilujte, naloxón až potom.' Bez BVM tento pacient zomiera na hypoxickú zástavu skôr, ako môže naloxón začať pôsobiť."
+      },
+      {
+        "id": "SF2",
+        "type": "omission",
+        "description": "Naloxón nikdy nepodaný pri potvrdenom opioidovom predávkovaní",
+        "detection_criteria": {
+          "condition": "scenario_end AND naloxone_given == false",
+          "patient_state_required": "opioid_toxidrome_confirmed"
+        },
+        "patient_outcome": "Bez naloxónu pacient vyžaduje predĺženú BVM ventiláciu a môže vyvinúť aspiráciu, hypoxické poškodenie alebo srdcové komplikácie. Naloxón by zvrátil respiračnú depresiu, ale nikdy nebol podaný. Pacient vyžaduje intubáciu a prijatie na JIS pre preventabilnú predĺženú sedáciu.",
+        "aar_teaching_point": "Naloxón je špecifické antidotum pre opioidové predávkovanie. Zatiaľ čo BVM ventilácia udržiava pacienta nažive akútne, naloxón zvracia podkladovú respiračnú depresiu. Tento pacient mal klasický opioidový toxidrόm: respiračná depresia + depresia CNS + špendlíkové zrenice + vpichové značky. Naloxón 0.4mg IV/IM titrovaný na respiračné úsilie (DF >12) je štandardná liečba. Bez neho liečite symptómy bez liečby príčiny."
+      },
+      {
+        "id": "SF3",
+        "type": "commission",
+        "description": "Naloxón podaný PRED pokusom o ventiláciu (chyba v sekvencii)",
+        "detection_criteria": {
+          "condition": "naloxone_timestamp < first_ventilation_timestamp"
+        },
+        "patient_outcome": "Pacient zostáva hypoxický 1-2 minúty počas čakania, kým naloxón začne pôsobiť. Počas tohto času závažná hypoxia spôsobuje srdcové arytmie, kŕče alebo zástavu. Preventabilné hypoxické poškodenie z chyby v sekvencii - pacient potreboval kyslík TERAZ, nie o 2 minúty.",
+        "aar_teaching_point": "KRITICKÁ CHYBA V SEKVENCII: Vždy ventilujte PRED alebo POČAS podávania naloxónu. Tu je dôvod: Naloxón trvá 1-2 minúty, kým začne pôsobiť. Pacient má DF 4/min a je závažne hypoxický PRÁVE TERAZ. Ak najprv podáte naloxón a čakáte, pacient zomiera na hypoxiu týchto 2 minúty. Správna sekvencia: (1) BVM ventilácia začína okamžite, (2) Naloxón podaný počas ventilácie, (3) Pokračujte v BVM, kým nezačne pôsobiť naloxón. Naloxón nefunguje na mŕtvych pacientoch."
+      },
+      {
+        "id": "SF4",
+        "type": "commission",
+        "description": "Nadmerná dávka naloxónu spôsobujúca akútny abstinenčný syndróm a riziko úteku pacienta",
+        "detection_criteria": {
+          "condition": "naloxone_total_dose > 2_mg OR full_reversal_to_consciousness"
+        },
+        "patient_outcome": "Pacient úplne prebudený, zažíva okamžitý opioidový abstinenčný syndróm (agitácia, vracanie, bojovnosť), odmieta ďalšiu starostlivosť a odchádza, aby znovu užil. Stratená príležitosť pre harm reduction, lekárske vyšetrenie a prepojenie so sociálnymi službami. Zvýšené riziko opätovného predávkovania.",
+        "aar_teaching_point": "Naloxón by mal byť titrovaný na DÝCHANIE (DF >12), NIE vedomie. Cieľ: ospalý pacient, ktorý adekvátne dýcha. Nad-reverzia spôsobuje akútny abstinenčný syndróm - pacient sa stáva agitovaným, môže vracať a aspirovať, bojuje proti starostlivosti a typicky ihneď odchádza, aby znovu užil. Stratíte príležitosť prepojiť ho s lekárskou starostlivosťou, sociálnymi službami a harm reduction zdrojmi. Ospalý dýchajúci pacient je bezpečnejší ako bdelý bojovný pacient, ktorý odíde a o hodinu znovu predávkuje."
+      },
+      {
+        "id": "SF5",
+        "type": "contraindication",
+        "description": "Liek podaný napriek uvedenej alergii",
+        "detection_criteria": {
+          "condition": "medication_given IN patient.allergies"
+        },
+        "patient_outcome": "Alergická reakcia navyše na existujúcu núdzu predávkovania",
+        "aar_teaching_point": "Vždy overte alergie pred podaním liekov."
+      }
+    ]
+  },
+
+  "scenario_states": {
+    "initial": {
+      "timing": "0-5 min",
+      "description": "Prezentácia opioidového predávkovania - nereagujúci, závažná respiračná depresia (DF 4), špendlíkové zrenice, cyanotický, viditeľné vpichové značky. Klasický opioidový toxidrόm vyžadujúci okamžitú ventiláciu a naloxón."
+    },
+    "early_deteriorating": {
+      "timing": "5-7 min (ak sa neventiluje)",
+      "description": "Zhoršujúca sa hypoxia - zvyšujúca sa cyanóza, vyvíjajúca sa bradykardia z hypoxie, blíži sa srdcová zástava"
+    },
+    "deteriorating": {
+      "timing": "7-9 min (ak sa neventiluje)",
+      "description": "Závažná hypoxia - hlboká cyanóza, významná bradykardia, minimálne spontánne respiračné úsilie"
+    },
+    "critical": {
+      "timing": "9-13 min (ak sa neventiluje)",
+      "description": "Pre-arrest hypoxický stav - asystólia alebo PEA bezprostredná z hypoxie, vyžaduje CPR"
+    },
+    "improving": {
+      "timing": "Po účinnej ventilácii a naloxóne",
+      "description": "Pozitívna odpoveď - spontánne dýchanie sa obnovuje, DF stúpa, SpO2 sa zlepšuje, zrenice sa mierne rozširujú, pacient ospalý ale dýchajúci"
+    },
+    "stable": {
+      "timing": "Po trvalej ventilačnej podpore a reverze naloxónom",
+      "description": "Stabilizovaný - adekvátna spontánna ventilácia, SpO2 >90%, pacient ospalý ale reaguje, dýchacie cesty udržiavané"
+    }
+  },
+
   "critical_actions_checklist": [
     {
       "id": "CA1",

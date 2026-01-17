@@ -322,6 +322,131 @@
     ]
   },
 
+  "progress_milestones": {
+    "enabled": true,
+    "display_location": "clinical_notes_panel",
+    "milestone_definitions": {
+      "UM1": {
+        "name": "Miesto zabezpečené",
+        "description": "Bezpečnosť miesta zaistená, BSI prijaté"
+      },
+      "UM2": {
+        "name": "Núdzová situácia rozpoznaná",
+        "description": "Primárny problém identifikovaný"
+      },
+      "UM3": {
+        "name": "Dýchanie podporené",
+        "description": "Intervencia dýchacích ciest/dýchania začatá"
+      },
+      "UM4": {
+        "name": "Kritická liečba",
+        "description": "Primárna život zachraňujúca liečba podaná"
+      },
+      "UM5": {
+        "name": "Hodnotenie dokončené",
+        "description": "ABCDE/SAMPLE/sekundárne vyšetrenie dokončené"
+      },
+      "UM6": {
+        "name": "Monitorovanie zavedené",
+        "description": "Prebiehajúce opätovné hodnotenie začaté"
+      }
+    },
+    "milestone_mappings": {
+      "UM1": { "trigger_actions": ["CA1"] },
+      "UM2": { "trigger_actions": ["CA2"] },
+      "UM3": { "trigger_actions": ["CA7"] },
+      "UM4": { "trigger_actions": ["CA4"] },
+      "UM5": { "trigger_actions": ["CA3", "CA5"] },
+      "UM6": { "trigger_actions": ["CA8"] }
+    }
+  },
+
+  "safety_gate": {
+    "enabled": true,
+    "tracking_mode": "silent",
+    "interrupt_scenario": false,
+    "critical_failures": [
+      {
+        "id": "SF1",
+        "type": "omission",
+        "description": "Panvový pás nikdy neaplikovaný na nestabilnú zlomeninu panvy",
+        "detection_criteria": {
+          "condition": "scenario_end AND pelvic_binder_applied == false",
+          "patient_state_required": "unstable_pelvic_fracture_identified"
+        },
+        "patient_outcome": "Bez panvového viazania zostáva panva nestabilnou, rozširujúcou sa dutinou. Žilové krvácanie pokračuje nekontrolovane. Pacient vykrvácanie z preventabilnej hemorágie. Môže stratiť 4+ litre do neviazanej panvy.",
+        "aar_teaching_point": "Panvový pás je život zachraňujúca intervencia pre nestabilné zlomeniny panvy. Znižuje objem panvy, tamponuje žilové krvácanie a umožňuje tvorbu zrazenín. Bez neho je panva 4-litrové vedro, ktoré sa neustále rozširuje. Tento pacient vykrvácanie na smrť bez mechanickej kontroly krvácania. Aplikácia musí byť okamžitá - je to rovnako kritické ako turniket pre krvácanie končatín."
+      },
+      {
+        "id": "SF2",
+        "type": "commission",
+        "description": "Nadmerná tekutinová resuscitácia (>2L kryštaloidu) pred kontrolou krvácania",
+        "detection_criteria": {
+          "condition": "crystalloid_volume > 2000_ml AND pelvic_binder_applied == false"
+        },
+        "patient_outcome": "Nad-resuscitácia bez kontroly krvácania spôsobuje dilučnú koagulopatiu (zrážacie faktory zriedené), hypotermiu (studené tekutiny), narúša tvoriace sa zrazeniny hydrostatickým tlakom a urýchľuje krvácanie. Pacient vstupuje do 'smrteľnej triády' hypotermie, koagulopatie, acidózy. Smrť z lekárskej nadliečby.",
+        "aar_teaching_point": "Nemôžete naplniť nádrž rýchlejšie, ako uniká. Kryštaloid neprenáša kyslík a nezráža sa - len riedi krv, ktorá zostala. Nad-resuscitácia pred kontrolou krvácania zhoršuje krvácanie troma mechanizmami: riedi zrážacie faktory, spôsobuje hypotermiu a zvyšuje hydrostatický tlak, ktorý narúša zrazeniny. Cieľte na permisívnu hypotenziu (sTK 80-90) s malými bolusmi. Definitívna liečba je chirurgická hemostáza a krvné produkty, nie fyziologický roztok."
+      },
+      {
+        "id": "SF3",
+        "type": "commission",
+        "description": "Opakované panvové vyšetrenia (>1 hodnotenie stability)",
+        "detection_criteria": {
+          "condition": "pelvic_exam_count > 1"
+        },
+        "patient_outcome": "Každá panvová manipulácia narúša krehkú tvorbu zrazenín v miestach zlomenín. Každé 'pruženie' alebo kontrola stability znovu otvára krvácanie. Iatrogénne urýchlenie hemorágie z opakovaného vyšetrenia.",
+        "aar_teaching_point": "Vyhodnoťte stabilitu panvy RAZ. Ak je nestabilná: aplikujte pás a NIKDY už nevyšetrujte. Každá manipulácia rozrháva novo vytvorené zrazeniny a reštartuje žilové krvácanie. Toto je iatrogénne poškodenie - aktívne zhoršujete poranenie. Porekadlo znie: 'Skontrolujte panvu raz. Potom len miešate krvácanie.'"
+      },
+      {
+        "id": "SF4",
+        "type": "omission",
+        "description": "Predĺžený čas na mieste (>10 minút) pre neesenciálne intervencie",
+        "detection_criteria": {
+          "condition": "time_on_scene > 10_minutes AND no_valid_entrapment_or_extrication_required"
+        },
+        "patient_outcome": "Každá minúta na mieste je minúta, keď pacient pokračuje vo vykrvácaní. Definitívna liečba (chirurgia, krvné produkty) dostupná len v nemocnici. Oneskorený transport = preventabilná smrť z krvácania.",
+        "aar_teaching_point": "Hemoragický šok vyžaduje mentalitu 'naložiť a ísť'. Nemôžete zastaviť panvové krvácanie prehospitálne - len ho spomaliť pásom. Definitívna liečba je chirurgická kontrola krvácania a resuscitácia krvnými produktmi, ani jedno nie je dostupné na mieste. Čas na mieste by mal byť <10 minút: vyhodnotiť, pás, naložiť a bežať. 'Zostať a hrať sa' zabíja krvácajúcich pacientov. Každá minúta na mieste je minúta bližšie k smrti."
+      },
+      {
+        "id": "SF5",
+        "type": "contraindication",
+        "description": "Liek podaný napriek uvedenej alergii",
+        "detection_criteria": {
+          "condition": "medication_given IN patient.allergies"
+        },
+        "patient_outcome": "Alergická reakcia navyše na núdzovú situáciu hemoragického šoku",
+        "aar_teaching_point": "Vždy overte alergie pred podaním liekov."
+      }
+    ]
+  },
+
+  "scenario_states": {
+    "initial": {
+      "timing": "0-5 min",
+      "description": "Prezentácia hemoragického šoku - tachykardický (118), hypotenzný (88/60), zmenený duševný stav, nestabilná zlomenina panvy hmatná, bledý a spotený. Kompenzovaný šok prechádza do dekompenzovaného."
+    },
+    "early_deteriorating": {
+      "timing": "5-7 min (ak neliečené)",
+      "description": "Začína dekompenzácia - zvyšujúca sa tachykardia, krvný tlak ďalej klesá, zmätenosť sa zhoršuje, koža čoraz viac škvrnitá"
+    },
+    "deteriorating": {
+      "timing": "7-9 min (ak neliečené)",
+      "description": "Závažná dekompenzácia - výrazná tachykardia, závažná hypotenzia (sTK <70), výrazne zmenené vedomie, sivý a škvrnitý, oligurický"
+    },
+    "critical": {
+      "timing": "9-13 min (ak neliečené)",
+      "description": "Pre-arrest hemoragický šok - hlboká hypotenzia, sotva pri vedomí alebo v bezvedomí, bezprostredná srdcová zástava z vykrvácania"
+    },
+    "improving": {
+      "timing": "Po kontrole krvácania a rozumnej resuscitácii",
+      "description": "Stabilizovaný s mechanickou kontrolou krvácania - panvový pás aplikovaný, krvný tlak udržiavaný na permisívnej hypotenzii (80-90), duševný stav sa zlepšuje, krvácanie spomalené"
+    },
+    "stable": {
+      "timing": "Po trvalej kontrole krvácania",
+      "description": "Dočasne stabilizovaný na transport - pás na mieste, permisívna hypotenzia udržiavaná, pripravený na rýchly transport na traumatologickú chirurgiu"
+    }
+  },
+
   "critical_actions_checklist": [
     {
       "id": "CA1",

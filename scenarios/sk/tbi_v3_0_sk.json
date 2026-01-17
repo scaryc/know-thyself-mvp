@@ -324,6 +324,133 @@
     ]
   },
 
+  "progress_milestones": {
+    "enabled": true,
+    "display_location": "clinical_notes_panel",
+    "milestone_definitions": {
+      "UM1": {
+        "name": "Miesto zabezpečené",
+        "description": "Bezpečnosť miesta zaistená, BSI prijaté"
+      },
+      "UM2": {
+        "name": "Núdzová situácia rozpoznaná",
+        "description": "Primárny problém identifikovaný"
+      },
+      "UM3": {
+        "name": "Dýchanie podporené",
+        "description": "Intervencia dýchacích ciest/dýchania začatá"
+      },
+      "UM4": {
+        "name": "Kritická liečba",
+        "description": "Primárna život zachraňujúca liečba podaná"
+      },
+      "UM5": {
+        "name": "Hodnotenie dokončené",
+        "description": "ABCDE/SAMPLE/sekundárne vyšetrenie dokončené"
+      },
+      "UM6": {
+        "name": "Monitorovanie zavedené",
+        "description": "Prebiehajúce opätovné hodnotenie začaté"
+      }
+    },
+    "milestone_mappings": {
+      "UM1": { "trigger_actions": ["CA1"] },
+      "UM2": { "trigger_actions": ["CA3"] },
+      "UM3": { "trigger_actions": ["CA6"] },
+      "UM4": { "trigger_actions": ["CA2"] },
+      "UM5": { "trigger_actions": ["CA5"] },
+      "UM6": { "trigger_actions": ["CA7"] }
+    }
+  },
+
+  "safety_gate": {
+    "enabled": true,
+    "tracking_mode": "silent",
+    "interrupt_scenario": false,
+    "critical_failures": [
+      {
+        "id": "SF1",
+        "type": "omission",
+        "description": "C-chrbticia nikdy neimobilizovaná napriek vysokorizikovému mechanizmu a zmenenému vedomiu",
+        "detection_criteria": {
+          "condition": "scenario_end AND c_spine_immobilized == false",
+          "patient_state_required": "high_risk_mechanism_with_altered_mental_status"
+        },
+        "patient_outcome": "Bez opatrení na C-chrbticu rizikuje akýkoľvek pohyb premenu stabilného poranenia chrbtice na kompletné pretrhnutie miechy. Pacient by sa mohol stať kvadruplegikom z preventabilného sekundárneho poranenia počas transportu.",
+        "aar_teaching_point": "Imobilizácia C-chrbtice je povinná pri vysokorizikovom mechanizme (pád z výšky) A zmeneného duševného stavu. Nemôžete klinicky vylúčiť poranenie C-chrbtice, keď je pacient zmätený alebo má znížené GCS. Toto je základný princíp traumy - neimobilizovanie rizikuje trvalú obrnu."
+      },
+      {
+        "id": "SF2",
+        "type": "omission",
+        "description": "GCS nikdy nehodnotené alebo nikdy nesledované v trende",
+        "detection_criteria": {
+          "condition": "(gcs_assessments_count == 0) OR (gcs_assessments_count == 1 AND scenario_duration > 10_minutes)",
+          "patient_state_required": "head_injury_confirmed"
+        },
+        "patient_outcome": "Bez sériového GCS monitorovania nemôžete detekovať zhoršujúcu sa herniáciu mozgu. Klesajúce GCS je najjasnejší znak život ohrozujúceho intrakraniálneho krvácania vyžadujúceho urgentné chirurgické riešenie. Prehliadnutie tejto deteriorácie znamená prehliadnutie okna pre život zachraňujúcu intervenciu.",
+        "aar_teaching_point": "Sériové GCS nie je voliteľné pri TBI - je to JEDINÝ spôsob, ako detekovať zhoršenie. Jedno GCS vám povie, kde sú teraz. Sériové GCS vám povie, kam idú. Sledovanie trendu GCS je to, čo odlišuje otras od život ohrozujúceho krvácania. Toto sa musí opakovať každých 5-10 minút."
+      },
+      {
+        "id": "SF3",
+        "type": "commission",
+        "description": "Sedatíva alebo opioidy podané TBI pacientovi (maskuje neurologické vyšetrenie)",
+        "detection_criteria": {
+          "condition": "medication_given IN ['diazepam', 'midazolam', 'morfín', 'fentanyl', 'ketamín']",
+          "exception": "active_seizure == true"
+        },
+        "patient_outcome": "Sedatíva zahmlievajú neurologické okno. GCS klesá kvôli liekom, nie kvôli herniácii - ale nemôžete povedať, ktoré je ktoré. Zrenice sa stávajú nespoľahlivými. Práve ste sa oslepili k tomu, čo sa deje vnútri lebky. Ak pacient herniuje, nebudete to vedieť, kým nezastane srdce.",
+        "aar_teaching_point": "NIKDY nesedujte TBI pacienta mimo špecifických indikácií (aktívne kŕče, bojovný vyžadujúci intubáciu). GCS a zrenice sú vaše JEDINÉ okná do intrakraniálneho tlaku. Sedatíva toto okno úplne zahmlievajú. Ak herniujú, potrebujete to vedieť TERAZ, nie potom, čo zastavili."
+      },
+      {
+        "id": "SF4",
+        "type": "commission",
+        "description": "Hypotonické tekutiny podané (zhoršuje cerebrálny edém)",
+        "detection_criteria": {
+          "condition": "fluid_given == 'D5W' OR fluid_given == 'half_normal_saline' OR fluid_given == '0.45_saline'"
+        },
+        "patient_outcome": "Hypotonické tekutiny zhoršujú cerebrálny edém cez osmotický gradient, zvyšujúc intrakraniálny tlak. Pri TBI to urýchľuje herniáciu. Pacient sa zhoršuje z iatrogénneho opuchu mozgu.",
+        "aar_teaching_point": "Iba izotonické tekutiny (0.9% fyziologický roztok, Ringerov laktát) sú bezpečné pri TBI. Hypotonické tekutiny vytvárajú osmotický gradient, ktorý zhoršuje cerebrálny edém, zvyšuje ICP a urýchľuje herniáciu. Toto je základný princíp manažmentu TBI."
+      },
+      {
+        "id": "SF5",
+        "type": "contraindication",
+        "description": "Liek podaný napriek uvedenej alergii",
+        "detection_criteria": {
+          "condition": "medication_given IN patient.allergies"
+        },
+        "patient_outcome": "Alergická reakcia navyše na existujúcu neurologickú núdzu",
+        "aar_teaching_point": "Vždy overte alergie pred podaním liekov. Anamnéza pacienta alebo rodiny bola dostupná."
+      }
+    ]
+  },
+
+  "scenario_states": {
+    "initial": {
+      "timing": "0-5 min",
+      "description": "Prezentácia TBI po páde - GCS 13 (E4 V4 M5), zmätený a dezorientovaný, vyvíjajúce sa nerovnaké zrenice (4mm vs 3mm), na antikoagulante. Pacient pri vedomí ale zmenený, znepokojujúci mechanizmus."
+    },
+    "early_deteriorating": {
+      "timing": "5-7 min (ak neliečené alebo dôjde k sekundárnemu poraneniu)",
+      "description": "Jemné zhoršenie - GCS klesá na 11-12, asymetria zreníc sa zvyšuje, pacient viac zmätený"
+    },
+    "deteriorating": {
+      "timing": "7-9 min (ak neliečené)",
+      "description": "Jasné neurologické zhoršenie - GCS 9-10, anizokória výrazná (5mm vs 3mm), môže začať posturovanie, známky stúpajúceho ICP"
+    },
+    "critical": {
+      "timing": "9-13 min (ak neliečené)",
+      "description": "Herniačný syndróm - GCS ≤8, fixovaná dilatovaná zrenica, decerebrátna postura alebo ochablý, bezprostredná smrť mozgu bez neurochirurgickej intervencie"
+    },
+    "improving": {
+      "timing": "S optimálnym manažmentom TBI",
+      "description": "Stabilizovaný s prevenciou sekundárneho poranenia - GCS udržované alebo zlepšené, SpO2 >90%, normotenzia, zrenice monitorované, C-chrbticia chránená"
+    },
+    "stable": {
+      "timing": "Po trvalej optimálnej starostlivosti",
+      "description": "Sekundárne poranenie zabránené - adekvátna oxygenácia udržiavaná, žiadna hypotenzia, sériové GCS stabilné, pripravený na rýchly transport na neurochirurgiu"
+    }
+  },
+
   "critical_actions_checklist": [
     {
       "id": "CA1",

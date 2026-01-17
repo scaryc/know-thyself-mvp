@@ -485,6 +485,121 @@
     ]
   },
 
+  "progress_milestones": {
+    "enabled": true,
+    "display_location": "clinical_notes_panel",
+    "milestone_definitions": {
+      "UM1": {
+        "name": "Miesto zabezpečené",
+        "description": "Bezpečnosť miesta zaistená, BSI prijaté"
+      },
+      "UM2": {
+        "name": "Núdzová situácia rozpoznaná",
+        "description": "Primárny problém identifikovaný"
+      },
+      "UM3": {
+        "name": "Dýchanie podporené",
+        "description": "Intervencia dýchacích ciest/dýchania začatá"
+      },
+      "UM4": {
+        "name": "Kritická liečba",
+        "description": "Primárna život zachraňujúca liečba podaná"
+      },
+      "UM5": {
+        "name": "Hodnotenie dokončené",
+        "description": "ABCDE/SAMPLE/sekundárne vyšetrenie dokončené"
+      },
+      "UM6": {
+        "name": "Monitorovanie zavedené",
+        "description": "Prebiehajúce opätovné hodnotenie začaté"
+      }
+    },
+    "milestone_mappings": {
+      "UM1": { "trigger_actions": ["CA1"] },
+      "UM2": { "trigger_actions": ["CA2"] },
+      "UM3": { "trigger_actions": ["CA3"] },
+      "UM4": { "trigger_actions": ["CA4"] },
+      "UM5": { "trigger_actions": ["CA6", "CA7"] },
+      "UM6": { "trigger_actions": ["CA8"] }
+    }
+  },
+
+  "safety_gate": {
+    "enabled": true,
+    "tracking_mode": "silent",
+    "interrupt_scenario": false,
+    "critical_failures": [
+      {
+        "id": "SF1",
+        "type": "omission",
+        "description": "Bronchodilatátor (salbutamol) nikdy nepodaný",
+        "detection_criteria": {
+          "condition": "scenario_end AND salbutamol_given == false",
+          "patient_state_required": "life_threatening_asthma_confirmed"
+        },
+        "patient_outcome": "Bronchospazmus pretrváva, respiračné zlyhanie postupuje, pacient vyžaduje intubáciu alebo zažije respiračnú zástavu. Bez bronchodilatácie tento pacient nemôže pohybovať vzduch a zomrie.",
+        "aar_teaching_point": "Salbutamol je prvolíniová, život zachraňujúca liečba akútnej astmy. Steroidy pomáhajú dlhodobo, ale nepôsobia okamžite. Kyslík sám opraviť bronchospazmus. Bez bronchodilatátora dýchacie cesty tohto pacienta zostávajú zúžené a respiračné zlyhanie je nevyhnutné."
+      },
+      {
+        "id": "SF2",
+        "type": "commission",
+        "description": "Sedatíva podané pri ťažkej astme",
+        "detection_criteria": {
+          "condition": "medication_given == 'diazepam' OR medication_given == 'midazolam' OR medication_given == 'morfín' OR medication_given == 'fentanyl'"
+        },
+        "patient_outcome": "Respiračný pohon potlačený, hypoventilácia sa zhoršuje, zadržiavanie CO2 sa zrýchľuje, respiračná zástava bezprostredná. Sedatíva pri ťažkej astme sú potenciálne smrteľné.",
+        "aar_teaching_point": "Sedatíva a opioidy sú absolútne kontraindikované pri ťažkej astme. Potláčajú respiračný pohon v čase, keď pacient potrebuje maximálne respiračné úsilie na prekonanie odporu dýchacích ciest. Táto chyba spôsobuje respiračnú zástavu."
+      },
+      {
+        "id": "SF3",
+        "type": "commission",
+        "description": "Beta-blokátory podané",
+        "detection_criteria": {
+          "condition": "medication_given == 'propranolol' OR medication_given == 'metoprolol' OR medication_given == 'atenolol'"
+        },
+        "patient_outcome": "Beta-blokáda spôsobuje bronchospazmus, priamo zhoršuje astmu. Neutralizuje účinok salbutamolu (beta-agonista). Kritická deteriorácia.",
+        "aar_teaching_point": "Beta-blokátory spôsobujú bronchospazmus a sú kontraindikované pri astme. Tiež blokujú terapeutický účinok salbutamolu (beta-agonistický bronchodilatátor). Toto je nebezpečná lieková chyba."
+      },
+      {
+        "id": "SF4",
+        "type": "contraindication",
+        "description": "Liek podaný napriek uvedenej alergii",
+        "detection_criteria": {
+          "condition": "medication_given IN patient.allergies"
+        },
+        "patient_outcome": "Alergická reakcia navyše na existujúcu respiračnú núdzu",
+        "aar_teaching_point": "Vždy overte alergie pred podaním liekov. História pacienta bola dostupná a jasná."
+      }
+    ]
+  },
+
+  "scenario_states": {
+    "initial": {
+      "timing": "0-5 min",
+      "description": "Ťažká astmatická exacerbácia - neschopný dokončiť vety, použitie pomocných svalov, tripod pozícia, SpO2 88%, počuteľný sipot. Pacient pri vedomí ale v ťažkej respiračnej tiesni."
+    },
+    "early_deteriorating": {
+      "timing": "5-7 min (ak neliečené)",
+      "description": "Zhoršujúca sa respiračná tieseň - reč obmedzená na jednotlivé slová, zvyšujúca sa dychová práca, SpO2 ďalej klesá, začína únava"
+    },
+    "deteriorating": {
+      "timing": "7-9 min (ak neliečené)",
+      "description": "Závažné zhoršenie - minimálny pohyb vzduchu (vyvíja sa tiché hrudníky), vyčerpanie, zmenený duševný stav, hlboká hypoxia"
+    },
+    "critical": {
+      "timing": "9-13 min (ak neliečené)",
+      "description": "Bezprostredné respiračné zlyhanie - tiché hrudníky, minimálne respiračné úsilie, závažne zmenené vedomie, pre-arrest stav"
+    },
+    "improving": {
+      "timing": "Po účinnej bronchodilatačnej liečbe",
+      "description": "Pozitívna odpoveď na salbutamol - sipot opäť počuteľný (vzduch sa pohybuje), ľahšie dýchanie, schopný hovoriť vo frázach, SpO2 stúpa"
+    },
+    "stable": {
+      "timing": "Po trvalom zlepšení",
+      "description": "Stabilizovaný - pohodlné dýchanie, hovorí v plných vetách, SpO2 >92%, sipot zmenšený alebo absentujúci"
+    }
+  },
+
   "critical_actions_checklist": [
     {
       "id": "CA1",
