@@ -94,11 +94,6 @@ class DatabaseService {
           medicationWarnings: JSON.stringify([]),
           safetyViolations: 0,
 
-          // Challenge Points
-          challengePointsEnabled: sessionData.challengePointsEnabled || false,
-          challengePointsUsed: JSON.stringify([]),
-          activeChallenge: null,
-
           // Critical actions
           criticalActionsLog: JSON.stringify([]),
           criticalTreatmentsGiven: JSON.stringify({}),
