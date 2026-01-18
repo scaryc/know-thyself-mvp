@@ -1,0 +1,34 @@
+{
+  "registration": {
+    "success": "Študent úspešne zaregistrovaný",
+    "failed": "Registrácia zlyhala",
+    "invalidData": "Neplatné údaje študenta"
+  },
+  "session": {
+    "created": "Relácia úspešne vytvorená",
+    "notFound": "Relácia nenájdená",
+    "alreadyCompleted": "Relácia už bola dokončená",
+    "invalidId": "Neplatné ID relácie"
+  },
+  "cognitiveCoach": {
+    "sessionStart": "Začni Fázu 1: Úvod. Uvítaj študenta a vysvetli účel kognitívneho kouča podľa inštrukcií v tvojom systémovom prompte. Nekopíruj príklady doslovne, použi prirodzený jazyk v slovenčine. NIKDY nepoužívaj hviezdičky alebo divadelné poznámky."
+  },
+  "medication": {
+    "dangerousDetected": "DETEKOVANÝ NEBEZPEČNÝ LIEK",
+    "contraindicated": "Tento liek je kontraindikovaný",
+    "highRisk": "Pokus o vysoko rizikový zákrok"
+  },
+  "stateTransition": {
+    "initialToImproving": "Prechod stavu: POČIATOČNÝ → ZLEPŠUJÚCI SA",
+    "initialToDeteriorating": "Prechod stavu: POČIATOČNÝ → ZHORŠUJÚCI SA",
+    "criticalTreatments": "Podané kritické ošetrenia",
+    "noOxygenWarning": "Žiadny kyslík po {{minutes}} minútach",
+    "respondingWell": "Pacient dobre reaguje na liečbu"
+  },
+  "performance": {
+    "optimal": "Optimálne rozhodnutie",
+    "acceptable": "Prijateľné rozhodnutie",
+    "suboptimal": "Neoptimálne rozhodnutie",
+    "dangerous": "Nebezpečné rozhodnutie"
+  }
+}
