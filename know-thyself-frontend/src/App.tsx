@@ -302,6 +302,7 @@ function App() {
 
     // Set AAR mode AFTER storing the message (triggers ConversationPanel remount)
     setIsAARMode(true);
+  };
 
   // ✅ NEW: Handle AAR completion
   const handleAARComplete = () => {
@@ -434,8 +435,6 @@ function App() {
             </button>
           </div>
         </div>
-      ) : sessionComplete ? (
-        <SessionComplete onStartNewSession={handleResetSession} />
       ) : (
         <MainLayout
           sessionId={sessionId}
