@@ -47,7 +47,8 @@ const AAR_AGENT_MODEL = process.env.AAR_AGENT_MODEL || 'claude-3-5-haiku-2024102
 app.use(cors({
   origin: [
     'http://localhost:5173',  // Local development
-    'https://know-thyself-frontend.onrender.com',  // Production frontend
+    'https://know-thyself-mvp-lce2.vercel.app',  // Production frontend (Vercel)
+    'https://know-thyself-frontend.onrender.com',  // Old production frontend (Render)
     process.env.FRONTEND_URL  // Custom frontend URL from env var
   ].filter(Boolean),  // Remove undefined values
   credentials: true
