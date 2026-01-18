@@ -1,0 +1,1004 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "total_questions": 50,
+    "open_questions": 34,
+    "closed_questions": 16,
+    "selection_logic": "Random 1 from questionType:closed + Random 2 from questionType:open",
+    "categories": [
+      "Treatment Complication",
+      "Patient Communication",
+      "Unpredictable Situation",
+      "Ethical Dilemma",
+      "Time Pressure Decision",
+      "Pattern Recognition"
+    ],
+    "last_updated": "2026-01"
+  },
+
+  "cognitiveCoachQuestionPool": [
+
+    {
+      "questionID": "CC001",
+      "questionType": "open",
+      "category": "Treatment Complication",
+      "setup": "You're treating a patient with severe respiratory distress. Protocol says high-flow oxygen immediately. But what if the patient has a history of COPD and your partner warns that too much oxygen could suppress their respiratory drive? Walk me through how you'd think about that decision.",
+      "expectedGoodReasoning": [
+        "Recognizes tension between immediate need (hypoxia) and potential risk (CO2 retention)",
+        "Understands that in acute emergency, oxygenation takes priority",
+        "Acknowledges this requires monitoring and possible adjustment",
+        "Shows comfort with clinical judgment over rigid protocol"
+      ],
+      "commonFlawedReasoning": [
+        "Withholds all oxygen due to COPD (dangerous)",
+        "Gives high-flow without any consideration of COPD (not thinking)",
+        "Becomes paralyzed by uncertainty (decision avoidance)"
+      ],
+      "coachFollowUp": "Good - you're weighing immediate threat against potential complication. In emergencies, we treat what's killing them now. Let's try another..."
+    },
+
+    {
+      "questionID": "CC002",
+      "questionType": "open",
+      "category": "Treatment Complication",
+      "setup": "Protocol says give aspirin for chest pain, but the patient mentions they had dark, tarry stools two days ago. They insist the chest pain is severe and want all treatments. How do you think through this decision?",
+      "expectedGoodReasoning": [
+        "Recognizes melena suggests possible GI bleeding",
+        "Aspirin increases bleeding risk significantly",
+        "Must weigh cardiac benefit vs bleeding complications",
+        "Considers giving with close monitoring or withholding",
+        "Acknowledges this is genuinely difficult with no perfect answer"
+      ],
+      "commonFlawedReasoning": [
+        "Protocol says aspirin so give it regardless (ignoring contraindication)",
+        "Absolute thinking - never give aspirin with any GI symptoms",
+        "Lets patient demand override clinical judgment completely"
+      ],
+      "coachFollowUp": "Exactly - you're identifying the real tension between cardiac benefit and bleeding risk. Even experienced medics debate this one. Next..."
+    },
+
+    {
+      "questionID": "CC003",
+      "questionType": "open",
+      "category": "Treatment Complication",
+      "setup": "You're about to start an IV on a critically unstable patient, but you've already missed two attempts and veins are blown. Your partner suggests trying an intraosseous line, but you've only done IO on training manikins. What's going through your mind?",
+      "expectedGoodReasoning": [
+        "Recognizes patient needs vascular access urgently",
+        "Acknowledges skill limitation honestly",
+        "Considers requesting ALS backup if available",
+        "Weighs time to backup vs attempting IO now",
+        "Understands sometimes pushing beyond comfort zone is necessary"
+      ],
+      "commonFlawedReasoning": [
+        "Keeps attempting peripheral IV repeatedly (diminishing returns)",
+        "Refuses to attempt IO due to lack of confidence (paralysis)",
+        "Attempts IO without proper preparation or consideration"
+      ],
+      "coachFollowUp": "Good thinking - recognizing your limits while knowing when the patient's need outweighs your comfort. That's clinical maturity. Let's continue..."
+    },
+
+    {
+      "questionID": "CC004",
+      "questionType": "open",
+      "category": "Treatment Complication",
+      "setup": "You've given nitroglycerin for chest pain and the patient's blood pressure suddenly drops to 80/50. They're now dizzy and pale. What's your immediate thought process?",
+      "expectedGoodReasoning": [
+        "Recognizes nitro caused the hypotension",
+        "Considers right ventricular infarct possibility",
+        "Thinks about fluid bolus for hypotension",
+        "Knows not to give more nitro",
+        "Reassesses entire patient status systematically"
+      ],
+      "commonFlawedReasoning": [
+        "Panics about the drop without systematic thinking",
+        "Gives more nitro thinking patient needs more treatment",
+        "Blames patient's underlying condition without considering treatment effect"
+      ],
+      "coachFollowUp": "Right - treatment complications happen. Your systematic reassessment matters more than perfect execution. Another one..."
+    },
+
+    {
+      "questionID": "CC005",
+      "questionType": "open",
+      "category": "Treatment Complication",
+      "setup": "You're treating a 7-year-old child in status epilepticus. You've given the first dose of diazepam rectally, but the seizure continues after 5 minutes. The parents are panicking and asking why their child isn't waking up. How do you think about the next steps?",
+      "expectedGoodReasoning": [
+        "Knows pediatric dosing differs from adult",
+        "Considers second dose if seizure continues beyond 5 minutes",
+        "Prioritizes checking glucose (hypoglycemia causes seizures)",
+        "Recognizes importance of airway positioning during seizure",
+        "Understands communication with parents while managing emergency"
+      ],
+      "commonFlawedReasoning": [
+        "Uses adult dosing for child",
+        "Gives excessive repeat doses without waiting for effect",
+        "Forgets to check glucose as seizure cause",
+        "Attempts to force oral airway during active seizure"
+      ],
+      "coachFollowUp": "Good - pediatric emergencies require specific knowledge. Checking glucose and proper dosing are crucial. Moving on..."
+    },
+
+    {
+      "questionID": "CC006",
+      "questionType": "open",
+      "category": "Treatment Complication",
+      "setup": "A pregnant woman at 32 weeks is having severe asthma attack. She needs salbutamol, but your partner expresses concern about effects on the fetus. The patient is becoming cyanotic. What's your reasoning here?",
+      "expectedGoodReasoning": [
+        "Maternal hypoxia is immediate threat to both mother and fetus",
+        "Salbutamol is safe in pregnancy - benefits far outweigh theoretical risks",
+        "Fetal hypoxia from untreated asthma is greater risk than medication",
+        "Treats the emergency first, documents and monitors",
+        "Understands two-patient scenario but mother's survival is priority"
+      ],
+      "commonFlawedReasoning": [
+        "Withholds treatment due to pregnancy concerns",
+        "Delays treatment while debating medication safety",
+        "Focuses on fetus while mother deteriorating"
+      ],
+      "coachFollowUp": "Exactly - maternal hypoxia harms the fetus more than any bronchodilator. Treat the emergency. Let's continue..."
+    },
+
+    {
+      "questionID": "CC007",
+      "questionType": "closed",
+      "category": "Treatment Complication",
+      "setup": "You give 10mg IV diazepam for status epilepticus. How long should you wait before considering a second dose, and what is the maximum prehospital dose?",
+      "expectedAnswers": [
+        "Wait 5-10 minutes, maximum 20mg total",
+        "5 to 10 minutes between doses, max 20mg",
+        "Wait 5 minutes, can repeat once for total 20mg"
+      ],
+      "acceptableVariations": [
+        "5 minutes minimum wait, second 10mg if needed, don't exceed 20mg",
+        "Assess after 5-10 min, max 2 doses of 10mg"
+      ],
+      "coachFollowUp": "Correct - titration is key. Too little and seizure continues, too much and you cause respiratory depression. Next..."
+    },
+
+    {
+      "questionID": "CC008",
+      "questionType": "closed",
+      "category": "Treatment Complication",
+      "setup": "Patient with chest pain has BP 85/60. You're considering nitroglycerin. What is the minimum systolic BP required before giving nitro, and why is this cutoff important?",
+      "expectedAnswers": [
+        "Minimum 90-100 mmHg systolic, nitro causes vasodilation and further drops BP",
+        "SBP above 90, nitro lowers BP through vasodilation",
+        "Need at least 90 systolic, nitro can cause dangerous hypotension"
+      ],
+      "acceptableVariations": [
+        "90 mmHg minimum, prevents hypotensive crisis",
+        "Above 90-100 systolic, nitro is vasodilator"
+      ],
+      "coachFollowUp": "Right - knowing contraindications prevents iatrogenic harm. Moving on..."
+    },
+
+    {
+      "questionID": "CC009",
+      "questionType": "open",
+      "category": "Patient Communication",
+      "setup": "You arrive for chest pain. The patient is pale, sweating, and clutching their chest, but they tell you 'It's just indigestion, I'm not going to the hospital.' You strongly suspect a cardiac event. How do you handle this?",
+      "expectedGoodReasoning": [
+        "Recognizes denial is common in cardiac patients",
+        "Balances patient autonomy with clinical concern",
+        "Considers education strategies and family involvement",
+        "Understands limits of authority vs persuasion",
+        "Acknowledges ethical tension between respecting choice and preventing harm"
+      ],
+      "commonFlawedReasoning": [
+        "Immediately accepts refusal without education (abandonment)",
+        "Forces treatment against clear refusal (violation of autonomy)",
+        "Becomes adversarial or judgmental toward patient"
+      ],
+      "coachFollowUp": "Exactly - this is the hardest part. You can educate strongly but ultimately can't force. Let's look at another challenge..."
+    },
+
+    {
+      "questionID": "CC010",
+      "questionType": "open",
+      "category": "Patient Communication",
+      "setup": "You're treating an elderly patient who keeps saying 'I'm fine, don't make a fuss.' But their adult daughter pulls you aside and whispers that her father has been increasingly confused at home and she thinks he's hiding how bad things really are. How do you navigate this?",
+      "expectedGoodReasoning": [
+        "Recognizes family concern is valuable assessment information",
+        "Must still respect patient as primary decision-maker if competent",
+        "Considers performing cognitive assessment objectively",
+        "Balances family input with patient autonomy",
+        "Thinks about elder safety vs respecting independence"
+      ],
+      "commonFlawedReasoning": [
+        "Dismisses patient completely based on family report",
+        "Ignores family concern and only listens to patient",
+        "Takes sides in family conflict rather than assessing clinically"
+      ],
+      "coachFollowUp": "Good - you're recognizing the family provides context while respecting the patient's voice. These triangulated situations are tricky. Next..."
+    },
+
+    {
+      "questionID": "CC011",
+      "questionType": "open",
+      "category": "Patient Communication",
+      "setup": "Your patient admits to using cocaine 'a few hours ago' but their symptoms suggest it might be more recent. They're worried about getting in trouble. How do you approach getting accurate information when you suspect they're not being fully honest?",
+      "expectedGoodReasoning": [
+        "Recognizes accurate drug history is critical for safe treatment",
+        "Understands patient fear of judgment or legal consequences",
+        "Uses non-judgmental approach to build trust",
+        "Explains medical necessity without lecturing",
+        "Acknowledges this requires relationship-building under time pressure"
+      ],
+      "commonFlawedReasoning": [
+        "Accepts timeline at face value without questioning",
+        "Becomes confrontational about suspected dishonesty",
+        "Focuses on moral judgment rather than medical need"
+      ],
+      "coachFollowUp": "Right - building trust quickly is a clinical skill. Your non-judgmental approach can literally save lives. One more communication scenario..."
+    },
+
+    {
+      "questionID": "CC012",
+      "questionType": "open",
+      "category": "Patient Communication",
+      "setup": "You're treating a teenage patient for an overdose. They're stable now but whisper 'Please don't tell my parents what I took.' You know you need to transport and parents will be notified. How do you handle this moment?",
+      "expectedGoodReasoning": [
+        "Recognizes minor status limits confidentiality",
+        "Understands importance of being honest with patient",
+        "Balances therapeutic relationship with legal requirements",
+        "Considers how to preserve trust while being truthful",
+        "Thinks about patient safety as primary concern"
+      ],
+      "commonFlawedReasoning": [
+        "Promises confidentiality they cannot keep",
+        "Immediately calls parents without explaining to patient",
+        "Lectures patient about consequences"
+      ],
+      "coachFollowUp": "Good instinct - being honest about limits while maintaining compassion. These conversations matter beyond just the medical treatment. Moving on..."
+    },
+
+    {
+      "questionID": "CC013",
+      "questionType": "open",
+      "category": "Patient Communication",
+      "setup": "You're called to a psychiatric patient who is agitated and threatening. They refuse to let you near them but clearly need medical attention for a wound that's bleeding. How do you approach this situation?",
+      "expectedGoodReasoning": [
+        "Prioritizes scene safety first",
+        "Uses de-escalation techniques - calm voice, space, no sudden movements",
+        "Considers requesting police backup if needed",
+        "Recognizes psychiatric patients still have autonomy rights",
+        "Balances immediate medical need vs escalation risk"
+      ],
+      "commonFlawedReasoning": [
+        "Approaches agitated patient without safety plan",
+        "Immediately calls for restraint/force",
+        "Dismisses patient as 'just psychiatric'",
+        "Abandons scene without attempting communication"
+      ],
+      "coachFollowUp": "Good - psychiatric emergencies require patience and technique. Safety first, but don't abandon the patient. Next..."
+    },
+
+    {
+      "questionID": "CC014",
+      "questionType": "open",
+      "category": "Patient Communication",
+      "setup": "You're treating a bariatric patient who weighs approximately 180kg. When you mention needing to call for additional resources for safe lifting, they become tearful and say 'I knew this would happen, everyone judges me.' How do you respond?",
+      "expectedGoodReasoning": [
+        "Acknowledges patient's emotional response with empathy",
+        "Explains additional resources are for safety - theirs and crew's",
+        "Avoids language that sounds judgmental",
+        "Focuses on providing best possible care",
+        "Recognizes bariatric patients often face stigma in healthcare"
+      ],
+      "commonFlawedReasoning": [
+        "Makes comments about patient's weight",
+        "Becomes defensive about needing resources",
+        "Ignores emotional response and proceeds mechanically",
+        "Tries to move patient without proper resources (unsafe)"
+      ],
+      "coachFollowUp": "Right - clinical decisions shouldn't feel like judgments to patients. How we communicate matters. Continuing..."
+    },
+
+    {
+      "questionID": "CC015",
+      "questionType": "open",
+      "category": "Patient Communication",
+      "setup": "Your partner makes an inappropriate comment about the patient's lifestyle choices within earshot. The patient heard it and now refuses to cooperate with assessment. How do you handle this professionally?",
+      "expectedGoodReasoning": [
+        "Apologizes to patient for unprofessional comment",
+        "Takes lead in patient interaction to rebuild trust",
+        "Addresses partner behavior later, not in front of patient",
+        "Focuses on patient's immediate medical needs",
+        "Recognizes team dynamics impact patient care"
+      ],
+      "commonFlawedReasoning": [
+        "Defends or excuses partner's comment",
+        "Argues with partner in front of patient",
+        "Ignores the situation hoping it resolves",
+        "Blames patient for being sensitive"
+      ],
+      "coachFollowUp": "Good - professionalism and team dynamics directly affect patient care. You're right to prioritize the patient relationship. Moving forward..."
+    },
+
+    {
+      "questionID": "CC016",
+      "questionType": "open",
+      "category": "Patient Communication",
+      "setup": "You're treating a patient who speaks limited Slovak and no English. Their family member is translating, but you notice the family member seems to be editing or softening what you're saying. The patient needs to understand the severity of their condition. What do you do?",
+      "expectedGoodReasoning": [
+        "Recognizes accurate communication is essential for informed consent",
+        "Considers requesting professional interpreter if available",
+        "Uses simple, direct language with pauses for translation",
+        "Watches patient's reactions to gauge understanding",
+        "Documents communication challenges"
+      ],
+      "commonFlawedReasoning": [
+        "Relies entirely on family translator despite concerns",
+        "Speaks louder as if volume helps language barrier",
+        "Skips important information because it's difficult to convey",
+        "Ignores signs that patient isn't understanding"
+      ],
+      "coachFollowUp": "Exactly - informed consent requires actual understanding. Language barriers are clinical challenges. Let's continue..."
+    },
+
+    {
+      "questionID": "CC017",
+      "questionType": "open",
+      "category": "Unpredictable Situation",
+      "setup": "You administer the correct medication at the correct dose, but the patient's condition doesn't improve - in fact, they seem to be getting worse. What's your thought process in that moment?",
+      "expectedGoodReasoning": [
+        "Reassesses ABCs - returns to fundamentals",
+        "Considers alternative diagnoses",
+        "Checks for complications from treatment itself",
+        "Recognizes when to call for backup or advanced support",
+        "Stays calm and systematic despite unexpected outcome"
+      ],
+      "commonFlawedReasoning": [
+        "Panics or freezes",
+        "Immediately gives more of same medication without reassessing",
+        "Blames patient or situation rather than reassessing systematically"
+      ],
+      "coachFollowUp": "Good instinct - when treatment fails, go back to basics. Your systematic approach matters more than having immediate answers. Next challenge..."
+    },
+
+    {
+      "questionID": "CC018",
+      "questionType": "open",
+      "category": "Unpredictable Situation",
+      "setup": "You're managing a difficult airway on a patient who is crashing. You've tried twice to intubate and failed both times. Oxygen saturation is dropping. What's going through your mind about next steps?",
+      "expectedGoodReasoning": [
+        "Recognizes failed airway protocol applies",
+        "Considers bag-valve-mask ventilation as bridge",
+        "Thinks about supraglottic airway as alternative",
+        "Knows when to stop attempting intubation",
+        "Prioritizes oxygenation over advanced airway"
+      ],
+      "commonFlawedReasoning": [
+        "Keeps attempting intubation without stopping to ventilate",
+        "Views failure as personal rather than recognizing difficult airway",
+        "Doesn't have backup plan ready"
+      ],
+      "coachFollowUp": "Exactly - 'cannot intubate, must oxygenate.' Recognizing when to shift strategies is advanced thinking. Let's continue..."
+    },
+
+    {
+      "questionID": "CC019",
+      "questionType": "open",
+      "category": "Unpredictable Situation",
+      "setup": "You've controlled severe bleeding from a trauma patient's leg wound, but now you notice their abdomen is becoming distended and rigid. Your transport time to trauma center is still 20 minutes. How are you thinking about this development?",
+      "expectedGoodReasoning": [
+        "Recognizes possible internal bleeding",
+        "Understands this changes the clinical picture significantly",
+        "Considers need for rapid transport vs interventions",
+        "Thinks about fluid resuscitation strategy",
+        "Reassesses entire treatment plan based on new finding"
+      ],
+      "commonFlawedReasoning": [
+        "Continues focus on leg wound only",
+        "Dismisses abdominal finding as unrelated",
+        "Becomes overwhelmed by multiple injuries"
+      ],
+      "coachFollowUp": "Good - you're recognizing evolving injuries require evolving plans. Trauma patients keep you on your toes. Another scenario..."
+    },
+
+    {
+      "questionID": "CC020",
+      "questionType": "open",
+      "category": "Unpredictable Situation",
+      "setup": "Your cardiac arrest patient has been in V-fib for 15 minutes. You've done everything by protocol - multiple shocks, medications, good CPR - but they're not converting. The family is watching. What are you thinking about continuing versus terminating resuscitation?",
+      "expectedGoodReasoning": [
+        "Recognizes diminishing returns with prolonged arrest",
+        "Considers factors affecting survival (witnessed, bystander CPR, etc)",
+        "Thinks about online medical direction if available",
+        "Balances evidence-based practice with family presence",
+        "Acknowledges this is emotionally and clinically difficult"
+      ],
+      "commonFlawedReasoning": [
+        "Continues indefinitely because family is present",
+        "Gives up too early without considering all factors",
+        "Makes decision based on emotion rather than clinical judgment"
+      ],
+      "coachFollowUp": "This is genuinely one of the hardest calls. Your ability to weigh evidence while acknowledging the human element shows maturity. Moving forward..."
+    },
+
+    {
+      "questionID": "CC021",
+      "questionType": "open",
+      "category": "Unpredictable Situation",
+      "setup": "You're treating a 5-year-old for febrile seizure. The seizure stops, but now the child is postictal and the mother is screaming 'Do something! Why isn't he waking up?' while trying to shake the child. How do you manage both the patient and the scene?",
+      "expectedGoodReasoning": [
+        "Reassures mother that postictal state is normal after seizure",
+        "Gently stops her from shaking child (prevents injury)",
+        "Continues monitoring child's airway and breathing",
+        "Explains what's happening in simple terms",
+        "Maintains calm presence to de-escalate panic"
+      ],
+      "commonFlawedReasoning": [
+        "Ignores mother and focuses only on child",
+        "Becomes defensive or argumentative with panicking mother",
+        "Performs unnecessary interventions on stable postictal child",
+        "Lets mother continue shaking child"
+      ],
+      "coachFollowUp": "Right - managing the scene includes managing anxious family. A calm explanation helps everyone. Continuing..."
+    },
+
+    {
+      "questionID": "CC022",
+      "questionType": "open",
+      "category": "Unpredictable Situation",
+      "setup": "Your partner suddenly becomes pale and says they feel dizzy during a call. You're mid-treatment on a moderately unstable patient. What do you do?",
+      "expectedGoodReasoning": [
+        "Recognizes crew safety is also priority",
+        "Quickly assesses partner's status",
+        "Considers calling for backup immediately",
+        "Prioritizes stabilizing both patient and partner",
+        "Doesn't ignore partner's symptoms"
+      ],
+      "commonFlawedReasoning": [
+        "Ignores partner and continues with patient",
+        "Abandons patient completely to help partner",
+        "Panics and loses situational awareness",
+        "Dismisses partner's symptoms as unimportant"
+      ],
+      "coachFollowUp": "Good - crew welfare matters too. You can't help patients if you're incapacitated. Calling backup early is smart. Next..."
+    },
+
+    {
+      "questionID": "CC023",
+      "questionType": "closed",
+      "category": "Unpredictable Situation",
+      "setup": "During CPR, you should deliver how many compressions per minute, and what is the recommended depth of compressions for an adult?",
+      "expectedAnswers": [
+        "100-120 compressions per minute, depth 5-6 cm",
+        "Rate 100-120/min, compress 5-6 centimeters",
+        "100 to 120 per minute, at least 5cm but not more than 6cm"
+      ],
+      "acceptableVariations": [
+        "About 100-120, depth approximately 5-6cm",
+        "Two compressions per second, 5-6cm deep"
+      ],
+      "coachFollowUp": "Correct - quality CPR saves lives. These numbers matter. Moving on..."
+    },
+
+    {
+      "questionID": "CC024",
+      "questionType": "closed",
+      "category": "Unpredictable Situation",
+      "setup": "Your patient has return of spontaneous circulation (ROSC) after cardiac arrest. What is the target SpO2 range you should maintain, and why not higher?",
+      "expectedAnswers": [
+        "94-98%, higher oxygen causes reperfusion injury and oxidative stress",
+        "Target 94-98 percent, hyperoxia causes neurological damage",
+        "SpO2 94-98%, too much oxygen is toxic to recovering brain"
+      ],
+      "acceptableVariations": [
+        "Keep between 94-98, avoid hyperoxia",
+        "94-98% to prevent oxygen toxicity post-arrest"
+      ],
+      "coachFollowUp": "Right - post-ROSC care is nuanced. More isn't always better. Let's continue..."
+    },
+
+    {
+      "questionID": "CC025",
+      "questionType": "open",
+      "category": "Ethical Dilemma",
+      "setup": "You're at a motor vehicle crash with multiple patients. One has critical injuries but is elderly and was not wearing a seatbelt. Another has moderate injuries but is a young child. Resources are limited. How do you think about prioritizing care?",
+      "expectedGoodReasoning": [
+        "Recognizes triage is based on clinical need and survival probability",
+        "Understands age alone shouldn't determine care",
+        "Considers injury severity and available interventions",
+        "Acknowledges emotional difficulty of triage decisions",
+        "Focuses on who can be saved with available resources"
+      ],
+      "commonFlawedReasoning": [
+        "Automatically prioritizes child based on age alone",
+        "Judges patient based on safety behaviors (seatbelt)",
+        "Becomes paralyzed by ethical weight of decision"
+      ],
+      "coachFollowUp": "Right - triage is clinical, not emotional or moral. These decisions weigh on us, but we base them on survivability. Next dilemma..."
+    },
+
+    {
+      "questionID": "CC026",
+      "questionType": "open",
+      "category": "Ethical Dilemma",
+      "setup": "A patient with a terminal illness and DNR orders is having severe respiratory distress and begging you to 'do something, help me breathe.' Their DNR specifically says no intubation. What's your thinking here?",
+      "expectedGoodReasoning": [
+        "Understands DNR doesn't mean 'do not treat'",
+        "Recognizes non-invasive support (positioning, oxygen, medications) is appropriate",
+        "Distinguishes between comfort care and prohibited interventions",
+        "Considers patient's current wishes vs advance directive",
+        "Acknowledges complexity of end-of-life care in acute setting"
+      ],
+      "commonFlawedReasoning": [
+        "Interprets DNR as providing no treatment at all",
+        "Ignores DNR because patient is currently asking for help",
+        "Becomes uncertain about any intervention"
+      ],
+      "coachFollowUp": "Good distinction - DNR doesn't mean abandoning the patient. You can provide significant comfort without violating their wishes. Continuing..."
+    },
+
+    {
+      "questionID": "CC027",
+      "questionType": "open",
+      "category": "Ethical Dilemma",
+      "setup": "You're treating a patient who is clearly intoxicated and combative. They're refusing assessment and treatment, but you notice what might be a significant head injury. They're telling you to leave. How do you think through your obligations here?",
+      "expectedGoodReasoning": [
+        "Recognizes intoxication may impair decision-making capacity",
+        "Considers head injury could further affect mentation",
+        "Thinks about implied consent in emergency situations",
+        "Balances patient autonomy with safety concerns",
+        "Considers law enforcement involvement for safety"
+      ],
+      "commonFlawedReasoning": [
+        "Leaves immediately because patient refuses",
+        "Forces treatment against combative patient without consideration",
+        "Dismisses concerns because patient is intoxicated"
+      ],
+      "coachFollowUp": "Exactly - determining decision-making capacity is clinical, not just accepting or overriding refusal. These grey areas require judgment. Next..."
+    },
+
+    {
+      "questionID": "CC028",
+      "questionType": "open",
+      "category": "Ethical Dilemma",
+      "setup": "You arrive at a home where an elderly patient has clearly been neglected - they're malnourished, lying in soiled bedding, and have pressure ulcers. The family caregiver insists 'we're handling it at home.' What are you thinking about your responsibilities here?",
+      "expectedGoodReasoning": [
+        "Recognizes signs of potential elder abuse or neglect",
+        "Understands mandatory reporting obligations",
+        "Balances immediate medical needs with longer-term safety",
+        "Considers social services and adult protective services",
+        "Thinks about documentation for follow-up"
+      ],
+      "commonFlawedReasoning": [
+        "Only treats immediate medical issues without addressing neglect",
+        "Avoids involvement in 'family matters'",
+        "Becomes judgmental without considering resources or circumstances"
+      ],
+      "coachFollowUp": "Good - recognizing your role extends beyond immediate medical care to patient safety. These are mandatory reporting situations. Continuing..."
+    },
+
+    {
+      "questionID": "CC029",
+      "questionType": "open",
+      "category": "Ethical Dilemma",
+      "setup": "A 17-year-old patient tells you she thinks she might be pregnant and asks you not to tell her parents who are in the other room. She's being treated for abdominal pain. How do you navigate this?",
+      "expectedGoodReasoning": [
+        "Considers age of consent laws in your jurisdiction",
+        "Recognizes pregnancy could be relevant to abdominal pain assessment",
+        "Balances minor's privacy with medical necessity",
+        "Thinks about what information is essential vs shareable",
+        "Documents carefully and communicates with receiving hospital"
+      ],
+      "commonFlawedReasoning": [
+        "Immediately tells parents everything",
+        "Promises complete confidentiality without knowing legal limits",
+        "Ignores pregnancy possibility in assessment",
+        "Lectures patient about choices"
+      ],
+      "coachFollowUp": "Right - adolescent care involves balancing privacy, safety, and parental involvement. Complex but important. Next..."
+    },
+
+    {
+      "questionID": "CC030",
+      "questionType": "open",
+      "category": "Ethical Dilemma",
+      "setup": "You're at a scene where a patient has died at home. The family asks you to try resuscitation anyway 'just in case.' There are clear signs of death - rigor mortis and dependent lividity. What do you do?",
+      "expectedGoodReasoning": [
+        "Recognizes obvious death signs preclude resuscitation",
+        "Understands futile CPR can be disrespectful to deceased",
+        "Considers compassionate communication with grieving family",
+        "Knows protocols about obvious death declarations",
+        "Balances family wishes with appropriate care"
+      ],
+      "commonFlawedReasoning": [
+        "Performs CPR despite obvious death (false hope)",
+        "Coldly refuses without compassionate explanation",
+        "Leaves family without support or explanation",
+        "Becomes uncertain despite clear death signs"
+      ],
+      "coachFollowUp": "Good - knowing when NOT to intervene is as important as knowing when to act. Compassionate honesty serves families better. Moving on..."
+    },
+
+    {
+      "questionID": "CC031",
+      "questionType": "open",
+      "category": "Ethical Dilemma",
+      "setup": "You suspect a colleague has been impaired on duty - you've noticed alcohol on their breath and slowed responses. You're about to start a shift together. What's your obligation here?",
+      "expectedGoodReasoning": [
+        "Patient safety is paramount concern",
+        "Recognizes duty to report impaired colleagues",
+        "Considers immediate steps - can't work with impaired partner",
+        "Thinks about chain of command and proper reporting",
+        "Acknowledges difficulty but necessity of action"
+      ],
+      "commonFlawedReasoning": [
+        "Ignores concern to protect colleague",
+        "Plans to 'cover' for colleague on calls",
+        "Confronts colleague aggressively without plan",
+        "Assumes someone else will handle it"
+      ],
+      "coachFollowUp": "Exactly - this is uncomfortable but patient safety overrides personal loyalty. Proper reporting protects everyone. Next scenario..."
+    },
+
+    {
+      "questionID": "CC032",
+      "questionType": "open",
+      "category": "Ethical Dilemma",
+      "setup": "A patient in severe pain begs you for more pain medication. You've already given the maximum allowed by your protocols. They're crying and accusing you of not caring. How do you handle this?",
+      "expectedGoodReasoning": [
+        "Acknowledges patient's real suffering with empathy",
+        "Explains protocol limits clearly without being defensive",
+        "Considers non-pharmacological comfort measures",
+        "Documents pain level and medication given",
+        "Reassures patient about continued care at hospital"
+      ],
+      "commonFlawedReasoning": [
+        "Gives additional medication exceeding protocols",
+        "Becomes cold or defensive toward suffering patient",
+        "Dismisses patient's pain complaints",
+        "Suspects drug-seeking without clinical basis"
+      ],
+      "coachFollowUp": "Good - working within protocols while maintaining compassion is challenging. Acknowledging suffering matters even when you can't eliminate it. Continuing..."
+    },
+
+    {
+      "questionID": "CC033",
+      "questionType": "open",
+      "category": "Time Pressure Decision",
+      "setup": "You're mid-assessment on a patient when dispatch calls with a cardiac arrest two blocks away. Your current patient has chest pain but stable vitals. Your ambulance is the closest resource. What's going through your mind?",
+      "expectedGoodReasoning": [
+        "Weighs relative severity and time-sensitivity",
+        "Considers other available resources",
+        "Thinks about clinical status of current patient",
+        "Recognizes no perfect answer exists",
+        "Considers requesting additional resources"
+      ],
+      "commonFlawedReasoning": [
+        "Automatically abandons current patient for cardiac arrest",
+        "Refuses to leave current patient regardless of situation",
+        "Doesn't consider calling for additional resources"
+      ],
+      "coachFollowUp": "Right - you're weighing competing critical needs with incomplete information. Sometimes best answer is getting more resources. Next pressure scenario..."
+    },
+
+    {
+      "questionID": "CC034",
+      "questionType": "open",
+      "category": "Time Pressure Decision",
+      "setup": "Your patient is crashing and needs immediate intervention, but a family member is demanding you explain everything you're doing and questioning each medication. You need to work fast. How do you handle this?",
+      "expectedGoodReasoning": [
+        "Recognizes patient care takes priority",
+        "Considers brief acknowledgment of family concern",
+        "Thinks about delegating communication to partner",
+        "Maintains professional composure under pressure",
+        "Plans to explain more thoroughly once patient stabilized"
+      ],
+      "commonFlawedReasoning": [
+        "Stops working to argue with family",
+        "Ignores family completely and creates conflict",
+        "Becomes flustered and loses focus on patient"
+      ],
+      "coachFollowUp": "Good - setting boundaries while maintaining professionalism. Patient care comes first, communication when safe. Continuing..."
+    },
+
+    {
+      "questionID": "CC035",
+      "questionType": "open",
+      "category": "Time Pressure Decision",
+      "setup": "You're treating a critical patient and realize you're missing a key piece of equipment your protocol requires. The hospital is 8 minutes away. Do you spend time trying to improvise or just transport immediately?",
+      "expectedGoodReasoning": [
+        "Weighs benefit of intervention vs time to definitive care",
+        "Considers whether improvisation is safe and effective",
+        "Thinks about 'scoop and run' vs 'stay and play'",
+        "Recognizes hospital can provide what's missing",
+        "Makes decision based on patient's trajectory"
+      ],
+      "commonFlawedReasoning": [
+        "Delays transport trying to perfectly follow protocol",
+        "Transports without considering any scene interventions",
+        "Panics about missing equipment"
+      ],
+      "coachFollowUp": "Exactly - sometimes the best intervention is rapid transport. Don't let missing equipment override good judgment. Last one..."
+    },
+
+    {
+      "questionID": "CC036",
+      "questionType": "open",
+      "category": "Time Pressure Decision",
+      "setup": "You have three interventions you know this patient needs - IV access, cardiac monitoring, and medication administration. You're working alone because your partner is driving. You can't do all three simultaneously. How do you decide what comes first?",
+      "expectedGoodReasoning": [
+        "Prioritizes based on immediate threat to life",
+        "Considers which interventions enable others (IV before meds)",
+        "Thinks about time-sensitivity of each intervention",
+        "Recognizes monitoring can wait if ABCs addressed",
+        "Stays systematic rather than scattered"
+      ],
+      "commonFlawedReasoning": [
+        "Tries to do everything at once and does nothing well",
+        "Chooses easiest task rather than most important",
+        "Becomes overwhelmed by multiple needs"
+      ],
+      "coachFollowUp": "Good - you're prioritizing systematically under pressure. That's exactly the thinking you'll need. Ready for the scenario?"
+    },
+
+    {
+      "questionID": "CC037",
+      "questionType": "open",
+      "category": "Time Pressure Decision",
+      "setup": "You're performing CPR on an arrest patient when you notice the rhythm has changed to something that might be shockable. But you're in the middle of a compression cycle and your partner is preparing medication. Do you stop to analyze rhythm or continue compressions?",
+      "expectedGoodReasoning": [
+        "Understands minimizing compression interruptions is critical",
+        "Knows to complete 2-minute cycle before rhythm check",
+        "Coordinates with partner for planned pause",
+        "Balances rhythm assessment with compression continuity",
+        "Communicates intentions to team"
+      ],
+      "commonFlawedReasoning": [
+        "Stops compressions immediately for any reason",
+        "Never checks rhythm (missing shockable rhythm)",
+        "Creates chaos by stopping without communication"
+      ],
+      "coachFollowUp": "Right - high-quality CPR means planned, brief pauses for rhythm checks. Coordination matters. Moving on..."
+    },
+
+    {
+      "questionID": "CC038",
+      "questionType": "open",
+      "category": "Time Pressure Decision",
+      "setup": "A mother is in active labor and you can see the baby's head crowning. She wants to go to the hospital, but you estimate the baby will deliver in the next 2-3 minutes. Transport time is 10 minutes. What do you decide?",
+      "expectedGoodReasoning": [
+        "Recognizes imminent delivery makes transport dangerous",
+        "Prepares for field delivery despite preference for hospital",
+        "Communicates clearly with mother about situation",
+        "Has delivery kit ready and partner prepared",
+        "Plans transport immediately after delivery if no complications"
+      ],
+      "commonFlawedReasoning": [
+        "Attempts transport with imminent delivery (dangerous)",
+        "Panics about field delivery",
+        "Tries to delay delivery (impossible/dangerous)",
+        "Doesn't prepare necessary equipment"
+      ],
+      "coachFollowUp": "Good judgment - sometimes babies don't wait. Being prepared for field delivery is essential. Next..."
+    },
+
+    {
+      "questionID": "CC039",
+      "questionType": "closed",
+      "category": "Time Pressure Decision",
+      "setup": "In trauma, what does the 'Golden Hour' refer to, and how should it influence your on-scene time decisions?",
+      "expectedAnswers": [
+        "First 60 minutes after injury when treatment most impacts survival; minimize scene time for critical trauma",
+        "Critical first hour post-injury; get trauma patients to definitive care quickly",
+        "Hour after severe injury where surgical intervention most affects outcome; limit scene to essential interventions"
+      ],
+      "acceptableVariations": [
+        "Time from injury to definitive care; don't delay transport for non-essential interventions",
+        "First hour is critical for trauma survival; balance interventions vs rapid transport"
+      ],
+      "coachFollowUp": "Correct - time to definitive care matters in trauma. Let's continue..."
+    },
+
+    {
+      "questionID": "CC040",
+      "questionType": "closed",
+      "category": "Time Pressure Decision",
+      "setup": "What are the 4 H's and 4 T's - the reversible causes of cardiac arrest you should consider during resuscitation?",
+      "expectedAnswers": [
+        "Hypoxia, Hypovolemia, Hypo/hyperkalemia, Hypothermia; Tension pneumothorax, Tamponade, Toxins, Thrombosis",
+        "4H: hypoxia, hypovolemia, hyper/hypokalemia, hypothermia. 4T: tension pneumothorax, tamponade, toxins, thrombosis (coronary/pulmonary)",
+        "Hypoxia, Hypovolemia, Hydrogen ions (acidosis)/electrolytes, Hypothermia; Tension pneumo, Tamponade cardiac, Toxins, Thrombosis"
+      ],
+      "acceptableVariations": [
+        "H's: hypoxia, hypovolemia, hypo-hyperkalemia, hypothermia. T's: tension pneumo, tamponade, toxins, thrombus",
+        "Reversible causes: hypoxia hypovolemia electrolytes hypothermia, tension pneumothorax tamponade toxins thrombosis"
+      ],
+      "coachFollowUp": "Good - knowing reversible causes helps you think systematically during the chaos of a code. Ready for the scenario?"
+    },
+
+    {
+      "questionID": "CC041",
+      "questionType": "closed",
+      "category": "Pattern Recognition",
+      "setup": "HR 140, BP 90/60, cool pale extremities, altered mental status, rapid shallow breathing. What clinical pattern does this match?",
+      "expectedAnswers": [
+        "Shock - likely hypovolemic or distributive",
+        "Compensated shock progressing to decompensated",
+        "Shock state - hypoperfusion with compensatory tachycardia",
+        "Hypovolemic shock pattern"
+      ],
+      "acceptableVariations": [
+        "Shock - need to identify type",
+        "Signs of shock with early decompensation",
+        "Circulatory shock, possibly hemorrhagic"
+      ],
+      "coachFollowUp": "Good pattern recognition. The vitals tell a story - this is shock. What type depends on context. Next pattern..."
+    },
+
+    {
+      "questionID": "CC042",
+      "questionType": "closed",
+      "category": "Pattern Recognition",
+      "setup": "Patient found unresponsive. HR 45, BP 195/110, irregular respirations. One pupil is dilated and non-reactive. What pattern are you recognizing?",
+      "expectedAnswers": [
+        "Cushing's triad - suggesting raised intracranial pressure",
+        "Signs of increased ICP - hypertension, bradycardia, irregular breathing",
+        "Cushing's response from brain herniation",
+        "Elevated intracranial pressure with uncal herniation"
+      ],
+      "acceptableVariations": [
+        "Brain herniation syndrome - Cushing's reflex",
+        "Raised ICP with herniation - blown pupil",
+        "Cushing's triad indicating severe head injury"
+      ],
+      "coachFollowUp": "Exactly - Cushing's triad is a critical finding. The blown pupil suggests herniation. Moving on..."
+    },
+
+    {
+      "questionID": "CC043",
+      "questionType": "closed",
+      "category": "Pattern Recognition",
+      "setup": "Severe respiratory distress, SpO2 85%, widespread expiratory wheeze, accessory muscle use, can only speak in single words, history of asthma. Where on the severity spectrum is this patient?",
+      "expectedAnswers": [
+        "Severe/life-threatening asthma exacerbation",
+        "Status asthmaticus - severe acute asthma",
+        "Life-threatening asthma - single-word sentences indicates severe",
+        "Severe acute asthma attack requiring immediate bronchodilation"
+      ],
+      "acceptableVariations": [
+        "Critical asthma - near respiratory failure",
+        "Severe asthma - can't complete sentences",
+        "Status asthmaticus with respiratory failure risk"
+      ],
+      "coachFollowUp": "Right - sentence length tells you severity. Single words means critical. Let's continue..."
+    },
+
+    {
+      "questionID": "CC044",
+      "questionType": "closed",
+      "category": "Pattern Recognition",
+      "setup": "Crushing central chest pain radiating to left arm, diaphoresis, nausea, pale grey skin, sense of impending doom. ST elevation in leads V1-V4 on 12-lead ECG. What is this pattern?",
+      "expectedAnswers": [
+        "Anterior STEMI - ST elevation myocardial infarction",
+        "Acute anterior wall MI - LAD territory",
+        "STEMI in anterior leads - likely LAD occlusion",
+        "Acute myocardial infarction - anterior wall"
+      ],
+      "acceptableVariations": [
+        "Anterior MI with classic presentation",
+        "ST elevation anterior leads - acute coronary occlusion",
+        "Heart attack - anterior STEMI pattern"
+      ],
+      "coachFollowUp": "Good - classic STEMI presentation. V1-V4 suggests anterior wall, LAD territory. Next..."
+    },
+
+    {
+      "questionID": "CC045",
+      "questionType": "closed",
+      "category": "Pattern Recognition",
+      "setup": "Sudden severe headache 'worst of my life,' neck stiffness, photophobia, vomiting, no trauma history. What diagnosis must you suspect?",
+      "expectedAnswers": [
+        "Subarachnoid hemorrhage until proven otherwise",
+        "SAH - subarachnoid hemorrhage",
+        "Ruptured cerebral aneurysm - subarachnoid bleed",
+        "Intracranial hemorrhage, likely SAH"
+      ],
+      "acceptableVariations": [
+        "Bleeding in brain - SAH pattern",
+        "Thunderclap headache - rule out SAH",
+        "Subarachnoid hemorrhage from aneurysm rupture"
+      ],
+      "coachFollowUp": "Exactly - 'worst headache of life' is SAH until proven otherwise. Time-critical emergency. Continuing..."
+    },
+
+    {
+      "questionID": "CC046",
+      "questionType": "closed",
+      "category": "Pattern Recognition",
+      "setup": "Diabetic patient found confused, sweating profusely, trembling, aggressive behavior, rapid pulse. Blood glucose reads 2.1 mmol/L. What is happening and what's first-line treatment?",
+      "expectedAnswers": [
+        "Severe hypoglycemia - give glucose IV or glucagon if no IV access",
+        "Hypoglycemic crisis - IV dextrose or IM glucagon",
+        "Low blood sugar causing neuroglycopenia - treat with glucose",
+        "Hypoglycemia - needs immediate glucose replacement"
+      ],
+      "acceptableVariations": [
+        "Insulin shock/hypoglycemia - give sugar",
+        "Severe hypo - dextrose 40% IV or glucagon",
+        "Hypoglycemic episode - glucose is treatment"
+      ],
+      "coachFollowUp": "Right - the glucose tells you everything. Treat the number. Moving on..."
+    },
+
+    {
+      "questionID": "CC047",
+      "questionType": "closed",
+      "category": "Pattern Recognition",
+      "setup": "After bee sting: widespread urticaria, facial swelling, stridor, BP 80/50, HR 130. What is this reaction and what is the first-line medication?",
+      "expectedAnswers": [
+        "Anaphylaxis - adrenaline/epinephrine IM is first-line",
+        "Anaphylactic shock - epinephrine 0.5mg IM immediately",
+        "Severe allergic reaction with anaphylaxis - give adrenaline",
+        "Anaphylaxis - IM adrenaline, not antihistamines first"
+      ],
+      "acceptableVariations": [
+        "Anaphylactic reaction - epi-pen or adrenaline IM",
+        "Anaphylaxis from bee sting - adrenaline is priority",
+        "Severe anaphylaxis - epinephrine first, then fluids and antihistamines"
+      ],
+      "coachFollowUp": "Correct - stridor plus hypotension equals severe anaphylaxis. Adrenaline saves lives. Next pattern..."
+    },
+
+    {
+      "questionID": "CC048",
+      "questionType": "closed",
+      "category": "Pattern Recognition",
+      "setup": "Sudden onset facial droop on right side, right arm weakness, slurred speech. Patient was fine 30 minutes ago. What is your working diagnosis and what critical information do you need?",
+      "expectedAnswers": [
+        "Acute stroke - need exact time of symptom onset for thrombolysis decision",
+        "CVA/stroke - time of onset is critical for treatment window",
+        "Cerebrovascular accident - when did symptoms start, for tPA eligibility",
+        "Stroke - last known well time determines treatment options"
+      ],
+      "acceptableVariations": [
+        "Acute stroke syndrome - need symptom onset time",
+        "TIA or stroke - time is brain, need exact onset",
+        "Ischemic stroke likely - thrombolysis window depends on timing"
+      ],
+      "coachFollowUp": "Exactly - 'time is brain.' Knowing onset time changes everything for treatment options. Continuing..."
+    },
+
+    {
+      "questionID": "CC049",
+      "questionType": "closed",
+      "category": "Pattern Recognition",
+      "setup": "Trauma patient: distended neck veins, hypotension, muffled heart sounds, tachycardia. What is this triad called and what does it indicate?",
+      "expectedAnswers": [
+        "Beck's triad - cardiac tamponade",
+        "Beck's triad indicating pericardial tamponade",
+        "Tamponade triad - JVD, hypotension, muffled heart sounds",
+        "Cardiac tamponade - Beck's triad"
+      ],
+      "acceptableVariations": [
+        "Signs of tamponade - Beck's triad",
+        "Pericardial tamponade from trauma - Beck's triad",
+        "Beck's triad = tamponade, needs pericardiocentesis"
+      ],
+      "coachFollowUp": "Good - Beck's triad is life-threatening. In trauma, think penetrating chest injury. Last pattern..."
+    },
+
+    {
+      "questionID": "CC050",
+      "questionType": "closed",
+      "category": "Pattern Recognition",
+      "setup": "Patient on warfarin presents with: INR 8.5, large bruises on arms, blood in urine, gum bleeding. What is the clinical situation and what reversal agent is available?",
+      "expectedAnswers": [
+        "Warfarin over-anticoagulation/toxicity - vitamin K for reversal",
+        "Supratherapeutic INR with bleeding - give vitamin K",
+        "Warfarin overdose causing coagulopathy - vitamin K reverses effect",
+        "Excessive anticoagulation - vitamin K, possibly FFP if severe bleeding"
+      ],
+      "acceptableVariations": [
+        "Too much warfarin effect - needs vitamin K",
+        "High INR with active bleeding - vitamin K reversal",
+        "Warfarin-induced bleeding - vitamin K is antidote"
+      ],
+      "coachFollowUp": "Right - recognizing medication complications is critical. INR above 4-5 with bleeding needs reversal. Ready for the scenario?"
+    }
+  ]
+}

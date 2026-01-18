@@ -1,0 +1,1005 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "language": "SK",
+    "total_questions": 50,
+    "open_questions": 34,
+    "closed_questions": 16,
+    "selection_logic": "Náhodne 1 z questionType:closed + Náhodne 2 z questionType:open",
+    "categories": [
+      "Komplikácie liečby",
+      "Komunikácia s pacientom",
+      "Nepredvídateľná situácia",
+      "Etická dilema",
+      "Rozhodovanie pod časovým tlakom",
+      "Rozpoznávanie vzorcov"
+    ],
+    "last_updated": "2026-01"
+  },
+
+  "cognitiveCoachQuestionPool": [
+
+    {
+      "questionID": "CC001",
+      "questionType": "open",
+      "category": "Komplikácie liečby",
+      "setup": "Ošetrujete pacienta s ťažkou dýchavičnosťou. Protokol hovorí, že máte okamžite podať vysokoprietokový kyslík. Ale čo ak má pacient v anamnéze CHOCHP a váš kolega vás upozorní, že príliš veľa kyslíka by mohlo utlmiť jeho dychové centrum? Povedzte mi, ako by ste o tomto rozhodnutí uvažovali.",
+      "expectedGoodReasoning": [
+        "Rozpoznáva napätie medzi okamžitou potrebou (hypoxia) a potenciálnym rizikom (retencia CO2)",
+        "Chápe, že v akútnej núdzi má oxygenácia prioritu",
+        "Uznáva, že to vyžaduje monitorovanie a prípadnú úpravu",
+        "Prejavuje istotu v klinickom úsudku nad rigidným protokolom"
+      ],
+      "commonFlawedReasoning": [
+        "Nepodá žiadny kyslík kvôli CHOCHP (nebezpečné)",
+        "Podá vysokoprietokový kyslík bez akéhokoľvek zváženia CHOCHP (neuvažuje)",
+        "Paralyzuje ho neistota (vyhýbanie sa rozhodnutiu)"
+      ],
+      "coachFollowUp": "Dobre - vážite bezprostrednú hrozbu oproti potenciálnej komplikácii. V núdzových situáciách liečime to, čo pacienta zabíja teraz. Skúsme ďalšiu..."
+    },
+
+    {
+      "questionID": "CC002",
+      "questionType": "open",
+      "category": "Komplikácie liečby",
+      "setup": "Protokol hovorí podať aspirín pri bolesti na hrudi, ale pacient spomenie, že pred dvoma dňami mal tmavú, dechtovitú stolicu. Trvá na tom, že bolesť na hrudi je silná a chce všetku liečbu. Ako premýšľate o tomto rozhodnutí?",
+      "expectedGoodReasoning": [
+        "Rozpoznáva, že meléna naznačuje možné GIT krvácanie",
+        "Aspirín výrazne zvyšuje riziko krvácania",
+        "Musí zvážiť kardiálny benefit oproti komplikáciám z krvácania",
+        "Zvažuje podanie s dôkladným monitorovaním alebo nepodanie",
+        "Uznáva, že toto je skutočne ťažké bez dokonalej odpovede"
+      ],
+      "commonFlawedReasoning": [
+        "Protokol hovorí aspirín, tak ho podá bez ohľadu na kontraindikáciu",
+        "Absolútne myslenie - nikdy nepodať aspirín pri akýchkoľvek GIT príznakoch",
+        "Nechá pacientovu požiadavku úplne prevážiť klinický úsudok"
+      ],
+      "coachFollowUp": "Presne tak - identifikujete skutočné napätie medzi kardiálnym benefitom a rizikom krvácania. Aj skúsení záchranári o tomto diskutujú. Ďalej..."
+    },
+
+    {
+      "questionID": "CC003",
+      "questionType": "open",
+      "category": "Komplikácie liečby",
+      "setup": "Chystáte sa založiť IV prístup kriticky nestabilnému pacientovi, ale už ste dvakrát neuspeli a žily sú zničené. Váš kolega navrhuje vyskúšať intraoseálny prístup, ale IO ste robili len na tréningových figurínach. Čo vám prebieha hlavou?",
+      "expectedGoodReasoning": [
+        "Rozpoznáva, že pacient urgentne potrebuje cievny prístup",
+        "Úprimne priznáva obmedzenie svojich zručností",
+        "Zvažuje privolanie ALS posily ak je dostupná",
+        "Váži čas do príchodu posily oproti pokusu o IO teraz",
+        "Chápe, že niekedy je potrebné prekročiť svoju komfortnú zónu"
+      ],
+      "commonFlawedReasoning": [
+        "Opakovane pokračuje v pokusoch o periférne IV (klesajúce výnosy)",
+        "Odmieta pokúsiť sa o IO kvôli nedostatku sebadôvery (paralýza)",
+        "Pokúsi sa o IO bez riadnej prípravy alebo zváženia"
+      ],
+      "coachFollowUp": "Dobré uvažovanie - rozpoznávate svoje limity a zároveň viete, kedy potreba pacienta prevažuje váš komfort. To je klinická zrelosť. Pokračujme..."
+    },
+
+    {
+      "questionID": "CC004",
+      "questionType": "open",
+      "category": "Komplikácie liečby",
+      "setup": "Podali ste nitroglycerín na bolesť na hrudi a krvný tlak pacienta náhle klesol na 80/50. Teraz je závratný a bledý. Aký je váš okamžitý myšlienkový proces?",
+      "expectedGoodReasoning": [
+        "Rozpoznáva, že nitro spôsobilo hypotenziu",
+        "Zvažuje možnosť infarktu pravej komory",
+        "Uvažuje o tekutinovom boluse pri hypotenzii",
+        "Vie, že nemá podávať ďalší nitro",
+        "Systematicky prehodnocuje celkový stav pacienta"
+      ],
+      "commonFlawedReasoning": [
+        "Panikári kvôli poklesu bez systematického uvažovania",
+        "Podá ďalší nitro v domnení, že pacient potrebuje viac liečby",
+        "Obviňuje základný stav pacienta bez zváženia účinku liečby"
+      ],
+      "coachFollowUp": "Správne - komplikácie liečby sa stávajú. Vaše systematické prehodnotenie je dôležitejšie ako dokonalé vykonanie. Ďalšia..."
+    },
+
+    {
+      "questionID": "CC005",
+      "questionType": "open",
+      "category": "Komplikácie liečby",
+      "setup": "Ošetrujete 7-ročné dieťa v status epilepticus. Podali ste prvú dávku diazepamu rektálne, ale záchvat pokračuje aj po 5 minútach. Rodičia panikária a pýtajú sa, prečo sa ich dieťa neprebúdza. Ako uvažujete o ďalších krokoch?",
+      "expectedGoodReasoning": [
+        "Vie, že pediatrické dávkovanie sa líši od dospelého",
+        "Zvažuje druhú dávku ak záchvat pokračuje po 5 minútach",
+        "Prioritizuje kontrolu glykémie (hypoglykémia spôsobuje záchvaty)",
+        "Rozpoznáva dôležitosť polohovania dýchacích ciest počas záchvatu",
+        "Chápe komunikáciu s rodičmi počas zvládania emergency"
+      ],
+      "commonFlawedReasoning": [
+        "Použije dávkovanie pre dospelých u dieťaťa",
+        "Podá nadmerné opakované dávky bez čakania na účinok",
+        "Zabudne skontrolovať glykémiu ako príčinu záchvatu",
+        "Pokúša sa násilne zaviesť ústny vzduchovod počas aktívneho záchvatu"
+      ],
+      "coachFollowUp": "Dobre - pediatrické emergency vyžadujú špecifické znalosti. Kontrola glykémie a správne dávkovanie sú kľúčové. Pokračujeme..."
+    },
+
+    {
+      "questionID": "CC006",
+      "questionType": "open",
+      "category": "Komplikácie liečby",
+      "setup": "Tehotná žena v 32. týždni má ťažký astmatický záchvat. Potrebuje salbutamol, ale váš kolega vyjadruje obavy o účinkoch na plod. Pacientka začína byť cyanotická. Aké je vaše uvažovanie?",
+      "expectedGoodReasoning": [
+        "Materská hypoxia je okamžitá hrozba pre matku aj plod",
+        "Salbutamol je bezpečný v tehotenstve - benefity ďaleko prevažujú teoretické riziká",
+        "Fetálna hypoxia z neliečenej astmy je väčšie riziko ako liek",
+        "Najprv lieči emergency, dokumentuje a monitoruje",
+        "Chápe scenár dvoch pacientov, ale prežitie matky je priorita"
+      ],
+      "commonFlawedReasoning": [
+        "Nepodá liečbu kvôli obavám z tehotenstva",
+        "Odkladá liečbu počas debaty o bezpečnosti liekov",
+        "Zameriava sa na plod zatiaľ čo sa matka zhoršuje"
+      ],
+      "coachFollowUp": "Presne tak - materská hypoxia škodí plodu viac ako akýkoľvek bronchodilatátor. Liečte emergency. Pokračujme..."
+    },
+
+    {
+      "questionID": "CC007",
+      "questionType": "closed",
+      "category": "Komplikácie liečby",
+      "setup": "Podáte 10mg IV diazepamu pri status epilepticus. Ako dlho by ste mali čakať pred zvážením druhej dávky a aká je maximálna prednemocničná dávka?",
+      "expectedAnswers": [
+        "Čakať 5-10 minút, maximálne 20mg celkovo",
+        "5 až 10 minút medzi dávkami, max 20mg",
+        "Čakať 5 minút, môže sa opakovať raz pre celkovo 20mg"
+      ],
+      "acceptableVariations": [
+        "Minimálne 5 minút čakania, druhých 10mg ak je potrebné, neprekročiť 20mg",
+        "Zhodnotiť po 5-10 min, max 2 dávky po 10mg"
+      ],
+      "coachFollowUp": "Správne - titrácia je kľúčová. Príliš málo a záchvat pokračuje, príliš veľa a spôsobíte respiračnú depresiu. Ďalej..."
+    },
+
+    {
+      "questionID": "CC008",
+      "questionType": "closed",
+      "category": "Komplikácie liečby",
+      "setup": "Pacient s bolesťou na hrudi má TK 85/60. Zvažujete nitroglycerín. Aký je minimálny systolický TK potrebný pred podaním nitra a prečo je táto hranica dôležitá?",
+      "expectedAnswers": [
+        "Minimálne 90-100 mmHg systolický, nitro spôsobuje vazodilatáciu a ďalší pokles TK",
+        "STK nad 90, nitro znižuje TK cez vazodilatáciu",
+        "Potrebný aspoň 90 systolický, nitro môže spôsobiť nebezpečnú hypotenziu"
+      ],
+      "acceptableVariations": [
+        "90 mmHg minimum, zabraňuje hypotenznej kríze",
+        "Nad 90-100 systolický, nitro je vazodilatátor"
+      ],
+      "coachFollowUp": "Správne - znalosť kontraindikácií zabraňuje iatrogénnemu poškodeniu. Pokračujeme..."
+    },
+
+    {
+      "questionID": "CC009",
+      "questionType": "open",
+      "category": "Komunikácia s pacientom",
+      "setup": "Prichádzate k bolesti na hrudi. Pacient je bledý, spotený a drží sa za hruď, ale hovorí vám 'Je to len pálenie záhy, nejdem do nemocnice.' Silne podozrievate kardiálnu príhodu. Ako to riešite?",
+      "expectedGoodReasoning": [
+        "Rozpoznáva, že popieranie je bežné u kardiálnych pacientov",
+        "Vyvažuje autonómiu pacienta s klinickými obavami",
+        "Zvažuje edukačné stratégie a zapojenie rodiny",
+        "Chápe limity autority oproti presviedčaniu",
+        "Uznáva etické napätie medzi rešpektovaním voľby a prevenciou ujmy"
+      ],
+      "commonFlawedReasoning": [
+        "Okamžite akceptuje odmietnutie bez edukácie (opustenie)",
+        "Núti liečbu proti jasnému odmietnutiu (porušenie autonómie)",
+        "Stáva sa konfrontačným alebo odsudzujúcim voči pacientovi"
+      ],
+      "coachFollowUp": "Presne tak - toto je najťažšia časť. Môžete dôrazne edukovať, ale v konečnom dôsledku nemôžete nútiť. Pozrime sa na ďalšiu výzvu..."
+    },
+
+    {
+      "questionID": "CC010",
+      "questionType": "open",
+      "category": "Komunikácia s pacientom",
+      "setup": "Ošetrujete staršieho pacienta, ktorý stále hovorí 'Som v poriadku, nerobte z toho vedu.' Ale jeho dospelá dcéra vás odtiahne bokom a pošepká, že jej otec bol doma čoraz viac zmätený a myslí si, že skrýva, ako zle na tom je. Ako v tomto navigujete?",
+      "expectedGoodReasoning": [
+        "Rozpoznáva, že obavy rodiny sú cenné informácie pre hodnotenie",
+        "Musí stále rešpektovať pacienta ako primárneho rozhodovateľa ak je kompetentný",
+        "Zvažuje objektívne vykonanie kognitívneho hodnotenia",
+        "Vyvažuje vstup rodiny s autonómiou pacienta",
+        "Uvažuje o bezpečnosti seniorov vs rešpektovanie nezávislosti"
+      ],
+      "commonFlawedReasoning": [
+        "Úplne ignoruje pacienta na základe správy rodiny",
+        "Ignoruje obavy rodiny a počúva len pacienta",
+        "Berie strany v rodinnom konflikte namiesto klinického hodnotenia"
+      ],
+      "coachFollowUp": "Dobre - rozpoznávate, že rodina poskytuje kontext pri rešpektovaní hlasu pacienta. Tieto trojstranné situácie sú zložité. Ďalej..."
+    },
+
+    {
+      "questionID": "CC011",
+      "questionType": "open",
+      "category": "Komunikácia s pacientom",
+      "setup": "Váš pacient prizná, že užíval kokaín 'pred pár hodinami', ale jeho príznaky naznačujú, že to mohlo byť nedávnejšie. Obáva sa, že bude mať problémy. Ako pristupujete k získaniu presných informácií, keď podozrievate, že nie je úplne úprimný?",
+      "expectedGoodReasoning": [
+        "Rozpoznáva, že presná drogovú anamnéza je kritická pre bezpečnú liečbu",
+        "Chápe strach pacienta z odsúdenia alebo právnych následkov",
+        "Používa neodsudzujúci prístup na budovanie dôvery",
+        "Vysvetľuje medicínsku nevyhnutnosť bez kázania",
+        "Uznáva, že to vyžaduje budovanie vzťahu pod časovým tlakom"
+      ],
+      "commonFlawedReasoning": [
+        "Akceptuje časový údaj bez otázok",
+        "Stáva sa konfrontačným ohľadom podozrenia z nečestnosti",
+        "Zameriava sa na morálne odsúdenie namiesto medicínskej potreby"
+      ],
+      "coachFollowUp": "Správne - rýchle budovanie dôvery je klinická zručnosť. Váš neodsudzujúci prístup môže doslova zachrániť životy. Ešte jeden komunikačný scenár..."
+    },
+
+    {
+      "questionID": "CC012",
+      "questionType": "open",
+      "category": "Komunikácia s pacientom",
+      "setup": "Ošetrujete tínedžera po predávkovaní. Teraz je stabilný, ale pošepká 'Prosím, nehovorte mojim rodičom, čo som vzal.' Viete, že musíte transportovať a rodičia budú informovaní. Ako riešite tento moment?",
+      "expectedGoodReasoning": [
+        "Rozpoznáva, že status maloletého limituje dôvernosť",
+        "Chápe dôležitosť byť úprimný s pacientom",
+        "Vyvažuje terapeutický vzťah s právnymi požiadavkami",
+        "Zvažuje ako zachovať dôveru pri úprimnosti",
+        "Uvažuje o bezpečnosti pacienta ako primárnej starostlivosti"
+      ],
+      "commonFlawedReasoning": [
+        "Sľúbi dôvernosť, ktorú nemôže dodržať",
+        "Okamžite zavolá rodičom bez vysvetlenia pacientovi",
+        "Káže pacientovi o následkoch"
+      ],
+      "coachFollowUp": "Dobrý inštinkt - byť úprimný o limitoch pri zachovaní súcitu. Tieto rozhovory sú dôležité aj mimo medicínskej liečby. Pokračujeme..."
+    },
+
+    {
+      "questionID": "CC013",
+      "questionType": "open",
+      "category": "Komunikácia s pacientom",
+      "setup": "Ste privolaní k psychiatrickému pacientovi, ktorý je agitovaný a vyhrážajúci sa. Odmieta vás pustiť k sebe, ale zjavne potrebuje lekársku starostlivosť pre ranu, ktorá krváca. Ako pristupujete k tejto situácii?",
+      "expectedGoodReasoning": [
+        "Prioritizuje bezpečnosť na mieste ako prvé",
+        "Používa deeskalačné techniky - pokojný hlas, priestor, žiadne náhle pohyby",
+        "Zvažuje privolanie policajnej podpory ak je potrebné",
+        "Rozpoznáva, že psychiatrickí pacienti majú stále práva na autonómiu",
+        "Vyvažuje okamžitú medicínsku potrebu oproti riziku eskalácie"
+      ],
+      "commonFlawedReasoning": [
+        "Približuje sa k agitovanému pacientovi bez plánu bezpečnosti",
+        "Okamžite volá o obmedzenie/silu",
+        "Odmietne pacienta ako 'len psychiatrického'",
+        "Opustí miesto bez pokusu o komunikáciu"
+      ],
+      "coachFollowUp": "Dobre - psychiatrické emergency vyžadujú trpezlivosť a techniku. Bezpečnosť na prvom mieste, ale neopúšťajte pacienta. Ďalej..."
+    },
+
+    {
+      "questionID": "CC014",
+      "questionType": "open",
+      "category": "Komunikácia s pacientom",
+      "setup": "Ošetrujete bariatrického pacienta s hmotnosťou približne 180kg. Keď spomeniete, že potrebujete privolať dodatočné zdroje pre bezpečné zdvíhanie, začne plakať a hovorí 'Vedel som, že sa to stane, každý ma súdi.' Ako reagujete?",
+      "expectedGoodReasoning": [
+        "Uznáva emocionálnu reakciu pacienta s empatiou",
+        "Vysvetľuje, že dodatočné zdroje sú pre bezpečnosť - ich aj posádky",
+        "Vyhýba sa jazyku, ktorý znie odsudzujúco",
+        "Zameriava sa na poskytnutie najlepšej možnej starostlivosti",
+        "Rozpoznáva, že bariatrickí pacienti často čelia stigme v zdravotníctve"
+      ],
+      "commonFlawedReasoning": [
+        "Robí komentáre o váhe pacienta",
+        "Stáva sa defenzívnym ohľadom potreby zdrojov",
+        "Ignoruje emocionálnu reakciu a pokračuje mechanicky",
+        "Pokúša sa presunúť pacienta bez správnych zdrojov (nebezpečné)"
+      ],
+      "coachFollowUp": "Správne - klinické rozhodnutia by nemali pôsobiť ako súdy pre pacientov. Ako komunikujeme je dôležité. Pokračujeme..."
+    },
+
+    {
+      "questionID": "CC015",
+      "questionType": "open",
+      "category": "Komunikácia s pacientom",
+      "setup": "Váš kolega urobí nevhodný komentár o životných voľbách pacienta na dosah počutia. Pacient to počul a teraz odmieta spolupracovať na vyšetrení. Ako to profesionálne riešite?",
+      "expectedGoodReasoning": [
+        "Ospravedlňuje sa pacientovi za neprofesionálny komentár",
+        "Preberá vedenie v interakcii s pacientom na obnovenie dôvery",
+        "Rieši správanie kolegu neskôr, nie pred pacientom",
+        "Zameriava sa na okamžité medicínske potreby pacienta",
+        "Rozpoznáva, že tímová dynamika ovplyvňuje starostlivosť o pacienta"
+      ],
+      "commonFlawedReasoning": [
+        "Bráni alebo ospravedlňuje komentár kolegu",
+        "Háda sa s kolegom pred pacientom",
+        "Ignoruje situáciu v nádeji, že sa vyrieši",
+        "Obviňuje pacienta, že je precitlivený"
+      ],
+      "coachFollowUp": "Dobre - profesionalita a tímová dynamika priamo ovplyvňujú starostlivosť o pacienta. Správne uprednostňujete vzťah s pacientom. Pokračujeme..."
+    },
+
+    {
+      "questionID": "CC016",
+      "questionType": "open",
+      "category": "Komunikácia s pacientom",
+      "setup": "Ošetrujete pacienta, ktorý hovorí len obmedzene slovensky a vôbec nie anglicky. Člen rodiny prekladá, ale všímate si, že rodinný príslušník akoby upravoval alebo zmäkčoval to, čo hovoríte. Pacient potrebuje pochopiť závažnosť svojho stavu. Čo robíte?",
+      "expectedGoodReasoning": [
+        "Rozpoznáva, že presná komunikácia je nevyhnutná pre informovaný súhlas",
+        "Zvažuje požiadanie profesionálneho tlmočníka ak je dostupný",
+        "Používa jednoduchý, priamy jazyk s pauzami na preklad",
+        "Sleduje reakcie pacienta na posúdenie porozumenia",
+        "Dokumentuje komunikačné výzvy"
+      ],
+      "commonFlawedReasoning": [
+        "Úplne sa spolieha na rodinného prekladateľa napriek obavám",
+        "Hovorí hlasnejšie akoby hlasitosť pomáhala jazykovej bariére",
+        "Vynecháva dôležité informácie pretože sa ťažko podávajú",
+        "Ignoruje znaky, že pacient nerozumie"
+      ],
+      "coachFollowUp": "Presne tak - informovaný súhlas vyžaduje skutočné porozumenie. Jazykové bariéry sú klinické výzvy. Pokračujme..."
+    },
+
+    {
+      "questionID": "CC017",
+      "questionType": "open",
+      "category": "Nepredvídateľná situácia",
+      "setup": "Podáte správny liek v správnej dávke, ale stav pacienta sa nezlepšuje - v skutočnosti sa zdá, že sa zhoršuje. Aký je váš myšlienkový proces v tom momente?",
+      "expectedGoodReasoning": [
+        "Prehodnocuje ABC - vracia sa k základom",
+        "Zvažuje alternatívne diagnózy",
+        "Kontroluje komplikácie zo samotnej liečby",
+        "Rozpoznáva kedy zavolať posilu alebo rozšírenú podporu",
+        "Zostáva pokojný a systematický napriek neočakávanému výsledku"
+      ],
+      "commonFlawedReasoning": [
+        "Panikári alebo zamrzne",
+        "Okamžite podá viac toho istého lieku bez prehodnotenia",
+        "Obviňuje pacienta alebo situáciu namiesto systematického prehodnotenia"
+      ],
+      "coachFollowUp": "Dobrý inštinkt - keď liečba zlyhá, vráťte sa k základom. Váš systematický prístup je dôležitejší ako mať okamžité odpovede. Ďalšia výzva..."
+    },
+
+    {
+      "questionID": "CC018",
+      "questionType": "open",
+      "category": "Nepredvídateľná situácia",
+      "setup": "Zvládate obtiažne dýchacie cesty u pacienta, ktorý sa zhoršuje. Dvakrát ste sa pokúsili o intubáciu a obidva pokusy zlyhali. Saturácia kyslíkom klesá. Čo vám prebieha hlavou ohľadom ďalších krokov?",
+      "expectedGoodReasoning": [
+        "Rozpoznáva, že platí protokol pre zlyhané dýchacie cesty",
+        "Zvažuje ventiláciu vakom a maskou ako premostenie",
+        "Uvažuje o supraglotickej pomôcke ako alternatíve",
+        "Vie kedy prestať s pokusmi o intubáciu",
+        "Prioritizuje oxygenáciu nad pokročilými dýchacími cestami"
+      ],
+      "commonFlawedReasoning": [
+        "Pokračuje v pokusoch o intubáciu bez zastavenia na ventiláciu",
+        "Vníma zlyhanie ako osobné namiesto rozpoznania obtiažnych dýchacích ciest",
+        "Nemá pripravený záložný plán"
+      ],
+      "coachFollowUp": "Presne tak - 'nemožno intubovať, musím oxygovať.' Rozpoznanie kedy zmeniť stratégiu je pokročilé uvažovanie. Pokračujme..."
+    },
+
+    {
+      "questionID": "CC019",
+      "questionType": "open",
+      "category": "Nepredvídateľná situácia",
+      "setup": "Zastavili ste silné krvácanie z rany na nohe trauma pacienta, ale teraz si všímate, že jeho brucho sa stáva nafúknutým a rigídnym. Váš čas transportu do trauma centra je stále 20 minút. Ako uvažujete o tomto vývoji?",
+      "expectedGoodReasoning": [
+        "Rozpoznáva možné vnútorné krvácanie",
+        "Chápe, že toto výrazne mení klinický obraz",
+        "Zvažuje potrebu rýchleho transportu oproti intervenciám",
+        "Uvažuje o stratégii tekutinovej resuscitácie",
+        "Prehodnocuje celý plán liečby na základe nového nálezu"
+      ],
+      "commonFlawedReasoning": [
+        "Pokračuje v zameraní len na ranu na nohe",
+        "Odmietne brušný nález ako nesúvisiaci",
+        "Je premožený mnohopočetnými zraneniami"
+      ],
+      "coachFollowUp": "Dobre - rozpoznávate, že vyvíjajúce sa zranenia vyžadujú vyvíjajúce sa plány. Trauma pacienti vás držia v strehu. Ďalší scenár..."
+    },
+
+    {
+      "questionID": "CC020",
+      "questionType": "open",
+      "category": "Nepredvídateľná situácia",
+      "setup": "Váš pacient so zástavou srdca je vo VF 15 minút. Urobili ste všetko podľa protokolu - viacnásobné výboje, lieky, kvalitná KPR - ale nekonvertuje. Rodina sa pozerá. Čo si myslíte o pokračovaní verzus ukončení resuscitácie?",
+      "expectedGoodReasoning": [
+        "Rozpoznáva klesajúce výnosy pri predĺženej zástave",
+        "Zvažuje faktory ovplyvňujúce prežitie (svedkom, laická KPR, atď.)",
+        "Uvažuje o online medicínskom riadení ak je dostupné",
+        "Vyvažuje prax založenú na dôkazoch s prítomnosťou rodiny",
+        "Uznáva, že toto je emocionálne aj klinicky ťažké"
+      ],
+      "commonFlawedReasoning": [
+        "Pokračuje donekonečna pretože je prítomná rodina",
+        "Vzdáva sa príliš skoro bez zváženia všetkých faktorov",
+        "Robí rozhodnutie na základe emócií namiesto klinického úsudku"
+      ],
+      "coachFollowUp": "Toto je skutočne jedno z najťažších rozhodnutí. Vaša schopnosť vážiť dôkazy pri uznaní ľudského elementu ukazuje zrelosť. Pokračujeme..."
+    },
+
+    {
+      "questionID": "CC021",
+      "questionType": "open",
+      "category": "Nepredvídateľná situácia",
+      "setup": "Ošetrujete 5-ročné dieťa pre febrilné kŕče. Kŕče ustali, ale teraz je dieťa postiktálne a matka kričí 'Urobte niečo! Prečo sa neprebúdza?' zatiaľ čo sa pokúša dieťaťom triasť. Ako zvládate pacienta aj situáciu?",
+      "expectedGoodReasoning": [
+        "Ubezpečuje matku, že postiktálny stav je normálny po záchvate",
+        "Jemne ju zastaví od trasenia dieťaťom (prevencia zranenia)",
+        "Pokračuje v monitorovaní dýchacích ciest a dýchania dieťaťa",
+        "Vysvetľuje čo sa deje jednoduchými slovami",
+        "Udržiava pokojnú prítomnosť na deeskaláciu paniky"
+      ],
+      "commonFlawedReasoning": [
+        "Ignoruje matku a zameriava sa len na dieťa",
+        "Stáva sa defenzívnym alebo hádavým s panikáriacou matkou",
+        "Vykonáva zbytočné intervencie na stabilnom postiktálnom dieťati",
+        "Nechá matku pokračovať v trasení dieťaťom"
+      ],
+      "coachFollowUp": "Správne - manažment miesta zahŕňa manažment úzkostlivej rodiny. Pokojné vysvetlenie pomáha všetkým. Pokračujeme..."
+    },
+
+    {
+      "questionID": "CC022",
+      "questionType": "open",
+      "category": "Nepredvídateľná situácia",
+      "setup": "Váš kolega náhle zbledne a povie, že sa mu točí hlava počas výjazdu. Ste uprostred ošetrenia stredne nestabilného pacienta. Čo robíte?",
+      "expectedGoodReasoning": [
+        "Rozpoznáva, že bezpečnosť posádky je tiež priorita",
+        "Rýchlo zhodnotí stav kolegu",
+        "Zvažuje okamžité privolanie posily",
+        "Prioritizuje stabilizáciu pacienta aj kolegu",
+        "Neignoruje príznaky kolegu"
+      ],
+      "commonFlawedReasoning": [
+        "Ignoruje kolegu a pokračuje s pacientom",
+        "Úplne opustí pacienta aby pomohol kolegovi",
+        "Panikári a stráca situačné povedomie",
+        "Odmietne príznaky kolegu ako nedôležité"
+      ],
+      "coachFollowUp": "Dobre - blaho posádky tiež záleží. Nemôžete pomáhať pacientom ak ste neschopní. Skoré volanie posily je múdre. Ďalej..."
+    },
+
+    {
+      "questionID": "CC023",
+      "questionType": "closed",
+      "category": "Nepredvídateľná situácia",
+      "setup": "Počas KPR by ste mali vykonávať koľko kompresií za minútu a aká je odporúčaná hĺbka kompresií u dospelého?",
+      "expectedAnswers": [
+        "100-120 kompresií za minútu, hĺbka 5-6 cm",
+        "Frekvencia 100-120/min, stláčať 5-6 centimetrov",
+        "100 až 120 za minútu, aspoň 5cm ale nie viac ako 6cm"
+      ],
+      "acceptableVariations": [
+        "Približne 100-120, hĺbka približne 5-6cm",
+        "Dve kompresie za sekundu, 5-6cm hlboko"
+      ],
+      "coachFollowUp": "Správne - kvalitná KPR zachraňuje životy. Tieto čísla sú dôležité. Pokračujeme..."
+    },
+
+    {
+      "questionID": "CC024",
+      "questionType": "closed",
+      "category": "Nepredvídateľná situácia",
+      "setup": "Váš pacient má návrat spontánnej cirkulácie (ROSC) po zástave srdca. Aký je cieľový rozsah SpO2, ktorý by ste mali udržiavať, a prečo nie vyšší?",
+      "expectedAnswers": [
+        "94-98%, vyšší kyslík spôsobuje reperfúzne poškodenie a oxidačný stres",
+        "Cieľ 94-98 percent, hyperoxia spôsobuje neurologické poškodenie",
+        "SpO2 94-98%, príliš veľa kyslíka je toxické pre zotavujúci sa mozog"
+      ],
+      "acceptableVariations": [
+        "Udržiavať medzi 94-98, vyhnúť sa hyperoxii",
+        "94-98% na prevenciu toxicity kyslíka po zástave"
+      ],
+      "coachFollowUp": "Správne - starostlivosť po ROSC je nuansovaná. Viac nie je vždy lepšie. Pokračujme..."
+    },
+
+    {
+      "questionID": "CC025",
+      "questionType": "open",
+      "category": "Etická dilema",
+      "setup": "Ste pri dopravnej nehode s viacerými zranenými. Jeden má kritické zranenia ale je starší a nemal zapnutý bezpečnostný pás. Druhý má stredne ťažké zranenia ale je to malé dieťa. Zdroje sú obmedzené. Ako uvažujete o prioritizácii starostlivosti?",
+      "expectedGoodReasoning": [
+        "Rozpoznáva, že triedenie je založené na klinickej potrebe a pravdepodobnosti prežitia",
+        "Chápe, že samotný vek by nemal určovať starostlivosť",
+        "Zvažuje závažnosť zranení a dostupné intervencie",
+        "Uznáva emocionálnu náročnosť triážnych rozhodnutí",
+        "Zameriava sa na to, kto môže byť zachránený s dostupnými zdrojmi"
+      ],
+      "commonFlawedReasoning": [
+        "Automaticky prioritizuje dieťa len na základe veku",
+        "Súdi pacienta na základe bezpečnostného správania (bezpečnostný pás)",
+        "Je paralyzovaný etickou váhou rozhodnutia"
+      ],
+      "coachFollowUp": "Správne - triáž je klinická, nie emocionálna alebo morálna. Tieto rozhodnutia na nás doliehajú, ale zakladáme ich na prežiteľnosti. Ďalšia dilema..."
+    },
+
+    {
+      "questionID": "CC026",
+      "questionType": "open",
+      "category": "Etická dilema",
+      "setup": "Pacient s terminálnym ochorením a DNR rozhodnutím má ťažkú dýchavičnosť a prosí vás 'Urobte niečo, pomôžte mi dýchať.' Jeho DNR špecificky hovorí žiadna intubácia. Ako tu uvažujete?",
+      "expectedGoodReasoning": [
+        "Chápe, že DNR neznamená 'neliečiť'",
+        "Rozpoznáva, že neinvazívna podpora (polohovanie, kyslík, lieky) je vhodná",
+        "Rozlišuje medzi komfortnou starostlivosťou a zakázanými intervenciami",
+        "Zvažuje aktuálne priania pacienta oproti predbežnému rozhodnutiu",
+        "Uznáva komplexnosť starostlivosti na konci života v akútnom prostredí"
+      ],
+      "commonFlawedReasoning": [
+        "Interpretuje DNR ako neposkytnutie žiadnej liečby",
+        "Ignoruje DNR pretože pacient momentálne žiada o pomoc",
+        "Stáva sa neistým ohľadom akejkoľvek intervencie"
+      ],
+      "coachFollowUp": "Dobrý rozdiel - DNR neznamená opustenie pacienta. Môžete poskytnúť významný komfort bez porušenia ich prianí. Pokračujeme..."
+    },
+
+    {
+      "questionID": "CC027",
+      "questionType": "open",
+      "category": "Etická dilema",
+      "setup": "Ošetrujete pacienta, ktorý je zjavne intoxikovaný a agresívny. Odmieta vyšetrenie a liečbu, ale všímate si niečo, čo môže byť významné poranenie hlavy. Hovorí vám aby ste odišli. Ako premýšľate o svojich povinnostiach?",
+      "expectedGoodReasoning": [
+        "Rozpoznáva, že intoxikácia môže narušiť schopnosť rozhodovania",
+        "Zvažuje, že poranenie hlavy by mohlo ďalej ovplyvniť mentálne funkcie",
+        "Uvažuje o predpokladanom súhlase v núdzových situáciách",
+        "Vyvažuje autonómiu pacienta s bezpečnostnými obavami",
+        "Zvažuje zapojenie polície pre bezpečnosť"
+      ],
+      "commonFlawedReasoning": [
+        "Okamžite odíde pretože pacient odmieta",
+        "Núti liečbu proti agresívnemu pacientovi bez zváženia",
+        "Odmietne obavy pretože je pacient intoxikovaný"
+      ],
+      "coachFollowUp": "Presne tak - určovanie schopnosti rozhodovania je klinické, nie len akceptovanie alebo prekonanie odmietnutia. Tieto šedé zóny vyžadujú úsudok. Ďalej..."
+    },
+
+    {
+      "questionID": "CC028",
+      "questionType": "open",
+      "category": "Etická dilema",
+      "setup": "Prichádzate do domácnosti kde bol starší pacient zjavne zanedbávaný - je podvyživený, leží v znečistenej posteľnej bielizni a má dekubity. Rodinný opatrovateľ trvá na tom 'zvládame to doma.' Čo si myslíte o svojich zodpovednostiach?",
+      "expectedGoodReasoning": [
+        "Rozpoznáva znaky potenciálneho týrania alebo zanedbávania seniorov",
+        "Chápe povinnosti povinného hlásenia",
+        "Vyvažuje okamžité medicínske potreby s dlhodobou bezpečnosťou",
+        "Zvažuje sociálne služby a ochranu dospelých",
+        "Uvažuje o dokumentácii pre následné kroky"
+      ],
+      "commonFlawedReasoning": [
+        "Lieči len okamžité medicínske problémy bez riešenia zanedbávania",
+        "Vyhýba sa zapojeniu do 'rodinných záležitostí'",
+        "Stáva sa odsudzujúcim bez zváženia zdrojov alebo okolností"
+      ],
+      "coachFollowUp": "Dobre - rozpoznávate, že vaša úloha siaha za okamžitú medicínsku starostlivosť k bezpečnosti pacienta. Toto sú situácie povinného hlásenia. Pokračujeme..."
+    },
+
+    {
+      "questionID": "CC029",
+      "questionType": "open",
+      "category": "Etická dilema",
+      "setup": "17-ročná pacientka vám povie, že si myslí, že by mohla byť tehotná a požiada vás aby ste to nehovorili jej rodičom, ktorí sú vo vedľajšej miestnosti. Je ošetrovaná pre bolesti brucha. Ako v tomto navigujete?",
+      "expectedGoodReasoning": [
+        "Zvažuje zákony o veku súhlasu vo vašej jurisdikcii",
+        "Rozpoznáva, že tehotenstvo by mohlo byť relevantné pre hodnotenie bolesti brucha",
+        "Vyvažuje súkromie maloletej s medicínskou nevyhnutnosťou",
+        "Uvažuje o tom, aké informácie sú nevyhnutné oproti zdieľateľným",
+        "Starostlivo dokumentuje a komunikuje s prijímajúcou nemocnicou"
+      ],
+      "commonFlawedReasoning": [
+        "Okamžite povie rodičom všetko",
+        "Sľúbi úplnú dôvernosť bez znalosti právnych limitov",
+        "Ignoruje možnosť tehotenstva v hodnotení",
+        "Káže pacientke o voľbách"
+      ],
+      "coachFollowUp": "Správne - starostlivosť o adolescentov zahŕňa vyvažovanie súkromia, bezpečnosti a rodičovského zapojenia. Komplexné ale dôležité. Ďalej..."
+    },
+
+    {
+      "questionID": "CC030",
+      "questionType": "open",
+      "category": "Etická dilema",
+      "setup": "Ste na mieste kde pacient zomrel doma. Rodina vás žiada aby ste skúsili resuscitáciu aj tak 'pre istotu.' Sú jasné znaky smrti - rigor mortis a závislá lividita. Čo robíte?",
+      "expectedGoodReasoning": [
+        "Rozpoznáva, že zjavné znaky smrti vylučujú resuscitáciu",
+        "Chápe, že márna KPR môže byť neúctivá k zosnulému",
+        "Zvažuje súcitnú komunikáciu s truchliacou rodinou",
+        "Pozná protokoly o vyhlásení zjavnej smrti",
+        "Vyvažuje priania rodiny s primeranou starostlivosťou"
+      ],
+      "commonFlawedReasoning": [
+        "Vykonáva KPR napriek zjavnej smrti (falošná nádej)",
+        "Chladne odmieta bez súcitného vysvetlenia",
+        "Opustí rodinu bez podpory alebo vysvetlenia",
+        "Stáva sa neistým napriek jasným znakom smrti"
+      ],
+      "coachFollowUp": "Dobre - vedieť kedy NEzasahovať je rovnako dôležité ako vedieť kedy konať. Súcitná úprimnosť slúži rodinám lepšie. Pokračujeme..."
+    },
+
+    {
+      "questionID": "CC031",
+      "questionType": "open",
+      "category": "Etická dilema",
+      "setup": "Podozrievate, že kolega bol na službe pod vplyvom - všimli ste si alkohol v jeho dychu a spomalené reakcie. Chystáte sa začať spoločnú smenu. Aká je vaša povinnosť?",
+      "expectedGoodReasoning": [
+        "Bezpečnosť pacienta je prvoradá starosť",
+        "Rozpoznáva povinnosť hlásiť zhoršených kolegov",
+        "Zvažuje okamžité kroky - nemôže pracovať so zhoršeným partnerom",
+        "Uvažuje o velení a správnom hlásení",
+        "Uznáva náročnosť ale nevyhnutnosť konania"
+      ],
+      "commonFlawedReasoning": [
+        "Ignoruje obavy aby ochránil kolegu",
+        "Plánuje 'kryť' kolegu na výjazdoch",
+        "Konfrontuje kolegu agresívne bez plánu",
+        "Predpokladá, že to niekto iný vyrieši"
+      ],
+      "coachFollowUp": "Presne tak - toto je nepríjemné ale bezpečnosť pacienta prevažuje osobnú lojalitu. Správne hlásenie chráni všetkých. Ďalší scenár..."
+    },
+
+    {
+      "questionID": "CC032",
+      "questionType": "open",
+      "category": "Etická dilema",
+      "setup": "Pacient v silných bolestiach vás prosí o viac liekov proti bolesti. Už ste podali maximum povolené protokolmi. Plače a obviňuje vás, že vám na ňom nezáleží. Ako to riešite?",
+      "expectedGoodReasoning": [
+        "Uznáva skutočné utrpenie pacienta s empatiou",
+        "Jasne vysvetľuje limity protokolu bez defenzívy",
+        "Zvažuje nefarmakologické opatrenia na zmiernenie",
+        "Dokumentuje úroveň bolesti a podané lieky",
+        "Ubezpečuje pacienta o pokračujúcej starostlivosti v nemocnici"
+      ],
+      "commonFlawedReasoning": [
+        "Podá ďalšie lieky prekračujúce protokoly",
+        "Stáva sa chladným alebo defenzívnym voči trpiacemu pacientovi",
+        "Odmietne sťažnosti pacienta na bolesť",
+        "Podozrieva vyhľadávanie drog bez klinického základu"
+      ],
+      "coachFollowUp": "Dobre - pracovať v rámci protokolov pri zachovaní súcitu je náročné. Uznanie utrpenia je dôležité aj keď ho nemôžete eliminovať. Pokračujeme..."
+    },
+
+    {
+      "questionID": "CC033",
+      "questionType": "open",
+      "category": "Rozhodovanie pod časovým tlakom",
+      "setup": "Ste uprostred vyšetrenia pacienta keď dispečing volá so zástavou srdca dva bloky ďalej. Váš aktuálny pacient má bolesť na hrudi ale stabilné vitálne funkcie. Vaša sanitka je najbližší zdroj. Čo vám prebieha hlavou?",
+      "expectedGoodReasoning": [
+        "Váži relatívnu závažnosť a časovú naliehavosť",
+        "Zvažuje ďalšie dostupné zdroje",
+        "Uvažuje o klinickom stave aktuálneho pacienta",
+        "Rozpoznáva, že neexistuje dokonalá odpoveď",
+        "Zvažuje požiadavku o dodatočné zdroje"
+      ],
+      "commonFlawedReasoning": [
+        "Automaticky opustí aktuálneho pacienta pre zástavu srdca",
+        "Odmieta opustiť aktuálneho pacienta bez ohľadu na situáciu",
+        "Nezvažuje volanie dodatočných zdrojov"
+      ],
+      "coachFollowUp": "Správne - vážite konkurujúce si kritické potreby s neúplnými informáciami. Niekedy najlepšia odpoveď je získať viac zdrojov. Ďalší tlakový scenár..."
+    },
+
+    {
+      "questionID": "CC034",
+      "questionType": "open",
+      "category": "Rozhodovanie pod časovým tlakom",
+      "setup": "Váš pacient sa rúti a potrebuje okamžitú intervenciu, ale člen rodiny požaduje aby ste vysvetlili všetko čo robíte a spochybňuje každý liek. Potrebujete pracovať rýchlo. Ako to riešite?",
+      "expectedGoodReasoning": [
+        "Rozpoznáva, že starostlivosť o pacienta má prioritu",
+        "Zvažuje stručné uznanie obáv rodiny",
+        "Uvažuje o delegovaní komunikácie na partnera",
+        "Udržiava profesionálny pokoj pod tlakom",
+        "Plánuje podrobnejšie vysvetlenie po stabilizácii pacienta"
+      ],
+      "commonFlawedReasoning": [
+        "Prestane pracovať aby sa hádal s rodinou",
+        "Úplne ignoruje rodinu a vytvára konflikt",
+        "Stáva sa zmäteným a stráca zameranie na pacienta"
+      ],
+      "coachFollowUp": "Dobre - nastavenie hraníc pri zachovaní profesionality. Starostlivosť o pacienta je prvá, komunikácia keď je bezpečné. Pokračujeme..."
+    },
+
+    {
+      "questionID": "CC035",
+      "questionType": "open",
+      "category": "Rozhodovanie pod časovým tlakom",
+      "setup": "Ošetrujete kritického pacienta a zistíte, že vám chýba kľúčové vybavenie, ktoré vyžaduje váš protokol. Nemocnica je 8 minút ďaleko. Strávite čas improvizáciou alebo okamžite transportujete?",
+      "expectedGoodReasoning": [
+        "Váži benefit intervencie oproti času do definitívnej starostlivosti",
+        "Zvažuje či je improvizácia bezpečná a účinná",
+        "Uvažuje o 'scoop and run' vs 'stay and play'",
+        "Rozpoznáva, že nemocnica môže poskytnúť čo chýba",
+        "Robí rozhodnutie na základe trajektórie pacienta"
+      ],
+      "commonFlawedReasoning": [
+        "Odkladá transport snažiac sa dokonale dodržať protokol",
+        "Transportuje bez zváženia akýchkoľvek intervencií na mieste",
+        "Panikári kvôli chýbajúcemu vybaveniu"
+      ],
+      "coachFollowUp": "Presne tak - niekedy najlepšia intervencia je rýchly transport. Nenechajte chýbajúce vybavenie prevážiť dobrý úsudok. Posledná..."
+    },
+
+    {
+      "questionID": "CC036",
+      "questionType": "open",
+      "category": "Rozhodovanie pod časovým tlakom",
+      "setup": "Máte tri intervencie, o ktorých viete, že ich tento pacient potrebuje - IV prístup, kardiálne monitorovanie a podanie liekov. Pracujete sám pretože váš partner šoféruje. Nemôžete robiť všetky tri súčasne. Ako sa rozhodujete čo bude prvé?",
+      "expectedGoodReasoning": [
+        "Prioritizuje na základe bezprostrednej hrozby pre život",
+        "Zvažuje ktoré intervencie umožňujú ďalšie (IV pred liekmi)",
+        "Uvažuje o časovej naliehavosti každej intervencie",
+        "Rozpoznáva, že monitorovanie môže čakať ak sú ABC zabezpečené",
+        "Zostáva systematický namiesto rozptýlený"
+      ],
+      "commonFlawedReasoning": [
+        "Pokúša sa robiť všetko naraz a nerobí nič dobre",
+        "Vyberá najľahšiu úlohu namiesto najdôležitejšej",
+        "Je premožený mnohopočetnými potrebami"
+      ],
+      "coachFollowUp": "Dobre - systematicky prioritizujete pod tlakom. Presne toto uvažovanie budete potrebovať. Pripravený na scenár?"
+    },
+
+    {
+      "questionID": "CC037",
+      "questionType": "open",
+      "category": "Rozhodovanie pod časovým tlakom",
+      "setup": "Vykonávate KPR na pacientovi so zástavou keď si všimnete, že rytmus sa zmenil na niečo, čo by mohlo byť defibrilovateľné. Ale ste uprostred kompresného cyklu a váš partner pripravuje lieky. Zastavíte na analýzu rytmu alebo pokračujete v kompresiách?",
+      "expectedGoodReasoning": [
+        "Chápe, že minimalizácia prerušení kompresií je kritická",
+        "Vie, že má dokončiť 2-minútový cyklus pred kontrolou rytmu",
+        "Koordinuje s partnerom pre plánovanú pauzu",
+        "Vyvažuje hodnotenie rytmu s kontinuitou kompresií",
+        "Komunikuje zámery tímu"
+      ],
+      "commonFlawedReasoning": [
+        "Okamžite zastaví kompresie z akéhokoľvek dôvodu",
+        "Nikdy nekontroluje rytmus (chýba defibrilovateľný rytmus)",
+        "Vytvára chaos zastavením bez komunikácie"
+      ],
+      "coachFollowUp": "Správne - kvalitná KPR znamená plánované, krátke pauzy na kontrolu rytmu. Koordinácia je dôležitá. Pokračujeme..."
+    },
+
+    {
+      "questionID": "CC038",
+      "questionType": "open",
+      "category": "Rozhodovanie pod časovým tlakom",
+      "setup": "Matka je v aktívnom pôrode a vidíte hlavičku bábätka ako korunuje. Chce ísť do nemocnice, ale odhadujete, že bábätko sa narodí v nasledujúcich 2-3 minútach. Čas transportu je 10 minút. Čo rozhodnete?",
+      "expectedGoodReasoning": [
+        "Rozpoznáva, že bezprostredný pôrod robí transport nebezpečným",
+        "Pripravuje sa na pôrod v teréne napriek preferencii pre nemocnicu",
+        "Jasne komunikuje s matkou o situácii",
+        "Má pripravenú pôrodnú súpravu a partnera pripraveného",
+        "Plánuje okamžitý transport po pôrode ak nie sú komplikácie"
+      ],
+      "commonFlawedReasoning": [
+        "Pokúša sa transportovať s bezprostredným pôrodom (nebezpečné)",
+        "Panikári kvôli pôrodu v teréne",
+        "Pokúša sa oddialiť pôrod (nemožné/nebezpečné)",
+        "Nepripraví potrebné vybavenie"
+      ],
+      "coachFollowUp": "Dobrý úsudok - niekedy bábätká nečakajú. Byť pripravený na pôrod v teréne je nevyhnutné. Ďalej..."
+    },
+
+    {
+      "questionID": "CC039",
+      "questionType": "closed",
+      "category": "Rozhodovanie pod časovým tlakom",
+      "setup": "V traume, čo označuje 'Zlatá hodina' a ako by mala ovplyvniť vaše rozhodnutia o čase na mieste?",
+      "expectedAnswers": [
+        "Prvých 60 minút po zranení keď liečba najviac ovplyvňuje prežitie; minimalizovať čas na mieste pri kritickej traume",
+        "Kritická prvá hodina po zranení; dostať trauma pacientov k definitívnej starostlivosti rýchlo",
+        "Hodina po ťažkom zranení kde chirurgická intervencia najviac ovplyvňuje výsledok; obmedziť miesto na nevyhnutné intervencie"
+      ],
+      "acceptableVariations": [
+        "Čas od zranenia po definitívnu starostlivosť; neodkladať transport pre nepodstatné intervencie",
+        "Prvá hodina je kritická pre prežitie traumy; vyvážiť intervencie vs rýchly transport"
+      ],
+      "coachFollowUp": "Správne - čas do definitívnej starostlivosti je dôležitý v traume. Pokračujme..."
+    },
+
+    {
+      "questionID": "CC040",
+      "questionType": "closed",
+      "category": "Rozhodovanie pod časovým tlakom",
+      "setup": "Čo sú 4 H a 4 T - reverzibilné príčiny zástavy srdca, ktoré by ste mali zvážiť počas resuscitácie?",
+      "expectedAnswers": [
+        "Hypoxia, Hypovolémia, Hypo/hyperkaliémia, Hypotermia; Tenzný pneumotorax, Tamponáda, Toxíny, Trombóza",
+        "4H: hypoxia, hypovolémia, hyper/hypokaliémia, hypotermia. 4T: tenzný pneumotorax, tamponáda, toxíny, trombóza (koronárna/pľúcna)",
+        "Hypoxia, Hypovolémia, Vodíkové ióny (acidóza)/elektrolyty, Hypotermia; Tenzný pneumo, Kardiálna tamponáda, Toxíny, Trombóza"
+      ],
+      "acceptableVariations": [
+        "H: hypoxia, hypovolémia, hypo-hyperkaliémia, hypotermia. T: tenzný pneumo, tamponáda, toxíny, trombus",
+        "Reverzibilné príčiny: hypoxia hypovolémia elektrolyty hypotermia, tenzný pneumotorax tamponáda toxíny trombóza"
+      ],
+      "coachFollowUp": "Dobre - znalosť reverzibilných príčin vám pomáha systematicky uvažovať počas chaosu kódu. Pripravený na scenár?"
+    },
+
+    {
+      "questionID": "CC041",
+      "questionType": "closed",
+      "category": "Rozpoznávanie vzorcov",
+      "setup": "TF 140, TK 90/60, chladné bledé končatiny, alterované vedomie, rýchle plytké dýchanie. Akému klinickému vzorcu to zodpovedá?",
+      "expectedAnswers": [
+        "Šok - pravdepodobne hypovolemický alebo distributívny",
+        "Kompenzovaný šok prechádzajúci do dekompenzovaného",
+        "Šokový stav - hypoperfúzia s kompenzačnou tachykardiou",
+        "Hypovolemický šokový vzorec"
+      ],
+      "acceptableVariations": [
+        "Šok - potreba identifikovať typ",
+        "Znaky šoku so skorou dekompenzáciou",
+        "Obehový šok, možno hemoragický"
+      ],
+      "coachFollowUp": "Dobré rozpoznanie vzorca. Vitálne funkcie rozprávajú príbeh - toto je šok. Aký typ závisí od kontextu. Ďalší vzorec..."
+    },
+
+    {
+      "questionID": "CC042",
+      "questionType": "closed",
+      "category": "Rozpoznávanie vzorcov",
+      "setup": "Pacient nájdený v bezvedomí. TF 45, TK 195/110, nepravidelné dýchanie. Jedna zrenica je rozšírená a nereaguje. Aký vzorec rozpoznávate?",
+      "expectedAnswers": [
+        "Cushingova triáda - naznačujúca zvýšený intrakraniálny tlak",
+        "Znaky zvýšeného ICP - hypertenzia, bradykardia, nepravidelné dýchanie",
+        "Cushingova odpoveď z herniácie mozgu",
+        "Zvýšený intrakraniálny tlak s unkálnou herniáciou"
+      ],
+      "acceptableVariations": [
+        "Syndróm herniácie mozgu - Cushingov reflex",
+        "Zvýšený ICP s herniáciou - rozšírená zrenica",
+        "Cushingova triáda indikujúca ťažké poranenie hlavy"
+      ],
+      "coachFollowUp": "Presne tak - Cushingova triáda je kritický nález. Rozšírená zrenica naznačuje herniáciu. Pokračujeme..."
+    },
+
+    {
+      "questionID": "CC043",
+      "questionType": "closed",
+      "category": "Rozpoznávanie vzorcov",
+      "setup": "Ťažká dýchavičnosť, SpO2 85%, rozšírený exspiračný piskot, používanie pomocných svalov, dokáže hovoriť len jednotlivé slová, anamnéza astmy. Kde na spektre závažnosti je tento pacient?",
+      "expectedAnswers": [
+        "Ťažká/život ohrozujúca exacerbácia astmy",
+        "Status asthmaticus - ťažká akútna astma",
+        "Život ohrozujúca astma - vety z jedného slova indikujú závažnosť",
+        "Ťažký akútny astmatický záchvat vyžadujúci okamžitú bronchodilatáciu"
+      ],
+      "acceptableVariations": [
+        "Kritická astma - blízko respiračného zlyhania",
+        "Ťažká astma - nemôže dokončiť vety",
+        "Status asthmaticus s rizikom respiračného zlyhania"
+      ],
+      "coachFollowUp": "Správne - dĺžka viet vám hovorí závažnosť. Jednotlivé slová znamenajú kritický stav. Pokračujme..."
+    },
+
+    {
+      "questionID": "CC044",
+      "questionType": "closed",
+      "category": "Rozpoznávanie vzorcov",
+      "setup": "Drvivá centrálna bolesť na hrudi vyžarujúca do ľavej ruky, potenie, nevoľnosť, bledosivá koža, pocit blížiacej sa smrti. ST elevácia vo zvodoch V1-V4 na 12-zvodovom EKG. Čo je tento vzorec?",
+      "expectedAnswers": [
+        "Predný STEMI - ST elevačný infarkt myokardu",
+        "Akútny infarkt prednej steny - LAD teritórium",
+        "STEMI v predných zvodoch - pravdepodobne LAD oklúzia",
+        "Akútny infarkt myokardu - predná stena"
+      ],
+      "acceptableVariations": [
+        "Predný IM s klasickou prezentáciou",
+        "ST elevácia predné zvody - akútna koronárna oklúzia",
+        "Srdcový infarkt - vzorec predného STEMI"
+      ],
+      "coachFollowUp": "Dobre - klasická STEMI prezentácia. V1-V4 naznačuje prednú stenu, LAD teritórium. Ďalej..."
+    },
+
+    {
+      "questionID": "CC045",
+      "questionType": "closed",
+      "category": "Rozpoznávanie vzorcov",
+      "setup": "Náhla silná bolesť hlavy 'najhoršia v živote,' stuhnutie šije, fotofobie, vracanie, bez anamnézy úrazu. Akú diagnózu musíte podozrievať?",
+      "expectedAnswers": [
+        "Subarachnoidálne krvácanie pokiaľ sa nedokáže opak",
+        "SAK - subarachnoidálna hemorágia",
+        "Ruptúra mozgovej aneuryzmy - subarachnoidálne krvácanie",
+        "Intrakraniálna hemorágia, pravdepodobne SAK"
+      ],
+      "acceptableVariations": [
+        "Krvácanie do mozgu - vzorec SAK",
+        "Hromová bolesť hlavy - vylúčiť SAK",
+        "Subarachnoidálne krvácanie z ruptúry aneuryzmy"
+      ],
+      "coachFollowUp": "Presne tak - 'najhoršia bolesť hlavy v živote' je SAK pokiaľ sa nedokáže opak. Časovo kritická emergency. Pokračujeme..."
+    },
+
+    {
+      "questionID": "CC046",
+      "questionType": "closed",
+      "category": "Rozpoznávanie vzorcov",
+      "setup": "Diabetický pacient nájdený zmätený, silne sa potí, trasie sa, agresívne správanie, rýchly pulz. Glykémia ukazuje 2,1 mmol/L. Čo sa deje a aká je prvolíniová liečba?",
+      "expectedAnswers": [
+        "Ťažká hypoglykémia - podať glukózu IV alebo glukagón ak nie je IV prístup",
+        "Hypoglykemická kríza - IV dextróza alebo IM glukagón",
+        "Nízky krvný cukor spôsobujúci neuroglycopéniu - liečiť glukózou",
+        "Hypoglykémia - potrebuje okamžitú náhradu glukózy"
+      ],
+      "acceptableVariations": [
+        "Inzulínový šok/hypoglykémia - podať cukor",
+        "Ťažké hypo - dextróza 40% IV alebo glukagón",
+        "Hypoglykemická epizóda - glukóza je liečba"
+      ],
+      "coachFollowUp": "Správne - glukóza vám hovorí všetko. Liečte číslo. Pokračujeme..."
+    },
+
+    {
+      "questionID": "CC047",
+      "questionType": "closed",
+      "category": "Rozpoznávanie vzorcov",
+      "setup": "Po poštípaní včelou: rozšírená urtikária, opuch tváre, stridor, TK 80/50, TF 130. Čo je táto reakcia a aký je prvolíniový liek?",
+      "expectedAnswers": [
+        "Anafylaxia - adrenalín/epinefrín IM je prvolíniový",
+        "Anafylaktický šok - epinefrín 0,5mg IM okamžite",
+        "Ťažká alergická reakcia s anafylaxiou - podať adrenalín",
+        "Anafylaxia - IM adrenalín, nie antihistaminiká ako prvé"
+      ],
+      "acceptableVariations": [
+        "Anafylaktická reakcia - epi-pen alebo adrenalín IM",
+        "Anafylaxia od včelieho uštipnutia - adrenalín je priorita",
+        "Ťažká anafylaxia - epinefrín prvý, potom tekutiny a antihistaminiká"
+      ],
+      "coachFollowUp": "Správne - stridor plus hypotenzia rovná sa ťažká anafylaxia. Adrenalín zachraňuje životy. Ďalší vzorec..."
+    },
+
+    {
+      "questionID": "CC048",
+      "questionType": "closed",
+      "category": "Rozpoznávanie vzorcov",
+      "setup": "Náhly pokles kútika úst na pravej strane, slabosť pravej ruky, nezreteľná reč. Pacient bol v poriadku pred 30 minútami. Aká je vaša pracovná diagnóza a aké kritické informácie potrebujete?",
+      "expectedAnswers": [
+        "Akútna cievna mozgová príhoda - potrebujem presný čas nástupu príznakov pre rozhodnutie o trombolýze",
+        "CMP/mŕtvica - čas nástupu je kritický pre liečebné okno",
+        "Cerebrovaskulárna príhoda - kedy začali príznaky, pre eligibilitu na tPA",
+        "Mŕtvica - posledný známy čas bez príznakov určuje možnosti liečby"
+      ],
+      "acceptableVariations": [
+        "Syndróm akútnej mŕtvice - potrebujem čas nástupu príznakov",
+        "TIA alebo mŕtvica - čas je mozog, potrebujem presný nástup",
+        "Ischemická mŕtvica pravdepodobne - okno trombolýzy závisí od časovania"
+      ],
+      "coachFollowUp": "Presne tak - 'čas je mozog.' Znalosť času nástupu mení všetko pre možnosti liečby. Pokračujeme..."
+    },
+
+    {
+      "questionID": "CC049",
+      "questionType": "closed",
+      "category": "Rozpoznávanie vzorcov",
+      "setup": "Trauma pacient: nafúknuté krčné žily, hypotenzia, tlmené srdcové ozvy, tachykardia. Ako sa volá táto triáda a čo indikuje?",
+      "expectedAnswers": [
+        "Beckova triáda - kardiálna tamponáda",
+        "Beckova triáda indikujúca perikardiálnu tamponádu",
+        "Triáda tamponády - JVD, hypotenzia, tlmené srdcové ozvy",
+        "Kardiálna tamponáda - Beckova triáda"
+      ],
+      "acceptableVariations": [
+        "Znaky tamponády - Beckova triáda",
+        "Perikardiálna tamponáda z traumy - Beckova triáda",
+        "Beckova triáda = tamponáda, potrebuje perikardiocentézu"
+      ],
+      "coachFollowUp": "Dobre - Beckova triáda je život ohrozujúca. V traume myslite na penetrujúce poranenie hrudníka. Posledný vzorec..."
+    },
+
+    {
+      "questionID": "CC050",
+      "questionType": "closed",
+      "category": "Rozpoznávanie vzorcov",
+      "setup": "Pacient na warfaríne sa prezentuje s: INR 8,5, veľké modriny na rukách, krv v moči, krvácanie z ďasien. Aká je klinická situácia a aký reverzný agens je dostupný?",
+      "expectedAnswers": [
+        "Warfarínová predávkovanie/toxicita - vitamín K na reverziu",
+        "Supraterapeutické INR s krvácaním - podať vitamín K",
+        "Warfarínové predávkovanie spôsobujúce koagulopatiu - vitamín K reverzuje účinok",
+        "Nadmerná antikoagulácia - vitamín K, prípadne ČZP ak ťažké krvácanie"
+      ],
+      "acceptableVariations": [
+        "Príliš veľký warfarínový účinok - potrebuje vitamín K",
+        "Vysoké INR s aktívnym krvácaním - reverzia vitamínom K",
+        "Warfarínom indukované krvácanie - vitamín K je antidótum"
+      ],
+      "coachFollowUp": "Správne - rozpoznanie komplikácií liekov je kritické. INR nad 4-5 s krvácaním potrebuje reverziu. Pripravený na scenár?"
+    }
+  ]
+}
