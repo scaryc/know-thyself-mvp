@@ -1,7 +1,7 @@
 // server/services/aarContextBuilder.js
 
 import { loadBlueprint, extractAARRelevantContent } from '../utils/blueprintLoader.js';
-import { analyzePerformancePatterns } from './patternAnalysisService.js';
+import { patternAnalysisService } from './patternAnalysisService.js';
 
 /**
  * Build complete AAR context for agent initialization
@@ -65,7 +65,7 @@ export function buildFullAARContext(session) {
   });
 
   // Analyze cross-scenario patterns
-  const patterns = analyzePerformancePatterns(performanceHistory);
+  const patterns = patternAnalysisService.analyzePerformancePatterns(performanceHistory);
 
   return {
     totalScenarios: scenarioContexts.length,
