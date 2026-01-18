@@ -405,4 +405,4 @@ class SafetyGateMonitor {
   }
 }
 
-module.exports = SafetyGateMonitor;
+export default SafetyGateMonitor;

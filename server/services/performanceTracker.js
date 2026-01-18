@@ -13,9 +13,9 @@
  * - Generate comprehensive V3.0 AAR report
  */
 
-const MilestoneTracker = require('./milestoneTracker');
-const SafetyGateMonitor = require('./safetyGateMonitor');
-const StateTracker = require('./stateTracker');
+import MilestoneTracker from './milestoneTracker.js';
+import SafetyGateMonitor from './safetyGateMonitor.js';
+import StateTracker from './stateTracker.js';
 
 class SimplifiedPerformanceTracker {
   constructor(scenario) {

@@ -234,4 +234,4 @@ class MilestoneTracker {
   }
 }
 
-module.exports = MilestoneTracker;
+export default MilestoneTracker;

@@ -359,4 +359,4 @@ class StateTracker {
   }
 }
 
-module.exports = StateTracker;
+export default StateTracker;
