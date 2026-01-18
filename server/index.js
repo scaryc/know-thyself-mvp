@@ -3179,8 +3179,8 @@ app.post('/api/sessions/:sessionId/message', async (req, res) => {
             .trim();
 
           // Add to conversation history and database
-          await db.addMessage(id, 'user', message);
-          await db.addMessage(id, 'assistant', responseText);
+          await db.addMessage(sessionId, 'user', message);
+          await db.addMessage(sessionId, 'assistant', responseText);
 
           session.messages.push(
             { role: 'user', content: message },
@@ -3222,8 +3222,8 @@ app.post('/api/sessions/:sessionId/message', async (req, res) => {
         }
 
         // Add to conversation history and database
-        await db.addMessage(id, 'user', message);
-        await db.addMessage(id, 'assistant', responseText);
+        await db.addMessage(sessionId, 'user', message);
+        await db.addMessage(sessionId, 'assistant', responseText);
 
         session.messages.push(
           { role: 'user', content: message },

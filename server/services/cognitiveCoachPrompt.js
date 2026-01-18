@@ -108,10 +108,10 @@ CURRENT QUESTION TO ASK (Question ${currentQuestionNumber}):
 "${currentQuestion.setup}"
 
 **Expected Good Reasoning:**
-${currentQuestion.expectedGoodReasoning.map((r, i) => `${i + 1}. ${r}`).join('\n')}
+${currentQuestion.expectedGoodReasoning?.map((r, i) => `${i + 1}. ${r}`).join('\n') || 'None specified'}
 
 **Common Flawed Reasoning:**
-${currentQuestion.commonFlawedReasoning.map((r, i) => `${i + 1}. ${r}`).join('\n')}
+${currentQuestion.commonFlawedReasoning?.map((r, i) => `${i + 1}. ${r}`).join('\n') || 'None specified'}
 
 **Coach Follow-Up Template:**
 "${currentQuestion.coachFollowUp}"
